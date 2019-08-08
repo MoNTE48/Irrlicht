@@ -54,7 +54,7 @@ namespace video
 
 		const SExposedVideoData& getContext() const;
 
-		bool activateContext(const SExposedVideoData& videoData);
+		bool activateContext(const SExposedVideoData& videoData, bool restorePrimaryOnZero);
 
 		// Swap buffers.
 		bool swapBuffers();

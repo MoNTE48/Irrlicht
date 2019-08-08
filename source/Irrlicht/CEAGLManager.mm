@@ -196,7 +196,7 @@ void CEAGLManager::destroyContext()
 	Data.OpenGLiOS.Context = 0;
 }
 
-bool CEAGLManager::activateContext(const SExposedVideoData& videoData)
+bool CEAGLManager::activateContext(const SExposedVideoData& videoData, bool restorePrimaryOnZero)
 {
 	SEAGLManagerDataStorage* dataStorage = static_cast<SEAGLManagerDataStorage*>(DataStorage);
 	EAGLContext* context = dataStorage->Context;
