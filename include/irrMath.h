@@ -198,6 +198,12 @@ namespace core
 	}
 
 	template <>
+	inline s16 roundingError()
+	{
+		return 0;
+	}
+
+	template <>
 	inline s32 roundingError()
 	{
 		return ROUNDING_ERROR_S32;
@@ -243,7 +249,7 @@ namespace core
 
 	//! returns if a equals b, taking possible rounding errors into account
 	template <class T>
-	inline bool equals(const T a, const T b, const T tolerance = roundingError<T>()) 
+	inline bool equals(const T a, const T b, const T tolerance = roundingError<T>())
 	{
 		return (a + tolerance >= b) && (a - tolerance <= b);
 	}
@@ -766,4 +772,3 @@ namespace core
 #endif
 
 #endif
-
