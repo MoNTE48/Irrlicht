@@ -61,12 +61,14 @@ namespace irr
 
         virtual E_DEVICE_TYPE getType() const _IRR_OVERRIDE_;
 
+        void *getViewController();
+
 	private:
         void createWindow();
         void createViewAndDriver();
-        
+
         void* DataStorage;
-		
+
 		bool Close;
 	};
 
