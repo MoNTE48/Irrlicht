@@ -393,6 +393,7 @@ s32 CIrrDeviceAndroid::handleInput(android_app* app, AInputEvent* androidEvent)
 						event.TouchInput.ID = AMotionEvent_getPointerId(androidEvent, i);
 						event.TouchInput.X = AMotionEvent_getX(androidEvent, i);
 						event.TouchInput.Y = AMotionEvent_getY(androidEvent, i);
+						event.TouchInput.touchedCount = AMotionEvent_getPointerCount(androidEvent);
 
 						device->postEventFromUser(event);
 					}
@@ -404,6 +405,7 @@ s32 CIrrDeviceAndroid::handleInput(android_app* app, AInputEvent* androidEvent)
 					event.TouchInput.ID = AMotionEvent_getPointerId(androidEvent, pointerIndex);
 					event.TouchInput.X = AMotionEvent_getX(androidEvent, pointerIndex);
 					event.TouchInput.Y = AMotionEvent_getY(androidEvent, pointerIndex);
+					event.TouchInput.touchedCount = AMotionEvent_getPointerCount(androidEvent);
 
 					device->postEventFromUser(event);
 				}
@@ -504,7 +506,7 @@ s32 CIrrDeviceAndroid::handleInput(android_app* app, AInputEvent* androidEvent)
 			else
 			{
 				// os::Printer::log("keyCode: ", core::stringc(keyCode).c_str(), ELL_DEBUG);
-				event.KeyInput.Char = 0;
+				status = device->postEventFromUser(event);
 			}
 
 			device->postEventFromUser(event);
@@ -564,7 +566,7 @@ void CIrrDeviceAndroid::createKeyMap()
     KeyMap[1] = KEY_LBUTTON; // AKEYCODE_SOFT_LEFT
     KeyMap[2] = KEY_RBUTTON; // AKEYCODE_SOFT_RIGHT
     KeyMap[3] = KEY_HOME; // AKEYCODE_HOME
-    KeyMap[4] = KEY_BACK; // AKEYCODE_BACK
+    KeyMap[4] = KEY_CANCEL; // AKEYCODE_BACK
     KeyMap[5] = KEY_UNKNOWN; // AKEYCODE_CALL
     KeyMap[6] = KEY_UNKNOWN; // AKEYCODE_ENDCALL
     KeyMap[7] = KEY_KEY_0; // AKEYCODE_0
