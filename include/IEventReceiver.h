@@ -417,16 +417,16 @@ struct SEvent
 	struct STouchInput
 	{
         // Touch ID.
-        size_t ID;
+		size_t ID;
 
         // X position of simple touch.
-		s32 X;
+		f64 X;
 
         // Y position of simple touch.
-		s32 Y;
+		f64 Y;
 
         // Number of current touches
-        s32 touchedCount;
+		f64 touchedCount;
 
 		//! Type of touch event.
 		ETOUCH_INPUT_EVENT Event;
@@ -660,4 +660,3 @@ struct SJoystickInfo
 } // end namespace irr
 
 #endif
-
