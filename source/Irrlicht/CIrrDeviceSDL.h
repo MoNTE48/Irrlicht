@@ -207,7 +207,6 @@ namespace irr
 		u32 Width, Height;
 
 		bool Resizable;
-		bool WindowHasFocusDeprecated;	// TODO: variable only kept to avoid breaking binary compatibility in 1.8. Will be removed in 1.9
 		bool WindowMinimized;
 
 		struct SKeyMap
