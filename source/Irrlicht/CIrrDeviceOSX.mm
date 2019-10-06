@@ -1190,7 +1190,12 @@ void CIrrDeviceMacOSX::postMouseEvent(void *event,irr::SEvent &ievent)
 	}
 
 	if (post)
+	{
+		ievent.MouseInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
+		ievent.MouseInput.Control = ([(NSEvent *)event modifierFlags] & NSControlKeyMask) != 0;
+		
 		postEventFromUser(ievent);
+	}
 
 	[NSApp sendEvent:(NSEvent *)event];
 }
