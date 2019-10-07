@@ -1,5 +1,6 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Add flag SIrrlichtCreationParameters.WindowResizable. Mainly to work around troubles with SDL+OpenGL on some platforms where resizing later can be tricky/impossible.
 - Add operator[]  to vector2d and vector3d
 - Bugfix: IrrlichtDevice::isWindowMinimized no longer returns true when it's maximized on Windows.
 - Ignore degenerated faces in obj file loader when they would generate triangles where 2 vertices use identical indices.

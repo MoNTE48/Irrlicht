@@ -418,6 +418,8 @@ namespace irr
 
 		void resizeIfNecessary();
 
+		DWORD getWindowStyle(bool fullscreen, bool resizable) const;
+
 		HWND HWnd;
 
 		bool ChangedToFullScreen;

@@ -28,6 +28,7 @@ namespace irr
 			Bits(32),
 			ZBufferBits(24),
 			Fullscreen(false),
+			WindowResizable(false),
 			Stencilbuffer(true),
 			Vsync(false),
 			AntiAlias(0),
@@ -64,6 +65,7 @@ namespace irr
 			Bits = other.Bits;
 			ZBufferBits = other.ZBufferBits;
 			Fullscreen = other.Fullscreen;
+			WindowResizable = other.WindowResizable;
 			Stencilbuffer = other.Stencilbuffer;
 			Vsync = other.Vsync;
 			AntiAlias = other.AntiAlias;
@@ -76,8 +78,8 @@ namespace irr
 			EventReceiver = other.EventReceiver;
 			WindowId = other.WindowId;
 			LoggingLevel = other.LoggingLevel;
-			DriverMultithreaded = other.DriverMultithreaded;
 			DisplayAdapter = other.DisplayAdapter;
+			DriverMultithreaded = other.DriverMultithreaded;
 			UsePerformanceTimer = other.UsePerformanceTimer;
 			return *this;
 		}
@@ -116,6 +118,11 @@ namespace irr
 		//! Should be set to true if the device should run in fullscreen.
 		/** Otherwise the device runs in windowed mode. Default: false. */
 		bool Fullscreen;
+
+		//! Should a non-fullscreen window be resizable.
+		/** Might not be supported by all devices. Ignored when Fullscreen is true.
+		Default: false */
+		bool WindowResizable;
 
 		//! Specifies if the stencil buffer should be enabled.
 		/** Set this to true, if you want the engine be able to draw

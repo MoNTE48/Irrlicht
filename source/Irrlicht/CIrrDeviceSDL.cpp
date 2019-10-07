@@ -53,7 +53,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	Screen((SDL_Surface*)param.WindowId), SDL_Flags(SDL_ANYFORMAT),
 	MouseX(0), MouseY(0), MouseButtonStates(0),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
-	Resizable(false), WindowMinimized(false)
+	Resizable(param.WindowResizable), WindowMinimized(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL");
@@ -113,6 +113,8 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 	if ( CreationParams.Fullscreen )
 		SDL_Flags |= SDL_FULLSCREEN;
+	else if ( Resizable )
+		SDL_Flags |= SDL_RESIZABLE;
 	if (CreationParams.DriverType == video::EDT_OPENGL)
 		SDL_Flags |= SDL_OPENGL;
 	else if (CreationParams.Doublebuffer)
@@ -716,91 +718,20 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 	return VideoModeList;
 }
 
-
-#if defined(_IRR_COMPILE_WITH_OPENGL_) && defined(_IRR_WINDOWS_)
-#define IRR_SHARE_GL_RESOURCE_ON_RESIZE
-
-// Code from http://www.bytehazard.com/articles/sdlres.html (with some changes) to share GL resources used in SDL on Win32 while switching GL context
-static HGLRC startShareGLResources()
-{
-	// get window handle from SDL
-	SDL_SysWMinfo info;
-	SDL_VERSION(&info.version);
-	if (SDL_GetWMInfo(&info) == -1)
-	{
-		return 0;
-	}
-
-	 // get device context handle
-	HDC tempDC = GetDC( info.window );
-
-	// create temporary context
-	HGLRC tempRC = wglCreateContext( tempDC );
-	if (tempRC == NULL)
-	{
-		ReleaseDC(info.window, tempDC);
-		return 0;
-	}
-
-	// share resources to temporary context
-	SetLastError(0);
-	if (!wglShareLists(info.hglrc, tempRC))
-	{
-		ReleaseDC(info.window, tempDC);
-		return 0;
-	}
-
-	return tempRC;
-}
-
-static bool endShareGLResources(HGLRC tempRC)
-{
-	SDL_SysWMinfo info;
-	SDL_VERSION(&info.version);
-	if (SDL_GetWMInfo(&info) == -1)
-	{
-		return false;
-	}
-
-	// share resources to new SDL-created context
-	if (!wglShareLists(tempRC, info.hglrc))
-	{
-		return false;
-	}
-
-	// we no longer need our temporary context
-	if (!wglDeleteContext(tempRC))
-	{
-		return false;
-	}
-
-	return true;
-}
-#endif
-
-
 //! Sets if the window should be resizable in windowed mode.
 void CIrrDeviceSDL::setResizable(bool resize)
 {
 	if (resize != Resizable)
 	{
-#ifdef  IRR_SHARE_GL_RESOURCE_ON_RESIZE
-		// Workaround: 	On Windows SDL loses the OpenGL context when the SDL_Flags changes.
-		// So we create a temporary OpenGL context to share the GL resources.
-		// It doesn't seem to happen on other platforms.
-		const bool shareGLresources = (SDL_Flags & SDL_OPENGL) != 0;
-		HGLRC shareRC = 0;
-		if ( shareGLresources )
+#if defined(_IRR_COMPILE_WITH_OPENGL_) && defined(_IRR_WINDOWS_)
+		if ( SDL_Flags & SDL_OPENGL )
 		{
-			shareRC = startShareGLResources();
-			if ( shareRC == 0  )
-			{
-				os::Printer::log("Can't change resizable without losing GL context.");
-				return;
-			}
+			// For unknown reasons the hack with sharing resources which was added in Irrlicht 1.8.5 for this no longer works in 1.9
+			// But at least we got a new WindowResizable flag since Irrlicht 1.9.
+			os::Printer::log("setResizable not supported with this device/driver combination. Use SIrrCreationParameters.WindowResizable instead.", ELL_WARNING);
+			return;
 		}
 #endif
-
 
 		if (resize)
 			SDL_Flags |= SDL_RESIZABLE;
@@ -809,13 +740,6 @@ void CIrrDeviceSDL::setResizable(bool resize)
 
 		Screen = SDL_SetVideoMode( 0, 0, 0, SDL_Flags );
 		Resizable = resize;
-
-#ifdef IRR_SHARE_GL_RESOURCE_ON_RESIZE
-		if ( shareRC != 0 )
-		{
-			endShareGLResources(shareRC);
-		}
-#endif
 	}
 }
 
