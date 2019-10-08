@@ -798,7 +798,7 @@ void CDemo::startSound()
 
 	SDL_Init(SDL_INIT_AUDIO);
 
-	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 128))
+	if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096))
 		return;
 
 	const io::path mediaPath = getExampleMediaPath();
