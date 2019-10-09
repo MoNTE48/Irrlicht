@@ -418,7 +418,7 @@ ECOLOR_FORMAT CD3D9Texture::getBestColorFormat(ECOLOR_FORMAT format)
 		break;
 	case ECF_R5G6B5:
 		if (!Driver->getTextureCreationFlag(ETCF_ALWAYS_32_BIT))
-			destFormat = ECF_A1R5G5B5;
+			destFormat = ECF_R5G6B5;
 		break;
 	case ECF_A8R8G8B8:
 		if (Driver->getTextureCreationFlag(ETCF_ALWAYS_16_BIT) ||
