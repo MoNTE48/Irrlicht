@@ -1227,7 +1227,10 @@ namespace video
 		\param data A byte array with pixel color information
 		\param ownForeignMemory If true, the image will use the data
 		pointer directly and own it afterward. If false, the memory
-		will by copied internally.
+		will by copied internally. 
+		WARNING: Setting this to 'true' will not work across dll boundaries.
+		So unless you link Irrlicht statically you should keep this to 'false'.
+		The parameter is mainly for internal usage.
 		\param deleteMemory Whether the memory is deallocated upon
 		destruction.
 		\return The created image.
