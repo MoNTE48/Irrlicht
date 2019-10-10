@@ -203,6 +203,11 @@ void* CD3D9Texture::lock(E_TEXTURE_LOCK_MODE mode, u32 mipmapLevel, u32 layer, E
 
 			hr = CubeTexture->LockRect(static_cast<_D3DCUBEMAP_FACES>(layer), 0, &rect, 0, LockReadOnly ? D3DLOCK_READONLY : 0);
 		}
+		else
+		{
+			os::Printer::log("Could not lock DIRECT3D9 Texture. Missing internal D3D texture.", ELL_ERROR);
+			return 0;
+		}
 		
 		if (FAILED(hr))
 		{
@@ -426,6 +431,7 @@ ECOLOR_FORMAT CD3D9Texture::getBestColorFormat(ECOLOR_FORMAT format)
 			destFormat = ECF_A1R5G5B5;
 		break;
 	case ECF_R8G8B8:
+		// Note: Using ECF_A8R8G8B8 even when ETCF_ALWAYS_32_BIT is not set as 24 bit textures fail with too many cards
 		if (Driver->getTextureCreationFlag(ETCF_ALWAYS_16_BIT) || Driver->getTextureCreationFlag(ETCF_OPTIMIZED_FOR_SPEED))
 			destFormat = ECF_A1R5G5B5;
 	default:

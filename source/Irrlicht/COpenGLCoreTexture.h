@@ -439,6 +439,7 @@ protected:
 				destFormat = ECF_A1R5G5B5;
 			break;
 		case ECF_R8G8B8:
+			// Note: Using ECF_A8R8G8B8 even when ETCF_ALWAYS_32_BIT is not set as 24 bit textures fail with too many cards
 			if (Driver->getTextureCreationFlag(ETCF_ALWAYS_16_BIT) || Driver->getTextureCreationFlag(ETCF_OPTIMIZED_FOR_SPEED))
 				destFormat = ECF_A1R5G5B5;
 		default:
