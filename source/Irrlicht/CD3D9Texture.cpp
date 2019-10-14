@@ -36,25 +36,6 @@ CD3D9Texture::CD3D9Texture(const io::path& name, const core::array<IImage*>& ima
 
 	getImageValues(image[0]);
 
-	core::array<IImage*> tmpImage = image;
-
-	bool releaseImageData = false;
-
-	if (OriginalSize != Size || OriginalColorFormat != ColorFormat)
-	{
-		releaseImageData = true;
-
-		for (u32 i = 0; i < image.size(); ++i)
-		{
-			tmpImage[i] = Driver->createImage(ColorFormat, Size);
-
-			if (image[i]->getDimension() == Size)
-				image[i]->copyTo(tmpImage[i]);
-			else
-				image[i]->copyToScaling(tmpImage[i]);
-		}
-	}
-
 	DWORD flags = 0;
 
 	if (HasMipMaps && AutoGenerateMipMaps)
@@ -84,8 +65,50 @@ CD3D9Texture::CD3D9Texture(const io::path& name, const core::array<IImage*>& ima
 		break;
 	}
 
+	if (FAILED(hr))
+	{
+		// Try again with 16-bit format (24 bit is usually failing in d3d9, not sure if it's every supported)
+		if (InternalFormat == D3DFMT_A8R8G8B8)
+		{
+			InternalFormat = D3DFMT_A1R5G5B5;
+			ColorFormat = ECF_A1R5G5B5;
+		}
+		else if (InternalFormat == D3DFMT_R8G8B8)
+		{
+			InternalFormat = D3DFMT_R5G6B5;
+			ColorFormat = ECF_R5G6B5;
+		}
+		switch (Type)
+		{
+			case ETT_2D:
+				hr = Device->CreateTexture(Size.Width, Size.Height, HasMipMaps ? 0 : 1, flags, InternalFormat, D3DPOOL_MANAGED, &Texture, NULL);
+				break;
+			case ETT_CUBEMAP:
+				hr = Device->CreateCubeTexture(Size.Width, HasMipMaps ? 0 : 1, flags, InternalFormat, D3DPOOL_MANAGED, &CubeTexture, NULL);
+				break;
+		}
+	}
+
+	core::array<IImage*> tmpImage = image;
+	bool releaseImageData = false;
+
 	if (SUCCEEDED(hr))
 	{
+		if (OriginalSize != Size || OriginalColorFormat != ColorFormat)
+		{
+			releaseImageData = true;
+
+			for (u32 i = 0; i < image.size(); ++i)
+			{
+				tmpImage[i] = Driver->createImage(ColorFormat, Size);
+
+				if (image[i]->getDimension() == Size)
+					image[i]->copyTo(tmpImage[i]);
+				else
+					image[i]->copyToScaling(tmpImage[i]);
+			}
+		}
+
 		for (u32 i = 0; i < tmpImage.size(); ++i)
 			uploadTexture(i, 0, tmpImage[i]->getData());
 
