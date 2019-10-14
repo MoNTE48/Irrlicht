@@ -872,13 +872,17 @@ void CNullDriver::draw3DBox(const core::aabbox3d<f32>& box, SColor color)
 
 
 //! draws an 2d image
-void CNullDriver::draw2DImage(const video::ITexture* texture, const core::position2d<s32>& destPos)
+void CNullDriver::draw2DImage(const video::ITexture* texture, const core::position2d<s32>& destPos, bool useAlphaChannelOfTexture)
 {
 	if (!texture)
 		return;
 
 	draw2DImage(texture,destPos, core::rect<s32>(core::position2d<s32>(0,0),
-												core::dimension2di(texture->getOriginalSize())));
+												core::dimension2di(texture->getOriginalSize())),
+												0, 
+												SColor(255,255,255,255), 
+												useAlphaChannelOfTexture
+												);
 }
 
 

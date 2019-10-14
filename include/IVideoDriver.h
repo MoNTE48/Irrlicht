@@ -787,9 +787,11 @@ namespace video
 		//! Draws a 2d image without any special effects
 		/** \param texture Pointer to texture to use.
 		\param destPos Upper left 2d destination position where the
-		image will be drawn. */
+		image will be drawn. 
+		\param useAlphaChannelOfTexture: If true, the alpha channel of
+		the texture is used to draw the image.*/
 		virtual void draw2DImage(const video::ITexture* texture,
-			const core::position2d<s32>& destPos) =0;
+			const core::position2d<s32>& destPos, bool useAlphaChannelOfTexture=false) =0;
 
 		//! Draws a 2d image using a color
 		/** (if color is other than
