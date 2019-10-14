@@ -137,7 +137,7 @@ void CImage::copyTo(IImage* target, const core::position2d<s32>& pos)
 	{
 		// No fast blitting, but copyToScaling uses other color conversions and might work
 		irr::core::dimension2du dim(target->getDimension());
-		copyToScaling(target->lock(), dim.Width, dim.Height, target->getColorFormat(), target->getPitch());
+		copyToScaling(target->getData(), dim.Width, dim.Height, target->getColorFormat(), target->getPitch());
 	}
 }
 
