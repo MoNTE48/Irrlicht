@@ -746,6 +746,11 @@ ITexture* CD3D9Driver::createDeviceDependentTexture(const io::path& name, IImage
 	imageArray.push_back(image);
 
 	CD3D9Texture* texture = new CD3D9Texture(name, imageArray, ETT_2D, this);
+	if ( !texture->getDX9Texture() )
+	{
+		texture->drop();
+		return 0;
+	}
 
 	return texture;
 }
@@ -753,6 +758,12 @@ ITexture* CD3D9Driver::createDeviceDependentTexture(const io::path& name, IImage
 ITexture* CD3D9Driver::createDeviceDependentTextureCubemap(const io::path& name, const core::array<IImage*>& image)
 {
 	CD3D9Texture* texture = new CD3D9Texture(name, image, ETT_CUBEMAP, this);
+
+	if ( !texture->getDX9CubeTexture() )
+	{
+		texture->drop();
+		return 0;
+	}
 
 	return texture;
 }

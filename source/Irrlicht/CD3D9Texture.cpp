@@ -67,13 +67,13 @@ CD3D9Texture::CD3D9Texture(const io::path& name, const core::array<IImage*>& ima
 
 	if (FAILED(hr))
 	{
-		// Try again with 16-bit format (24 bit is usually failing in d3d9, not sure if it's every supported)
+		// Try again with 16-bit format 
 		if (InternalFormat == D3DFMT_A8R8G8B8)
 		{
 			InternalFormat = D3DFMT_A1R5G5B5;
 			ColorFormat = ECF_A1R5G5B5;
 		}
-		else if (InternalFormat == D3DFMT_R8G8B8)
+		else if (InternalFormat == D3DFMT_R8G8B8)	// (24 bit is usually failing in d3d9, not sure if it's ever supported)
 		{
 			InternalFormat = D3DFMT_R5G6B5;
 			ColorFormat = ECF_R5G6B5;
