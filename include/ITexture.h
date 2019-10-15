@@ -58,7 +58,10 @@ enum E_TEXTURE_CREATION_FLAG
 	/** Automatically creates mip map levels for the textures. */
 	ETCF_CREATE_MIP_MAPS = 0x00000010,
 
-	/** Discard any alpha layer and use non-alpha color format. */
+	/** Discard any alpha layer and use non-alpha color format. 
+	Warning: This may lead to getting 24-bit texture formats which 
+	         are often badly supported by drivers. So it's generally
+			 not recommended to enable this flag.	*/
 	ETCF_NO_ALPHA_CHANNEL = 0x00000020,
 
 	//! Allow the Driver to use Non-Power-2-Textures

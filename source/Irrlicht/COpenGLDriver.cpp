@@ -4174,6 +4174,8 @@ GLenum COpenGLDriver::getZBufferBits() const
 bool COpenGLDriver::getColorFormatParameters(ECOLOR_FORMAT format, GLint& internalFormat, GLenum& pixelFormat,
 	GLenum& pixelType, void(**converter)(const void*, s32, void*)) const
 {
+	// NOTE: Converter variable not used here, but don't remove, it's used in the OGL-ES drivers.
+
 	bool supported = false;
 	internalFormat = GL_RGBA;
 	pixelFormat = GL_RGBA;
@@ -4196,7 +4198,7 @@ bool COpenGLDriver::getColorFormatParameters(ECOLOR_FORMAT format, GLint& intern
 	case ECF_R8G8B8:
 		supported = true;
 		internalFormat = GL_RGB;
-		pixelFormat = GL_BGR;
+		pixelFormat = GL_RGB;
 		pixelType = GL_UNSIGNED_BYTE;
 		break;
 	case ECF_A8R8G8B8:
