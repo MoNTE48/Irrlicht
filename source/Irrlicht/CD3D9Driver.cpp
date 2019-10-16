@@ -3333,7 +3333,8 @@ IImage* CD3D9Driver::createScreenShot(video::ECOLOR_FORMAT format, video::E_REND
 	if (format==video::ECF_UNKNOWN)
 		format=getColorFormat();
 
-	if (IImage::isRenderTargetOnlyFormat(format) || IImage::isCompressedFormat(format) || IImage::isDepthFormat(format))
+	// TODO: Maybe we could support more formats (floating point and some of those beyond ECF_R8), didn't really try yet 
+	if (IImage::isCompressedFormat(format) || IImage::isDepthFormat(format) || IImage::isFloatingPointFormat(format) || format >= ECF_R8)
 		return 0;
 
 	// query the screen dimensions of the current adapter
@@ -3491,6 +3492,7 @@ D3DFORMAT CD3D9Driver::getD3DFormatFromColorFormat(ECOLOR_FORMAT format) const
 			return D3DFMT_R8G8B8;
 		case ECF_A8R8G8B8:
 			return D3DFMT_A8R8G8B8;
+
 		case ECF_DXT1:
 			return D3DFMT_DXT1;
 		case ECF_DXT2:
@@ -3513,6 +3515,16 @@ D3DFORMAT CD3D9Driver::getD3DFormatFromColorFormat(ECOLOR_FORMAT format) const
 			return D3DFMT_G32R32F;
 		case ECF_A32B32G32R32F:
 			return D3DFMT_A32B32G32R32F;
+
+		case ECF_R8:
+			return D3DFMT_A8;	// not correct, but somewhat similar
+		case ECF_R8G8:
+			return D3DFMT_A8L8;	// not correct, but somewhat similar
+		case ECF_R16:
+			return D3DFMT_L16;	// not correct, but somewhat similar
+		case ECF_R16G16:
+			return D3DFMT_G16R16;	// flipped :-(
+
 		case ECF_D16:
 			return D3DFMT_D16;
 		case ECF_D24S8:

@@ -28,7 +28,8 @@ enum E_TEXTURE_CREATION_FLAG
 	the space in memory.
 	When using this flag, it does not make sense to use the flags
 	ETCF_ALWAYS_32_BIT, ETCF_OPTIMIZED_FOR_QUALITY, or
-	ETCF_OPTIMIZED_FOR_SPEED at the same time. */
+	ETCF_OPTIMIZED_FOR_SPEED at the same time. 
+	Not all texture formats are affected (usually those up to ECF_A8R8G8B8). */
 	ETCF_ALWAYS_16_BIT = 0x00000001,
 
 	/** Forces the driver to create 32 bit textures always, independent of
@@ -37,7 +38,8 @@ enum E_TEXTURE_CREATION_FLAG
 	create and use 16 bit textures.
 	When using this flag, it does not make sense to use the flags
 	ETCF_ALWAYS_16_BIT, ETCF_OPTIMIZED_FOR_QUALITY, or
-	ETCF_OPTIMIZED_FOR_SPEED at the same time. */
+	ETCF_OPTIMIZED_FOR_SPEED at the same time. 
+	Not all texture formats are affected (usually those up to ECF_A8R8G8B8). */
 	ETCF_ALWAYS_32_BIT = 0x00000002,
 
 	/** Lets the driver decide in which format the textures are created and
@@ -45,14 +47,16 @@ enum E_TEXTURE_CREATION_FLAG
 	chooses the format in which the texture was stored on disk.
 	When using this flag, it does not make sense to use the flags
 	ETCF_ALWAYS_16_BIT, ETCF_ALWAYS_32_BIT, or ETCF_OPTIMIZED_FOR_SPEED at
-	the same time. */
+	the same time. 
+	Not all texture formats are affected (usually those up to ECF_A8R8G8B8). */
 	ETCF_OPTIMIZED_FOR_QUALITY = 0x00000004,
 
 	/** Lets the driver decide in which format the textures are created and
 	tries to create them maximizing render speed.
 	When using this flag, it does not make sense to use the flags
 	ETCF_ALWAYS_16_BIT, ETCF_ALWAYS_32_BIT, or ETCF_OPTIMIZED_FOR_QUALITY,
-	at the same time. */
+	at the same time. 
+	Not all texture formats are affected (usually those up to ECF_A8R8G8B8). */
 	ETCF_OPTIMIZED_FOR_SPEED = 0x00000008,
 
 	/** Automatically creates mip map levels for the textures. */

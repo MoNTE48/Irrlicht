@@ -432,12 +432,6 @@ void CNullDriver::renameTexture(ITexture* texture, const io::path& newName)
 
 ITexture* CNullDriver::addTexture(const core::dimension2d<u32>& size, const io::path& name, ECOLOR_FORMAT format)
 {
-	if (IImage::isRenderTargetOnlyFormat(format))
-	{
-		os::Printer::log("Could not create ITexture, format only supported for render target textures.", ELL_WARNING);
-		return 0;
-	}
-
 	if (0 == name.size())
 	{
 		os::Printer::log("Could not create ITexture, texture needs to have a non-empty name.", ELL_WARNING);
@@ -530,12 +524,6 @@ ITexture* CNullDriver::addTextureCubemap(const irr::u32 sideLen, const io::path&
 {
 	if ( 0 == sideLen )
 		return 0;
-
-	if (IImage::isRenderTargetOnlyFormat(format))
-	{
-		os::Printer::log("Could not create ITexture, format only supported for render target textures.", ELL_WARNING);
-		return 0;
-	}
 
 	if (0 == name.size())
 	{
@@ -1687,11 +1675,6 @@ IImage* CNullDriver::createImage(ECOLOR_FORMAT format, const core::dimension2d<u
 IImage* CNullDriver::createImage(ECOLOR_FORMAT format, IImage *imageToCopy)
 {
 	os::Printer::log("Deprecated method, please create an empty image instead and use copyTo().", ELL_WARNING);
-	if(IImage::isRenderTargetOnlyFormat(format))
-	{
-		os::Printer::log("Could not create IImage, format only supported for render target textures.", ELL_WARNING);
-		return 0;
-	}
 
 	CImage* tmp = new CImage(format, imageToCopy->getDimension());
 	imageToCopy->copyTo(tmp);

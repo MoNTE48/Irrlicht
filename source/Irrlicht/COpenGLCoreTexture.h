@@ -421,7 +421,8 @@ public:
 protected:
 	ECOLOR_FORMAT getBestColorFormat(ECOLOR_FORMAT format)
 	{
-		ECOLOR_FORMAT destFormat = (!IImage::isCompressedFormat(format)) ? ECF_A8R8G8B8 : format;
+		// We only try for to adapt "simple" formats
+		ECOLOR_FORMAT destFormat = (format <= ECF_A8R8G8B8) ? ECF_A8R8G8B8 : format;
 
 		switch (format)
 		{
