@@ -139,6 +139,7 @@ CIrrDeviceLinux::CIrrDeviceLinux(const SIrrlichtCreationParameters& param)
 		// create the window, only if we do not use the null device
 		if (!createWindow())
 			return;
+		setResizable(param.WindowResizable);
 	}
 
 	// create cursor control

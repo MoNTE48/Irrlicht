@@ -798,7 +798,7 @@ void CDemo::startSound()
 
 	SDL_Init(SDL_INIT_AUDIO);
 
-	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 128))
+	if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096))
 		return;
 
 	const io::path mediaPath = getExampleMediaPath();
@@ -807,8 +807,8 @@ void CDemo::startSound()
 	if (stream)
 		Mix_PlayMusic(stream, -1);
 
-	ballSound = Mix_LoadWAV(mediaPath + "ball.wav");
-	impactSound = Mix_LoadWAV(mediaPath + "impact.wav");
+	ballSound = Mix_LoadWAV((mediaPath + "ball.wav").c_str());
+	impactSound = Mix_LoadWAV((mediaPath + "impact.wav").c_str());
 }
 
 void CDemo::playSound(Mix_Chunk *sample)

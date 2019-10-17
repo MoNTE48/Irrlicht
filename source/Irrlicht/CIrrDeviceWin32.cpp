@@ -1001,8 +1001,8 @@ namespace irr
 
 //! constructor
 CIrrDeviceWin32::CIrrDeviceWin32(const SIrrlichtCreationParameters& params)
-: CIrrDeviceStub(params), ChangedToFullScreen(false), Resized(false),
-	ExternalWindow(false), Win32CursorControl(0), JoyControl(0), HWnd(0)
+: CIrrDeviceStub(params), HWnd(0), ChangedToFullScreen(false), Resized(false),
+	ExternalWindow(false), Win32CursorControl(0), JoyControl(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CIrrDeviceWin32");
@@ -1057,11 +1057,7 @@ CIrrDeviceWin32::CIrrDeviceWin32(const SIrrlichtCreationParameters& params)
 		clientSize.right = CreationParams.WindowSize.Width;
 		clientSize.bottom = CreationParams.WindowSize.Height;
 
-		DWORD style = WS_POPUP;
-
-		if (!CreationParams.Fullscreen)
-			style = WS_SYSMENU | WS_BORDER | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-
+		DWORD style = getWindowStyle(CreationParams.Fullscreen, CreationParams.WindowResizable);
 		AdjustWindowRect(&clientSize, style, FALSE);
 
 		const s32 realWidth = clientSize.right - clientSize.left;
@@ -1338,6 +1334,17 @@ void CIrrDeviceWin32::resizeIfNecessary()
 	Resized = false;
 }
 
+
+DWORD CIrrDeviceWin32::getWindowStyle(bool fullscreen, bool resizable) const
+{
+	if ( fullscreen )
+		return WS_POPUP;
+
+	if ( resizable )
+		return WS_THICKFRAME | WS_SYSMENU | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+
+	return WS_BORDER | WS_SYSMENU | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+}
 
 //! sets the caption of the window
 void CIrrDeviceWin32::setWindowCaption(const wchar_t* text)
@@ -1800,13 +1807,7 @@ void CIrrDeviceWin32::setResizable(bool resize)
 	if (ExternalWindow || !getVideoDriver() || CreationParams.Fullscreen)
 		return;
 
-	LONG_PTR style = WS_POPUP;
-
-	if (!resize)
-		style = WS_SYSMENU | WS_BORDER | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-	else
-		style = WS_THICKFRAME | WS_SYSMENU | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
-
+	LONG_PTR style = (LONG_PTR)getWindowStyle(false, resize);
 	if (!SetWindowLongPtr(HWnd, GWL_STYLE, style))
 		os::Printer::log("Could not change window style.");
 

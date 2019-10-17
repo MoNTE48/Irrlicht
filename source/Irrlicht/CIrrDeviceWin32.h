@@ -418,13 +418,17 @@ namespace irr
 
 		void resizeIfNecessary();
 
+		DWORD getWindowStyle(bool fullscreen, bool resizable) const;
+
+		HWND HWnd;
+
 		bool ChangedToFullScreen;
 		bool Resized;
 		bool ExternalWindow;
 		CCursorControl* Win32CursorControl;
-		SJoystickWin32Control* JoyControl;
 		DEVMODE DesktopMode;
-		HWND HWnd;
+
+		SJoystickWin32Control* JoyControl;
 	};
 
 } // end namespace irr
