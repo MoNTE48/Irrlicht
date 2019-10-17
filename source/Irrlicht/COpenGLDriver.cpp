@@ -3940,7 +3940,8 @@ IImage* COpenGLDriver::createScreenShot(video::ECOLOR_FORMAT format, video::E_RE
 	if (format==video::ECF_UNKNOWN)
 		format=getColorFormat();
 
-	if (IImage::isRenderTargetOnlyFormat(format) || IImage::isCompressedFormat(format) || IImage::isDepthFormat(format))
+	// TODO: Maybe we could support more formats (floating point and some of those beyond ECF_R8), didn't really try yet 
+	if (IImage::isCompressedFormat(format) || IImage::isDepthFormat(format) || IImage::isFloatingPointFormat(format) || format >= ECF_R8)
 		return 0;
 
 	// allows to read pixels in top-to-bottom order
@@ -4178,6 +4179,8 @@ GLenum COpenGLDriver::getZBufferBits() const
 bool COpenGLDriver::getColorFormatParameters(ECOLOR_FORMAT format, GLint& internalFormat, GLenum& pixelFormat,
 	GLenum& pixelType, void(**converter)(const void*, s32, void*)) const
 {
+	// NOTE: Converter variable not used here, but don't remove, it's used in the OGL-ES drivers.
+
 	bool supported = false;
 	internalFormat = GL_RGBA;
 	pixelFormat = GL_RGBA;
@@ -4200,7 +4203,7 @@ bool COpenGLDriver::getColorFormatParameters(ECOLOR_FORMAT format, GLint& intern
 	case ECF_R8G8B8:
 		supported = true;
 		internalFormat = GL_RGB;
-		pixelFormat = GL_BGR;
+		pixelFormat = GL_RGB;
 		pixelType = GL_UNSIGNED_BYTE;
 		break;
 	case ECF_A8R8G8B8:

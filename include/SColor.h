@@ -29,6 +29,8 @@ namespace video
 		ECF_R5G6B5,
 
 		//! 24 bit color, no alpha channel, but 8 bit for red, green and blue.
+		//! Warning: 24 bit formats tend to be badly supported. Depending on driver it's usually converted to another
+		//           format or even not working at all. It's mostly better to use 16-bit or 32-bit formats.
 		ECF_R8G8B8,
 
 		//! Default 32 bit color format. 8 bits are used for every component: red, green, blue and alpha.

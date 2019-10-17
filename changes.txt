@@ -9,6 +9,9 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 
 --------------------------
 Changes in 1.9 (not yet released)
+- Drivers can now try to create textures from images in more exotic color formats (like floating point formats).  It depends on the driver how much that works (so far mainly OpenGL can handle it somewhat).
+- Fix OpenGL to no longer switch colors red and blue in 24-bit RGB format. But warnings added to documentation to avoid 24-bit textures as they are generally just trouble.
+- No longer try to convert ECF_R5G6B5 to ECF_A1R5G5B5 on OpenGL (just made texture-loading seem to fail).
 - Add flag SIrrlichtCreationParameters.WindowResizable. Mainly to work around troubles with SDL+OpenGL on some platforms where resizing later can be tricky/impossible.
 - Add operator[]  to vector2d and vector3d
 - Bugfix: IrrlichtDevice::isWindowMinimized no longer returns true when it's maximized on Windows.
@@ -245,6 +248,7 @@ should now be fps independentn
 
 --------------------------
 Changes in 1.8.5
+ - Fix CIrrDeviceSDL::getVideoModeList which didn't return video modes before. Thx @kas1e for report and patch.
  - CIrrDeviceMacOSX now sets the SEvent.MouseInput Shift and Control values on mouse events like the other devices. Thanks @ Zero King  for patch (#321)
  - isWindowFocused in IrrDeviceSDL device now returns the input focus like the other devices. Before it was returning a mouse-over-window state.
  - Prevent SDL device from dropping OpenGL resources on Win32 when setResizable was called with OpenGL driver. Thanks @ kas1e for reporting (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52083&start=0)

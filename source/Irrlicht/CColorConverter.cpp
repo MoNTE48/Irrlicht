@@ -678,10 +678,68 @@ void CColorConverter::convert_R5G6B5toA1R5G5B5(const void* sP, s32 sN, void* dP)
 		*dB++ = R5G6B5toA1R5G5B5(*sB++);
 }
 
+bool CColorConverter::canConvertFormat(ECOLOR_FORMAT sourceFormat, ECOLOR_FORMAT destFormat)
+{
+	switch (sourceFormat)
+	{
+		case ECF_A1R5G5B5:
+			switch (destFormat)
+			{
+				case ECF_A1R5G5B5:
+				case ECF_R5G6B5:
+				case ECF_A8R8G8B8:
+				case ECF_R8G8B8:
+					return true;
+				default:
+					break;
+			}
+		break;
+		case ECF_R5G6B5:
+			switch (destFormat)
+			{
+				case ECF_A1R5G5B5:
+				case ECF_R5G6B5:
+				case ECF_A8R8G8B8:
+				case ECF_R8G8B8:
+					return true;
+				default:
+					break;
+			}
+		break;
+		case ECF_A8R8G8B8:
+			switch (destFormat)
+			{
+				case ECF_A1R5G5B5:
+				case ECF_R5G6B5:
+				case ECF_A8R8G8B8:
+				case ECF_R8G8B8:
+					return true;
+				default:
+					break;
+			}
+		break;
+		case ECF_R8G8B8:
+			switch (destFormat)
+			{
+				case ECF_A1R5G5B5:
+				case ECF_R5G6B5:
+				case ECF_A8R8G8B8:
+				case ECF_R8G8B8:
+					return true;
+				default:
+					break;
+			}
+		break;
+		default:
+			break;
+	}
+	return false;
+}
 
 void CColorConverter::convert_viaFormat(const void* sP, ECOLOR_FORMAT sF, s32 sN,
 				void* dP, ECOLOR_FORMAT dF)
 {
+	// please also update can_convert_viaFormat when adding new conversions
 	switch (sF)
 	{
 		case ECF_A1R5G5B5:

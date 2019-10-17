@@ -445,40 +445,25 @@ public:
 		}
 	}
 
-	//! Check if the color format is only viable for RenderTarget textures
-	/** Since we don't have support for e.g. floating point IImage formats
-	one should test if the color format can be used for arbitrary usage, or
-	if it is restricted to RTTs. */
-	static bool isRenderTargetOnlyFormat(const ECOLOR_FORMAT format)
+	//! Check if the color format uses floating point values for pixels
+	static bool isFloatingPointFormat(const ECOLOR_FORMAT format)
 	{
 		if (isCompressedFormat(format))
 			return false;
 
 		switch(format)
 		{
-			case ECF_A1R5G5B5:
-			case ECF_R5G6B5:
-			case ECF_R8G8B8:
-			case ECF_A8R8G8B8:
-			case ECF_DXT1:
-			case ECF_DXT2:
-			case ECF_DXT3:
-			case ECF_DXT4:
-			case ECF_DXT5:
-			case ECF_PVRTC_RGB2:
-			case ECF_PVRTC_ARGB2:
-			case ECF_PVRTC2_ARGB2:
-			case ECF_PVRTC_RGB4:
-			case ECF_PVRTC_ARGB4:
-			case ECF_PVRTC2_ARGB4:
-			case ECF_ETC1:
-			case ECF_ETC2_RGB:
-			case ECF_ETC2_ARGB:
-				return false;
-			default:
-				// All floating point formats. Function name should really be isFloatingPointFormat.
-				return true;
+		case ECF_R16:
+		case ECF_G16R16F:
+		case ECF_A16B16G16R16F:
+		case ECF_R32F:
+		case ECF_G32R32F:
+		case ECF_A32B32G32R32F:
+			return true;
+		default:
+			break;
 		}
+		return false;
 	}
 
 protected:
