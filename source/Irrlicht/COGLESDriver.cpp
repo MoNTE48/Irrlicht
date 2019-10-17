@@ -1822,6 +1822,8 @@ void COGLES1Driver::setBasicRenderStates(const SMaterial& material, const SMater
         }
 	}
 
+	// TODO: Polygon Offset. Not sure if it was left out deliberately or if it won't work with this driver.
+
 	// thickness
 	if (resetAllRenderStates || lastmaterial.Thickness != material.Thickness)
 	{

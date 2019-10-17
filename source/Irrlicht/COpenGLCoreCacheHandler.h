@@ -497,6 +497,11 @@ public:
 		}
 	}
 
+    void getDepthTest(bool& enable)
+    {
+        enable = DepthTest;
+    }
+
 	void setDepthTest(bool enable)
 	{
 		if (DepthTest != enable)

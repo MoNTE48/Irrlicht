@@ -1840,6 +1840,8 @@ COGLES2Driver::~COGLES2Driver()
 				getGLBlend(srcAlphaFact), getGLBlend(dstAlphaFact));
 		}
 
+		// TODO: Polygon Offset. Not sure if it was left out deliberately or if it won't work with this driver.
+
 		if (resetAllRenderStates || lastmaterial.Thickness != material.Thickness)
 			glLineWidth(core::clamp(static_cast<GLfloat>(material.Thickness), DimAliasedLine[0], DimAliasedLine[1]));
 

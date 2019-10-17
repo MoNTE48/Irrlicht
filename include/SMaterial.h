@@ -199,7 +199,7 @@ namespace video
 		//! All typical anti-alias and smooth modes
 		EAAM_FULL_BASIC=15,
 		//! Enhanced anti-aliasing for transparent materials
-		/** Usually used with EMT_TRANSPARENT_ALPHA_REF and multisampling. */
+		/** Usually used with EMT_TRANSPARENT_ALPHA_CHANNEL_REF and multisampling. */
 		EAAM_ALPHA_TO_COVERAGE=16
 	};
 
@@ -226,8 +226,8 @@ namespace video
 		ECM_DIFFUSE_AND_AMBIENT
 	};
 
-	//! Flags for the definition of the polygon offset feature
-	/** These flags define whether the offset should be into the screen, or towards the eye. */
+	//! DEPRECATED. Will be removed after Irrlicht 1.9.
+	/** Flags for the definition of the polygon offset feature. These flags define whether the offset should be into the screen, or towards the eye. */
 	enum E_POLYGON_OFFSET
 	{
 		//! Push pixel towards the far plane, away from the eye
@@ -250,7 +250,7 @@ namespace video
 	//! Fine-tuning for SMaterial.ZWriteFineControl
 	enum E_ZWRITE_FINE_CONTROL
 	{
-		//! Default. Only write zbuffer when When SMaterial::ZBuffer is true and SMaterial::isTransparent() returns false.
+		//! Default. Only write zbuffer when SMaterial::ZBuffer is true and SMaterial::isTransparent() returns false.
 		EZI_ONLY_NON_TRANSPARENT,
 		//! Writing will just be based on SMaterial::ZBuffer value, transparency is ignored.
 		//! Needed mostly for certain shader materials as SMaterial::isTransparent will always return false for those.
@@ -266,13 +266,13 @@ namespace video
 
 	//! By default this is identical to MATERIAL_MAX_TEXTURES
 	/** Users can modify this value if they are certain they don't need all
-		available textures per material in their application. For example if you 
+		available textures per material in their application. For example if you
 		never need more than 2 textures per material you can set this to 2.
 
-		We (mostly) avoid dynamic memory in SMaterial, so the extra memory 
-		will still be allocated. But by lowering MATERIAL_MAX_TEXTURES_USED the 
-		material comparisons and assignments can be faster. Also several other 
-		places in the engine can be faster when reducing this value to the limit 
+		We (mostly) avoid dynamic memory in SMaterial, so the extra memory
+		will still be allocated. But by lowering MATERIAL_MAX_TEXTURES_USED the
+		material comparisons and assignments can be faster. Also several other
+		places in the engine can be faster when reducing this value to the limit
 		you need.
 
 		NOTE: This should only be changed once and before any call to createDevice.
@@ -294,6 +294,7 @@ namespace video
 			ZBuffer(ECFN_LESSEQUAL), AntiAliasing(EAAM_SIMPLE), ColorMask(ECP_ALL),
 			ColorMaterial(ECM_DIFFUSE), BlendOperation(EBO_NONE), BlendFactor(0.0f),
 			PolygonOffsetFactor(0), PolygonOffsetDirection(EPO_FRONT),
+			PolygonOffsetDepthBias(0.f), PolygonOffsetSlopeScale(0.f),
 			Wireframe(false), PointCloud(false), GouraudShading(true),
 			Lighting(true), ZWriteEnable(true), BackfaceCulling(true), FrontfaceCulling(false),
 			FogEnable(false), NormalizeNormals(false), UseMipMaps(true),
@@ -350,6 +351,8 @@ namespace video
 			BlendFactor = other.BlendFactor;
 			PolygonOffsetFactor = other.PolygonOffsetFactor;
 			PolygonOffsetDirection = other.PolygonOffsetDirection;
+			PolygonOffsetDepthBias = other.PolygonOffsetDepthBias;
+			PolygonOffsetSlopeScale = other.PolygonOffsetSlopeScale;
 			UseMipMaps = other.UseMipMaps;
 			ZWriteFineControl = other.ZWriteFineControl;
 
@@ -460,14 +463,35 @@ namespace video
 		type for this material, this field should be equal to MaterialTypeParam. */
 		f32 BlendFactor;
 
-		//! Factor specifying how far the polygon offset should be made
-		/** Specifying 0 disables the polygon offset. The direction is specified separately.
-		The factor can be from 0 to 7.*/
+		//! DEPRECATED. Will be removed after Irrlicht 1.9. Please use PolygonOffsetDepthBias instead.
+		/** Factor specifying how far the polygon offset should be made.
+		Specifying 0 disables the polygon offset. The direction is specified separately.
+		The factor can be from 0 to 7.
+		Note: This probably never worked on Direct3D9 (was coded for D3D8 which had different value ranges)	*/
 		u8 PolygonOffsetFactor:3;
 
-		//! Flag defining the direction the polygon offset is applied to.
-		/** Can be to front or to back, specified by values from E_POLYGON_OFFSET. */
+		//! DEPRECATED. Will be removed after Irrlicht 1.9.
+		/** Flag defining the direction the polygon offset is applied to.
+		Can be to front or to back, specified by values from E_POLYGON_OFFSET. 	*/
 		E_POLYGON_OFFSET PolygonOffsetDirection:1;
+
+		//! A constant z-buffer offset for a polygon/line/point
+		/** The range of the value is driver specific.
+		On OpenGL you get units which are multiplied by the smallest value that is guaranteed to produce a resolvable offset.
+		On D3D9 you can pass a range between -1 and 1. But you should likely divide it by the range of the depthbuffer.
+		Like dividing by 65535.0 for a 16 bit depthbuffer. Thought it still might produce too large of a bias.
+		Some article (https://aras-p.info/blog/2008/06/12/depth-bias-and-the-power-of-deceiving-yourself/)
+		recommends multiplying by 2.0*4.8e-7 (and strangely on both 16 bit and 24 bit).	*/
+		f32 PolygonOffsetDepthBias;
+
+		//! Variable Z-Buffer offset based on the slope of the polygon.
+		/** For polygons looking flat at a camera you could use 0 (for example in a 2D game)
+		But in most cases you will have polygons rendered at a certain slope.
+		The driver will calculate the slope for you and this value allows to scale that slope.
+		The complete polygon offset is: PolygonOffsetSlopeScale*slope + PolygonOffsetDepthBias
+		A good default here is to use 1.f if you want to push the polygons away from the camera
+		and -1.f to pull them towards the camera.  */
+		f32 PolygonOffsetSlopeScale;
 
 		//! Draw as wireframe or filled triangles? Default: false
 		/** The user can access a material flag using
@@ -484,7 +508,7 @@ namespace video
 		//! Will this material be lighted? Default: true
 		bool Lighting:1;
 
-		//! Is the zbuffer writeable or is it read-only. Default: true.
+		//! Is the zbuffer writable or is it read-only. Default: true.
 		/** This flag is forced to false if the MaterialType is a
 		transparent type and the scene parameter
 		ALLOW_ZWRITE_ON_TRANSPARENT is not set. If you set this parameter
@@ -635,7 +659,8 @@ namespace video
 				case EMF_POLYGON_OFFSET:
 					PolygonOffsetFactor = value?1:0;
 					PolygonOffsetDirection = EPO_BACK;
-					break;
+					PolygonOffsetSlopeScale = value?1.f:0.f;
+					PolygonOffsetDepthBias = value?1.f:0.f;
 				default:
 					break;
 			}
@@ -691,7 +716,7 @@ namespace video
 				case EMF_BLEND_FACTOR:
 					return BlendFactor != 0.f;
 				case EMF_POLYGON_OFFSET:
-					return PolygonOffsetFactor != 0;
+					return PolygonOffsetFactor != 0 || PolygonOffsetDepthBias != 0.f;
 			}
 
 			return false;
@@ -729,6 +754,8 @@ namespace video
 				BlendFactor != b.BlendFactor ||
 				PolygonOffsetFactor != b.PolygonOffsetFactor ||
 				PolygonOffsetDirection != b.PolygonOffsetDirection ||
+				PolygonOffsetDepthBias != b.PolygonOffsetDepthBias ||
+				PolygonOffsetSlopeScale != b.PolygonOffsetSlopeScale ||
 				UseMipMaps != b.UseMipMaps ||
 				ZWriteFineControl != b.ZWriteFineControl;
 				;
