@@ -227,6 +227,14 @@ define out. */
 	#endif
 #endif
 
+
+// Debian 10 removed support for GLES1 in mesa.
+// Can't tell about other Linux platforms or a way to test if it's still available,
+// so removing OGLES1 support on Linux now to allow compiling to work by default.
+#if defined(_IRR_LINUX_PLATFORM_) && !defined(_IRR_ANDROID_PLATFORM_)
+#define NO_IRR_COMPILE_WITH_OGLES1_
+#endif
+
 //! Define _IRR_COMPILE_WITH_OGLES1_ to compile the Irrlicht engine with OpenGL ES 1.1.
 /** If you do not wish the engine to be compiled with OpenGL ES 1.1, comment this
 define out. */

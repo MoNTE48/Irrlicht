@@ -17,7 +17,7 @@
 #include <GLES/glext.h>
 #include <EGL/eglplatform.h>
 #else
-#include <GLES/gl.h>
+#include <khronos-api/GLES/gl.h>
 #include <EGL/eglplatform.h>
 typedef char GLchar;
 #if defined(_IRR_OGLES1_USE_EXTPOINTER_)
