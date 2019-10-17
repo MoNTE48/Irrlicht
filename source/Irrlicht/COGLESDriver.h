@@ -240,7 +240,7 @@ namespace video
 			E_PIXEL_SHADER_TYPE psCompileTarget, const c8* geometryShaderProgram, const c8* geometryShaderEntryPointName,
 			E_GEOMETRY_SHADER_TYPE gsCompileTarget, scene::E_PRIMITIVE_TYPE inType, scene::E_PRIMITIVE_TYPE outType,
 			u32 verticesOut, IShaderConstantSetCallBack* callback, E_MATERIAL_TYPE baseMaterial,
-			s32 userData, E_GPU_SHADING_LANGUAGE shadingLang) _IRR_OVERRIDE_;
+			s32 userData) _IRR_OVERRIDE_;
 
 		//! Returns pointer to the IGPUProgrammingServices interface.
 		virtual IGPUProgrammingServices* getGPUProgrammingServices() _IRR_OVERRIDE_;

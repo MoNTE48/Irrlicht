@@ -1339,6 +1339,9 @@
     <ClInclude Include="CWGLManager.h">
       <Filter>Irrlicht\video\OpenGL Context</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\SOverrideMaterial.h">
+      <Filter>include\video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\changes.txt">
@@ -1347,6 +1350,7 @@
     <None Include="..\..\readme.txt">
       <Filter>doc</Filter>
     </None>
+    <None Include="Irrlicht.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CDefaultSceneNodeAnimatorFactory.cpp">

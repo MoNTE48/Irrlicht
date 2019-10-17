@@ -364,7 +364,7 @@ namespace video
 		//! vertex shaders to render geometry.
 		s32 addShaderMaterial(const c8* vertexShaderProgram, const c8* pixelShaderProgram,
 			IShaderConstantSetCallBack* callback,
-			E_MATERIAL_TYPE baseMaterial, s32 userData);
+			E_MATERIAL_TYPE baseMaterial, s32 userData) _IRR_OVERRIDE_;
 
 		//! Adds a new material renderer to the VideoDriver, based on a high level shading
 		//! language.
@@ -383,8 +383,7 @@ namespace video
 			u32 verticesOut = 0,
 			IShaderConstantSetCallBack* callback = 0,
 			E_MATERIAL_TYPE baseMaterial = video::EMT_SOLID,
-			s32 userData = 0,
-			E_GPU_SHADING_LANGUAGE shadingLang = EGSL_DEFAULT) _IRR_OVERRIDE_;
+			s32 userData = 0) _IRR_OVERRIDE_;
 
 		void createMaterialRenderers();
 

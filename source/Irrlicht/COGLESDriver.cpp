@@ -2661,8 +2661,7 @@ s32 COGLES1Driver::addHighLevelShaderMaterial(
 	u32 verticesOut,
 	IShaderConstantSetCallBack* callback,
 	E_MATERIAL_TYPE baseMaterial,
-	s32 userData,
-	E_GPU_SHADING_LANGUAGE shadingLang)
+	s32 userData)
 {
 	os::Printer::log("No shader support.");
 	return -1;

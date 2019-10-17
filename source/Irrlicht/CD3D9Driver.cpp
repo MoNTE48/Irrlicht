@@ -1491,7 +1491,7 @@ void CD3D9Driver::draw2DImage(const video::ITexture* texture,
 
 	s16 indices[6] = {0,1,2,0,2,3};
 
-	setActiveTexture(0, const_cast<video::ITexture*>(texture));
+	setActiveTexture(0, texture);
 
 	setRenderStates2DMode(useColor[0].getAlpha()<255 || useColor[1].getAlpha()<255 ||
 			useColor[2].getAlpha()<255 || useColor[3].getAlpha()<255,
@@ -1528,7 +1528,7 @@ void CD3D9Driver::draw2DImageBatch(const video::ITexture* texture,
 	if (!texture)
 		return;
 
-	if (!setActiveTexture(0, const_cast<video::ITexture*>(texture)))
+	if (!setActiveTexture(0, texture))
 		return;
 
 	setRenderStates2DMode(color.getAlpha()<255, true, useAlphaChannelOfTexture);
@@ -1678,7 +1678,7 @@ void CD3D9Driver::draw2DImage(const video::ITexture* texture,
 	if (!sourceRect.isValid())
 		return;
 
-	if (!setActiveTexture(0, const_cast<video::ITexture*>(texture)))
+	if (!setActiveTexture(0, texture))
 		return;
 
 	core::position2d<s32> targetPos = pos;
@@ -2902,10 +2902,9 @@ bool CD3D9Driver::retrieveDevice(int numTries, int msSleepBetweenTries)
 //! resets the device
 bool CD3D9Driver::reset()
 {
-	u32 i;
 	os::Printer::log("Resetting D3D9 device.", ELL_INFORMATION);
 
-	for (i = 0; i<RenderTargets.size(); ++i)
+	for (u32 i = 0; i<RenderTargets.size(); ++i)
 	{
 		if (RenderTargets[i]->getDriverType() == EDT_DIRECT3D9)
 		{
@@ -2927,7 +2926,7 @@ bool CD3D9Driver::reset()
 				tex->releaseTexture();
 		}
 	}
-	for (i=0; i<Textures.size(); ++i)
+	for (u32 i=0; i<Textures.size(); ++i)
 	{
 		if (Textures[i].Surface->isRenderTarget())
 		{
@@ -2937,7 +2936,7 @@ bool CD3D9Driver::reset()
 				tex->releaseTexture();
 		}
 	}
-	for (i=0; i<OcclusionQueries.size(); ++i)
+	for (u32 i=0; i<OcclusionQueries.size(); ++i)
 	{
 		if (OcclusionQueries[i].PID)
 		{
@@ -3017,12 +3016,12 @@ bool CD3D9Driver::reset()
 	}
 
 	// restore RTTs
-	for (i=0; i<Textures.size(); ++i)
+	for (u32 i=0; i<Textures.size(); ++i)
 	{
 		if (Textures[i].Surface->isRenderTarget())
 			((CD3D9Texture*)(Textures[i].Surface))->generateRenderTarget();
 	}
-	for (i = 0; i<RenderTargets.size(); ++i)
+	for (u32 i = 0; i<RenderTargets.size(); ++i)
 	{
 		if (RenderTargets[i]->getDriverType() == EDT_DIRECT3D9)
 		{
@@ -3046,7 +3045,7 @@ bool CD3D9Driver::reset()
 	}
 
 	// restore occlusion queries
-	for (i=0; i<OcclusionQueries.size(); ++i)
+	for (u32 i=0; i<OcclusionQueries.size(); ++i)
 	{
 		pID3DDevice->CreateQuery(D3DQUERYTYPE_OCCLUSION, reinterpret_cast<IDirect3DQuery9**>(&OcclusionQueries[i].PID));
 	}
@@ -3224,7 +3223,7 @@ s32 CD3D9Driver::addHighLevelShaderMaterial(
 		scene::E_PRIMITIVE_TYPE inType, scene::E_PRIMITIVE_TYPE outType,
 		u32 verticesOut,
 		IShaderConstantSetCallBack* callback,
-		E_MATERIAL_TYPE baseMaterial, s32 userData, E_GPU_SHADING_LANGUAGE shadingLang)
+		E_MATERIAL_TYPE baseMaterial, s32 userData)
 {
 	s32 nr = -1;
 
