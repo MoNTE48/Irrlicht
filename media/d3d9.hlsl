@@ -1,4 +1,4 @@
-// part of the Irrlicht Engine Shader example.
+// Part of the Irrlicht Engine Shader example.
 // These simple Direct3D9 pixel and vertex shaders will be loaded by the shaders
 // example. Please note that these example shaders don't do anything really useful.
 // They only demonstrate that shaders can be used in Irrlicht.
@@ -9,7 +9,7 @@
 float4x4 mWorldViewProj; // World * View * Projection transformation
 float4x4 mInvWorld;      // Inverted world matrix
 float4x4 mTransWorld;    // Transposed world matrix
-float3 mLightPos;        // Light position
+float3 mLightPos;        // Light position (actually just camera-pos in this case)
 float4 mLightColor;      // Light color
 
 
@@ -31,13 +31,13 @@ VS_OUTPUT vertexMain(in float4 vPosition : POSITION,
 	// transform position to clip space
 	Output.Position = mul(vPosition, mWorldViewProj);
 
-	// transform normal
+	// transform normal somehow (NOTE: for the real vertex normal you would use an inverse-transpose world matrix instead of mInvWorld)
 	float3 normal = mul(float4(vNormal,0.0), mInvWorld);
 
 	// renormalize normal
 	normal = normalize(normal);
 
-	// position in world coodinates
+	// position in world coordinates (NOTE: not sure why transposed world is used instead of world?)
 	float3 worldpos = mul(mTransWorld, vPosition);
 
 	// calculate light vector, vtxpos - lightpos
