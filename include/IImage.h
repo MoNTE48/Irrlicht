@@ -450,7 +450,7 @@ public:
 	{
 		switch(format)
 		{
-		case ECF_R16:
+		case ECF_R16F:
 		case ECF_G16R16F:
 		case ECF_A16B16G16R16F:
 		case ECF_R32F:
