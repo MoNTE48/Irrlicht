@@ -57,7 +57,7 @@ namespace irr
 			if ((Texture != texture) || (CubeSurfaces != cubeSurfaces))
 			{
 				needSizeUpdate = true;
-				CubeSurfaces = cubeSurfaces;
+				CubeSurfaces = cubeSurfaces;	// TODO: we can probably avoid some memory allocating/de-allocating if _only_ CubeSurfaces change.
 
 				if (texture.size() > Driver->ActiveRenderTarget.size())
 				{

@@ -66,7 +66,6 @@ public:
 		if ((Texture != textures) || (CubeSurfaces != cubeSurfaces))
 		{
 			needSizeUpdate = true;
-			CubeSurfaces = cubeSurfaces;
 
 			core::array<ITexture*> prevTextures(Texture);
 
@@ -109,6 +108,12 @@ public:
 					prevTextures[i]->drop();
 			}
 
+			RequestTextureUpdate = true;
+		}
+
+		if (CubeSurfaces != cubeSurfaces)
+		{
+			CubeSurfaces = cubeSurfaces;
 			RequestTextureUpdate = true;
 		}
 
