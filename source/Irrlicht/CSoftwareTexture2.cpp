@@ -185,8 +185,7 @@ void CSoftwareRenderTarget2::setTexture(const core::array<ITexture*>& texture, I
 {
 	if (Texture != texture)
 	{
-		if (Texture[0])
-			Texture[0]->drop();
+		ITexture* prevTexture = Texture[0];
 
 		bool textureDetected = false;
 
@@ -201,6 +200,9 @@ void CSoftwareRenderTarget2::setTexture(const core::array<ITexture*>& texture, I
 				break;
 			}
 		}
+
+		if (prevTexture)
+			prevTexture->drop();
 
 		if (!textureDetected)
 			Texture[0] = 0;

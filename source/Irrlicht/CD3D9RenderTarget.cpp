@@ -78,11 +78,7 @@ namespace irr
 
 				Surface.set_used(size);
 
-				for (u32 i = 0; i < Texture.size(); ++i)
-				{
-					if (Texture[i])
-						Texture[i]->drop();
-				}
+				core::array<ITexture*> prevTextures(Texture);
 
 				Texture.set_used(size);
 
@@ -128,6 +124,12 @@ namespace irr
 						Surface[i] = 0;
 						Texture[i] = 0;
 					}
+				}
+
+				for (u32 i = 0; i < prevTextures.size(); ++i)
+				{
+					if (prevTextures[i])
+						prevTextures[i]->drop();
 				}
 			}
 
