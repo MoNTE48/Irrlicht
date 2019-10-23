@@ -180,7 +180,7 @@ bool lockTexture(video::E_DRIVER_TYPE driverType)
 			bits = (video::SColor*)tex->lock(video::ETLM_READ_WRITE, 0, i);
 			if ( !bits)
 			{
-				result = false
+				result = false;
 				break;
 			}
 			bits[0] = 0xff00ff00;
@@ -193,7 +193,7 @@ bool lockTexture(video::E_DRIVER_TYPE driverType)
 			bits = (video::SColor*)tex->lock(video::ETLM_READ_ONLY, 0, i);
 			if ( !bits)
 			{
-				result = false
+				result = false;
 				break;
 			}
 			u32 b0 = bits[0].color;
