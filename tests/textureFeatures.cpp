@@ -27,7 +27,7 @@ bool renderMipLevels(video::E_DRIVER_TYPE driverType)
 	}
 
 	stabilizeScreenBackground(driver);
-
+	
 	logTestString("Testing driver %ls\n", driver->getName());
 
 	scene::ISceneNode* n = smgr->addCubeSceneNode();
@@ -177,7 +177,12 @@ bool lockTexture(video::E_DRIVER_TYPE driverType)
 
 		for (u32 i = 0; i < 6; ++i)
 		{
-			bits = (video::SColor*)tex->lock(video::ETLM_READ_WRITE, i);
+			bits = (video::SColor*)tex->lock(video::ETLM_READ_WRITE, 0, i);
+			if ( !bits)
+			{
+				result = false
+				break;
+			}
 			bits[0] = 0xff00ff00;
 			bits[1] = 0xff00ff00;
 			tex->unlock();
@@ -185,7 +190,12 @@ bool lockTexture(video::E_DRIVER_TYPE driverType)
 
 		for (u32 i = 0; i < 6; ++i)
 		{
-			bits = (video::SColor*)tex->lock(video::ETLM_READ_ONLY, i);
+			bits = (video::SColor*)tex->lock(video::ETLM_READ_ONLY, 0, i);
+			if ( !bits)
+			{
+				result = false
+				break;
+			}
 			u32 b0 = bits[0].color;
 			u32 b2 = bits[2].color;
 
