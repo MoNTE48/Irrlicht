@@ -18,7 +18,7 @@ namespace video
 {
 
 
-//! Enumeration flags telling the video driver in which format textures should be created.
+//! Enumeration flags used to tell the video driver with setTextureCreationFlag in which format textures should be created.
 enum E_TEXTURE_CREATION_FLAG
 {
 	/** Forces the driver to create 16 bit textures always, independent of
@@ -79,6 +79,16 @@ enum E_TEXTURE_CREATION_FLAG
 	So the default is on for now (but might change with Irrlicht 1.9 if we get the alpha-troubles fixed).
 	*/
 	ETCF_ALLOW_MEMORY_COPY = 0x00000080,
+
+	//! When the driver supports it try using hardware mipmaps
+	/* Per default ON.
+	This flag is only used when ETCF_CREATE_MIP_MAPS is also enabled and if the driver supports it.
+	Enabling hardware mipmaps should be faster than manual mipmaps in most situations.
+	But note that:
+	- You can no longer manually set mipmap data (for example from image loading)
+	- Texture locking for mipmap levels usually won't work anymore.
+	  So you can't access those mipmaps on the CPU. */
+	ETCF_TRY_HARDWARE_MIP_MAPS = 0x00000100,
 
 	/** This flag is never used, it only forces the compiler to compile
 	these enumeration values to 32 bit. */
@@ -194,7 +204,8 @@ public:
 
 	//! Unlock function. Must be called after a lock() to the texture.
 	/** One should avoid to call unlock more than once before another lock.
-	The last locked mip level will be unlocked. */
+	The last locked mip level will be unlocked. 
+	You may want to call regenerateMipMapLevels() after this when you changed any data.	*/
 	virtual void unlock() = 0;
 
 	//! Regenerates the mip map levels of the texture.

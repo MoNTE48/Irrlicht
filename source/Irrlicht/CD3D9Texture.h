@@ -53,7 +53,19 @@ private:
 
 	void getImageValues(const IImage* image);
 
-	void uploadTexture(u32 layer, u32 level, void* data);
+	void uploadTexture(void* data, u32 mipmapLevel, u32 layer);
+
+	//! Helper function for mipmap generation.
+	bool createManualMipMaps(u32 level);
+
+	//! Helper function for mipmap generation.
+	void copy16BitMipMap(char* src, char* tgt,
+		s32 width, s32 height,  s32 pitchsrc, s32 pitchtgt) const;
+
+	//! Helper function for mipmap generation.
+	void copy32BitMipMap(char* src, char* tgt,
+		s32 width, s32 height,  s32 pitchsrc, s32 pitchtgt) const;
+
 
 	CD3D9Driver* Driver;
 
@@ -62,8 +74,9 @@ private:
 	bool LockReadOnly;
 	void* LockData;
 	u32 LockLayer;
+	u32 MipLevelLocked;
 
-	bool AutoGenerateMipMaps;
+	bool HardwareMipMaps;
 
 	IDirect3DDevice9* Device;
 	IDirect3DTexture9* Texture;
