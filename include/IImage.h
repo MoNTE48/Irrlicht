@@ -187,10 +187,68 @@ public:
 	{
 	}
 
-	//! Get mipmaps data.
-	void* getMipMapsData() const
+	//! Get the mipmap size for this image for a certain mipmap level
+	/** level 0 will be full image size. Every further level is half the size.
+		Doesn't care if the image actually has mipmaps, just which size would be needed. */
+	core::dimension2du getMipMapsSize(u32 mipmapLevel) const
 	{
-		return MipMapsData;
+		return getMipMapsSize(Size, mipmapLevel);
+	}
+
+
+	//! Calculate mipmap size for a certain level
+	/** level 0 will be full image size. Every further level is half the size.	*/
+	static core::dimension2du getMipMapsSize(const core::dimension2du& sizeLevel0, u32 mipmapLevel)
+	{
+		core::dimension2du result(sizeLevel0);
+		u32 i=0;
+		while (i != mipmapLevel)
+		{
+			if (result.Width>1)
+				result.Width >>= 1;
+			if (result.Height>1)
+				result.Height>>=1;
+			++i;
+
+			if ( result.Width == 1 && result.Height == 1 && i < mipmapLevel )
+				return core::dimension2du(0,0);
+		}
+		return result;
+	}
+
+
+	//! Get mipmaps data.
+	/** Note that different mip levels are just behind each other in memory block.
+		So if you just get level 1 you also have the data for all other levels.
+		There is no level 0 - use getData to get the original image data.
+	*/
+	void* getMipMapsData(irr::u32 mipLevel=1) const
+	{
+		if ( MipMapsData && mipLevel > 0)
+		{
+			size_t dataSize = 0;
+			core::dimension2du mipSize(Size);
+			u32 i = 1;	// We want the start of data for this level, not end.
+
+			while (i != mipLevel);
+			{
+				if (mipSize.Width > 1)
+					mipSize.Width >>= 1;
+
+				if (mipSize.Height > 1)
+					mipSize.Height >>= 1;
+
+				dataSize += getDataSizeFromFormat(Format, mipSize.Width, mipSize.Height);
+
+				++i;
+				if ( mipSize.Width == 1 && mipSize.Height == 1 && i < mipLevel)
+					return 0;
+			} 
+
+			return MipMapsData + dataSize;
+		}
+	
+		return 0;
 	}
 
 	//! Set mipmaps data.
