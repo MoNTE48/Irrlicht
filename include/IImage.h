@@ -230,7 +230,7 @@ public:
 			core::dimension2du mipSize(Size);
 			u32 i = 1;	// We want the start of data for this level, not end.
 
-			while (i != mipLevel);
+			while (i != mipLevel)
 			{
 				if (mipSize.Width > 1)
 					mipSize.Width >>= 1;
@@ -316,19 +316,24 @@ public:
 	virtual void setPixel(u32 x, u32 y, const SColor &color, bool blend = false ) = 0;
 
 	//! Copies the image into the target, scaling the image to fit
+	/**	NOTE: mipmaps are ignored */
 	virtual void copyToScaling(void* target, u32 width, u32 height, ECOLOR_FORMAT format=ECF_A8R8G8B8, u32 pitch=0) =0;
 
 	//! Copies the image into the target, scaling the image to fit
+	/**	NOTE: mipmaps are ignored */
 	virtual void copyToScaling(IImage* target) =0;
 
 	//! copies this surface into another
+	/**	NOTE: mipmaps are ignored */
 	virtual void copyTo(IImage* target, const core::position2d<s32>& pos=core::position2d<s32>(0,0)) =0;
 
 	//! copies this surface into another
+	/**	NOTE: mipmaps are ignored */
 	virtual void copyTo(IImage* target, const core::position2d<s32>& pos, const core::rect<s32>& sourceRect, const core::rect<s32>* clipRect=0) =0;
 
 	//! copies this surface into another, using the alpha mask and cliprect and a color to add with
-	/**	\param combineAlpha - When true then combine alpha channels. When false replace target image alpha with source image alpha.
+	/**	NOTE: mipmaps are ignored
+	\param combineAlpha - When true then combine alpha channels. When false replace target image alpha with source image alpha.
 	*/
 	virtual void copyToWithAlpha(IImage* target, const core::position2d<s32>& pos,
 			const core::rect<s32>& sourceRect, const SColor &color,
@@ -336,6 +341,7 @@ public:
 			bool combineAlpha=false) =0;
 
 	//! copies this surface into another, scaling it to fit, applying a box filter
+	/**	NOTE: mipmaps are ignored */
 	virtual void copyToScalingBoxFilter(IImage* target, s32 bias = 0, bool blend = false) = 0;
 
 	//! fills the surface with given color
