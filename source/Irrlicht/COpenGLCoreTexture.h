@@ -45,11 +45,11 @@ public:
 		bool IsCached;
 	};
 
-	COpenGLCoreTexture(const io::path& name, const core::array<IImage*>& image, E_TEXTURE_TYPE type, TOpenGLDriver* driver) : ITexture(name, type), Driver(driver), TextureType(GL_TEXTURE_2D),
+	COpenGLCoreTexture(const io::path& name, const core::array<IImage*>& images, E_TEXTURE_TYPE type, TOpenGLDriver* driver) : ITexture(name, type), Driver(driver), TextureType(GL_TEXTURE_2D),
 		TextureName(0), InternalFormat(GL_RGBA), PixelFormat(GL_RGBA), PixelType(GL_UNSIGNED_BYTE), Converter(0), LockReadOnly(false), LockImage(0), LockLayer(0),
-		KeepImage(false), AutoGenerateMipMaps(false)
+		KeepImage(false), MipLevelStored(0), AutoGenerateMipMaps(false)
 	{
-		_IRR_DEBUG_BREAK_IF(image.size() == 0)
+		_IRR_DEBUG_BREAK_IF(images.size() == 0)
 
 		DriverType = Driver->getDriverType();
 		TextureType = TextureTypeIrrToGL(Type);
@@ -57,25 +57,38 @@ public:
 		AutoGenerateMipMaps = Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE);
 		KeepImage = Driver->getTextureCreationFlag(ETCF_ALLOW_MEMORY_COPY);
 
-		getImageValues(image[0]);
+		getImageValues(images[0]);
 
-		const core::array<IImage*>* tmpImage = &image;
+		const core::array<IImage*>* tmpImages = &images;
 
 		if (KeepImage || OriginalSize != Size || OriginalColorFormat != ColorFormat)
 		{
-			Image.set_used(image.size());
+			Images.set_used(images.size());
 
-			for (u32 i = 0; i < image.size(); ++i)
+			for (u32 i = 0; i < images.size(); ++i)
 			{
-				Image[i] = Driver->createImage(ColorFormat, Size);
+				Images[i] = Driver->createImage(ColorFormat, Size);
 
-				if (image[i]->getDimension() == Size)
-					image[i]->copyTo(Image[i]);
+				if (images[i]->getDimension() == Size)
+					images[i]->copyTo(Images[i]);
 				else
-					image[i]->copyToScaling(Image[i]);
+					images[i]->copyToScaling(Images[i]);
+
+				if ( images[i]->getMipMapsData() )
+				{
+					if ( OriginalSize == Size && OriginalColorFormat == ColorFormat )
+					{
+						Images[i]->setMipMapsData( images[i]->getMipMapsData(), false, true);
+					}
+					else
+					{
+						// TODO: handle at least mipmap with changing color format
+						os::Printer::log("COpenGLCoreTexture: Can't handle format changes for mipmap data. Mipmap data dropped", ELL_WARNING);
+					}
+				}
 			}
 
-			tmpImage = &Image;
+			tmpImages = &Images;
 		}
 
 		glGenTextures(1, &TextureName);
@@ -101,14 +114,14 @@ public:
 			glTexParameteri(TextureType, GL_GENERATE_MIPMAP, (AutoGenerateMipMaps) ? GL_TRUE : GL_FALSE);
 #endif
 
-		for (u32 i = 0; i < (*tmpImage).size(); ++i)
-			uploadTexture(true, i, 0, (*tmpImage)[i]->getData());
+		for (u32 i = 0; i < (*tmpImages).size(); ++i)
+			uploadTexture(true, i, 0, (*tmpImages)[i]->getData());
 
 		bool autoGenerateRequired = true;
 
-		for (u32 i = 0; i < (*tmpImage).size(); ++i)
+		for (u32 i = 0; i < (*tmpImages).size(); ++i)
 		{
-			void* mipmapsData = (*tmpImage)[i]->getMipMapsData();
+			void* mipmapsData = (*tmpImages)[i]->getMipMapsData();
 
 			if (autoGenerateRequired || mipmapsData)
 				regenerateMipMapLevels(mipmapsData, i);
@@ -119,10 +132,10 @@ public:
 
 		if (!KeepImage)
 		{
-			for (u32 i = 0; i < Image.size(); ++i)
-				Image[i]->drop();
+			for (u32 i = 0; i < Images.size(); ++i)
+				Images[i]->drop();
 
-			Image.clear();
+			Images.clear();
 		}
 
 
@@ -135,7 +148,7 @@ public:
 		: ITexture(name, type), 
 		Driver(driver), TextureType(GL_TEXTURE_2D),
 		TextureName(0), InternalFormat(GL_RGBA), PixelFormat(GL_RGBA), PixelType(GL_UNSIGNED_BYTE), Converter(0), LockReadOnly(false), LockImage(0), LockLayer(0), KeepImage(false),
-		AutoGenerateMipMaps(false)
+		MipLevelStored(0), AutoGenerateMipMaps(false)
 	{
 		DriverType = Driver->getDriverType();
 		TextureType = TextureTypeIrrToGL(Type);
@@ -201,30 +214,34 @@ public:
 		if (LockImage)
 			LockImage->drop();
 
-		for (u32 i = 0; i < Image.size(); ++i)
-			Image[i]->drop();
+		for (u32 i = 0; i < Images.size(); ++i)
+			Images[i]->drop();
 	}
 
 	virtual void* lock(E_TEXTURE_LOCK_MODE mode = ETLM_READ_WRITE, u32 mipmapLevel=0, u32 layer = 0, E_TEXTURE_LOCK_FLAGS lockFlags = ETLF_FLIP_Y_UP_RTT) _IRR_OVERRIDE_
 	{
 		if (LockImage)
-			return LockImage->getData();
+			getLockImageData(MipLevelStored);
 
 		if (IImage::isCompressedFormat(ColorFormat))
 			return 0;
 
 		LockReadOnly |= (mode == ETLM_READ_ONLY);
 		LockLayer = layer;
+		MipLevelStored = mipmapLevel;
 
 		if (KeepImage)
 		{
-			_IRR_DEBUG_BREAK_IF(LockLayer > Image.size())
+			_IRR_DEBUG_BREAK_IF(LockLayer > Images.size())
 
-			LockImage = Image[LockLayer];
+			LockImage = Images[LockLayer];
 			LockImage->grab();
 		}
 		else
 		{
+			core::dimension2d<u32> lockImageSize( IImage::getMipMapsSize(Size, MipLevelStored));
+
+			// note: we save mipmap data also in the image because IImage doesn't allow saving single mipmap levels to the mipmap data
 			LockImage = Driver->createImage(ColorFormat, Size);
 
 			if (LockImage && mode != ETLM_WRITE_ONLY)
@@ -245,7 +262,8 @@ public:
 					tmpTextureType = GL_TEXTURE_CUBE_MAP_POSITIVE_X + layer;
 				}
 
-				glGetTexImage(tmpTextureType, 0, PixelFormat, PixelType, tmpImage->getData());
+				glGetTexImage(tmpTextureType, MipLevelStored, PixelFormat, PixelType, tmpImage->getData());
+				Driver->testGLError(__LINE__);
 
 				if (IsRenderTarget && lockFlags == ETLF_FLIP_Y_UP_RTT)
 				{
@@ -329,11 +347,11 @@ public:
 					LockImage = 0;
 				}
 			}
+
+			Driver->testGLError(__LINE__);
 		}
 
-		Driver->testGLError(__LINE__);
-
-		return (LockImage) ? LockImage->getData() : 0;
+		return (LockImage) ? getLockImageData(MipLevelStored) : 0;
 	}
 
 	virtual void unlock() _IRR_OVERRIDE_
@@ -346,11 +364,9 @@ public:
 			const COpenGLCoreTexture* prevTexture = Driver->getCacheHandler()->getTextureCache().get(0);
 			Driver->getCacheHandler()->getTextureCache().set(0, this);
 
-			uploadTexture(false, LockLayer, 0, LockImage->getData());
+			uploadTexture(false, LockLayer, MipLevelStored, getLockImageData(MipLevelStored));
 
 			Driver->getCacheHandler()->getTextureCache().set(0, prevTexture);
-
-			regenerateMipMapLevels(0, LockLayer);
 		}
 
 		LockImage->drop();
@@ -419,6 +435,14 @@ public:
 	}
 
 protected:
+
+	void * getLockImageData(irr::u32 miplevel) const
+	{
+		if ( KeepImage && MipLevelStored > 0 )
+			return LockImage->getMipMapsData(MipLevelStored);
+		return LockImage->getData();
+	}
+
 	ECOLOR_FORMAT getBestColorFormat(ECOLOR_FORMAT format)
 	{
 		// We only try for to adapt "simple" formats
@@ -607,8 +631,9 @@ protected:
 	u32 LockLayer;
 
 	bool KeepImage;
-	core::array<IImage*> Image;
+	core::array<IImage*> Images;
 
+	u8 MipLevelStored;
 	bool AutoGenerateMipMaps;
 
 	mutable SStatesCache StatesCache;
