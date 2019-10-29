@@ -221,7 +221,7 @@ public:
 	virtual void* lock(E_TEXTURE_LOCK_MODE mode = ETLM_READ_WRITE, u32 mipmapLevel=0, u32 layer = 0, E_TEXTURE_LOCK_FLAGS lockFlags = ETLF_FLIP_Y_UP_RTT) _IRR_OVERRIDE_
 	{
 		if (LockImage)
-			getLockImageData(MipLevelStored);
+			return getLockImageData(MipLevelStored);
 
 		if (IImage::isCompressedFormat(ColorFormat))
 			return 0;
