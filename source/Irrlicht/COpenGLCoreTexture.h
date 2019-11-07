@@ -17,6 +17,11 @@
 #include "CImage.h"
 #include "CColorConverter.h"
 
+// Check if GL version we compile with should have the glGenerateMipmap function.
+#if defined(GL_VERSION_3_0) || defined(GL_ES_VERSION_2_0) 
+	#define IRR_OPENGL_HAS_glGenerateMipmap
+#endif
+
 namespace irr
 {
 namespace video
@@ -109,7 +114,7 @@ public:
 				glHint(GL_GENERATE_MIPMAP_HINT, GL_DONT_CARE);
 		}
 
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION < 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION < 20)
+#if !defined(IRR_OPENGL_HAS_glGenerateMipmap) && defined(GL_GENERATE_MIPMAP)
 		if (HasMipMaps)
 			glTexParameteri(TextureType, GL_GENERATE_MIPMAP, (AutoGenerateMipMaps) ? GL_TRUE : GL_FALSE);
 #endif
@@ -411,7 +416,8 @@ public:
 		}
 		else
 		{
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION >= 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION >= 20)
+#ifdef IRR_OPENGL_HAS_glGenerateMipmap
+			glEnable(GL_TEXTURE_2D);	// Hack some ATI cards need this glEnable according to https://www.khronos.org/opengl/wiki/Common_Mistakes
 			Driver->irrGlGenerateMipmap(TextureType);
 #endif
 		}
