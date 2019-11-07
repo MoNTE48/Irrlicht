@@ -59,7 +59,9 @@ enum E_TEXTURE_CREATION_FLAG
 	Not all texture formats are affected (usually those up to ECF_A8R8G8B8). */
 	ETCF_OPTIMIZED_FOR_SPEED = 0x00000008,
 
-	/** Automatically creates mip map levels for the textures. */
+	/** Creates textures with mipmap levels. 
+	If disabled textures can not have mipmaps.
+	Default is true. */
 	ETCF_CREATE_MIP_MAPS = 0x00000010,
 
 	/** Discard any alpha layer and use non-alpha color format. 
@@ -80,14 +82,16 @@ enum E_TEXTURE_CREATION_FLAG
 	*/
 	ETCF_ALLOW_MEMORY_COPY = 0x00000080,
 
-	//! When the driver supports it try using hardware mipmaps
-	/* Per default ON.
+	//! When the driver supports it try using automatic updating hardware mipmaps
+	// TODO: Work in process, this flag will change again
+	/* Default is true.
 	This flag is only used when ETCF_CREATE_MIP_MAPS is also enabled and if the driver supports it.
 	Enabling hardware mipmaps should be faster than manual mipmaps in most situations.
 	But note that:
-	- You can no longer manually set mipmap data (for example from image loading)
-	- Texture locking for mipmap levels usually won't work anymore.
-	  So you can't access those mipmaps on the CPU. */
+	- On D3D (and maybe older GL?) you can no longer manually set mipmap data (for example from image loading)
+	- On D3D (and maybe older GL?) texture locking for mipmap levels usually won't work anymore.
+	- On new GL this flag is ignored. You still get hardware mipmaps, just no automatic updates when changing base texture.
+	  */
 	ETCF_TRY_HARDWARE_MIP_MAPS = 0x00000100,
 
 	/** This flag is never used, it only forces the compiler to compile
@@ -215,8 +219,8 @@ public:
 	data. The data has to be a continuous pixel data for all mipmaps until
 	1x1 pixel. Each mipmap has to be half the width and height of the previous
 	level. At least one pixel will be always kept.
-	\param layer It informs a texture about layer which needs
-	mipmaps regeneration. */
+	\param layer It informs a texture about which cubemap or texture array layer 
+	needs mipmap regeneration. */
 	virtual void regenerateMipMapLevels(void* data = 0, u32 layer = 0) = 0;
 
 	//! Get original size of the texture.

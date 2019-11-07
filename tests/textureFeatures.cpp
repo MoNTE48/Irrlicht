@@ -77,7 +77,7 @@ bool renderMipLevels(video::E_DRIVER_TYPE driverType)
 	smgr->drawAll();
 	driver->endScene();
 
-	bool result = takeScreenshotAndCompareAgainstReference(driver, "-renderMipmap.png");
+	bool result = takeScreenshotAndCompareAgainstReference(driver, "-renderMipmap.png", 99.5);
 
 	if (!result)
 		logTestString("mipmap render failed.\n", driver->getName());
