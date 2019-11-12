@@ -198,12 +198,6 @@ namespace core
 	}
 
 	template <>
-	inline s16 roundingError()
-	{
-		return 0;
-	}
-
-	template <>
 	inline s32 roundingError()
 	{
 		return ROUNDING_ERROR_S32;
