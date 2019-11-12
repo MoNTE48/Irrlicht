@@ -36,6 +36,7 @@ enum E_TEXTURE_CREATION_FLAG
 	which format the file on disk has. Please note that some drivers (like
 	the software device) will ignore this, because they are only able to
 	create and use 16 bit textures.
+	Default is true.
 	When using this flag, it does not make sense to use the flags
 	ETCF_ALWAYS_16_BIT, ETCF_OPTIMIZED_FOR_QUALITY, or
 	ETCF_OPTIMIZED_FOR_SPEED at the same time. 
@@ -82,17 +83,19 @@ enum E_TEXTURE_CREATION_FLAG
 	*/
 	ETCF_ALLOW_MEMORY_COPY = 0x00000080,
 
-	//! When the driver supports it try using automatic updating hardware mipmaps
-	// TODO: Work in process, this flag will change again
-	/* Default is true.
+	//! Enable automatic updating mip maps when the base texture changes.
+	/** Default is true.
 	This flag is only used when ETCF_CREATE_MIP_MAPS is also enabled and if the driver supports it.
-	Enabling hardware mipmaps should be faster than manual mipmaps in most situations.
-	But note that:
-	- On D3D (and maybe older GL?) you can no longer manually set mipmap data (for example from image loading)
-	- On D3D (and maybe older GL?) texture locking for mipmap levels usually won't work anymore.
-	- On new GL this flag is ignored. You still get hardware mipmaps, just no automatic updates when changing base texture.
+	Please note:
+	- On D3D (and maybe older OGL?) you can no longer manually set mipmap data when enabled 
+	 (for example mips from image loading will be ignored).
+	- On D3D (and maybe older OGL?) texture locking for mipmap levels usually won't work anymore.
+	- On new OGL this flag is ignored.
+	- When disabled you do _not_ get hardware mipmaps on D3D, so mipmap generation can be slower.
+	- When disabled you can still update your mipmaps when the texture changed by manually calling regenerateMipMapLevels.
+	- You can still call regenerateMipMapLevels when this flag is enabled (it will be a hint on d3d to update mips immediately)
 	  */
-	ETCF_TRY_HARDWARE_MIP_MAPS = 0x00000100,
+	ETCF_AUTO_GENERATE_MIP_MAPS = 0x00000100,
 
 	/** This flag is never used, it only forces the compiler to compile
 	these enumeration values to 32 bit. */

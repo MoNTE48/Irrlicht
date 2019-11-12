@@ -25,8 +25,8 @@ bool renderMipLevels(video::E_DRIVER_TYPE driverType)
 		return true;
 	}
 
-	// Can't pass manual data with hardware mip maps
-	driver->setTextureCreationFlag(video::ETCF_TRY_HARDWARE_MIP_MAPS, false);
+	// Can't pass manual data with hardware mip maps (at least on d3d, not sure about older GL)
+	driver->setTextureCreationFlag(video::ETCF_AUTO_GENERATE_MIP_MAPS, false);
 
 	stabilizeScreenBackground(driver);
 	
@@ -110,7 +110,7 @@ bool lockAllMipLevels(video::E_DRIVER_TYPE driverType)
 	}
 
 	// Can't lock surfaces for hardware mip-maps
-	driver->setTextureCreationFlag(video::ETCF_TRY_HARDWARE_MIP_MAPS, false);
+	driver->setTextureCreationFlag(video::ETCF_AUTO_GENERATE_MIP_MAPS, false);
 
 	stabilizeScreenBackground(driver);
 
@@ -237,7 +237,7 @@ bool lockWithAutoMipmap(video::E_DRIVER_TYPE driverType)
 	}
 
 	// Can't lock surfaces for hardware mip-maps (sadly... so also can't test if it works like this)
-	driver->setTextureCreationFlag(video::ETCF_TRY_HARDWARE_MIP_MAPS, false);
+	driver->setTextureCreationFlag(video::ETCF_AUTO_GENERATE_MIP_MAPS, false);
 
 	stabilizeScreenBackground(driver);
 

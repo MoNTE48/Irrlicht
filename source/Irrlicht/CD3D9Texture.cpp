@@ -32,7 +32,7 @@ CD3D9Texture::CD3D9Texture(const io::path& name, const core::array<IImage*>& ima
 
 	DriverType = Driver->getDriverType();
 	HasMipMaps = Driver->getTextureCreationFlag(ETCF_CREATE_MIP_MAPS);
-	HardwareMipMaps = Driver->getTextureCreationFlag(ETCF_TRY_HARDWARE_MIP_MAPS) && Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE);
+	HardwareMipMaps = Driver->getTextureCreationFlag(ETCF_AUTO_GENERATE_MIP_MAPS) && Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE);
 
 	getImageValues(image[0]);
 
@@ -318,7 +318,17 @@ void CD3D9Texture::regenerateMipMapLevels(void* data, u32 layer)
 	if (!HasMipMaps || (Size.Width <= 1 && Size.Height <= 1))
 		return;
 
-	if (data)
+	if ( HardwareMipMaps )	
+	{
+		// Can't update with custom data with those unfortunately 
+		// Also MSDN docs don't mention it, but GenerateMipSubLevels only works when AUTOGENMIPMAP is set.
+		// So we can't call this to get hardware mipmaps when not setting AUTOGENMIPMAP.
+		if (Texture)
+			Texture->GenerateMipSubLevels();
+		else if (CubeTexture)
+			CubeTexture->GenerateMipSubLevels();
+	}
+	else if (data)
 	{
 		u32 width = Size.Width;
 		u32 height = Size.Height;
@@ -341,13 +351,6 @@ void CD3D9Texture::regenerateMipMapLevels(void* data, u32 layer)
 
 			tmpData += dataSize;
 		} while (width != 1 || height != 1);
-	}
-	else if ( HardwareMipMaps )
-	{
-		if (Texture)
-			Texture->GenerateMipSubLevels();
-		else if (CubeTexture)
-			CubeTexture->GenerateMipSubLevels();
 	}
 	else
 	{
