@@ -18,7 +18,7 @@
 #include "CColorConverter.h"
 
 // Check if GL version we compile with should have the glGenerateMipmap function.
-#if defined(GL_VERSION_3_0) || defined(GL_ES_VERSION_2_0) 
+#if defined(GL_VERSION_3_0) || defined(GL_ES_VERSION_2_0)
 	#define IRR_OPENGL_HAS_glGenerateMipmap
 #endif
 
@@ -118,8 +118,8 @@ public:
 #if !defined(IRR_OPENGL_HAS_glGenerateMipmap) && defined(GL_GENERATE_MIPMAP)
 		if (HasMipMaps)
 		{
-			LegacyAutoGenerateMipMaps = Driver->getTextureCreationFlag(ETCF_TRY_HARDWARE_MIP_MAPS)  &&
-										Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE) && ETCF_TRY_HARDWARE_MIP_MAPS;
+			LegacyAutoGenerateMipMaps = Driver->getTextureCreationFlag(ETCF_AUTO_GENERATE_MIP_MAPS)  &&
+										Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE);
 			glTexParameteri(TextureType, GL_GENERATE_MIPMAP, LegacyAutoGenerateMipMaps ? GL_TRUE : GL_FALSE);
 		}
 #endif
@@ -151,8 +151,8 @@ public:
 		Driver->testGLError(__LINE__);
 	}
 
-	COpenGLCoreTexture(const io::path& name, const core::dimension2d<u32>& size, E_TEXTURE_TYPE type, ECOLOR_FORMAT format, TOpenGLDriver* driver) 
-		: ITexture(name, type), 
+	COpenGLCoreTexture(const io::path& name, const core::dimension2d<u32>& size, E_TEXTURE_TYPE type, ECOLOR_FORMAT format, TOpenGLDriver* driver)
+		: ITexture(name, type),
 		Driver(driver), TextureType(GL_TEXTURE_2D),
 		TextureName(0), InternalFormat(GL_RGBA), PixelFormat(GL_RGBA), PixelType(GL_UNSIGNED_BYTE), Converter(0), LockReadOnly(false), LockImage(0), LockLayer(0), KeepImage(false),
 		MipLevelStored(0), LegacyAutoGenerateMipMaps(false)
@@ -196,7 +196,7 @@ public:
 
 		switch (Type)
 		{
-		case ETT_2D: 
+		case ETT_2D:
 			glTexImage2D(GL_TEXTURE_2D, 0, InternalFormat, Size.Width, Size.Height, 0, PixelFormat, PixelType, 0);
 			break;
 		case ETT_CUBEMAP:
@@ -451,7 +451,7 @@ protected:
 
 	void * getLockImageData(irr::u32 miplevel) const
 	{
-		if ( KeepImage && MipLevelStored > 0 
+		if ( KeepImage && MipLevelStored > 0
 			&& LockImage->getMipMapsData(MipLevelStored) )
 		{
 			return LockImage->getMipMapsData(MipLevelStored);
@@ -622,7 +622,7 @@ protected:
 	{
 		switch ( type)
 		{
-		case ETT_2D: 
+		case ETT_2D:
 			return GL_TEXTURE_2D;
 		case ETT_CUBEMAP:
 			return GL_TEXTURE_CUBE_MAP;
