@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01.HelloWorld", "01.HelloWorld\HelloWorld_vc12.vcxproj", "{5AD4C95C-BA38-4692-BA4B-8C25A86208F9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -150,6 +150,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "Demo\Demo_vc12.vcxp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Irrlicht", "..\source\Irrlicht\Irrlicht12.0.vcxproj", "{E08E042A-6C45-411B-92BE-3CC31331019F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "27.PostProcessing", "27.PostProcessing\PostProcessing_vc12.vcxproj", "{17E74625-568E-4008-897E-CAD12A332B0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1065,6 +1067,34 @@ Global
 		{E08E042A-6C45-411B-92BE-3CC31331019F}.Static lib - Release|Win32.Build.0 = Static lib - Release|Win32
 		{E08E042A-6C45-411B-92BE-3CC31331019F}.Static lib - Release|x64.ActiveCfg = Static lib - Release|x64
 		{E08E042A-6C45-411B-92BE-3CC31331019F}.Static lib - Release|x64.Build.0 = Static lib - Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Debug|Win32.Build.0 = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Debug|x64.ActiveCfg = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Debug|x64.Build.0 = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release - Fast FPU|Win32.ActiveCfg = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release - Fast FPU|Win32.Build.0 = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release - Fast FPU|x64.ActiveCfg = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release - Fast FPU|x64.Build.0 = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release|Win32.ActiveCfg = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release|Win32.Build.0 = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release|x64.ActiveCfg = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Release|x64.Build.0 = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.SDL-Debug|Win32.ActiveCfg = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.SDL-Debug|Win32.Build.0 = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.SDL-Debug|x64.ActiveCfg = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.SDL-Debug|x64.Build.0 = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Debug|Win32.ActiveCfg = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Debug|Win32.Build.0 = Debug|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Debug|x64.ActiveCfg = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Debug|x64.Build.0 = Debug|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release - Fast FPU|Win32.ActiveCfg = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release - Fast FPU|Win32.Build.0 = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release - Fast FPU|x64.ActiveCfg = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release - Fast FPU|x64.Build.0 = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release|Win32.ActiveCfg = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release|Win32.Build.0 = Release|Win32
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release|x64.ActiveCfg = Release|x64
+		{17E74625-568E-4008-897E-CAD12A332B0C}.Static lib - Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
