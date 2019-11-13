@@ -1122,7 +1122,8 @@ bool CIrrDeviceSDL::isWindowActive() const
 			return false;
 	}
 #endif
-	return (SDL_GetAppState()&SDL_APPACTIVE) ? true : false;
+	const Uint8 appState = SDL_GetAppState();
+	return (appState&SDL_APPACTIVE && appState&SDL_APPINPUTFOCUS) ? true : false;
 }
 
 

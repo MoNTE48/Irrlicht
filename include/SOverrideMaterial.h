@@ -35,8 +35,11 @@ namespace video
 		u16 EnablePasses;
 
 		//! Global enable flag, overwritten by the SceneManager in each pass
-		/** The Scenemanager uses the EnablePass array and sets Enabled to
-		true if the Override material is enabled in the current pass. */
+		/** NOTE: This is generally _not_ set by users of the engine, but the 
+		Scenemanager uses the EnablePass array and sets Enabled to true if the 
+		Override material is enabled in the current pass.
+		As user you generally _only_ set EnablePasses. 
+		The exception is when rendering without SceneManager but using draw calls in the VideoDriver. */
 		bool Enabled;
 
 		struct SMaterialTypeReplacement

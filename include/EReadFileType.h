@@ -25,7 +25,7 @@ namespace io
 		ERFT_LIMIT_READ_FILE = MAKE_IRR_ID('r','l','i','m'),
 
 		//! Unknown type
-		EFIT_UNKNOWN        = MAKE_IRR_ID('u','n','k','n'),
+		EFIT_UNKNOWN        = MAKE_IRR_ID('u','n','k','n')
 	};
 } // end namespace io
 } // end namespace irr
