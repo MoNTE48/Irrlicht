@@ -863,6 +863,11 @@ bool COpenGLExtensionHandler::queryFeature(E_VIDEO_DRIVER_FEATURE feature) const
 		return (Version >= 130) || FeatureAvailable[IRR_ARB_texture_cube_map] || FeatureAvailable[IRR_EXT_texture_cube_map];
 	case EVDF_TEXTURE_CUBEMAP_SEAMLESS:
 		return FeatureAvailable[IRR_ARB_seamless_cube_map];
+#ifdef GL_NV_depth_clamp
+	case EVDF_DEPTH_CLAMP:
+		return FeatureAvailable[IRR_NV_depth_clamp];
+#endif
+
 	default:
 		return false;
 	};

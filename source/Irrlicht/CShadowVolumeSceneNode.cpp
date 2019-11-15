@@ -321,7 +321,7 @@ void CShadowVolumeSceneNode::render()
 	{
 		bool drawShadow = true;
 
-		if (UseZFailMethod && SceneManager->getActiveCamera())
+		if (UseZFailMethod && SceneManager->getActiveCamera() && !driver->queryFeature(video::EVDF_DEPTH_CLAMP) )
 		{
 			// Disable shadows drawing, when back cap is behind of ZFar plane.
 
@@ -348,7 +348,7 @@ void CShadowVolumeSceneNode::render()
 				}
 			}
 
-			if (!(frust.planes[scene::SViewFrustum::VF_FAR_PLANE].classifyPointRelation(largestEdge) != core::ISREL3D_FRONT))
+			if (frust.planes[scene::SViewFrustum::VF_FAR_PLANE].classifyPointRelation(largestEdge) == core::ISREL3D_FRONT)
 				drawShadow = false;
 		}
 
@@ -356,6 +356,9 @@ void CShadowVolumeSceneNode::render()
 			driver->drawStencilShadowVolume(ShadowVolumes[i], UseZFailMethod, DebugDataVisible);
 		else
 		{
+			// TODO: For some reason (not yet further investigated), Direct3D needs a call to drawStencilShadowVolume
+			//       even if we have nothing to draw here to set the renderstate into a StencilShadowMode.
+			//       If that's not done it has effect on further render calls.
 			core::array<core::vector3df> triangles;
 			driver->drawStencilShadowVolume(triangles, UseZFailMethod, DebugDataVisible);
 		}
