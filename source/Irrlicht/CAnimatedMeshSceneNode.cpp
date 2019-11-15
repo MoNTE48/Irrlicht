@@ -533,11 +533,7 @@ const core::aabbox3d<f32>& CAnimatedMeshSceneNode::getBoundingBox() const
 }
 
 
-//! returns the material based on the zero based index i. To get the amount
-//! of materials used by this scene node, use getMaterialCount().
-//! This function is needed for inserting the node into the scene hirachy on a
-//! optimal position for minimizing renderstate changes, but can also be used
-//! to directly modify the material of a scene node.
+//! returns the material based on the zero based index i. 
 video::SMaterial& CAnimatedMeshSceneNode::getMaterial(u32 i)
 {
 	if (i >= Materials.size())

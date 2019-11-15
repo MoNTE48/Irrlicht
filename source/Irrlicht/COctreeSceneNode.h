@@ -75,7 +75,7 @@ namespace scene
 
 		//! Removes a child from this scene node.
 		//! Implemented here, to be able to remove the shadow properly, if there is one,
-		//! or to remove attached children.
+		//! or to remove attached child.
 		virtual bool removeChild(ISceneNode* child) _IRR_OVERRIDE_;
 
 		//! Set if/how vertex buffer object are used for the meshbuffers
