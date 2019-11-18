@@ -2408,9 +2408,8 @@ void CD3D9Driver::setRenderStatesStencilShadowMode(bool zfail, u32 debugDataVisi
 		pID3DDevice->SetRenderState(D3DRS_STENCILMASK, 0xffffffff);
 		pID3DDevice->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff);
 
-		pID3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-		pID3DDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_ZERO );
-		pID3DDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_ONE );
+		BridgeCalls->setBlend(true);
+		BridgeCalls->setBlendFunc(D3DBLEND_ZERO, D3DBLEND_ONE);
 
 		pID3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 		pID3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
