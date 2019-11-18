@@ -75,15 +75,22 @@ void CShadowVolumeSceneNode::createShadowVolume(const core::vector3df& light, bo
 	Edges.set_used(IndexCount*2);
 	u32 numEdges = 0;
 
-	numEdges=createEdgesAndCaps(light, svp, bb);
+	numEdges=createEdgesAndCaps(light, isDirectional, svp, bb);
 
 	// for all edges add the near->far quads
+	core::vector3df lightDir1(light*Infinity);
+	core::vector3df lightDir2(light*Infinity);
 	for (u32 i=0; i<numEdges; ++i)
 	{
 		const core::vector3df &v1 = Vertices[Edges[2*i+0]];
 		const core::vector3df &v2 = Vertices[Edges[2*i+1]];
-		const core::vector3df v3(v1+(v1 - light).normalize()*Infinity);
-		const core::vector3df v4(v2+(v2 - light).normalize()*Infinity);
+		if ( !isDirectional )
+		{
+			lightDir1 = (v1 - light).normalize()*Infinity;
+			lightDir2 = (v2 - light).normalize()*Infinity;
+		}
+		const core::vector3df v3(v1+lightDir1);
+		const core::vector3df v4(v2+lightDir2);
 
 		// Add a quad (two triangles) to the vertex list
 #ifdef _DEBUG
@@ -100,11 +107,18 @@ void CShadowVolumeSceneNode::createShadowVolume(const core::vector3df& light, bo
 	}
 }
 
-
+// TODO: this should be a user parameter and also no need to calculate adjacency when it's disabled
 #define IRR_USE_ADJACENCY
+
+// TODO.
+// Not sure what's going on. Either FaceData should mean the opposite and true should mean facing away from light
+// or I'm missing something else. Anyway - when not setting this then Shadows will look wrong on Burnings driver
+// while they seem to look OK on first view either way on other drivers. Only tested with z-fail so far.
+// Maybe errors only show up close to near/far plane on other drivers as otherwise the stencil-buffer-count 
+// is probably ending up with same value anyway 
 #define IRR_USE_REVERSE_EXTRUDED
 
-u32 CShadowVolumeSceneNode::createEdgesAndCaps(const core::vector3df& light,
+u32 CShadowVolumeSceneNode::createEdgesAndCaps(const core::vector3df& light, bool isDirectional,
 					SShadowVolume* svp, core::aabbox3d<f32>* bb)
 {
 	u32 numEdges=0;
@@ -116,16 +130,37 @@ u32 CShadowVolumeSceneNode::createEdgesAndCaps(const core::vector3df& light,
 		bb->reset(0,0,0);
 
 	// Check every face if it is front or back facing the light.
+	core::vector3df lightDir0(light);
+	core::vector3df lightDir1(light);
+	core::vector3df lightDir2(light);
 	for (u32 i=0; i<faceCount; ++i)
 	{
 		const core::vector3df v0 = Vertices[Indices[3*i+0]];
 		const core::vector3df v1 = Vertices[Indices[3*i+1]];
 		const core::vector3df v2 = Vertices[Indices[3*i+2]];
 
+		if ( !isDirectional )
+		{
+			lightDir0 = (v0-light).normalize();
+		}
 #ifdef IRR_USE_REVERSE_EXTRUDED
-		FaceData[i]=core::triangle3df(v0,v1,v2).isFrontFacing(light);
+		FaceData[i]=core::triangle3df(v2,v1,v0).isFrontFacing(lightDir0);	// actually the back-facing polygons
 #else
-		FaceData[i]=core::triangle3df(v2,v1,v0).isFrontFacing(light);
+		FaceData[i]=core::triangle3df(v0,v1,v2).isFrontFacing(lightDir0);
+#endif
+
+#if 0	// Useful for internal debugging & testing. Show all the faces in the light.
+		if ( FaceData[i] )
+		{
+			video::SMaterial m;
+			m.Lighting = false;
+			SceneManager->getVideoDriver()->setMaterial(m);
+#ifdef IRR_USE_REVERSE_EXTRUDED
+			SceneManager->getVideoDriver()->draw3DTriangle(core::triangle3df(v0+lightDir0,v1+lightDir0,v2+lightDir0), irr::video::SColor(255,255, 0, 0));
+#else
+			SceneManager->getVideoDriver()->draw3DTriangle(core::triangle3df(v0-lightDir0,v1-lightDir0,v2-lightDir0), irr::video::SColor(255,255, 0, 0));
+#endif
+		}
 #endif
 
 		if (UseZFailMethod && FaceData[i])
@@ -140,9 +175,14 @@ u32 CShadowVolumeSceneNode::createEdgesAndCaps(const core::vector3df& light,
 			svp->push_back(v0);
 
 			// add back cap
-			const core::vector3df i0 = v0+(v0-light).normalize()*Infinity;
-			const core::vector3df i1 = v1+(v1-light).normalize()*Infinity;
-			const core::vector3df i2 = v2+(v2-light).normalize()*Infinity;
+			if ( !isDirectional )
+			{
+				lightDir1 = (v1-light).normalize();
+				lightDir2 = (v2-light).normalize();
+			}
+			const core::vector3df i0 = v0+lightDir0*Infinity;
+			const core::vector3df i1 = v1+lightDir1*Infinity;
+			const core::vector3df i2 = v2+lightDir2*Infinity;
 
 			svp->push_back(i0);
 			svp->push_back(i1);
@@ -282,16 +322,23 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	mat.makeInverse();
 	const core::vector3df parentpos = Parent->getAbsolutePosition();
 
-	// TODO: Only correct for point lights.
 	for (i=0; i<lightCount; ++i)
 	{
 		const video::SLight& dl = SceneManager->getVideoDriver()->getDynamicLight(i);
-		core::vector3df lpos = dl.Position;
-		if (dl.CastShadows &&
-			fabs((lpos - parentpos).getLengthSQ()) <= (dl.Radius*dl.Radius*4.0f))
+
+		if ( dl.Type == video::ELT_DIRECTIONAL )
 		{
-			mat.transformVect(lpos);
-			createShadowVolume(lpos);
+			// TODO
+		}
+		else
+		{
+			core::vector3df lpos = dl.Position;
+			if (dl.CastShadows &&
+				fabs((lpos - parentpos).getLengthSQ()) <= (dl.Radius*dl.Radius*4.0f))
+			{
+				mat.transformVect(lpos);
+				createShadowVolume(lpos, false);
+			}
 		}
 	}
 }
