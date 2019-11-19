@@ -318,8 +318,9 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	if (oldVertexCount != VertexCount || oldIndexCount != IndexCount)
 		calculateAdjacency();
 
-	core::matrix4 mat = Parent->getAbsoluteTransformation();
-	mat.makeInverse();
+	core::matrix4 matInv(Parent->getAbsoluteTransformation());
+	matInv.makeInverse();
+	core::matrix4 matTransp(Parent->getAbsoluteTransformation(), core::matrix4::EM4CONST_TRANSPOSED);
 	const core::vector3df parentpos = Parent->getAbsolutePosition();
 
 	for (i=0; i<lightCount; ++i)
@@ -328,15 +329,17 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 
 		if ( dl.Type == video::ELT_DIRECTIONAL )
 		{
-			// TODO
+			core::vector3df ldir(dl.Direction);
+			matTransp.transformVect(ldir);
+			createShadowVolume(ldir, true);
 		}
 		else
 		{
-			core::vector3df lpos = dl.Position;
+			core::vector3df lpos(dl.Position);
 			if (dl.CastShadows &&
 				fabs((lpos - parentpos).getLengthSQ()) <= (dl.Radius*dl.Radius*4.0f))
 			{
-				mat.transformVect(lpos);
+				matInv.transformVect(lpos);
 				createShadowVolume(lpos, false);
 			}
 		}
