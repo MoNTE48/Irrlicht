@@ -25,8 +25,9 @@ namespace scene
 CShadowVolumeSceneNode::CShadowVolumeSceneNode(const IMesh* shadowMesh, ISceneNode* parent,
 		ISceneManager* mgr, s32 id, bool zfailmethod, f32 infinity)
 : IShadowVolumeSceneNode(parent, mgr, id),
+	AdjacencyDirtyFlag(true),
 	ShadowMesh(0), IndexCount(0), VertexCount(0), ShadowVolumesUsed(0),
-	Infinity(infinity), UseZFailMethod(zfailmethod)
+	Infinity(infinity), UseZFailMethod(zfailmethod), Optimization(ESV_SILHOUETTE_BY_POS)
 {
 	#ifdef _DEBUG
 	setDebugName("CShadowVolumeSceneNode");
@@ -106,9 +107,6 @@ void CShadowVolumeSceneNode::createShadowVolume(const core::vector3df& light, bo
 		svp->push_back(v3);
 	}
 }
-
-// TODO: this should be a user parameter and also no need to calculate adjacency when it's disabled
-#define IRR_USE_ADJACENCY
 
 // TODO.
 // Not sure what's going on. Either FaceData should mean the opposite and true should mean facing away from light
@@ -204,40 +202,54 @@ u32 CShadowVolumeSceneNode::createEdgesAndCaps(const core::vector3df& light, boo
 			const u16 wFace1 = Indices[3*i+1];
 			const u16 wFace2 = Indices[3*i+2];
 
-			const u16 adj0 = Adjacency[3*i+0];
-			const u16 adj1 = Adjacency[3*i+1];
-			const u16 adj2 = Adjacency[3*i+2];
-
-			// add edges if face is adjacent to back-facing face
-			// or if no adjacent face was found
-#ifdef IRR_USE_ADJACENCY
-			if (adj0 == i || FaceData[adj0] == false)
-#endif
+			if ( Optimization == ESV_NONE )
 			{
 				// add edge v0-v1
 				Edges[2*numEdges+0] = wFace0;
 				Edges[2*numEdges+1] = wFace1;
 				++numEdges;
-			}
 
-#ifdef IRR_USE_ADJACENCY
-			if (adj1 == i || FaceData[adj1] == false)
-#endif
-			{
 				// add edge v1-v2
 				Edges[2*numEdges+0] = wFace1;
 				Edges[2*numEdges+1] = wFace2;
 				++numEdges;
-			}
 
-#ifdef IRR_USE_ADJACENCY
-			if (adj2 == i || FaceData[adj2] == false)
-#endif
-			{
 				// add edge v2-v0
 				Edges[2*numEdges+0] = wFace2;
 				Edges[2*numEdges+1] = wFace0;
 				++numEdges;
+			}
+			else
+			{
+				const u16 adj0 = Adjacency[3*i+0];
+				const u16 adj1 = Adjacency[3*i+1];
+				const u16 adj2 = Adjacency[3*i+2];
+
+				// add edges if face is adjacent to back-facing face
+				// or if no adjacent face was found
+				if (adj0 == i || FaceData[adj0] == false)
+				{
+					// add edge v0-v1
+					Edges[2*numEdges+0] = wFace0;
+					Edges[2*numEdges+1] = wFace1;
+					++numEdges;
+				}
+
+				if (adj1 == i || FaceData[adj1] == false)
+				{
+					// add edge v1-v2
+					Edges[2*numEdges+0] = wFace1;
+					Edges[2*numEdges+1] = wFace2;
+					++numEdges;
+				}
+
+				if (adj2 == i || FaceData[adj2] == false)
+				{
+					// add edge v2-v0
+					Edges[2*numEdges+0] = wFace2;
+					Edges[2*numEdges+1] = wFace0;
+					++numEdges;
+				}
 			}
 		}
 	}
@@ -265,6 +277,10 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	const u32 oldIndexCount = IndexCount;
 	const u32 oldVertexCount = VertexCount;
 
+	VertexCount = 0;
+	IndexCount = 0;
+	ShadowVolumesUsed = 0;
+
 	const IMesh* const mesh = ShadowMesh;
 	if (!mesh)
 		return;
@@ -276,10 +292,6 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 		return;
 
 	// calculate total amount of vertices and indices
-
-	VertexCount = 0;
-	IndexCount = 0;
-	ShadowVolumesUsed = 0;
 
 	u32 i;
 	u32 totalVertices = 0;
@@ -331,7 +343,7 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	}
 
 	// recalculate adjacency if necessary
-	if (oldVertexCount != VertexCount || oldIndexCount != IndexCount)
+	if (oldVertexCount != VertexCount || oldIndexCount != IndexCount || AdjacencyDirtyFlag)
 		calculateAdjacency();
 
 	core::matrix4 matInv(Parent->getAbsoluteTransformation());
@@ -362,6 +374,14 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	}
 }
 
+void CShadowVolumeSceneNode::setOptimization(ESHADOWVOLUME_OPTIMIZATION optimization)
+{
+	if ( Optimization != optimization )
+	{
+		Optimization = optimization;
+		AdjacencyDirtyFlag = true;
+	}
+}
 
 //! pre render method
 void CShadowVolumeSceneNode::OnRegisterSceneNode()
@@ -442,47 +462,56 @@ const core::aabbox3d<f32>& CShadowVolumeSceneNode::getBoundingBox() const
 //! Generates adjacency information based on mesh indices.
 void CShadowVolumeSceneNode::calculateAdjacency()
 {
-	Adjacency.set_used(IndexCount);
+	AdjacencyDirtyFlag = false;
 
-	// go through all faces and fetch their three neighbours
-	for (u32 f=0; f<IndexCount; f+=3)
+	if ( Optimization == ESV_NONE )
 	{
-		for (u32 edge = 0; edge<3; ++edge)
+		Adjacency.clear();
+	}
+	else if ( Optimization == ESV_SILHOUETTE_BY_POS )
+	{
+		Adjacency.set_used(IndexCount);
+
+		// go through all faces and fetch their three neighbours
+		for (u32 f=0; f<IndexCount; f+=3)
 		{
-			const core::vector3df& v1 = Vertices[Indices[f+edge]];
-			const core::vector3df& v2 = Vertices[Indices[f+((edge+1)%3)]];
-
-			// now we search an_O_ther _F_ace with these two
-			// vertices, which is not the current face.
-			u32 of;
-
-			for (of=0; of<IndexCount; of+=3)
+			for (u32 edge = 0; edge<3; ++edge)
 			{
-				// only other faces
-				if (of != f)
+				const core::vector3df& v1 = Vertices[Indices[f+edge]];
+				const core::vector3df& v2 = Vertices[Indices[f+((edge+1)%3)]];
+
+				// now we search an_O_ther _F_ace with these two
+				// vertices, which is not the current face.
+				u32 of;
+
+				for (of=0; of<IndexCount; of+=3)
 				{
-					bool cnt1 = false;
-					bool cnt2 = false;
-
-					for (s32 e=0; e<3; ++e)
+					// only other faces
+					if (of != f)
 					{
-						if (v1.equals(Vertices[Indices[of+e]]))
-							cnt1=true;
+						bool cnt1 = false;
+						bool cnt2 = false;
 
-						if (v2.equals(Vertices[Indices[of+e]]))
-							cnt2=true;
+						for (s32 e=0; e<3; ++e)
+						{
+							if (v1.equals(Vertices[Indices[of+e]]))
+								cnt1=true;
+
+							if (v2.equals(Vertices[Indices[of+e]]))
+								cnt2=true;
+						}
+						// one match for each vertex, i.e. edge is the same
+						if (cnt1 && cnt2)
+							break;
 					}
-					// one match for each vertex, i.e. edge is the same
-					if (cnt1 && cnt2)
-						break;
 				}
-			}
 
-			// no adjacent edges -> store face number, else store adjacent face
-			if (of >= IndexCount)
-				Adjacency[f + edge] = f/3;
-			else
-				Adjacency[f + edge] = of/3;
+				// no adjacent edges -> store face number, else store adjacent face
+				if (of >= IndexCount)
+					Adjacency[f + edge] = f/3;
+				else
+					Adjacency[f + edge] = of/3;
+			}
 		}
 	}
 }
