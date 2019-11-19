@@ -327,7 +327,8 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	Indices.set_used(totalIndices);
 	FaceData.set_used(totalIndices / 3);
 
-	// copy mesh
+	// copy mesh 
+	// (could speed this up for static meshes by adding some user flag to prevents copying)
 	for (i=0; i<bufcnt; ++i)
 	{
 		const IMeshBuffer* buf = mesh->getMeshBuffer(i);
