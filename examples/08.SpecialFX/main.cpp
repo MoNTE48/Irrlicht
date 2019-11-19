@@ -262,10 +262,15 @@ int main()
 	anode->addShadowVolumeSceneNode();
 	smgr->setShadowColor(video::SColor(150,0,0,0));
 
-	// make the model a little bit bigger and normalize its normals
-	// because of the scaling, for correct lighting
-	anode->setScale(core::vector3df(2,2,2));
+	// make the model a bit bigger 
+	anode->setScale(core::vector3df(2,5,2));
+	// because of the scaling we have to normalize its normals for correct lighting
 	anode->setMaterialFlag(video::EMF_NORMALIZE_NORMALS, true);
+
+	// let the dwarf slowly rotate around it's y axis
+	scene::ISceneNodeAnimator* ra = smgr->createRotationAnimator(irr::core::vector3df(0, 0.1f, 0));
+	anode->addAnimator(ra);
+	ra->drop();
 
 	/*
 	Finally we simply have to draw everything, that's all.
