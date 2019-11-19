@@ -263,7 +263,7 @@ int main()
 	smgr->setShadowColor(video::SColor(150,0,0,0));
 
 	// make the model a bit bigger 
-	anode->setScale(core::vector3df(2,5,2));
+	anode->setScale(core::vector3df(2,2,2));
 	// because of the scaling we have to normalize its normals for correct lighting
 	anode->setMaterialFlag(video::EMF_NORMALIZE_NORMALS, true);
 
