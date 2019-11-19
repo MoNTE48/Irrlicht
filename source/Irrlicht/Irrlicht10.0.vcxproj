@@ -844,6 +844,7 @@
     <ClInclude Include="..\..\include\IAnimatedMeshMD3.h" />
     <ClInclude Include="..\..\include\IEventReceiver.h" />
     <ClInclude Include="..\..\include\ILogger.h" />
+    <ClInclude Include="..\..\include\IOctreeSceneNode.h" />
     <ClInclude Include="..\..\include\IOSOperator.h" />
     <ClInclude Include="..\..\include\IProfiler.h" />
     <ClInclude Include="..\..\include\IRandomizer.h" />
