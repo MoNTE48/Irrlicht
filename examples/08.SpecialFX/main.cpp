@@ -112,17 +112,16 @@ int main()
 	*/
 
 	// create light
-
-	node = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
+	scene::ILightSceneNode * lightNode  = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
 		video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 800.0f);
 	scene::ISceneNodeAnimator* anim = 0;
 	anim = smgr->createFlyCircleAnimator (core::vector3df(0,150,0),250.0f);
-	node->addAnimator(anim);
+	lightNode ->addAnimator(anim);
 	anim->drop();
 
 	// attach billboard to light
 
-	node = smgr->addBillboardSceneNode(node, core::dimension2d<f32>(50, 50));
+	node = smgr->addBillboardSceneNode(lightNode, core::dimension2d<f32>(50, 50));
 	node->setMaterialFlag(video::EMF_LIGHTING, false);
 	node->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR);
 	node->setMaterialTexture(0, driver->getTexture(mediaPath + "particlewhite.bmp"));
