@@ -289,8 +289,24 @@ void CShadowVolumeSceneNode::updateShadowVolumes()
 	for (i=0; i<bufcnt; ++i)
 	{
 		const IMeshBuffer* buf = mesh->getMeshBuffer(i);
-		totalIndices += buf->getIndexCount();
-		totalVertices += buf->getVertexCount();
+		if (	buf->getIndexType() == video::EIT_16BIT 
+			&& buf->getPrimitiveType() == scene::EPT_TRIANGLES )
+		{
+			totalIndices += buf->getIndexCount();
+			totalVertices += buf->getVertexCount();
+		}
+		else
+		{
+			os::Printer::log("ShadowVolumeSceneNode only supports meshbuffers with 16 bit indices and triangles", ELL_WARNING);
+			return;
+		}
+	}
+	if ( totalIndices != (u32)(u16)totalIndices)
+	{
+		// We could switch to 32-bit indices, not much work and just bit of extra memory (< 192k) per shadow volume.
+		// If anyone ever complains and really needs that just switch it. But huge shadows are usually a bad idea as they will be slow.
+		os::Printer::log("ShadowVolumeSceneNode does not yet support shadowvolumes which need more than 16 bit indices", ELL_WARNING);
+		return;
 	}
 
 	// allocate memory if necessary
