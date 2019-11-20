@@ -233,13 +233,13 @@ bool CWGLManager::initialize(const SIrrlichtCreationParameters& params, const SE
 			WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
 #ifdef WGL_ARB_multisample
 			WGL_SAMPLES_ARB,Params.AntiAlias, // 20,21
-			WGL_SAMPLE_BUFFERS_ARB, 1,
+			WGL_SAMPLE_BUFFERS_ARB, (Params.AntiAlias>0) ? 1 : 0,
 #elif defined(WGL_EXT_multisample)
 			WGL_SAMPLES_EXT,AntiAlias, // 20,21
-			WGL_SAMPLE_BUFFERS_EXT, 1,
+			WGL_SAMPLE_BUFFERS_EXT, (Params.AntiAlias>0) ? 1 : 0,
 #elif defined(WGL_3DFX_multisample)
 			WGL_SAMPLES_3DFX,AntiAlias, // 20,21
-			WGL_SAMPLE_BUFFERS_3DFX, 1,
+			WGL_SAMPLE_BUFFERS_3DFX, (Params.AntiAlias>0) ? 1 : 0,
 #endif
 #ifdef WGL_ARB_framebuffer_sRGB
 			WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB, Params.HandleSRGB ? 1:0,

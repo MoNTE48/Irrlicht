@@ -1,5 +1,6 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Bugfix: OpenGL no longer antialiasing stencil buffer when driver has antialiasing disabled.
 - Add IShadowVolumeSceneNode::setOptimization to allow disabling optimizations for meshes were contour shadows fail.
 - Stencil shadows work now also with directional light
 - Drivers can now try to create textures from images in more exotic color formats (like floating point formats).  It depends on the driver how much that works (so far mainly OpenGL can handle it somewhat).
