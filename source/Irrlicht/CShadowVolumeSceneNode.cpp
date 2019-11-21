@@ -403,16 +403,21 @@ void CShadowVolumeSceneNode::render()
 		return;
 
 	driver->setTransform(video::ETS_WORLD, Parent->getAbsoluteTransformation());
+	const irr::scene::ICameraSceneNode* camera = SceneManager->getActiveCamera();
 
 	for (u32 i=0; i<ShadowVolumesUsed; ++i)
 	{
 		bool drawShadow = true;
 
-		if (UseZFailMethod && SceneManager->getActiveCamera() && !driver->queryFeature(video::EVDF_DEPTH_CLAMP) )
+		if (UseZFailMethod && camera && !driver->queryFeature(video::EVDF_DEPTH_CLAMP) )
 		{
 			// Disable shadows drawing, when back cap is behind of ZFar plane.
+			// TODO: Using infinite projection matrices instead is said to work better
+			//       as then we wouldn't fail when the shadow clip the far plane.
+			//       I couldn't get it working (and neither anyone before me it seems).
+			//       Anyone who can figure it out is welcome to provide a patch.
 
-			SViewFrustum frust = *SceneManager->getActiveCamera()->getViewFrustum();
+			SViewFrustum frust = *camera->getViewFrustum();
 
 			core::matrix4 invTrans(Parent->getAbsoluteTransformation(), core::matrix4::EM4CONST_INVERSE);
 			frust.transform(invTrans);
@@ -421,12 +426,12 @@ void CShadowVolumeSceneNode::render()
 			ShadowBBox[i].getEdges(edges);
 
 			core::vector3df largestEdge = edges[0];
-			f32 maxDistance = core::vector3df(SceneManager->getActiveCamera()->getPosition() - edges[0]).getLength();
+			f32 maxDistance = core::vector3df(camera->getPosition() - edges[0]).getLength();
 			f32 curDistance = 0.f;
 
 			for(int j = 1; j < 8; ++j)
 			{
-				curDistance = core::vector3df(SceneManager->getActiveCamera()->getPosition() - edges[j]).getLength();
+				curDistance = core::vector3df(camera->getPosition() - edges[j]).getLength();
 
 				if(curDistance > maxDistance)
 				{
