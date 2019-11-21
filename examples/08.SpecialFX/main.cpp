@@ -115,7 +115,7 @@ int main()
 	scene::ILightSceneNode * lightNode  = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
 		video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 800.0f);
 	scene::ISceneNodeAnimator* anim = 0;
-	anim = smgr->createFlyCircleAnimator (core::vector3df(0,150,0),250.0f);
+	anim = smgr->createFlyCircleAnimator (core::vector3df(0,150,0),250.0f, 0.0005f);
 	lightNode ->addAnimator(anim);
 	anim->drop();
 
@@ -257,6 +257,15 @@ int main()
 	anode = smgr->addAnimatedMeshSceneNode(mesh);
 	anode->setPosition(core::vector3df(-50,20,-60));
 	anode->setAnimationSpeed(15);
+
+	/* 
+	Shadows still have to be drawn even then the node causing them is not visible itself.
+	We have to disable culling if the node is animated or it's transformations change
+	as otherwise the shadow is not updated correctly.
+	If you have many objects and this becomes a speed problem you will have to figure 
+	out some manual culling (for exampling hiding all objects beyond a certain distance).
+	*/
+	anode->setAutomaticCulling(scene::EAC_OFF);
 
 	// add shadow
 	anode->addShadowVolumeSceneNode();
