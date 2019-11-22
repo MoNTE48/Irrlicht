@@ -60,7 +60,7 @@ static bool testOrthoStencil(video::E_DRIVER_TYPE driverType)
 	scene::ICameraSceneNode* cam = device->getSceneManager()->addCameraSceneNode();
 	cam->setPosition(core::vector3df(300,250,-300));
 	cam->setTarget(core::vector3df(0,20,0));
-	cam->setProjectionMatrix(core::matrix4().buildProjectionMatrixOrthoLH(120,90,0.9f,2000.f,driverType != video::EDT_OPENGL), true);
+	cam->setProjectionMatrix(core::matrix4().buildProjectionMatrixOrthoLH(120,90,0.9f,5000.f,driverType != video::EDT_OPENGL), true);
 
 	device->getSceneManager()->addAnimatedMeshSceneNode(device->getSceneManager()->addHillPlaneMesh("plane", core::dimension2df(32,32), core::dimension2du(16,16)));//->setMaterialFlag(video::EMF_WIREFRAME, true);
 
@@ -97,6 +97,7 @@ bool orthoCam(void)
 	passed &= testOrthoCam(video::EDT_BURNINGSVIDEO);
 	passed &= testOrthoCam(video::EDT_DIRECT3D9);
 
+	// TODO: not sure if burnings could work? Currently it doesn't.
 	passed &= testOrthoStencil(video::EDT_OPENGL);
 	passed &= testOrthoStencil(video::EDT_DIRECT3D9);
 
