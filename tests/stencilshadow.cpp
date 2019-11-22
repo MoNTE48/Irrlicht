@@ -5,7 +5,7 @@
 
 using namespace irr;
 
-// 
+//
 static bool stencilShadow(video::E_DRIVER_TYPE driverType)
 {
 	IrrlichtDevice *device = createDevice (driverType, core::dimension2d<u32>(160,120), 16, false, true);
@@ -20,7 +20,7 @@ static bool stencilShadow(video::E_DRIVER_TYPE driverType)
 
 	device->getSceneManager()->setAmbientLight(video::SColorf(.5f,.5f,.5f));
 	device->getSceneManager()->setShadowColor( video::SColor(255, 50, 0, 50));
-	scene::IMeshSceneNode* cube = device->getSceneManager()->addCubeSceneNode(100, 0, -1, core::vector3df(0,50,0), core::vector3df(), core::vector3df(-1,-1,-1));
+	device->getSceneManager()->addCubeSceneNode(100, 0, -1, core::vector3df(0,50,0), core::vector3df(), core::vector3df(-1,-1,-1));
 
 	scene::IAnimatedMeshSceneNode* node = device->getSceneManager()->addAnimatedMeshSceneNode(device->getSceneManager()->getMesh("../media/ninja.b3d"), 0, -1, core::vector3df(), core::vector3df(0.f, 230.f, 0.f),core::vector3df(5,5,5));
 	node->setMaterialFlag(video::EMF_NORMALIZE_NORMALS, true);
@@ -36,7 +36,7 @@ static bool stencilShadow(video::E_DRIVER_TYPE driverType)
 	light->setRadius(500.f);
 	light->getLightData().DiffuseColor.set(1,1,1);
 
-	device->getVideoDriver()->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, video::SColor(0,0,0,0));
+	device->getVideoDriver()->beginScene(video::ECBF_ALL, video::SColor(0,0,0,0));
 	device->getSceneManager()->drawAll();
 	device->getVideoDriver()->endScene();
 
@@ -75,7 +75,7 @@ static bool selfShadowing(video::E_DRIVER_TYPE driverType)
 	light->setRadius(500.f);
 	light->getLightData().DiffuseColor.set(0,1,1);
 
-	device->getVideoDriver()->beginScene(video::ECBF_COLOR | video::ECBF_DEPTH, video::SColor(0,0,0,0));
+	device->getVideoDriver()->beginScene(video::ECBF_ALL, video::SColor(0,0,0,0));
 	device->getSceneManager()->drawAll();
 	device->getVideoDriver()->endScene();
 
@@ -95,7 +95,7 @@ bool stencilShadow(void)
 	passed &= stencilShadow(video::EDT_OPENGL);
 	passed &= stencilShadow(video::EDT_DIRECT3D9);
 	// no shadows in software renderer
-//	passed &= stencilShadow(video::EDT_SOFTWARE);	
+//	passed &= stencilShadow(video::EDT_SOFTWARE);
 	passed &= stencilShadow(video::EDT_BURNINGSVIDEO);	// Note: cube has wrong color, if that gets ever changed just update the test-image.
 
 	passed &= selfShadowing(video::EDT_OPENGL);
