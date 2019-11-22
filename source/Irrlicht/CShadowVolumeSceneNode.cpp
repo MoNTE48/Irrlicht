@@ -403,13 +403,29 @@ void CShadowVolumeSceneNode::render()
 		return;
 
 	driver->setTransform(video::ETS_WORLD, Parent->getAbsoluteTransformation());
-	const irr::scene::ICameraSceneNode* camera = SceneManager->getActiveCamera();
+
+	bool checkFarPlaneClipping = UseZFailMethod && !driver->queryFeature(video::EVDF_DEPTH_CLAMP);
+
+	// get camera frustum converted to local coordinates when we have to check for far plane clipping
+	SViewFrustum frust;
+	if ( checkFarPlaneClipping )
+	{
+		const irr::scene::ICameraSceneNode* camera = SceneManager->getActiveCamera();
+		if ( camera )
+		{
+			frust = *camera->getViewFrustum();
+			core::matrix4 invTrans(Parent->getAbsoluteTransformation(), core::matrix4::EM4CONST_INVERSE);
+			frust.transform(invTrans);
+		}
+		else
+			checkFarPlaneClipping = false;
+	}
 
 	for (u32 i=0; i<ShadowVolumesUsed; ++i)
 	{
 		bool drawShadow = true;
 
-		if (UseZFailMethod && camera && !driver->queryFeature(video::EVDF_DEPTH_CLAMP) )
+		if (checkFarPlaneClipping)
 		{
 			// Disable shadows drawing, when back cap is behind of ZFar plane.
 			// TODO: Using infinite projection matrices instead is said to work better
@@ -417,31 +433,17 @@ void CShadowVolumeSceneNode::render()
 			//       I couldn't get it working (and neither anyone before me it seems).
 			//       Anyone who can figure it out is welcome to provide a patch.
 
-			SViewFrustum frust = *camera->getViewFrustum();
-
-			core::matrix4 invTrans(Parent->getAbsoluteTransformation(), core::matrix4::EM4CONST_INVERSE);
-			frust.transform(invTrans);
-
 			core::vector3df edges[8];
 			ShadowBBox[i].getEdges(edges);
 
-			core::vector3df largestEdge = edges[0];
-			f32 maxDistance = core::vector3df(camera->getPosition() - edges[0]).getLength();
-			f32 curDistance = 0.f;
-
-			for(int j = 1; j < 8; ++j)
+			for(int j = 0; j < 8; ++j)
 			{
-				curDistance = core::vector3df(camera->getPosition() - edges[j]).getLength();
-
-				if(curDistance > maxDistance)
+				if (frust.planes[scene::SViewFrustum::VF_FAR_PLANE].classifyPointRelation(edges[j]) == core::ISREL3D_FRONT)
 				{
-					maxDistance = curDistance;
-					largestEdge = edges[j];
+					drawShadow = false;
+					break;
 				}
 			}
-
-			if (frust.planes[scene::SViewFrustum::VF_FAR_PLANE].classifyPointRelation(largestEdge) == core::ISREL3D_FRONT)
-				drawShadow = false;
 		}
 
 		if(drawShadow)
