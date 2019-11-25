@@ -274,7 +274,9 @@ the engine will no longer read .jpeg images. */
 
 //! Define _IRR_USE_NON_SYSTEM_JPEG_LIB_ to let irrlicht use the jpeglib which comes with irrlicht.
 /** If this is commented out, Irrlicht will try to compile using the jpeg lib installed in the system.
-	This is only used when _IRR_COMPILE_WITH_LIBJPEG_ is defined. */
+	This is only used when _IRR_COMPILE_WITH_LIBJPEG_ is defined.
+	NOTE: You will also have to modify the Makefile or project files when changing this default.
+	*/
 #define _IRR_USE_NON_SYSTEM_JPEG_LIB_
 #ifdef NO_IRR_USE_NON_SYSTEM_JPEG_LIB_
 #undef _IRR_USE_NON_SYSTEM_JPEG_LIB_
@@ -290,7 +292,9 @@ the engine will no longer read .png images. */
 
 //! Define _IRR_USE_NON_SYSTEM_LIBPNG_ to let irrlicht use the libpng which comes with irrlicht.
 /** If this is commented out, Irrlicht will try to compile using the libpng installed in the system.
-	This is only used when _IRR_COMPILE_WITH_LIBPNG_ is defined. */
+	This is only used when _IRR_COMPILE_WITH_LIBPNG_ is defined.
+	NOTE: You will also have to modify the Makefile or project files when changing this default.
+	*/
 #define _IRR_USE_NON_SYSTEM_LIB_PNG_
 #ifdef NO_IRR_USE_NON_SYSTEM_LIB_PNG_
 #undef _IRR_USE_NON_SYSTEM_LIB_PNG_
@@ -685,8 +689,10 @@ ones. */
 #endif
 //! Define _IRR_USE_NON_SYSTEM_ZLIB_ to let irrlicht use the zlib which comes with irrlicht.
 /** If this is commented out, Irrlicht will try to compile using the zlib
-installed on the system. This is only used when _IRR_COMPILE_WITH_ZLIB_ is
-defined. */
+	installed on the system. This is only used when _IRR_COMPILE_WITH_ZLIB_ is
+	defined.
+	NOTE: You will also have to modify the Makefile or project files when changing this default.
+ */
 #define _IRR_USE_NON_SYSTEM_ZLIB_
 #ifdef NO_IRR_USE_NON_SYSTEM_ZLIB_
 #undef _IRR_USE_NON_SYSTEM_ZLIB_
@@ -707,7 +713,9 @@ library. */
 //! Define _IRR_USE_NON_SYSTEM_BZLIB_ to let irrlicht use the bzlib which comes with irrlicht.
 /** If this is commented out, Irrlicht will try to compile using the bzlib
 installed on the system. This is only used when _IRR_COMPILE_WITH_BZLIB_ is
-defined. */
+defined.
+NOTE: You will also have to modify the Makefile or project files when changing this default.
+*/
 #define _IRR_USE_NON_SYSTEM_BZLIB_
 #ifdef NO_IRR_USE_NON_SYSTEM_BZLIB_
 #undef _IRR_USE_NON_SYSTEM_BZLIB_
