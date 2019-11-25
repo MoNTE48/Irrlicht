@@ -112,17 +112,16 @@ int main()
 	*/
 
 	// create light
-
-	node = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
+	scene::ILightSceneNode * lightNode  = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
 		video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 800.0f);
 	scene::ISceneNodeAnimator* anim = 0;
-	anim = smgr->createFlyCircleAnimator (core::vector3df(0,150,0),250.0f);
-	node->addAnimator(anim);
+	anim = smgr->createFlyCircleAnimator (core::vector3df(0,150,0),250.0f, 0.0005f);
+	lightNode ->addAnimator(anim);
 	anim->drop();
 
 	// attach billboard to light
 
-	node = smgr->addBillboardSceneNode(node, core::dimension2d<f32>(50, 50));
+	node = smgr->addBillboardSceneNode(lightNode, core::dimension2d<f32>(50, 50));
 	node->setMaterialFlag(video::EMF_LIGHTING, false);
 	node->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR);
 	node->setMaterialTexture(0, driver->getTexture(mediaPath + "particlewhite.bmp"));
@@ -259,14 +258,28 @@ int main()
 	anode->setPosition(core::vector3df(-50,20,-60));
 	anode->setAnimationSpeed(15);
 
+	/* 
+	Shadows still have to be drawn even then the node causing them is not visible itself.
+	We have to disable culling if the node is animated or it's transformations change
+	as otherwise the shadow is not updated correctly.
+	If you have many objects and this becomes a speed problem you will have to figure 
+	out some manual culling (for exampling hiding all objects beyond a certain distance).
+	*/
+	anode->setAutomaticCulling(scene::EAC_OFF);
+
 	// add shadow
 	anode->addShadowVolumeSceneNode();
 	smgr->setShadowColor(video::SColor(150,0,0,0));
 
-	// make the model a little bit bigger and normalize its normals
-	// because of the scaling, for correct lighting
+	// make the model a bit bigger 
 	anode->setScale(core::vector3df(2,2,2));
+	// because of the scaling we have to normalize its normals for correct lighting
 	anode->setMaterialFlag(video::EMF_NORMALIZE_NORMALS, true);
+
+	// let the dwarf slowly rotate around it's y axis
+	scene::ISceneNodeAnimator* ra = smgr->createRotationAnimator(irr::core::vector3df(0, 0.1f, 0));
+	anode->addAnimator(ra);
+	ra->drop();
 
 	/*
 	Finally we simply have to draw everything, that's all.

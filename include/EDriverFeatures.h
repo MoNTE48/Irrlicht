@@ -142,6 +142,9 @@ namespace video
 		//! Support for filtering across different faces of the cubemap
 		EVDF_TEXTURE_CUBEMAP_SEAMLESS,
 
+		//! Support for clamping vertices beyond far-plane to depth instead of capping them.
+		EVDF_DEPTH_CLAMP,
+
 		//! Only used for counting the elements of this enum
 		EVDF_COUNT
 	};

@@ -3289,6 +3289,11 @@ void COpenGLDriver::drawStencilShadowVolume(const core::array<core::vector3df>& 
 #ifdef GL_NV_depth_clamp
 	if (FeatureAvailable[IRR_NV_depth_clamp])
 		glEnable(GL_DEPTH_CLAMP_NV);
+#elif defined(GL_ARB_depth_clamp)
+	if (FeatureAvailable[IRR_ARB_depth_clamp])
+	{
+		glEnable(GL_DEPTH_CLAMP);
+	}
 #endif
 
 	// The first parts are not correctly working, yet.
@@ -3370,6 +3375,11 @@ void COpenGLDriver::drawStencilShadowVolume(const core::array<core::vector3df>& 
 #ifdef GL_NV_depth_clamp
 	if (FeatureAvailable[IRR_NV_depth_clamp])
 		glDisable(GL_DEPTH_CLAMP_NV);
+#elif defined(GL_ARB_depth_clamp)
+	if (FeatureAvailable[IRR_ARB_depth_clamp])
+	{
+		glDisable(GL_DEPTH_CLAMP);
+	}
 #endif
 
 	glDisable(GL_POLYGON_OFFSET_FILL);

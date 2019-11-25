@@ -1387,6 +1387,9 @@
     <ClInclude Include="..\..\include\SOverrideMaterial.h">
       <Filter>include\video</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\IOctreeSceneNode.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\changes.txt">

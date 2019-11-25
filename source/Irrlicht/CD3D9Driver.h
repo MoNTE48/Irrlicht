@@ -321,7 +321,7 @@ namespace video
 
 	private:
 
-		//! enumeration for rendering modes such as 2d and 3d for minizing the switching of renderStates.
+		//! enumeration for rendering modes such as 2d and 3d for minimizing the switching of renderStates.
 		enum E_RENDER_MODE
 		{
 			ERM_NONE = 0,	// no render state has been set yet.
@@ -415,7 +415,7 @@ namespace video
 		bool Transformation3DChanged;
 		const ITexture* CurrentTexture[MATERIAL_MAX_TEXTURES];
 		bool LastTextureMipMapsAvailable[MATERIAL_MAX_TEXTURES];
-		core::matrix4 Matrices[ETS_COUNT]; // matrizes of the 3d mode we need to restore when we switch back from the 2d mode.
+		core::matrix4 Matrices[ETS_COUNT]; // matrices of the 3d mode we need to restore when we switch back from the 2d mode.
 
 		HINSTANCE D3DLibrary;
 		IDirect3D9* pID3D;
@@ -459,7 +459,7 @@ namespace video
 		bool AlphaToCoverageSupport;
 	};
 
-	//! This bridge between Irlicht pseudo D3D9 calls
+	//! This bridge between Irrlicht pseudo D3D9 calls
 	//! and true D3D9 calls.
 
 	class CD3D9CallBridge

@@ -38,6 +38,8 @@ namespace scene
 		Note that the matrix will only stay as set by this method until
 		one of the following Methods are called: setNearValue,
 		setFarValue, setAspectRatio, setFOV.
+		NOTE: The frustum is not updated before render() is called
+		unless you explicitly call updateMatrices()
 		\param projection The new projection matrix of the camera.
 		\param isOrthogonal Set this to true if the matrix is an
 		orthogonal one (e.g. from matrix4::buildProjectionMatrixOrtho).
