@@ -21,8 +21,34 @@ static bool testWithDriver(video::E_DRIVER_TYPE driverType)
 
 	logTestString("Testing driver %ls\n", driver->getName());
 
-	const char* const ps1="struct PS_INPUT\n {\n float4 Position      : POSITION0;\n };\n\n struct PS_OUTPUT\n {\n float4   Color      : COLOR0;\n float4   Normal      : COLOR1;\n float4   Depth      : COLOR2;\n };\n PS_OUTPUT pixelMain( PS_INPUT Input )\n {\n PS_OUTPUT Output;\n Output.Color = float4(1.0,1.0,1.0,1.0);\n Output.Normal = float4(0.0,1.0,0.0,1.0);\n Output.Depth = float4(0.0,0.0,1.0,1.0);\n return Output;\n }";
-	const char* const ps2="void main(void)\n {\n gl_FragData[0] = vec4(1.0,1.0,1.0,1.0);\n gl_FragData[1] = vec4(0.0,1.0,0.0,1.0);\n gl_FragData[2] = vec4(0.0,0.0,1.0,1.0);\n }";
+	// write white to first render-texture, green to second, blue to third
+	const char* const psHLSL =
+		"struct PS_INPUT\n"\
+		"{\n"\
+		"	float4 Position     : POSITION0;\n"\
+		"};\n"\
+		"struct PS_OUTPUT\n"\
+		"{\n "\
+		"	float4   Color      : COLOR0;\n"\
+		"	float4   Normal     : COLOR1;\n"\
+		"	float4   Depth      : COLOR2;\n"\
+		"};\n"\
+		"PS_OUTPUT pixelMain( PS_INPUT Input )\n"\
+		"{\n"\
+		"	PS_OUTPUT Output;\n"\
+		"	Output.Color = float4(1.0,1.0,1.0,1.0);\n"\
+		"	Output.Normal = float4(0.0,1.0,0.0,1.0);\n"\
+		"	Output.Depth = float4(0.0,0.0,1.0,1.0);\n"\
+		"	return Output;\n"\
+		"}";
+
+	const char* const psGLSL = 
+		"void main(void)\n"\
+		"{\n"\
+		"	gl_FragData[0] = vec4(1.0,1.0,1.0,1.0);\n"\
+		"	gl_FragData[1] = vec4(0.0,1.0,0.0,1.0);\n"\
+		"	gl_FragData[2] = vec4(0.0,0.0,1.0,1.0);\n"\
+		"}";
 
 	// variable
 	video::IRenderTarget* renderTarget = 0;
@@ -51,7 +77,7 @@ static bool testWithDriver(video::E_DRIVER_TYPE driverType)
 		{
 			newMaterialType = gpu->addHighLevelShaderMaterial(
 				0, "vertexMain", video::EVST_VS_1_1,
-				driverType==video::EDT_DIRECT3D9?ps1:ps2, "pixelMain", video::EPST_PS_1_1);
+				driverType==video::EDT_DIRECT3D9?psHLSL:psGLSL, "pixelMain", video::EPST_PS_1_1);
 		}
 	}
 
