@@ -154,9 +154,9 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 			relativeRotation.X -= (CenterCursor.Y - CursorPos.Y) * RotateSpeed * MouseYDirection;
 
 			// Do the fix as normal, special case below
-			// reset cursor position to the centre of the window.
+			// reset cursor position to the center of the window.
 			CursorControl->setPosition(0.5f, 0.5f);
-			CenterCursor = CursorControl->getRelativePosition();
+			CenterCursor = CursorControl->getRelativePosition(false);	// often no longer 0.5 due to int/float conversions
 
 			// needed to avoid problems when the event receiver is disabled
 			CursorPos = CenterCursor;
@@ -174,7 +174,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 		{
 			// Force a reset.
 			CursorControl->setPosition(0.5f, 0.5f);
-			CenterCursor = CursorControl->getRelativePosition();
+			CenterCursor = CursorControl->getRelativePosition(false);	// often no longer 0.5 due to int/float conversions
 			CursorPos = CenterCursor;
  		}
 	}
