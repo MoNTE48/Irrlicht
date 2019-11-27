@@ -139,9 +139,6 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	f32 timeDiff = (f32) ( timeMs - LastAnimationTime );
 	LastAnimationTime = timeMs;
 
-	// update position
-	core::vector3df pos = camera->getPosition();
-
 	// Update rotation
 	core::vector3df target = (camera->getTarget() - camera->getAbsolutePosition());
 	core::vector3df relativeRotation = target.getHorizontalAngle();
@@ -199,11 +196,9 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 		relativeRotation.X = MaxVerticalAngle;
 	}
 
-
 	// set target
-
-	target.set(0,0, core::max_(1.f, pos.getLength()));
-	core::vector3df movedir = target;
+	target.set(0,0,1);
+	core::vector3df movedir(target);
 
 	core::matrix4 mat;
 	mat.setRotationDegrees(core::vector3df(relativeRotation.X, relativeRotation.Y, 0));
@@ -221,6 +216,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	movedir.normalize();
 
+	core::vector3df pos = camera->getPosition();
 	if (CursorKeys[EKA_MOVE_FORWARD])
 		pos += movedir * timeDiff * MoveSpeed;
 
@@ -229,7 +225,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	// strafing
 
-	core::vector3df strafevect = target;
+	core::vector3df strafevect(target);
 	strafevect = strafevect.crossProduct(camera->getUpVector());
 
 	if (NoVerticalMovement)
