@@ -148,31 +148,30 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	if (CursorControl)
 	{
+		bool reset = false;
+
 		if (CursorPos != CenterCursor)
 		{
 			relativeRotation.Y -= (CenterCursor.X - CursorPos.X) * RotateSpeed;
 			relativeRotation.X -= (CenterCursor.Y - CursorPos.Y) * RotateSpeed * MouseYDirection;
 
-			// Do the fix as normal, special case below
-			// reset cursor position to the center of the window.
-			CursorControl->setPosition(0.5f, 0.5f);
-			CenterCursor = CursorControl->getRelativePosition(false);	// often no longer 0.5 due to int/float conversions
-
-			// needed to avoid problems when the event receiver is disabled
-			CursorPos = CenterCursor;
+			reset = true;
 		}
 
-		// Special case, mouse is whipped outside of window before it can update.
-		video::IVideoDriver* driver = smgr->getVideoDriver();
-		core::vector2d<u32> mousepos(u32(CursorControl->getPosition().X), u32(CursorControl->getPosition().Y));
-		core::rect<u32> screenRect(0, 0, driver->getScreenSize().Width, driver->getScreenSize().Height);
+		if ( !reset )
+		{
+			// Special case, mouse is whipped outside of window before it can update.
+			video::IVideoDriver* driver = smgr->getVideoDriver();
+			const core::position2d<s32> cursorPos(CursorControl->getPosition());
+			core::vector2d<u32> mousepos(u32(cursorPos.X), u32(cursorPos.Y));
+			core::rect<u32> screenRect(0, 0, driver->getScreenSize().Width, driver->getScreenSize().Height);
 
-		// Only if we are moving outside quickly.
-		bool reset = !screenRect.isPointInside(mousepos);
+			// Only if we are moving outside quickly.
+			reset = !screenRect.isPointInside(mousepos);
+		}
 
 		if(reset)
 		{
-			// Force a reset.
 			CursorControl->setPosition(0.5f, 0.5f);
 			CenterCursor = CursorControl->getRelativePosition(false);	// often no longer 0.5 due to int/float conversions
 			CursorPos = CenterCursor;
