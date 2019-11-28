@@ -256,8 +256,8 @@ bool CMS3DMeshFileLoader::load(io::IReadFile* file)
 #else
 		vertices[tmp].Vertex[2] = -vertices[tmp].Vertex[2];
 #endif
-	        // Go to the next vertex structure
-	        pPtr += sizeof(struct MS3DVertex) - MS3DVERTEX_NUM_PAD_BYTES;
+		// Go to the next vertex structure
+		pPtr += sizeof(struct MS3DVertex) - MS3DVERTEX_NUM_PAD_BYTES;
 	}
 
 	// triangles
@@ -295,8 +295,8 @@ bool CMS3DMeshFileLoader::load(io::IReadFile* file)
 		triangles[tmp].VertexNormals[1][2] = -triangles[tmp].VertexNormals[1][2];
 		triangles[tmp].VertexNormals[2][2] = -triangles[tmp].VertexNormals[2][2];
 #endif
-	        // Go to the next triangle structure
-	        pPtr += sizeof(struct MS3DTriangle) - MS3DTRIANGLE_NUM_PAD_BYTES;
+		// Go to the next triangle structure
+		pPtr += sizeof(struct MS3DTriangle) - MS3DTRIANGLE_NUM_PAD_BYTES;
 	}
 
 	// groups
