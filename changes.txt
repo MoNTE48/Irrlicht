@@ -75,12 +75,12 @@ Changes in 1.9 (not yet released)
 - ISceneManager::getMesh can now creates meshes with alternative cache-names.
 - Lets the BSP loader find textures inserted with relative paths. Thx@ curaga for patch
 - Slightly simplified ALLOC_STRATEGY_DOUBLE in arrays
-- Add alternavive BoundingBox calculation for BillboardSceneNode which can take in a camera node. Thx @Seven and @JacKDuRdEn for bugreports.
+- Add alternative BoundingBox calculation for BillboardSceneNode which can take in a camera node. Thx @Seven and @JacKDuRdEn for bugreports.
 - FPS camera now supports keyboard rotation.
 - Base FPS-camera movement on last position of mouse instead of always center (works better on platforms where cursor-placement is not allowed)
 - Octrees with other vertex types than EVT_2TCOORDS can now also use VBO's.
 - Add IOctreeSceneNode interface to control parameters like VBO usage and polygon clipping checks for octree scene nodes.
-- Add support for different geometric primitivs to meshbuffers. Thanks @gerdb for patch proposal (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=45999)
+- Add support for different geometric primitives to meshbuffers. Thanks @gerdb for patch proposal (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=45999)
 - change SEvent::SUserEvent.UserData1 and SEvent::SUserEvent.UserData1 from s32 to size_t to avoid cutting numbers on some 64-bit platforms (SDL and Windows)
 - Improve speed of draw3DBox (OpenGL and D3D9). Thanks @zerochen for patch (https://sourceforge.net/p/irrlicht/patches/256)
 - Support more keys on OSX "[]\". Thanks @neoascetic for patch (#313).
@@ -107,7 +107,7 @@ Changes in 1.9 (not yet released)
     Several examples got adapted for new ranges.
   - Pausing timer now pauses animator. Also doesn't reset values anymore with pauses.
   - Clones no longer have 1000 times the gravity of original animator.
-should now be fps independentn
+  - Should now be fps independent
 - Speedup CTriangleSelector (mainly for animated meshes)
 - CTriangleSelector now supports 32-bit meshbuffers. Thanks @Wol101 for reporting and patch-proposal.
 - Fix: CTriangleSelector no longer resets it's boundingbox to 0,0,0 (was wrong when a meshbuffer was not around 0)
@@ -134,7 +134,7 @@ should now be fps independentn
 - Fix skinned meshes not playing their last frame. Also clarified animation documentation to describe current behavior more exactly.
 - Add IWriteFile::flush interface (thx @ JLouisB for the patch).
 - CLightSceneNode::updateAbsolutePosition does now light recalculations. This is to fix using animators with lights.
-- Fix collada export for objects with rotations around more than 1 axis.
+- Fix Collada export for objects with rotations around more than 1 axis.
 - Add ISceneNodeAnimatorCameraMaya::setTargetMinDistance and getTargetMinDistance.
 - Add override font to IGUITreeView
 - CGUIComboBox now updates selection-list when font changes while it's open (thx @ rubixcuber for bugreport)
@@ -163,7 +163,7 @@ should now be fps independentn
 - mtl (obj) format reader and write now regards texture scaling and translation. (thx @thanhle for noticing and patch proposal).
 - Added Visual Studio 2013 project files.
 - Added new color formats: ECF_R8, ECF_R8G8, ECF_D16, ECF_D32, ECF_D24S8.
-- Can now enable/disable backround drawing for IGUITable.
+- Can now enable/disable background drawing for IGUITable.
 - Bugfix: Cloning CBillboardSceneNode now copies colors and sizes.
 - EditBox works now with numpad on X11
 - Added helper functions for converting between wchar and utf-8. Patch provided by Hendu.
@@ -223,7 +223,7 @@ should now be fps independentn
 - Add IGUIElement::isTrulyVisible which works like ISceneNode::isTrulyVisible and checks for parent visibility as well.
 - Improved DDS loader and added support for DXTn (DXT1-5) compressed textures in OpenGL and Direct3D9 drivers.
 - Add function ISceneNode::getTransformedBoundingBoxEdges.
-- Improve automatic compiling under solaris (proposed by curaga)
+- Improve automatic compiling under Solaris (proposed by curaga)
 - Add in IGUICheckBox: setDrawBackground, isDrawBackgroundEnabled, setDrawBorder, isDrawBorderEnabled
 - IGUISpinBox now passes on the EGET_BUTTON_CLICKED, EGET_EDITBOX_CHANGED and EGET_EDITBOX_ENTER events from it's sub-elements.
 - IGUISpinBox no longer validates values after each character type but only on KEY_ENTER and when losing focus. New behavior can be set with IGUISpinBox::setValidateOn
