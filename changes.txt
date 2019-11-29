@@ -1,5 +1,8 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- IGeometryCreator::createCubeMesh has a new parameter to allow creating different types of cube meshes. 
+  Added a new cube-mesh with meshbuffers per side.
+  Also single buffer cube-mesh now normalizes it's normals.
 - Bugfix: CBillboardTextSceneNode no longer disregards IsVisible flag
 - FPS-camera movement now smoother (it would sometimes skip back because it worked with wrong values for the screen-center position).
 - Fix ms3d loader to work on big endian systems which need floats to be aligned in memory. Thanks @ kas1e, Corto and Salas for the patch (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52538).
@@ -7,6 +10,7 @@ Changes in 1.9 (not yet released)
 - Bugfix: OpenGL no longer antialiasing stencil buffer when driver has antialiasing disabled.
 - Add IShadowVolumeSceneNode::setOptimization to allow disabling optimizations for meshes were contour shadows fail.
 - Stencil shadows work now also with directional light
+- Add example 27.PostProcessing written by Boshen Guan
 - Drivers can now try to create textures from images in more exotic color formats (like floating point formats).  It depends on the driver how much that works (so far mainly OpenGL can handle it somewhat).
 - Fix OpenGL to no longer switch colors red and blue in 24-bit RGB format. But warnings added to documentation to avoid 24-bit textures as they are generally just trouble.
 - No longer try to convert ECF_R5G6B5 to ECF_A1R5G5B5 on OpenGL (just made texture-loading seem to fail).
