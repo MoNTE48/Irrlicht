@@ -1,5 +1,6 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Bugfix: CBillboardTextSceneNode no longer disregards IsVisible flag
 - FPS-camera movement now smoother (it would sometimes skip back because it worked with wrong values for the screen-center position).
 - Fix ms3d loader to work on big endian systems which need floats to be aligned in memory. Thanks @ kas1e, Corto and Salas for the patch (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52538).
 - Bugfix: COBJMeshFileLoder no longer overwrites transparency value with 1.0 when it's set before the diffuse color value in the mtl file. Thanks @Boshen for bugreport (#445).

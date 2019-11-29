@@ -373,8 +373,11 @@ void CBillboardTextSceneNode::updateMesh(const irr::scene::ICameraSceneNode* cam
 
 void CBillboardTextSceneNode::OnRegisterSceneNode()
 {
-	SceneManager->registerNodeForRendering(this, ESNRP_TRANSPARENT);
-	ISceneNode::OnRegisterSceneNode();
+	if (IsVisible && Font && Mesh)
+	{
+		SceneManager->registerNodeForRendering(this, ESNRP_TRANSPARENT);
+		ISceneNode::OnRegisterSceneNode();
+	}
 }
 
 
