@@ -252,6 +252,11 @@ ITexture* CSoftwareDriver::createDeviceDependentTexture(const io::path& name, II
 	return texture;
 }
 
+ITexture* CSoftwareDriver::createDeviceDependentTextureCubemap(const io::path& name, const core::array<IImage*>& image)
+{
+	return 0;
+}
+
 bool CSoftwareDriver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SColor clearColor, f32 clearDepth, u8 clearStencil)
 {
 	if (target && target->getDriverType() != EDT_SOFTWARE)

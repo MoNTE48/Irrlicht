@@ -176,6 +176,7 @@ namespace video
 		//bool setTexture(u32 stage, video::ITexture* texture);
 
 		virtual ITexture* createDeviceDependentTexture(const io::path& name, IImage* image) _IRR_OVERRIDE_;
+		virtual ITexture* createDeviceDependentTextureCubemap(const io::path& name, const core::array<IImage*>& image) _IRR_OVERRIDE_;
 
 		video::CImage* BackBuffer;
 		video::IImagePresenter* Presenter;
