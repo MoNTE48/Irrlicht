@@ -471,13 +471,13 @@ int main()
 		switch( driverType )
 		{
 			case video::EDT_DIRECT3D9:
-				vsFileName = mediaPath + "IS_cubeMapReflectionVS.hlsl";
-				psFileName = mediaPath + "IS_cubeMapReflectionPS.hlsl";
+				vsFileName = mediaPath + "cubeMapReflectionVS.hlsl";
+				psFileName = mediaPath + "cubeMapReflectionPS.hlsl";
 				break;
 
 			case video::EDT_OPENGL:
-				vsFileName = mediaPath + "IS_cubeMapReflection.vert";
-				psFileName = mediaPath + "IS_cubeMapReflection.frag";
+				vsFileName = mediaPath + "cubeMapReflection.vert";
+				psFileName = mediaPath + "cubeMapReflection.frag";
 				break;
 		}	
 
