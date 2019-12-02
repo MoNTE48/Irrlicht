@@ -1667,11 +1667,12 @@ void CIrrDeviceWin32::getWindowsVersion(core::stringc& out)
 					(LPBYTE) szProductType, &dwBufLen);
 			RegCloseKey( hKey );
 
-			if (_strcmpi( "WINNT", szProductType) == 0 )
+			
+			if (irr::core::stringc("WINNT").equals_ignore_case(szProductType))
 				out.append("Professional ");
-			if (_strcmpi( "LANMANNT", szProductType) == 0)
+			if (irr::core::stringc("LANMANNT").equals_ignore_case(szProductType))
 				out.append("Server ");
-			if (_strcmpi( "SERVERNT", szProductType) == 0)
+			if (irr::core::stringc("SERVERNT").equals_ignore_case(szProductType))
 				out.append("Advanced Server ");
 		}
 

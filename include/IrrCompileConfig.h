@@ -827,9 +827,8 @@ precision will be lower but speed higher. currently X86 only
 #if defined(__BORLANDC__)
 	#include <tchar.h>
 
-	// Borland 5.5.1 does not have _strcmpi defined
+	// Borland 5.5.1
 	#if __BORLANDC__ == 0x551
-	//    #define _strcmpi strcmpi
 		#undef _tfinddata_t
 		#undef _tfindfirst
 		#undef _tfindnext
