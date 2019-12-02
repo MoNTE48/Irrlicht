@@ -23,14 +23,14 @@ using namespace irr;
 
 /*
 	A callback class for our cubemap shader.
-	We need a shader material which maps the cubemap texture to 
-	the polygon vertices of objects. 
+	We need a shader material which maps the cubemap texture to
+	the polygon vertices of objects.
 */
 class CubeMapReflectionCallback : public video::IShaderConstantSetCallBack
 {
 public:
-	CubeMapReflectionCallback(scene::ISceneManager* smgr, int styleUVW) 
-		: SceneMgr(smgr) 
+	CubeMapReflectionCallback(scene::ISceneManager* smgr, int styleUVW)
+		: SceneMgr(smgr)
 		, StyleUVW(styleUVW), Roughness(0.f)
 		, styleUvwID(-1) , worldViewProjID(-1), worldID(-1), cameraPosID(-1)
 	{}
@@ -39,7 +39,7 @@ public:
 		Setting the style to map vertex UV-coordinates to the cubemap textures.
 		- Specular style is typically used for mirrors and highlight reflections.
 		- Diffuse style is commonly used in image based lighting calculations and
-		often in combination with a higher roughness. Think of it as the sum of all 
+		often in combination with a higher roughness. Think of it as the sum of all
 		light which reaches a point on your object.
 		- Using model vertices directly for UV's is just nice for testing sometimes.
 		Maybe has more uses? Experiment around :-)
@@ -56,9 +56,9 @@ public:
 
 	/*
      We could also call this sharpness as the rougher a material the less
-	 sharp the reflections of a cubemap are (light for rough materials 
+	 sharp the reflections of a cubemap are (light for rough materials
 	 spreads out more while smooth materials reflect it more like a mirror).
-	 Roughness is calculated using the mipmaps of the cubemap texture. 
+	 Roughness is calculated using the mipmaps of the cubemap texture.
 	 Note that rendertarget cubemap textures won't have mipmaps, so unfortunately
 	 it won't work for those.
 	 Also currently only OpenGL is able to interpolate seamless over cubemap borders.
@@ -109,7 +109,7 @@ public:
 			worldViewProj *= world;
 			services->setVertexShaderConstant(worldViewProjID, worldViewProj.pointer(), 16);
 		}
-		
+
 		core::vector3df cameraPos = SceneMgr->getActiveCamera()->getAbsolutePosition();
 		services->setVertexShaderConstant(cameraPosID, &cameraPos.X, 3 );
 		services->setPixelShaderConstant(roughnessID, &Roughness, 1 );
@@ -128,20 +128,20 @@ private:
 	irr::s32 roughnessID;
 };
 
-/* 
-	To keep the example compact our event-receiver acts also like a main 
+/*
+	To keep the example compact our event-receiver acts also like a main
 	application class. So it handles user input, updates the dynamic parts of
 	the UI and it keeps some 3d nodes around.
 */
 class MyEventReceiver : public IEventReceiver
 {
 public:
-	MyEventReceiver() : Driver(0), Shader(0) 
+	MyEventReceiver() : Driver(0), Shader(0)
 		,BackgroundSkybox(0), BackgroundCube(0)
 		, CubemapUpdates(0)
 		, CurrentStyleUVW(0), CurrentRoughness(0)
 		, NeedCubemapUpdate(true)
-	{ 
+	{
 		StyleNamesUVW.push_back( L"specular" );
 		StyleNamesUVW.push_back( L"diffuse" );
 		StyleNamesUVW.push_back( L"model coordinates" );
@@ -193,7 +193,7 @@ public:
 				}
 				break;
 			case KEY_KEY_U:
-				// Switch dynamic cubemap updates on/off. 
+				// Switch dynamic cubemap updates on/off.
 				CubemapUpdates = (CubemapUpdates+1) % 3;
 				updateCubemapUpdates();
 				break;
@@ -244,7 +244,7 @@ public:
 		}
 	}
 
-	void updateSeamless() 
+	void updateSeamless()
 	{
 		if ( CurrentSeamlessCubemap && Driver )
 		{
@@ -279,7 +279,7 @@ public:
 	}
 
 	// Add some text-node floating above it's parent node.
-	void addInfoTextNode(irr::gui::IGUIFont* font,wchar_t* text, irr::scene::ISceneNode* parent)
+	void addInfoTextNode(irr::gui::IGUIFont* font, const wchar_t* text, irr::scene::ISceneNode* parent)
 	{
 		if ( parent )
 		{
@@ -328,7 +328,7 @@ private:
 	CUBEMAP_UPSIDE_DOWN_GL_PROJECTION is relatively fast as it just changes the project matrix. The problem is that changing the projection matrix
 	means changing front/backside culling. So every node rendered has to flip the material flags for those.
 
-	CUBEMAP_USPIDE_DOWN_RTT will change the texture memory itself and flip the image upside-down. 
+	CUBEMAP_USPIDE_DOWN_RTT will change the texture memory itself and flip the image upside-down.
 	While easier to do, this involves texture-locking and is very slow.
 */
 #define CUBEMAP_UPSIDE_DOWN_GL_PROJECTION
@@ -365,7 +365,7 @@ void renderEnvironmentCubeMap(irr::video::IVideoDriver* driver, irr::scene::ICam
 	smgr->setActiveCamera( cubeMapCamera );
 
 	/*
-		We want to see everything around the center node, so hide the node 
+		We want to see everything around the center node, so hide the node
 		itself, otherwise it would be in the way.
 		Then set the camera to that node's position.
 	*/
@@ -374,10 +374,10 @@ void renderEnvironmentCubeMap(irr::video::IVideoDriver* driver, irr::scene::ICam
 	cubeMapCamera->setPosition( center );
 
 	/*
-		Render all 6 directions. Which means simple setting the camera target/up 
-		vector to all 6 directions and then render the full scene each time. 
-		So yeah - updating an environment cube-map means 6 full renders for each 
-		object which needs an environment map. In other words - you generally only 
+		Render all 6 directions. Which means simple setting the camera target/up
+		vector to all 6 directions and then render the full scene each time.
+		So yeah - updating an environment cube-map means 6 full renders for each
+		object which needs an environment map. In other words - you generally only
 		want to do that in pre-processing, not in realtime.
 	*/
 	const core::vector3df targetVecs[6] = {
@@ -401,13 +401,13 @@ void renderEnvironmentCubeMap(irr::video::IVideoDriver* driver, irr::scene::ICam
 	{
 		cubeMapCamera->setUpVector( upVecs[s] );
 		cubeMapCamera->setTarget( center + targetVecs[s] );
-		// Here we tell into which side of the cubemap texture we want to write 
+		// Here we tell into which side of the cubemap texture we want to write
 		cubeMapRT->setTexture(dynamicCubeMapRTT, depthStencilRTT, (video::E_CUBE_SURFACE)(video::ECS_POSX + s));
 		driver->setRenderTargetEx(cubeMapRT, video::ECBF_ALL);
 		smgr->drawAll();
 
 #ifdef CUBEMAP_USPIDE_DOWN_RTT
-		// This works because the lock for rtt's always flips in Irrlicht. 
+		// This works because the lock for rtt's always flips in Irrlicht.
 		// So in this case lock() unlock will result in a flipped texture
 		// But be warned - it's very, very slow!
 		driver->setRenderTarget(0);	// to avoid accessing active rt
@@ -438,7 +438,7 @@ int main()
 	const core::dimension2d<u32> dimDevice(1024, 768);
 	IrrlichtDevice* device = createDevice( driverType, dimDevice, 32, false, false, false, &eventReceiver );
 	if (!device)
-		return 1; 
+		return 1;
 
 	const io::path mediaPath = getExampleMediaPath();
 	video::IVideoDriver* driver = device->getVideoDriver();
@@ -458,14 +458,14 @@ int main()
 	if (font)
 		skin->setFont(font);
 
-	/* 
+	/*
 		Create a shader material for cube mapping
 	*/
 	video::IGPUProgrammingServices* gpu = driver->getGPUProgrammingServices();
 	s32 cubeMapReflectionMaterial = 0;
 	if( gpu )
 	{
-		// Decide on shader to use based on active driver 
+		// Decide on shader to use based on active driver
 		irr::io::path vsFileName;
 		irr::io::path psFileName;
 		switch( driverType )
@@ -479,7 +479,7 @@ int main()
 				vsFileName = mediaPath + "cubeMapReflection.vert";
 				psFileName = mediaPath + "cubeMapReflection.frag";
 				break;
-		}	
+		}
 
 		CubeMapReflectionCallback* cubeMapCB = new CubeMapReflectionCallback(smgr, 2);
 		cubeMapReflectionMaterial = gpu->addHighLevelShaderMaterialFromFiles(
@@ -489,7 +489,7 @@ int main()
 		if ( cubeMapReflectionMaterial >= 0 )
 			eventReceiver.Shader = cubeMapCB;
 		cubeMapCB->drop();
-	}	
+	}
 
 	// add fps camera
 	scene::ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS(0, 100.f, 1.f);
@@ -498,8 +498,8 @@ int main()
 
 	/*
 		Get 6 images forming a cubemap. The coordinate system used in those images
-		seemed to be different than the one in Irrlicht. I decided to leave it like 
-		that because it's pretty common that way. If you get cubemap textures which 
+		seemed to be different than the one in Irrlicht. I decided to leave it like
+		that because it's pretty common that way. If you get cubemap textures which
 		seem to have x/y/z axis named different you'll just have to experiment until
 		you figured out the correct order.
 	*/
@@ -510,7 +510,7 @@ int main()
 	cubeMapImages.push_back(driver->createImageFromFile( mediaPath + "cubemap_negy.jpg" ));
 	cubeMapImages.push_back(driver->createImageFromFile( mediaPath + "cubemap_posz.jpg" ));
 	cubeMapImages.push_back(driver->createImageFromFile( mediaPath + "cubemap_negz.jpg" ));
-	
+
 	/* Create a cubemap texture from those images. Note that 6 images become a single texture now. */
 	video::ITexture* cubeMapStaticTex = 0;
 	cubeMapStaticTex = driver->addTextureCubemap("cm", cubeMapImages[0], cubeMapImages[1], cubeMapImages[2], cubeMapImages[3], cubeMapImages[4], cubeMapImages[5]);
@@ -604,7 +604,7 @@ int main()
 
 
 
-	/* Another background for comparison and to make it more obvious 
+	/* Another background for comparison and to make it more obvious
 	when the spheres reflect the environment and when they use static cubemaps. */
 	scene::IMesh * cubeMesh = smgr->getGeometryCreator()->createCubeMesh( core::vector3df(10.f, 10.f, 10.f), scene::ECMT_6BUF_4VTX_NP);
 	smgr->getMeshManipulator()->scale(cubeMesh, core::vector3df(-1, 1, 1));
@@ -691,7 +691,7 @@ int main()
 		{
 			driver->beginScene(true, true, video::SColor(255, 127, 127, 255));
 
-			/* Check if we want to update the environment maps. 
+			/* Check if we want to update the environment maps.
 			   Usually not something you'll do every frame, but either once at the star
 			   or maybe updating an environment map once in a while.
 			*/
@@ -703,7 +703,7 @@ int main()
 				if ( driverType == video::EDT_OPENGL )
 				{
 					/*
-						Flipping projection matrix flips front/backface culling. 
+						Flipping projection matrix flips front/backface culling.
 						We only have a skybox so in this case this still would be fast, with more objects it's getting more ugly.
 					*/
 					smgr->getSceneNodesFromType(scene::ESNT_ANY, allNodes);
@@ -728,8 +728,8 @@ int main()
 						/*
 							Our rtt's unfortunately don't have mipmaps (sorry, not sure if we can get that somehow...)
 							So if we want mipmaps in the dynamic cubemap we have to copy it to a non-rtt texture.
-							Warning: Very, very slow. Far slower than just creating an environment map as this 
-							will copy the texture from GPU to main memory - copy it to a new texture, create mip-maps and 
+							Warning: Very, very slow. Far slower than just creating an environment map as this
+							will copy the texture from GPU to main memory - copy it to a new texture, create mip-maps and
 							upload the result back to the GPU.
 						 */
 						renderEnvironmentCubeMap(driver, cubeMapCamera, sphereNode3, cubeMapRT, dynamicCubeMapRTT_intermediate, depthStencilRTT);
@@ -745,7 +745,7 @@ int main()
 					}
 					sphereNode3->setVisible(true);
 				}
-				
+
 #ifdef CUBEMAP_UPSIDE_DOWN_GL_PROJECTION
 				if ( driverType == video::EDT_OPENGL )
 				{
@@ -753,7 +753,7 @@ int main()
 				}
 #endif
 			}
-			
+
 			smgr->drawAll();
 			env->drawAll();
 
@@ -762,7 +762,7 @@ int main()
 	}
 
 	device->drop();
-	
+
 	return 0;
 }
 
