@@ -1,5 +1,8 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Add example 28.CubeMapping. 
+  Based originally on EnvCubeMap example from irrSpintz engine. 
+  Including a cubemap texture from Emil Persson, aka Humus from http://www.humus.name
 - IGeometryCreator::createCubeMesh has a new parameter to allow creating different types of cube meshes. 
   Added a new cube-mesh with meshbuffers per side.
   Also single buffer cube-mesh now normalizes it's normals.

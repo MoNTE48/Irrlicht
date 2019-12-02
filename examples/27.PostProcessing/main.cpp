@@ -1,7 +1,5 @@
 /** Example 027 Post Processing
 
-@author Boshen Guan
-
 This tutorial shows how to implement post processing for D3D9 and OpenGL with 
 the engine. In order to do post processing, scene objects are firstly rendered
 to render target. With the help of screen quad, the render target texture
@@ -14,6 +12,8 @@ texture attached to it.
 
 A simple color inverse example is presented in this tutorial. The effect is 
 written in HLSL and GLSL.
+
+@author Boshen Guan
 
 We include all headers and define necessary variables as we have done before.
 */
