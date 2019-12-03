@@ -197,7 +197,8 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	}
 
 	// set target
-	target.set(0,0,1);
+	core::vector3df pos = camera->getPosition();
+	target.set(0,0, core::max_(1.f, pos.getLength()));	// better float precision than (0,0,1) in target-pos calculation in camera
 	core::vector3df movedir(target);
 
 	core::matrix4 mat;
@@ -216,7 +217,6 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	movedir.normalize();
 
-	core::vector3df pos = camera->getPosition();
 	if (CursorKeys[EKA_MOVE_FORWARD])
 		pos += movedir * timeDiff * MoveSpeed;
 
