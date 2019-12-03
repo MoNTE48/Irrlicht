@@ -138,7 +138,7 @@ class MyEventReceiver : public IEventReceiver
 public:
 	MyEventReceiver() : Driver(0), Shader(0)
 		,BackgroundSkybox(0), BackgroundCube(0)
-		, CubemapUpdates(0)
+		, CubemapUpdates(2)
 		, CurrentStyleUVW(0), CurrentRoughness(0)
 		, NeedCubemapUpdate(true)
 	{
