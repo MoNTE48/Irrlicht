@@ -9,6 +9,7 @@
 #include "ICursorControl.h"
 #include "ICameraSceneNode.h"
 #include "ISceneNodeAnimatorCollisionResponse.h"
+#include "os.h"
 
 namespace irr
 {
@@ -80,15 +81,6 @@ bool CSceneNodeAnimatorCameraFPS::OnEvent(const SEvent& evt)
 		}
 		break;
 
-	case EET_MOUSE_INPUT_EVENT:
-		if (evt.MouseInput.Event == EMIE_MOUSE_MOVED)
-		{
-			if ( CursorControl )
-				CursorPos = CursorControl->getRelativePosition();
-			return true;
-		}
-		break;
-
 	default:
 		break;
 	}
@@ -102,6 +94,8 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	if (!node || node->getType() != ESNT_CAMERA)
 		return;
 
+	timeMs = os::Timer::getRealTime(); // User input is always in real-time
+
 	ICameraSceneNode* camera = static_cast<ICameraSceneNode*>(node);
 
 	if (firstUpdate)
@@ -110,7 +104,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 		if (CursorControl )
 		{
 			CursorControl->setPosition(0.5f, 0.5f);
-			CursorPos = CenterCursor = CursorControl->getRelativePosition();
+			CursorPos = CenterCursor = CursorControl->getRelativePosition(false);
 		}
 
 		LastAnimationTime = timeMs;
@@ -135,6 +129,9 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	if(smgr && smgr->getActiveCamera() != camera)
 		return;
 
+	if ( CursorControl )
+		CursorPos = CursorControl->getRelativePosition();
+
 	// get time
 	f32 timeDiff = (f32) ( timeMs - LastAnimationTime );
 	LastAnimationTime = timeMs;
@@ -157,10 +154,13 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 		if ( !reset )
 		{
+			// TODO: not sure if this case is still needed. Might be it was only something
+			// that was necessary when someone tried to use mouse-events in the past.
+			// But not too expensive, test on all platforms before removing.
+
 			// Special case, mouse is whipped outside of window before it can update.
 			video::IVideoDriver* driver = smgr->getVideoDriver();
-			const core::position2d<s32> cursorPos(CursorControl->getPosition());
-			core::vector2d<u32> mousepos(u32(cursorPos.X), u32(cursorPos.Y));
+			core::vector2d<u32> mousepos(u32(CursorPos.X), u32(CursorPos.Y));
 			core::rect<u32> screenRect(0, 0, driver->getScreenSize().Width, driver->getScreenSize().Height);
 
 			// Only if we are moving outside quickly.
