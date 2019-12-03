@@ -29,7 +29,7 @@ bool renderMipLevels(video::E_DRIVER_TYPE driverType)
 	driver->setTextureCreationFlag(video::ETCF_AUTO_GENERATE_MIP_MAPS, false);
 
 	stabilizeScreenBackground(driver);
-	
+
 	logTestString("Testing driver %ls\n", driver->getName());
 
 	scene::ISceneNode* n = smgr->addCubeSceneNode();
@@ -55,7 +55,7 @@ bool renderMipLevels(video::E_DRIVER_TYPE driverType)
 					mipdata[index++]=val;
 			}
 		}
-		
+
 		image->setMipMapsData(mipdata, false, true);
 		video::ITexture* tex = driver->addTexture("miptest", image);
 		if (!tex)
@@ -422,9 +422,6 @@ bool lockCubemapTexture(video::E_DRIVER_TYPE driverType)
 				result = false;
 				break;
 			}
-			u32 b0 = bits[0].color;
-			u32 b2 = bits[2].color;
-
 			result &= ((bits[0].color == 0xff00ff00) && (bits[2].color == 0xff0000fd));
 			tex->unlock();
 		}
