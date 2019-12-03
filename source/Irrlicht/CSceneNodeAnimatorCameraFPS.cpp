@@ -9,6 +9,7 @@
 #include "ICursorControl.h"
 #include "ICameraSceneNode.h"
 #include "ISceneNodeAnimatorCollisionResponse.h"
+#include "os.h"
 
 namespace irr
 {
@@ -81,16 +82,11 @@ bool CSceneNodeAnimatorCameraFPS::OnEvent(const SEvent& evt)
 		break;
 
 	case EET_MOUSE_INPUT_EVENT:
-		if (evt.MouseInput.Event == EMIE_MOUSE_MOVED)
+		if ( evt.MouseInput.Event == EMIE_MOUSE_ENTER_CANVAS && CursorControl)
 		{
-			if ( CursorControl )
-				CursorPos = CursorControl->getRelativePosition();
-			return true;
-		}
-		if ( evt.MouseInput.Event == EMIE_MOUSE_ENTER_CANVAS)
-		{
-			resetCursorPos();
-			return false;
+			CursorControl->setPosition(0.5f, 0.5f);
+			CenterCursor = CursorControl->getRelativePosition(false);
+			CursorPos = CenterCursor;
 		}
 		break;
 
@@ -107,6 +103,8 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	if (!node || node->getType() != ESNT_CAMERA)
 		return;
 
+	timeMs = os::Timer::getRealTime(); // User input is always in real-time
+
 	ICameraSceneNode* camera = static_cast<ICameraSceneNode*>(node);
 
 	if (firstUpdate)
@@ -115,7 +113,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 		if (CursorControl )
 		{
 			CursorControl->setPosition(0.5f, 0.5f);
-			CursorPos = CenterCursor = CursorControl->getRelativePosition();
+			CursorPos = CenterCursor = CursorControl->getRelativePosition(false);
 		}
 
 		LastAnimationTime = timeMs;
@@ -140,12 +138,12 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	if(smgr && smgr->getActiveCamera() != camera)
 		return;
 
+	if ( CursorControl )
+		CursorPos = CursorControl->getRelativePosition();
+
 	// get time
 	f32 timeDiff = (f32) ( timeMs - LastAnimationTime );
 	LastAnimationTime = timeMs;
-
-	// update position
-	core::vector3df pos = camera->getPosition();
 
 	// Update rotation
 	core::vector3df target = (camera->getTarget() - camera->getAbsolutePosition());
@@ -153,33 +151,35 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	if (CursorControl)
 	{
+		bool reset = false;
+
 		if (CursorPos != CenterCursor)
 		{
 			relativeRotation.Y -= (CenterCursor.X - CursorPos.X) * RotateSpeed;
 			relativeRotation.X -= (CenterCursor.Y - CursorPos.Y) * RotateSpeed * MouseYDirection;
 
-			// Do the fix as normal, special case below
-			// reset cursor position to the centre of the window.
-			CursorControl->setPosition(0.5f, 0.5f);
-			CenterCursor = CursorControl->getRelativePosition();
-
-			// needed to avoid problems when the event receiver is disabled
-			CursorPos = CenterCursor;
+			reset = true;
 		}
 
-		// Special case, mouse is whipped outside of window before it can update.
-		video::IVideoDriver* driver = smgr->getVideoDriver();
-		core::vector2d<u32> mousepos(u32(CursorControl->getPosition().X), u32(CursorControl->getPosition().Y));
-		core::rect<u32> screenRect(0, 0, driver->getScreenSize().Width, driver->getScreenSize().Height);
+		if ( !reset )
+		{
+			// TODO: not sure if this case is still needed. Might be it was only something
+			// that was necessary when someone tried to use mouse-events in the past.
+			// But not too expensive, test on all platforms before removing.
 
-		// Only if we are moving outside quickly.
-		bool reset = !screenRect.isPointInside(mousepos);
+			// Special case, mouse is whipped outside of window before it can update.
+			video::IVideoDriver* driver = smgr->getVideoDriver();
+			core::vector2d<u32> mousepos(u32(CursorPos.X), u32(CursorPos.Y));
+			core::rect<u32> screenRect(0, 0, driver->getScreenSize().Width, driver->getScreenSize().Height);
+
+			// Only if we are moving outside quickly.
+			reset = !screenRect.isPointInside(mousepos);
+		}
 
 		if(reset)
 		{
-			// Force a reset.
 			CursorControl->setPosition(0.5f, 0.5f);
-			CenterCursor = CursorControl->getRelativePosition();
+			CenterCursor = CursorControl->getRelativePosition(false);	// often no longer 0.5 due to int/float conversions
 			CursorPos = CenterCursor;
  		}
 	}
@@ -205,11 +205,9 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 		relativeRotation.X = MaxVerticalAngle;
 	}
 
-
 	// set target
-
-	target.set(0,0, core::max_(1.f, pos.getLength()));
-	core::vector3df movedir = target;
+	target.set(0,0,1);
+	core::vector3df movedir(target);
 
 	core::matrix4 mat;
 	mat.setRotationDegrees(core::vector3df(relativeRotation.X, relativeRotation.Y, 0));
@@ -227,6 +225,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	movedir.normalize();
 
+	core::vector3df pos = camera->getPosition();
 	if (CursorKeys[EKA_MOVE_FORWARD])
 		pos += movedir * timeDiff * MoveSpeed;
 
@@ -235,7 +234,7 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 
 	// strafing
 
-	core::vector3df strafevect = target;
+	core::vector3df strafevect(target);
 	strafevect = strafevect.crossProduct(camera->getUpVector());
 
 	if (NoVerticalMovement)
@@ -277,14 +276,6 @@ void CSceneNodeAnimatorCameraFPS::animateNode(ISceneNode* node, u32 timeMs)
 	target += pos;
 	camera->setTarget(target);
 }
-
-void CSceneNodeAnimatorCameraFPS::resetCursorPos()
-{
-	CursorControl->setPosition(0.5f, 0.5f);
-	CenterCursor = CursorControl->getRelativePosition();
-	CursorPos = CenterCursor;
-}
-
 
 void CSceneNodeAnimatorCameraFPS::allKeysUp()
 {

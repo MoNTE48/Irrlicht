@@ -2265,6 +2265,10 @@ ITexture* CBurningVideoDriver::createDeviceDependentTexture(const io::path& name
 	return texture;
 }
 
+ITexture* CBurningVideoDriver::createDeviceDependentTextureCubemap(const io::path& name, const core::array<IImage*>& image)
+{
+	return 0;
+}
 
 //! Returns the maximum amount of primitives (mostly vertices) which
 //! the device is able to render with one drawIndexedTriangleList

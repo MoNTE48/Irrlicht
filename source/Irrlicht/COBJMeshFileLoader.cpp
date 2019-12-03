@@ -635,6 +635,7 @@ void COBJMeshFileLoader::readMTL(const c8* fileName, const io::path& relPath)
 					break;
 				case 'e':		// Ke = emissive
 					{
+						currMaterial->Meshbuffer->Material.EmissiveColor.setAlpha(255);
 						bufPtr=readColor(bufPtr, currMaterial->Meshbuffer->Material.EmissiveColor, bufEnd);
 					}
 					break;
@@ -707,7 +708,6 @@ const c8* COBJMeshFileLoader::readColor(const c8* bufPtr, video::SColor& color, 
 	const u32 COLOR_BUFFER_LENGTH = 16;
 	c8 colStr[COLOR_BUFFER_LENGTH];
 
-	color.setAlpha(255);
 	bufPtr = goAndCopyNextWord(colStr, bufPtr, COLOR_BUFFER_LENGTH, bufEnd);
 	color.setRed((s32)(core::fast_atof(colStr) * 255.0f));
 	bufPtr = goAndCopyNextWord(colStr,   bufPtr, COLOR_BUFFER_LENGTH, bufEnd);
