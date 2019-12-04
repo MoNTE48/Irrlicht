@@ -1331,7 +1331,7 @@ IGUITabControl* CGUIEnvironment::addTabControl(const core::rect<s32>& rectangle,
 IGUITab* CGUIEnvironment::addTab(const core::rect<s32>& rectangle,
 	IGUIElement* parent, s32 id)
 {
-	IGUITab* t = new CGUITab(-1, this, parent ? parent : this,
+	IGUITab* t = new CGUITab(this, parent ? parent : this,
 		rectangle, id);
 	t->drop();
 	return t;

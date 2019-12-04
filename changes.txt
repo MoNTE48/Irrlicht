@@ -1,5 +1,11 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- CGUITabControl serialization changed to allow using custom tabs (before only CGUITab could be serialized). 
+  There was a lot of rewriting involved, including some minor interface changes (IGUITab*  can now be added directly for example).
+  See http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52344 for a thread about this.
+  Thanks @chronologicaldot for bringing this up, writing a patch proposal and even writing test.
+- CGUITabControl no longer eats EMIE_LMOUSE_PRESSED_DOWN (doesn't seem to need it, was just done for a planned feature which is not implemented yet).
+- Removing a tab in CGUITabControl will now also remove the tab-element. Fixes problems like tabs still being around & visible when you removed the active tab.
 - Add example 28.CubeMapping. 
   Based originally on EnvCubeMap example from irrSpintz engine. 
   Including a cubemap texture from Emil Persson, aka Humus from http://www.humus.name
@@ -7,7 +13,10 @@ Changes in 1.9 (not yet released)
   Added a new cube-mesh with meshbuffers per side.
   Also single buffer cube-mesh now normalizes it's normals.
 - Bugfix: CBillboardTextSceneNode no longer disregards IsVisible flag
-- FPS-camera movement now smoother (it would sometimes skip back because it worked with wrong values for the screen-center position).
+- FPS-camera rotation now smoother. 
+  First bug was that it would sometimes skip back because it worked with wrong values for the screen-center position.
+  Second (and bigger) bug was that it ignored all cursor-movement which happened between device->run() and the point where
+  the animator did run. Tiny side-effect your camera will now rotate generally faster.
 - Fix ms3d loader to work on big endian systems which need floats to be aligned in memory. Thanks @ kas1e, Corto and Salas for the patch (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52538).
 - Bugfix: COBJMeshFileLoder no longer overwrites transparency value with 1.0 when it's set before the diffuse color value in the mtl file. Thanks @Boshen for bugreport (#445).
 - Bugfix: OpenGL no longer antialiasing stencil buffer when driver has antialiasing disabled.
