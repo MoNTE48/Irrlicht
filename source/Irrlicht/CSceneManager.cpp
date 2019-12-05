@@ -159,6 +159,12 @@
 #include "CSkyDomeSceneNode.h"
 #endif // _IRR_COMPILE_WITH_SKYDOME_SCENENODE_
 
+#ifdef _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
+#include "CShadowVolumeSceneNode.h"
+#else
+#include "IShadowVolumeSceneNode.h"
+#endif // _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
+
 #ifdef _IRR_COMPILE_WITH_PARTICLES_
 #include "CParticleSystemSceneNode.h"
 #endif // _IRR_COMPILE_WITH_PARTICLES_
@@ -1739,6 +1745,16 @@ video::SColor CSceneManager::getShadowColor() const
 {
 	return ShadowColor;
 }
+
+IShadowVolumeSceneNode* CSceneManager::createShadowVolumeSceneNode(const IMesh* shadowMesh, ISceneNode* parent, s32 id, bool zfailmethod, f32 infinity)
+{
+#ifdef _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
+	return new CShadowVolumeSceneNode(shadowMesh, parent, this, id, zfailmethod, infinity);
+#else
+	return 0;
+#endif
+}
+
 
 
 //! creates a rotation animator, which rotates the attached scene node around itself.

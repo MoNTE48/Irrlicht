@@ -121,6 +121,7 @@ namespace scene
 	class ISceneNodeAnimatorFactory;
 	class ISceneNodeFactory;
 	class ISceneUserDataSerializer;
+	class IShadowVolumeSceneNode;
 	class ITerrainSceneNode;
 	class ITextSceneNode;
 	class ITriangleSelector;
@@ -1107,6 +1108,11 @@ namespace scene
 
 		//! Get the current color of shadows.
 		virtual video::SColor getShadowColor() const = 0;
+
+		//! Create a shadow volume scene node to be used with custom nodes
+		/** Use this if you implement your own SceneNodes and need shadow volumes in them.
+		Otherwise you should generally use addShadowVolumeSceneNode functions from IMeshSceneNode or IAnimatedMeshSceneNode.*/
+		virtual IShadowVolumeSceneNode* createShadowVolumeSceneNode(const IMesh* shadowMesh, ISceneNode* parent, s32 id, bool zfailmethod, f32 infinity) = 0;
 
 		//! Registers a node for rendering it at a specific time.
 		/** This method should only be used by SceneNodes when they get a

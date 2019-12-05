@@ -1,5 +1,6 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Add function ISceneManager::createShadowVolumeSceneNode to allow custom ISceneNode's to use shadows.
 - CGUITabControl serialization changed to allow using custom tabs (before only CGUITab could be serialized). 
   There was a lot of rewriting involved, including some minor interface changes (IGUITab*  can now be added directly for example).
   See http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52344 for a thread about this.
