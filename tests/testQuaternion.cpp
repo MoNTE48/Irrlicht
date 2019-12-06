@@ -205,6 +205,7 @@ bool testInterpolation()
 {
 	bool result=true;
 	core::quaternion q(1.f,2.f,3.f,4.f);
+	q.normalize();
 	core::quaternion q2;
 	q2.lerp(q,q,0);
 	if (q != q2)
