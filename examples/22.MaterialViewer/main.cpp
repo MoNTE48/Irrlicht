@@ -778,7 +778,7 @@ bool CApp::update()
 	// Figure out delta time since last frame
 	ITimer * timer = Device->getTimer();
 	u32 newTick = timer->getRealTime();
-	f32 deltaTime = RealTimeTick > 0 ? f32(newTick-RealTimeTick)/1000.0 : 0.f;	// in seconds
+	f32 deltaTime = RealTimeTick > 0 ? f32(newTick-RealTimeTick)/1000.f : 0.f;	// in seconds
 	RealTimeTick = newTick;
 
 	if ( Device->isWindowActive() || Config.RenderInBackground )
