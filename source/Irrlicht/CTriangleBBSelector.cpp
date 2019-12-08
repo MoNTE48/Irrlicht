@@ -81,8 +81,6 @@ void CTriangleBBSelector::fillTriangles() const
 
 		Triangles[10].set(edges[0], edges[6], edges[2]);
 		Triangles[11].set(edges[0], edges[4], edges[6]);
-
-		BoundingBox = box;
 	}
 }
 
