@@ -1,5 +1,6 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Add a normalType parameter to IGeometryCreator::createCylinderMesh
 - Add a normalsUpdate parameter to IMeshManipulator::transform to allow updating the normals with the inverse-transpose of the transformation matrix.
 - Bugfix: quaternion::slerp now uses lerpN instead of lerp to keep result normalized.
 - Add function quaternion::lerpN which is like lerp but normalizes the result.

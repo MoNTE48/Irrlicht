@@ -153,12 +153,14 @@ public:
 	\param color The color of the cylinder.
 	\param closeTop If true, close the ends of the cylinder, otherwise leave them open.
 	\param oblique X-offset of top compared to bottom
+	\param normalType When 0 side normals are radial from origin. Note that origin is at the bottom.
+	                  When 1 side normals are flat along top/bottom polygons.
 	\return Generated mesh.
 	*/
 	virtual IMesh* createCylinderMesh(f32 radius, f32 length,
 			u32 tesselation,
 			const video::SColor& color=video::SColor(0xffffffff),
-			bool closeTop=true, f32 oblique=0.f) const =0;
+			bool closeTop=true, f32 oblique=0.f, u32 normalType=0) const =0;
 
 	//! Create a cone mesh.
 	/**
