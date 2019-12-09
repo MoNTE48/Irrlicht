@@ -152,7 +152,7 @@ public:
 	\param tesselation Number of quads around the circumference of the cylinder.
 	\param color The color of the cylinder.
 	\param closeTop If true, close the ends of the cylinder, otherwise leave them open.
-	\param oblique (to be documented)
+	\param oblique X-offset of top compared to bottom
 	\return Generated mesh.
 	*/
 	virtual IMesh* createCylinderMesh(f32 radius, f32 length,
