@@ -152,9 +152,15 @@ public:
 	\param tesselation Number of quads around the circumference of the cylinder.
 	\param color The color of the cylinder.
 	\param closeTop If true, close the ends of the cylinder, otherwise leave them open.
-	\param oblique X-offset of top compared to bottom
+	\param oblique X-offset (shear) of top compared to bottom. 
 	\param normalType When 0 side normals are radial from origin. Note that origin is at the bottom.
 	                  When 1 side normals are flat along top/bottom polygons.
+			NOTE: To get normals which are perpendicular to the side of an oblique 
+			cylinder, don't use the oblique parameter. Instead set normalType to 1 
+			and create a cylinder with oblique set to 0. Then use 
+			IMeshManipulator::transform with a shear matrix on the returned mesh.
+			You get a shear matrix for an identical effect of this oblique parameter when you 
+			set the 4th element of an identity matrix to (oblique/length).
 	\return Generated mesh.
 	*/
 	virtual IMesh* createCylinderMesh(f32 radius, f32 length,
