@@ -100,7 +100,7 @@ Changes in 1.9 (not yet released)
 - FPS camera now supports keyboard rotation.
 - Base FPS-camera movement on last position of mouse instead of always center (works better on platforms where cursor-placement is not allowed)
 - Octrees with other vertex types than EVT_2TCOORDS can now also use VBO's.
-- Add IOctreeSceneNode interface to control parameters like VBO usage and polygon clipping checks for octree scene nodes.
+- Add IOctreeSceneNode interface to control polygon clipping checks for octree scene nodes.
 - Add support for different geometric primitives to meshbuffers. Thanks @gerdb for patch proposal (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=45999)
 - change SEvent::SUserEvent.UserData1 and SEvent::SUserEvent.UserData1 from s32 to size_t to avoid cutting numbers on some 64-bit platforms (SDL and Windows)
 - Improve speed of draw3DBox (OpenGL and D3D9). Thanks @zerochen for patch (https://sourceforge.net/p/irrlicht/patches/256)

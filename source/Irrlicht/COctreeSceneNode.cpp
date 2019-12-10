@@ -34,7 +34,7 @@ COctreeSceneNode::COctreeSceneNode(ISceneNode* parent, ISceneManager* mgr,
 	: IOctreeSceneNode(parent, mgr, id), StdOctree(0), LightMapOctree(0),
 	TangentsOctree(0), VertexType((video::E_VERTEX_TYPE)-1),
 	MinimalPolysPerNode(minimalPolysPerNode), Mesh(0), Shadow(0),
-	UseVBOs(EOV_USE_VBO_WITH_VISIBITLY), PolygonChecks(EOPC_BOX)
+	UseVBOs(EOV_NO_VBO), PolygonChecks(EOPC_BOX)
 {
 #ifdef _DEBUG
 	setDebugName("COctreeSceneNode");
