@@ -229,11 +229,11 @@ void CImage::copyToScaling(void* target, u32 width, u32 height, ECOLOR_FORMAT fo
 		f32 sx = 0.0f;
 		for (u32 x=0; x<width; ++x)
 		{
-			CColorConverter::convert_viaFormat(Data+ syval + ((s32)sx)*BytesPerPixel, Format, 1, ((u8*)target)+ yval + (x*bpp), format);
+			CColorConverter::convert_viaFormat(Data+ syval + core::round32(sx)*BytesPerPixel, Format, 1, ((u8*)target)+ yval + (x*bpp), format);
 			sx+=sourceXStep;
 		}
 		sy+=sourceYStep;
-		syval=((s32)sy)*Pitch;
+		syval=core::round32(sy)*Pitch;
 		yval+=pitch;
 	}
 }
