@@ -1,5 +1,9 @@
 --------------------------
 Changes in 1.9 (not yet released)
+- Bugfix: CGUIToolBar automatic placement no longer outside of screen when there are modals screens when creating it.
+  Or when there are other window elements going over full window-size.
+  Thanks to Stephen Lynx for the bugreport and to Sérgio Augusto Vianna for writing a test case with a bug example.
+  Changes: a) Never move the toolbar below it's parents lower border. b) No longer check all element-types, but only try to be below other toolbars or menues.
 - Add a normalType parameter to IGeometryCreator::createCylinderMesh
 - Add a normalsUpdate parameter to IMeshManipulator::transform to allow updating the normals with the inverse-transpose of the transformation matrix.
 - Bugfix: quaternion::slerp now uses lerpN instead of lerp to keep result normalized.
