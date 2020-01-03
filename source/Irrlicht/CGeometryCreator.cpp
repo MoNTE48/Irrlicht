@@ -683,7 +683,7 @@ IMesh* CGeometryCreator::createSphereMesh(f32 radius, u32 polyCountX, u32 polyCo
 /* A cylinder with proper normals and texture coords */
 IMesh* CGeometryCreator::createCylinderMesh(f32 radius, f32 length,
 			u32 tesselation, const video::SColor& color,
-			bool closeTop, f32 oblique) const
+			bool closeTop, f32 oblique, u32 normalType) const
 {
 	SMeshBuffer* buffer = new SMeshBuffer();
 
@@ -704,7 +704,11 @@ IMesh* CGeometryCreator::createCylinderMesh(f32 radius, f32 length,
 		v.Pos.X = radius * cosf(angle);
 		v.Pos.Y = 0.f;
 		v.Pos.Z = radius * sinf(angle);
-		v.Normal = v.Pos;
+		switch (normalType)
+		{
+			case 0: v.Normal = v.Pos; break;
+			case 1: v.Normal = v.Pos; break;
+		}
 		v.Normal.normalize();
 		v.TCoords.X=tcx;
 		v.TCoords.Y=0.f;
@@ -712,7 +716,11 @@ IMesh* CGeometryCreator::createCylinderMesh(f32 radius, f32 length,
 
 		v.Pos.X += oblique;
 		v.Pos.Y = length;
-		v.Normal = v.Pos;
+		switch (normalType)
+		{
+			case 0: v.Normal = v.Pos; break;
+			case 1: v.Normal = core::vector3df(v.Pos.X-oblique, 0, v.Pos.Z); break;
+		}
 		v.Normal.normalize();
 		v.TCoords.Y=1.f;
 		buffer->Vertices.push_back(v);
@@ -720,7 +728,11 @@ IMesh* CGeometryCreator::createCylinderMesh(f32 radius, f32 length,
 		v.Pos.X = radius * cosf(angle + angleStepHalf);
 		v.Pos.Y = 0.f;
 		v.Pos.Z = radius * sinf(angle + angleStepHalf);
-		v.Normal = v.Pos;
+		switch (normalType)
+		{
+			case 0: v.Normal = v.Pos; break;
+			case 1: v.Normal = v.Pos; break;
+		}
 		v.Normal.normalize();
 		v.TCoords.X=tcx+recTesselationHalf;
 		v.TCoords.Y=0.f;
@@ -728,7 +740,11 @@ IMesh* CGeometryCreator::createCylinderMesh(f32 radius, f32 length,
 
 		v.Pos.X += oblique;
 		v.Pos.Y = length;
-		v.Normal = v.Pos;
+		switch (normalType)
+		{
+			case 0: v.Normal = v.Pos; break;
+			case 1: v.Normal = core::vector3df(v.Pos.X-oblique, 0, v.Pos.Z); break;
+		}
 		v.Normal.normalize();
 		v.TCoords.Y=1.f;
 		buffer->Vertices.push_back(v);
@@ -1049,7 +1065,7 @@ IMesh* CGeometryCreator::createVolumeLightMesh(
 	Buffer->Material.MaterialTypeParam = pack_textureBlendFunc( video::EBF_SRC_COLOR, video::EBF_SRC_ALPHA, video::EMFN_MODULATE_1X );
 
 	Buffer->Material.Lighting = false;
-	Buffer->Material.ZWriteEnable = false;
+	Buffer->Material.ZWriteEnable = video::EZW_OFF;
 
 	Buffer->setDirty(EBT_VERTEX_AND_INDEX);
 

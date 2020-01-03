@@ -1800,7 +1800,9 @@ void COGLES1Driver::setBasicRenderStates(const SMaterial& material, const SMater
 	}
 
     // Blend Factor
-	if (IR(material.BlendFactor) & 0xFFFFFFFF)
+	if (IR(material.BlendFactor) & 0xFFFFFFFF	// TODO: why the & 0xFFFFFFFF?
+			&& material.MaterialType != EMT_ONETEXTURE_BLEND
+		)
 	{
         E_BLEND_FACTOR srcRGBFact = EBF_ZERO;
         E_BLEND_FACTOR dstRGBFact = EBF_ZERO;
@@ -3247,6 +3249,11 @@ bool COGLES1Driver::queryTextureFormat(ECOLOR_FORMAT format) const
 	GLenum dummyPixelType;
 	void (*dummyConverter)(const void*, s32, void*);
 	return getColorFormatParameters(format, dummyInternalFormat, dummyPixelFormat, dummyPixelType, &dummyConverter);
+}
+
+bool COGLES1Driver::needsTransparentRenderPass(const irr::video::SMaterial& material) const
+{
+	return CNullDriver::needsTransparentRenderPass(material) || material.isAlphaBlendOperation();
 }
 
 COGLES1CacheHandler* COGLES1Driver::getCacheHandler() const

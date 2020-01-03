@@ -44,7 +44,7 @@ public:
 
 	virtual IMesh* createCylinderMesh(f32 radius, f32 length, u32 tesselation,
 				const video::SColor& color=0xffffffff,
-				bool closeTop=true, f32 oblique=0.f) const _IRR_OVERRIDE_;
+				bool closeTop=true, f32 oblique=0.f, u32 normalType=0) const _IRR_OVERRIDE_;
 
 	virtual IMesh* createConeMesh(f32 radius, f32 length, u32 tesselation,
 				const video::SColor& colorTop=0xffffffff,

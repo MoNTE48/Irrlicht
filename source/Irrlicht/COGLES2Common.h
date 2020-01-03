@@ -43,10 +43,6 @@ typedef char GLchar;
 #define GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER 2
 #define GL_FRAMEBUFFER_INCOMPLETE_FORMATS 3
 
-// Irrlicht's OpenGL version.
-
-#define IRR_OPENGL_VERSION 20
-
 // to check if this header is in the current compile unit (different GL implementation used different "GLCommon" headers in Irrlicht
 #define IRR_COMPILE_GLES2_COMMON
 

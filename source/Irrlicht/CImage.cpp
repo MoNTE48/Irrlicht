@@ -219,17 +219,17 @@ void CImage::copyToScaling(void* target, u32 width, u32 height, ECOLOR_FORMAT fo
 	const f32 sourceXStep = (f32)Size.Width / (f32)width;
 	const f32 sourceYStep = (f32)Size.Height / (f32)height;
 	s32 yval=0, syval=0;
-	f32 sy = 0.0f;
+	f32 sy = 0.5f;	// nearest pixel (used in float-int conversion below)
 	for (u32 y=0; y<height; ++y)
 	{
-		f32 sx = 0.0f;
+		f32 sx = 0.5f;	// nearest pixel (used in float-int conversion below)
 		for (u32 x=0; x<width; ++x)
 		{
 			CColorConverter::convert_viaFormat(Data+ syval + ((s32)sx)*BytesPerPixel, Format, 1, ((u8*)target)+ yval + (x*bpp), format);
 			sx+=sourceXStep;
 		}
 		sy+=sourceYStep;
-		syval=((s32)sy)*Pitch;
+		syval=(s32)(sy)*Pitch;
 		yval+=pitch;
 	}
 }

@@ -196,7 +196,7 @@ CNullDriver::CNullDriver(io::IFileSystem* io, const core::dimension2d<u32>& scre
 
 	InitMaterial2D.AntiAliasing=video::EAAM_OFF;
 	InitMaterial2D.Lighting=false;
-	InitMaterial2D.ZWriteEnable=false;
+	InitMaterial2D.ZWriteEnable=video::EZW_OFF;
 	InitMaterial2D.ZBuffer=video::ECFN_DISABLED;
 	InitMaterial2D.UseMipMaps=false;
 	for (u32 i=0; i<video::MATERIAL_MAX_TEXTURES; ++i)
@@ -319,7 +319,6 @@ void CNullDriver::deleteAllTextures()
 
 bool CNullDriver::beginScene(u16 clearFlag, SColor clearColor, f32 clearDepth, u8 clearStencil, const SExposedVideoData& videoData, core::rect<s32>* sourceRect)
 {
-	core::clearFPUException();
 	PrimitivesDrawn = 0;
 	return true;
 }
@@ -1949,7 +1948,7 @@ void CNullDriver::runOcclusionQuery(scene::ISceneNode* node, bool visible)
 		mat.AntiAliasing=0;
 		mat.ColorMask=ECP_NONE;
 		mat.GouraudShading=false;
-		mat.ZWriteEnable=false;
+		mat.ZWriteEnable=EZW_OFF;
 		setMaterial(mat);
 	}
 	setTransform(video::ETS_WORLD, node->getAbsoluteTransformation());
@@ -2154,7 +2153,7 @@ io::IAttributes* CNullDriver::createAttributesFromMaterial(const video::SMateria
 	attr->addBool("PointCloud", material.PointCloud);
 	attr->addBool("GouraudShading", material.GouraudShading);
 	attr->addBool("Lighting", material.Lighting);
-	attr->addBool("ZWriteEnable", material.ZWriteEnable);
+	attr->addEnum("ZWriteEnable", (irr::s32)material.ZWriteEnable, video::ZWriteNames);
 	attr->addInt("ZBuffer", material.ZBuffer);
 	attr->addBool("BackfaceCulling", material.BackfaceCulling);
 	attr->addBool("FrontfaceCulling", material.FrontfaceCulling);
@@ -2170,7 +2169,6 @@ io::IAttributes* CNullDriver::createAttributesFromMaterial(const video::SMateria
 	attr->addEnum("PolygonOffsetDirection", material.PolygonOffsetDirection, video::PolygonOffsetDirectionNames);
 	attr->addFloat("PolygonOffsetDepthBias", material.PolygonOffsetDepthBias);
 	attr->addFloat("PolygonOffsetSlopeScale", material.PolygonOffsetSlopeScale);
-	attr->addInt("ZWriteFineControl", material.ZWriteFineControl);
 
 	// TODO: Would be nice to have a flag that only serializes rest of texture data when a texture pointer exists.
 	prefix = "BilinearFilter";
@@ -2233,7 +2231,13 @@ void CNullDriver::fillMaterialStructureFromAttributes(video::SMaterial& outMater
 	outMaterial.PointCloud = attr->getAttributeAsBool("PointCloud", outMaterial.PointCloud);
 	outMaterial.GouraudShading = attr->getAttributeAsBool("GouraudShading", outMaterial.GouraudShading);
 	outMaterial.Lighting = attr->getAttributeAsBool("Lighting", outMaterial.Lighting);
-	outMaterial.ZWriteEnable = attr->getAttributeAsBool("ZWriteEnable", outMaterial.ZWriteEnable);
+
+	io::E_ATTRIBUTE_TYPE attType = attr->getAttributeType("ZWriteEnable");
+	if (attType == io::EAT_BOOL )	// Before Irrlicht 1.9
+		outMaterial.ZWriteEnable = attr->getAttributeAsBool("ZWriteEnable", outMaterial.ZWriteEnable != video::EZW_OFF ) ? video::EZW_AUTO : video::EZW_OFF;
+	else if (attType == io::EAT_ENUM )
+		outMaterial.ZWriteEnable = (video::E_ZWRITE)attr->getAttributeAsEnumeration("ZWriteEnable", video::ZWriteNames, outMaterial.ZWriteEnable);
+
 	outMaterial.ZBuffer = (u8)attr->getAttributeAsInt("ZBuffer", outMaterial.ZBuffer);
 	outMaterial.BackfaceCulling = attr->getAttributeAsBool("BackfaceCulling", outMaterial.BackfaceCulling);
 	outMaterial.FrontfaceCulling = attr->getAttributeAsBool("FrontfaceCulling", outMaterial.FrontfaceCulling);
@@ -2250,7 +2254,7 @@ void CNullDriver::fillMaterialStructureFromAttributes(video::SMaterial& outMater
 	outMaterial.PolygonOffsetDirection = (video::E_POLYGON_OFFSET)attr->getAttributeAsEnumeration("PolygonOffsetDirection", video::PolygonOffsetDirectionNames, outMaterial.PolygonOffsetDirection);
 	outMaterial.PolygonOffsetDepthBias = attr->getAttributeAsFloat("PolygonOffsetDepthBias", outMaterial.PolygonOffsetDepthBias);
 	outMaterial.PolygonOffsetSlopeScale = attr->getAttributeAsFloat("PolygonOffsetSlopeScale", outMaterial.PolygonOffsetSlopeScale);
-	outMaterial.ZWriteFineControl = (video::E_ZWRITE_FINE_CONTROL)attr->getAttributeAsInt("ZWriteFineControl", outMaterial.ZWriteFineControl);
+
 	prefix = "BilinearFilter";
 	if (attr->existsAttribute(prefix.c_str())) // legacy
 		outMaterial.setFlag(EMF_BILINEAR_FILTER, attr->getAttributeAsBool(prefix.c_str()));
@@ -2325,7 +2329,7 @@ void CNullDriver::deleteMaterialRenders()
 
 
 //! Returns pointer to material renderer or null
-IMaterialRenderer* CNullDriver::getMaterialRenderer(u32 idx)
+IMaterialRenderer* CNullDriver::getMaterialRenderer(u32 idx) const
 {
 	if ( idx < MaterialRenderers.size() )
 		return MaterialRenderers[idx].Renderer;
@@ -2747,6 +2751,24 @@ void CNullDriver::enableMaterial2D(bool enable)
 core::dimension2du CNullDriver::getMaxTextureSize() const
 {
 	return core::dimension2du(0x10000,0x10000); // maybe large enough
+}
+
+bool CNullDriver::needsTransparentRenderPass(const irr::video::SMaterial& material) const
+{
+	// TODO: I suspect it would be nice if the material had an enum for further control.
+	//		Especially it probably makes sense to allow disabling transparent render pass as soon as material.ZWriteEnable is on.
+	//      But then we might want an enum for the renderpass in material instead of just a transparency flag in material - and that's more work.
+	//      Or we could at least set return false when material.ZWriteEnable is EZW_ON? Still considering that...
+	//		Be careful - this function is deeply connected to getWriteZBuffer as transparent render passes are usually about rendering with
+	//      zwrite disabled and getWriteZBuffer calls this function.
+
+	video::IMaterialRenderer* rnd = getMaterialRenderer(material.MaterialType);
+	// TODO: I suspect IMaterialRenderer::isTransparent also often could use SMaterial as parameter 
+	//       We could for example then get rid of IsTransparent function in SMaterial and move that to the software material renderer.
+	if (rnd && rnd->isTransparent())	
+		return true;
+
+	return false;
 }
 
 

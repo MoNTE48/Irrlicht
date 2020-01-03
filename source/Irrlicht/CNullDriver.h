@@ -536,7 +536,7 @@ namespace video
 			s32 userData=0) _IRR_OVERRIDE_;
 
 		//! Returns pointer to material renderer or null
-		virtual IMaterialRenderer* getMaterialRenderer(u32 idx) _IRR_OVERRIDE_;
+		virtual IMaterialRenderer* getMaterialRenderer(u32 idx) const _IRR_OVERRIDE_;
 
 		//! Returns amount of currently available material renderers.
 		virtual u32 getMaterialRendererCount() const _IRR_OVERRIDE_;
@@ -670,6 +670,9 @@ namespace video
 		//! Returns the maximum texture size supported.
 		virtual core::dimension2du getMaxTextureSize() const _IRR_OVERRIDE_;
 
+		//! Used by some SceneNodes to check if a material should be rendered in the transparent render pass
+		virtual bool needsTransparentRenderPass(const irr::video::SMaterial& material) const _IRR_OVERRIDE_;
+
 		//! Color conversion convenience function
 		/** Convert an image (as array of pixels) from source to destination
 		array, thereby converting the color format. The pixel size is
@@ -746,24 +749,18 @@ namespace video
 			return (f32) getAverage ( p[(y * pitch) + x] );
 		}
 
-		inline bool getWriteZBuffer(const SMaterial&material) const
+		inline bool getWriteZBuffer(const SMaterial& material) const
 		{
-			if (material.ZWriteEnable)
+			switch ( material.ZWriteEnable )
 			{
-				if (!AllowZWriteOnTransparent)
-				{
-					switch (material.ZWriteFineControl)
-					{
-					case EZI_ONLY_NON_TRANSPARENT:
-						return !material.isTransparent();
-					case EZI_ZBUFFER_FLAG:
-						return true;
-					}
-				}
-				else
+				case video::EZW_OFF:
+					return false;
+				case video::EZW_AUTO:
+					return AllowZWriteOnTransparent || ! needsTransparentRenderPass(material);
+				case video::EZW_ON:
 					return true;
 			}
-			return false;
+			return true; // never should get here, but some compilers don't know and complain
 		}
 
 		struct SSurface

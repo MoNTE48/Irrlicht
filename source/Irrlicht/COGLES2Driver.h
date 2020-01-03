@@ -311,6 +311,9 @@ namespace video
 		//! Check if the driver supports creating textures with the given color format
 		virtual bool queryTextureFormat(ECOLOR_FORMAT format) const _IRR_OVERRIDE_;
 
+		//! Used by some SceneNodes to check if a material should be rendered in the transparent render pass
+		virtual bool needsTransparentRenderPass(const irr::video::SMaterial& material) const _IRR_OVERRIDE_;
+
 		//! Convert E_BLEND_FACTOR to OpenGL equivalent
 		GLenum getGLBlend(E_BLEND_FACTOR factor) const;
 

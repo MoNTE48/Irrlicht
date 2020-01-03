@@ -93,10 +93,6 @@ typedef char GLchar;
 #define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0
 #endif
 
-// Irrlicht's OpenGL version.
-
-#define IRR_OPENGL_VERSION 15
-
 // to check if this header is in the current compile unit (different GL implementation used different "GLCommon" headers in Irrlicht
 #define IRR_COMPILE_GLES_COMMON
 

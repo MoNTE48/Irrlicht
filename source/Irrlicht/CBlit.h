@@ -988,24 +988,24 @@ static void executeBlit_TextureCombineColor_16_to_16( const SBlitJob * job )
 {
 	const u32 w = job->width * 2;
 	const u32 h = job->height * 2;
-	u8* src = (u8*) job->src;
-	u8* dst = (u8*) job->dst;
+	u16* src = (u16*) job->src;
+	u16* dst = (u16*) job->dst;
 
 	const u16 jobColor = video::A8R8G8B8toA1R5G5B5( job->argb );
 
 	/*
 		Stretch not supported.
 	*/
-	for ( u32 dy = 0; dy != h; dy+=2 )
+	for ( u32 dy = 0; dy != h; dy++ )
 	{
-		for ( u32 dx = 0; dx != w; dx+=2 )
+		for ( u32 dx = 0; dx != w; dx++ )
 		{
-			const u16 src_x = src[dx] << 8 | src[dx+1];
-			const u16 dst_x = dst[dx] << 8 | dst[dx+1];
+			const u16 src_x = src[dx];
+			const u16 dst_x = dst[dx];
 			dst[dx] = PixelCombine16( dst_x, PixelMul16_2( src_x, jobColor ) );
 		}
-		src = (src) + job->srcPitch;
-		dst = (dst) + job->dstPitch;
+		src = (u16*) ( (u8*) (src) + job->srcPitch );
+		dst = (u16*) ( (u8*) (dst) + job->dstPitch );
 	}
 }
 

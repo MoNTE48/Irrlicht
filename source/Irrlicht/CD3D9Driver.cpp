@@ -2219,7 +2219,9 @@ void CD3D9Driver::setBasicRenderStates(const SMaterial& material, const SMateria
 	}
 
     // Blend Factor
-	if (IR(material.BlendFactor) & 0xFFFFFFFF)
+	if (IR(material.BlendFactor) & 0xFFFFFFFF	// TODO: why the & 0xFFFFFFFF?
+		&& material.MaterialType != EMT_ONETEXTURE_BLEND
+		)
 	{
         E_BLEND_FACTOR srcRGBFact = EBF_ZERO;
         E_BLEND_FACTOR dstRGBFact = EBF_ZERO;
@@ -3579,6 +3581,11 @@ core::dimension2du CD3D9Driver::getMaxTextureSize() const
 bool CD3D9Driver::queryTextureFormat(ECOLOR_FORMAT format) const
 {
 	return getD3DFormatFromColorFormat(format) != D3DFMT_UNKNOWN;
+}
+
+bool CD3D9Driver::needsTransparentRenderPass(const irr::video::SMaterial& material) const
+{
+	return CNullDriver::needsTransparentRenderPass(material) || material.isAlphaBlendOperation();
 }
 
 u32 CD3D9Driver::getD3DBlend(E_BLEND_FACTOR factor) const

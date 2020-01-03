@@ -169,11 +169,7 @@ typedef char GLchar;
 #endif
 #endif
 
-// Irrlicht's OpenGL version.
-
-#define IRR_OPENGL_VERSION 14
-
-// to check if this header is in the current compile unit (different GL implementation used different "GLCommon" headers in Irrlicht
+// To check if this header is in the current compile unit (different GL driver implementations use different "GLCommon" headers in Irrlicht)
 #define IRR_COMPILE_GL_COMMON
 
 namespace irr

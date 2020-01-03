@@ -94,12 +94,12 @@ class COpenGLCoreCacheHandler
 							{
 								glBindTexture(prevTextureType, 0);
 
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION < 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION < 20)
+#if ( defined(IRR_COMPILE_GL_COMMON) || defined(IRR_COMPILE_GLES_COMMON) )
 								glDisable(prevTextureType);
 								glEnable(curTextureType);
 #endif
 							}
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION < 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION < 20)
+#if ( defined(IRR_COMPILE_GL_COMMON) || defined(IRR_COMPILE_GLES_COMMON) )
 							else if (!prevTexture)
 								glEnable(curTextureType);
 #endif
@@ -122,7 +122,7 @@ class COpenGLCoreCacheHandler
 
 						glBindTexture(prevTextureType, 0);
 
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION < 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION < 20)
+#if ( defined(IRR_COMPILE_GL_COMMON) || defined(IRR_COMPILE_GLES_COMMON) )
 						glDisable(prevTextureType);
 #endif
 					}
@@ -241,7 +241,7 @@ public:
 
 		Driver->irrGlActiveTexture(ActiveTexture);
 
-#if (defined(IRR_OPENGL_VERSION) && IRR_OPENGL_VERSION < 20) || (defined(IRR_OPENGL_ES_VERSION) && IRR_OPENGL_ES_VERSION < 20)
+#if ( defined(IRR_COMPILE_GL_COMMON) || defined(IRR_COMPILE_GLES_COMMON) )
 		glDisable(GL_TEXTURE_2D);
 #endif
 

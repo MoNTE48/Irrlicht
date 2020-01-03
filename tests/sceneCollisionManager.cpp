@@ -154,7 +154,7 @@ static bool testGetSceneNodeFromScreenCoordinatesBB(IrrlichtDevice * device,
 	IMeshSceneNode * cubeNode3 = smgr->addCubeSceneNode(10.f, 0, -1, vector3df(0, 0, 40));
 	cubeNode3->setRotation(vector3df(180.f, 180.f, 180.f)); // Just check that rotation doesn't stop us hitting it.
 
-	ICameraSceneNode * camera = smgr->addCameraSceneNode();
+	smgr->addCameraSceneNode();
 	device->run();
 	smgr->drawAll(); // Get the camera in a good state
 

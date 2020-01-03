@@ -177,8 +177,8 @@ void CBurningVideoDriver::setCurrentShader()
 	ITexture *texture1 = Material.org.getTexture(1);
 
 	bool zMaterialTest = Material.org.ZBuffer != ECFN_DISABLED &&
-						Material.org.ZWriteEnable &&
-						getWriteZBuffer(Material.org);
+						Material.org.ZWriteEnable != video::EZW_OFF &&
+						( AllowZWriteOnTransparent || !Material.org.isTransparent() );
 
 	EBurningFFShader shader = zMaterialTest ? ETR_TEXTURE_GOURAUD : ETR_TEXTURE_GOURAUD_NOZ;
 
@@ -1885,8 +1885,8 @@ void CBurningVideoDriver::draw2DImage(const video::ITexture* texture, const core
 		core::recti clip=ViewPort;
 		if (ViewPort.getSize().Width != ScreenSize.Width)
 		{
-			dest.X=ViewPort.UpperLeftCorner.X+core::round32(destPos.X*ViewPort.getWidth()/(f32)ScreenSize.Width);
-			dest.Y=ViewPort.UpperLeftCorner.Y+core::round32(destPos.Y*ViewPort.getHeight()/(f32)ScreenSize.Height);
+			dest.X=ViewPort.UpperLeftCorner.X+core::round32_fast(destPos.X*ViewPort.getWidth()/(f32)ScreenSize.Width);
+			dest.Y=ViewPort.UpperLeftCorner.Y+core::round32_fast(destPos.Y*ViewPort.getHeight()/(f32)ScreenSize.Height);
 			if (clipRect)
 			{
 				clip.constrainTo(*clipRect);
@@ -2292,7 +2292,7 @@ void CBurningVideoDriver::drawStencilShadowVolume(const core::array<core::vector
 
 	Material.org.MaterialType = video::EMT_SOLID;
 	Material.org.Lighting = false;
-	Material.org.ZWriteEnable = false;
+	Material.org.ZWriteEnable = video::EZW_OFF;
 	Material.org.ZBuffer = ECFN_LESSEQUAL;
 	LightSpace.Flags &= ~VERTEXTRANSFORM;
 
@@ -2380,6 +2380,11 @@ core::dimension2du CBurningVideoDriver::getMaxTextureSize() const
 bool CBurningVideoDriver::queryTextureFormat(ECOLOR_FORMAT format) const
 {
 	return format == BURNINGSHADER_COLOR_FORMAT;
+}
+
+bool CBurningVideoDriver::needsTransparentRenderPass(const irr::video::SMaterial& material) const
+{
+	return CNullDriver::needsTransparentRenderPass(material) || material.isTransparent();
 }
 
 

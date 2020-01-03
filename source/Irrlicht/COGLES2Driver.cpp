@@ -1825,7 +1825,9 @@ COGLES2Driver::~COGLES2Driver()
 		}
 
 		// Blend Factor
-		if (IR(material.BlendFactor) & 0xFFFFFFFF)
+		if (IR(material.BlendFactor) & 0xFFFFFFFF	// TODO: why the & 0xFFFFFFFF?
+			&& material.MaterialType != EMT_ONETEXTURE_BLEND
+		)
 		{
 		    E_BLEND_FACTOR srcRGBFact = EBF_ZERO;
 		    E_BLEND_FACTOR dstRGBFact = EBF_ZERO;
@@ -2029,7 +2031,7 @@ COGLES2Driver::~COGLES2Driver()
 		if (OverrideMaterial2DEnabled)
 		{
 			OverrideMaterial2D.Lighting=false;
-			OverrideMaterial2D.ZWriteEnable=false;
+			OverrideMaterial2D.ZWriteEnable=EZW_OFF;
 			OverrideMaterial2D.ZBuffer=ECFN_DISABLED; // it will be ECFN_DISABLED after merge
 			OverrideMaterial2D.Lighting=false;
 
@@ -2953,6 +2955,11 @@ COGLES2Driver::~COGLES2Driver()
 		GLenum dummyPixelType;
 		void (*dummyConverter)(const void*, s32, void*);
 		return getColorFormatParameters(format, dummyInternalFormat, dummyPixelFormat, dummyPixelType, &dummyConverter);
+	}
+
+	bool COGLES2Driver::needsTransparentRenderPass(const irr::video::SMaterial& material) const
+	{
+		return CNullDriver::needsTransparentRenderPass(material) || material.isAlphaBlendOperation();
 	}
 
 	const SMaterial& COGLES2Driver::getCurrentMaterial() const

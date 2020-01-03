@@ -192,8 +192,8 @@ bool CMS3DMeshFileLoader::load(io::IReadFile* file)
 	// read whole file
 
 	u8* buffer = new u8[fileSize];
-	s32 read = file->read(buffer, fileSize);
-	if (read != fileSize)
+	size_t read = file->read(buffer, fileSize);
+	if (read != (size_t)fileSize)
 	{
 		delete [] buffer;
 		os::Printer::log("Could not read full file. Loading failed", file->getFileName(), ELL_ERROR);

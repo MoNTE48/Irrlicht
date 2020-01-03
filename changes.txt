@@ -9,6 +9,26 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 
 --------------------------
 Changes in 1.9 (not yet released)
+- Fix bug that AnimatedMeshSceneNode ignored ReadOnlyMaterials flag when checking materials for transparent render passes.
+- Unify checks if materials should use transparent render pass with new IVideoDriver::needsTransparentRenderPass function.
+- Material.ZWriteEnable is now of type E_ZWRITE instead of bool. This allows now setting materials to always "on" independent of material type and transparency.
+  This breaks compiling. To have old values replace false with EZW_OFF and true with EWZ_AUTO.
+- Materials EMT_REFLECTION_2_LAYER and EMT_TRANSPARENT_REFLECTION_2_LAYER on OpenGL are now same as in D3D9. Before GL used a sphere-map for those instead of reflection.
+- Bugfix: CGUIToolBar automatic placement no longer outside of screen when there are modals screens when creating it.
+  Or when there are other window elements going over full window-size.
+  Thanks to Stephen Lynx for the bugreport and to Sérgio Augusto Vianna for writing a test case with a bug example.
+  Changes: a) Never move the toolbar below it's parents lower border. b) No longer check all element-types, but only try to be below other toolbars or menues.
+- Add a normalType parameter to IGeometryCreator::createCylinderMesh
+- Add a normalsUpdate parameter to IMeshManipulator::transform to allow updating the normals with the inverse-transpose of the transformation matrix.
+- Bugfix: quaternion::slerp now uses lerpN instead of lerp to keep result normalized.
+- Add function quaternion::lerpN which is like lerp but normalizes the result.
+- Add function ISceneManager::createShadowVolumeSceneNode to allow custom ISceneNode's to use shadows.
+- CGUITabControl serialization changed to allow using custom tabs (before only CGUITab could be serialized). 
+  There was a lot of rewriting involved, including some minor interface changes (IGUITab*  can now be added directly for example).
+  See http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52344 for a thread about this.
+  Thanks @chronologicaldot for bringing this up, writing a patch proposal and even writing test.
+- CGUITabControl no longer eats EMIE_LMOUSE_PRESSED_DOWN (doesn't seem to need it, was just done for a planned feature which is not implemented yet).
+- Removing a tab in CGUITabControl will now also remove the tab-element. Fixes problems like tabs still being around & visible when you removed the active tab.
 - Add example 28.CubeMapping. 
   Based originally on EnvCubeMap example from irrSpintz engine. 
   Including a cubemap texture from Emil Persson, aka Humus from http://www.humus.name
@@ -16,7 +36,10 @@ Changes in 1.9 (not yet released)
   Added a new cube-mesh with meshbuffers per side.
   Also single buffer cube-mesh now normalizes it's normals.
 - Bugfix: CBillboardTextSceneNode no longer disregards IsVisible flag
-- FPS-camera movement now smoother (it would sometimes skip back because it worked with wrong values for the screen-center position).
+- FPS-camera rotation now smoother. 
+  First bug was that it would sometimes skip back because it worked with wrong values for the screen-center position.
+  Second (and bigger) bug was that it ignored all cursor-movement which happened between device->run() and the point where
+  the animator did run. Tiny side-effect your camera will now rotate generally faster.
 - Fix ms3d loader to work on big endian systems which need floats to be aligned in memory. Thanks @ kas1e, Corto and Salas for the patch (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52538).
 - Bugfix: COBJMeshFileLoder no longer overwrites transparency value with 1.0 when it's set before the diffuse color value in the mtl file. Thanks @Boshen for bugreport (#445).
 - Bugfix: OpenGL no longer antialiasing stencil buffer when driver has antialiasing disabled.
@@ -95,7 +118,7 @@ Changes in 1.9 (not yet released)
 - FPS camera now supports keyboard rotation.
 - Base FPS-camera movement on last position of mouse instead of always center (works better on platforms where cursor-placement is not allowed)
 - Octrees with other vertex types than EVT_2TCOORDS can now also use VBO's.
-- Add IOctreeSceneNode interface to control parameters like VBO usage and polygon clipping checks for octree scene nodes.
+- Add IOctreeSceneNode interface to control polygon clipping checks for octree scene nodes.
 - Add support for different geometric primitives to meshbuffers. Thanks @gerdb for patch proposal (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=45999)
 - change SEvent::SUserEvent.UserData1 and SEvent::SUserEvent.UserData1 from s32 to size_t to avoid cutting numbers on some 64-bit platforms (SDL and Windows)
 - Improve speed of draw3DBox (OpenGL and D3D9). Thanks @zerochen for patch (https://sourceforge.net/p/irrlicht/patches/256)
@@ -145,8 +168,6 @@ Changes in 1.9 (not yet released)
 - Fix bug with ignored opening brace in .X files with DeclData section. Thx @Alin for bugreport and patch.
 - Fix problem with OpenGL textures cache.
 - Add clear buffer flags and marked some methods used for clear buffers as deprecated.
-- Fix: CGUIImage no longer scales wrong when working with textures which don't have the original image size.
-- Fix CSoftwareTexture2 calculation for OriginalSize of ITexture. It was returning the changed texture size instead of the original one before.
 - Fix skinned meshes not playing their last frame. Also clarified animation documentation to describe current behavior more exactly.
 - Add IWriteFile::flush interface (thx @ JLouisB for the patch).
 - CLightSceneNode::updateAbsolutePosition does now light recalculations. This is to fix using animators with lights.

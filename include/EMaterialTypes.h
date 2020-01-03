@@ -118,9 +118,7 @@ namespace video
 		//! A transparent reflecting material with an optional additional non reflecting texture layer.
 		/** The reflection map should be set as first texture. The
 		transparency depends on the alpha value in the vertex colors. A
-		texture which will not reflect can be set as second texture.
-		Please note that this material type is currently not 100%
-		implemented in OpenGL. */
+		texture which will not reflect can be set as second texture.*/
 		EMT_TRANSPARENT_REFLECTION_2_LAYER,
 
 		//! A solid normal map renderer.
@@ -189,7 +187,9 @@ namespace video
 		EMT_PARALLAX_MAP_TRANSPARENT_VERTEX_ALPHA,
 
 		//! BlendFunc = source * sourceFactor + dest * destFactor ( E_BLEND_FUNC )
-		/** Using only first texture. Generic blending method. */
+		/** Using only first texture. Generic blending method. 
+		The blend function is set to SMaterial::MaterialTypeParam with 
+		pack_textureBlendFunc (for 2D) or pack_textureBlendFuncSeparate (for 3D). */
 		EMT_ONETEXTURE_BLEND,
 
 		//! This value is not used. It only forces this enumeration to compile to 32 bit.
