@@ -1,36 +1,18 @@
 # Makefile for Independent JPEG Group's software
 
-# This makefile is suitable for Borland C on MS-DOS or OS/2.
-# It works with Borland C++ for DOS, revision 3.0 or later,
-# and has been tested with Borland C++ for OS/2.
-# Watch out for optimization bugs in the OS/2 compilers --- see notes below!
+# This makefile is suitable for Borland C on MS-DOS.
+# It works with Borland C++ 32-bit for DOS, revision 5.0 or later.
 # Thanks to Tom Wright and Ge' Weijers (original DOS) and
-# Ken Porter (OS/2) for this file.
+# Joe Slater for adding 32-bit additions (needed for Borland
+# revision 5.5).
 
 # Read installation instructions before saying "make" !!
 
-# Are we under DOS or OS/2?
-!if !$d(DOS) && !$d(OS2)
-!if $d(__OS2__)
-OS2=1
-!else
-DOS=1
-!endif
-!endif
-
 # The name of your C compiler:
-CC= bcc
+CC= bcc32
 
 # You may need to adjust these cc options:
-!if $d(DOS)
-CFLAGS= -O2 -mm -w-par -w-stu -w-ccc -w-rch
-!else
-CFLAGS= -O1 -w-par -w-stu -w-ccc -w-rch
-!endif
-# -O2 enables full code optimization (for pre-3.0 Borland C++, use -O -G -Z).
-# -O2 is buggy in Borland OS/2 C++ revision 2.0, so use -O1 there for now.
-# If you have Borland OS/2 C++ revision 1.0, use -O or no optimization at all.
-# -mm selects medium memory model (near data, far code pointers; DOS only!)
+CFLAGS= -O2 -w-par -w-stu -w-ccc -w-rch -w-aus
 # -w-par suppresses warnings about unused function parameters
 # -w-stu suppresses warnings about incomplete structures
 # -w-ccc suppresses warnings about compile-time-constant conditions
@@ -39,27 +21,14 @@ CFLAGS= -O1 -w-par -w-stu -w-ccc -w-rch
 # NOT via -D switches here.
 
 # Link-time cc options:
-!if $d(DOS)
-LDFLAGS= -mm
-# memory model option here must match CFLAGS!
-!else
 LDFLAGS=
-# -lai full-screen app
 # -lc case-significant link
-!endif
 
 # Put here the object file name for the correct system-dependent memory
 # manager file.
-# For DOS, we recommend jmemdos.c and jmemdosa.asm.
-# For OS/2, we recommend jmemnobs.c (flat memory!)
 # SYSDEPMEMLIB must list the same files with "+" signs for the librarian.
-!if $d(DOS)
-SYSDEPMEM= jmemdos.obj jmemdosa.obj
-SYSDEPMEMLIB= +jmemdos.obj +jmemdosa.obj
-!else
 SYSDEPMEM= jmemnobs.obj
 SYSDEPMEMLIB= +jmemnobs.obj
-!endif
 
 # End of configurable options.
 
@@ -134,8 +103,8 @@ TROBJECTS= jpegtran.obj rdswitch.obj cdjpeg.obj transupp.obj
 all: libjpeg.lib cjpeg.exe djpeg.exe jpegtran.exe rdjpgcom.exe wrjpgcom.exe
 
 libjpeg.lib: $(LIBOBJECTS)
-	- del libjpeg.lib
-	tlib libjpeg.lib /E /C @&&|
+        - del libjpeg.lib
+        tlib libjpeg.lib /E /C @&&|
 +jcapimin.obj +jcapistd.obj +jcarith.obj +jctrans.obj +jcparam.obj &
 +jdatadst.obj +jcinit.obj +jcmaster.obj +jcmarker.obj +jcmainct.obj &
 +jcprepct.obj +jccoefct.obj +jccolor.obj +jcsample.obj +jchuff.obj &
@@ -149,77 +118,58 @@ $(SYSDEPMEMLIB)
 |
 
 cjpeg.exe: $(COBJECTS) libjpeg.lib
-	$(CC) $(LDFLAGS) -ecjpeg.exe $(COBJECTS) libjpeg.lib
+        $(CC) $(LDFLAGS) -ecjpeg.exe $(COBJECTS) libjpeg.lib
 
 djpeg.exe: $(DOBJECTS) libjpeg.lib
-	$(CC) $(LDFLAGS) -edjpeg.exe $(DOBJECTS) libjpeg.lib
+        $(CC) $(LDFLAGS) -edjpeg.exe $(DOBJECTS) libjpeg.lib
 
 jpegtran.exe: $(TROBJECTS) libjpeg.lib
-	$(CC) $(LDFLAGS) -ejpegtran.exe $(TROBJECTS) libjpeg.lib
+        $(CC) $(LDFLAGS) -ejpegtran.exe $(TROBJECTS) libjpeg.lib
 
 rdjpgcom.exe: rdjpgcom.c
-!if $d(DOS)
-	$(CC) -ms -O rdjpgcom.c
-!else
-	$(CC) $(CFLAGS) rdjpgcom.c
-!endif
+        $(CC) $(CFLAGS) rdjpgcom.c
 
-# On DOS, wrjpgcom needs large model so it can malloc a 64K chunk
 wrjpgcom.exe: wrjpgcom.c
-!if $d(DOS)
-	$(CC) -ml -O wrjpgcom.c
-!else
-	$(CC) $(CFLAGS) wrjpgcom.c
-!endif
+        $(CC) $(CFLAGS) wrjpgcom.c
 
 # This "{}" syntax allows Borland Make to "batch" source files.
 # In this way, each run of the compiler can build many modules.
 .c.obj:
-	$(CC) $(CFLAGS) -c{ $<}
+        $(CC) $(CFLAGS) -c{ $<}
 
 jconfig.h: jconfig.txt
-	echo You must prepare a system-dependent jconfig.h file.
-	echo Please read the installation directions in install.txt.
-	exit 1
+        echo You must prepare a system-dependent jconfig.h file.
+        echo Please read the installation directions in install.txt.
+        exit 1
 
 clean:
-	- del *.obj
-	- del libjpeg.lib
-	- del cjpeg.exe
-	- del djpeg.exe
-	- del jpegtran.exe
-	- del rdjpgcom.exe
-	- del wrjpgcom.exe
-	- del testout*.*
+        - del *.obj
+        - del libjpeg.lib
+        - del cjpeg.exe
+        - del djpeg.exe
+        - del jpegtran.exe
+        - del rdjpgcom.exe
+        - del wrjpgcom.exe
+        - del testout*.*
 
 test: cjpeg.exe djpeg.exe jpegtran.exe
-	- del testout*.*
+        - del testout*.*
         djpeg -dct int -ppm -outfile testout.ppm testorig.jpg
         djpeg -dct int -gif -outfile testout.gif testorig.jpg
         djpeg -dct int -bmp -colors 256 -outfile testout.bmp testorig.jpg
         cjpeg -dct int -outfile testout.jpg testimg.ppm
-	djpeg -dct int -ppm -outfile testoutp.ppm testprog.jpg
-	cjpeg -dct int -progressive -opt -outfile testoutp.jpg testimg.ppm
-	jpegtran -outfile testoutt.jpg testprog.jpg
-!if $d(DOS)
-	fc /b testimg.ppm testout.ppm
-	fc /b testimg.gif testout.gif
-	fc /b testimg.bmp testout.bmp
-	fc /b testimg.jpg testout.jpg
-	fc /b testimg.ppm testoutp.ppm
-	fc /b testimgp.jpg testoutp.jpg
-	fc /b testorig.jpg testoutt.jpg
-!else
-	echo n > n.tmp
-	comp testimg.ppm testout.ppm < n.tmp
+        djpeg -dct int -ppm -outfile testoutp.ppm testprog.jpg
+        cjpeg -dct int -progressive -opt -outfile testoutp.jpg testimg.ppm
+        jpegtran -outfile testoutt.jpg testprog.jpg
+        echo n > n.tmp
+        comp testimg.ppm testout.ppm < n.tmp
         comp testimg.gif testout.gif < n.tmp
-	comp testimg.bmp testout.bmp < n.tmp
-	comp testimg.jpg testout.jpg < n.tmp
-	comp testimg.ppm testoutp.ppm < n.tmp
-	comp testimgp.jpg testoutp.jpg < n.tmp
-	comp testorig.jpg testoutt.jpg < n.tmp
-	del n.tmp
-!endif
+        comp testimg.bmp testout.bmp < n.tmp
+        comp testimg.jpg testout.jpg < n.tmp
+        comp testimg.ppm testoutp.ppm < n.tmp
+        comp testimgp.jpg testoutp.jpg < n.tmp
+        comp testorig.jpg testoutt.jpg < n.tmp
+        del n.tmp
 
 
 jaricom.obj: jaricom.c jinclude.h jconfig.h jpeglib.h jmorecfg.h jpegint.h jerror.h
@@ -292,4 +242,4 @@ wrbmp.obj: wrbmp.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h c
 rdrle.obj: rdrle.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h cderror.h
 wrrle.obj: wrrle.c cdjpeg.h jinclude.h jconfig.h jpeglib.h jmorecfg.h jerror.h cderror.h
 jmemdosa.obj: jmemdosa.asm
-	tasm /mx jmemdosa.asm
+        tasm /mx jmemdosa.asm
