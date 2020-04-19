@@ -290,7 +290,7 @@ namespace video
 		SMaterial()
 		: MaterialType(EMT_SOLID), AmbientColor(255,255,255,255), DiffuseColor(255,255,255,255),
 			EmissiveColor(0,0,0,0), SpecularColor(255,255,255,255),
-			Shininess(0.0f), MaterialTypeParam(0.0f), MaterialTypeParam2(0.0f), Thickness(1.0f),
+			Shininess(0.0f), MaterialTypeParam(0.5f), MaterialTypeParam2(0.0f), Thickness(1.0f),
 			ZBuffer(ECFN_LESSEQUAL), AntiAliasing(EAAM_SIMPLE), ColorMask(ECP_ALL),
 			ColorMaterial(ECM_DIFFUSE), BlendOperation(EBO_NONE), BlendFactor(0.0f),
 			PolygonOffsetFactor(0), PolygonOffsetDirection(EPO_FRONT),
