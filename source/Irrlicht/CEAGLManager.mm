@@ -150,7 +150,14 @@ bool CEAGLManager::generateContext()
 		break;
 	}
 
-    dataStorage->Context = [[EAGLContext alloc] initWithAPI:OpenGLESVersion];
+    if (OpenGLESVersion == kEAGLRenderingAPIOpenGLES2) {
+        dataStorage->Context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+
+        if (dataStorage->Context == nil)
+            dataStorage->Context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    } else {
+        dataStorage->Context = [[EAGLContext alloc] initWithAPI:OpenGLESVersion];
+    }
 
 	if (dataStorage->Context == nil)
 	{
