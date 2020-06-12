@@ -128,9 +128,9 @@ class COpenGLCoreCacheHandler
 					}
 
 					Texture[index] = static_cast<const TOpenGLTexture*>(texture);
-					// dblfreefix (?)
-					/*if (prevTexture)
-						prevTexture->drop();*/
+
+					if (prevTexture)
+						prevTexture->drop();
 				}
 
 				status = true;
