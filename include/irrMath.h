@@ -633,7 +633,7 @@ namespace core
 		return rec;
 */
 /*
-		register u32 x = 0x7F000000 - IR ( p );
+		u32 x = 0x7F000000 - IR ( p );
 		const f32 r = FR ( x );
 		return r * (2.0f - p * r);
 */
