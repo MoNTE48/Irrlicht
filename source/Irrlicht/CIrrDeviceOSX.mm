@@ -6,6 +6,11 @@
 
 #include "IrrCompileConfig.h"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 #ifdef _IRR_COMPILE_WITH_OSX_DEVICE_
 
 #import <Cocoa/Cocoa.h>
@@ -38,12 +43,7 @@
 
 #include <IOKit/IOKitLib.h>
 #include <IOKit/IOCFPlugIn.h>
-#ifdef MACOS_10_0_4
-#include <IOKit/hidsystem/IOHIDUsageTables.h>
-#else
-/* The header was moved here in Mac OS X 10.1 */
 #include <Kernel/IOKit/hidsystem/IOHIDUsageTables.h>
-#endif
 #include <IOKit/hid/IOHIDLib.h>
 #include <IOKit/hid/IOHIDKeys.h>
 
@@ -484,12 +484,12 @@ static bool firstLaunch = true;
 - (id)initWithDevice:(irr::CIrrDeviceMacOSX*)device
 {
     self = [super init];
-    
+
     if (self)
         Device = device;
-    
+
     Quit = false;
-    
+
     return (self);
 }
 
@@ -541,9 +541,9 @@ static bool firstLaunch = true;
 {
     NSWindow	*window;
     NSRect		frame;
-    
+
     window = [aNotification object];
-    frame = [window frame];
+    frame = [window contentRectForFrameRect:[window frame]];
     Device->setResize((int)frame.size.width,(int)frame.size.height);
 }
 
@@ -559,9 +559,9 @@ namespace irr
 //! constructor
 CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param), Window(NULL), Display(NULL),
-	SoftwareDriverTarget(0), DeviceWidth(0), DeviceHeight(0),
+	SoftwareDriverTarget(nil), DeviceWidth(0), DeviceHeight(0),
 	ScreenWidth(0), ScreenHeight(0), MouseButtonStates(0), SoftwareRendererType(0),
-	IsActive(true), IsFullscreen(false), IsShiftDown(false), IsControlDown(false), IsResizable(false)
+	IsActive(true), IsFullscreen(false), IsShiftDown(false), IsControlDown(false), IsResizable(false), NativeScale(1.0f)
 {
 	struct utsname name;
 	NSString *path;
@@ -579,18 +579,18 @@ CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 			[[NSAutoreleasePool alloc] init];
 			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 			[NSApp setDelegate:(id<NSApplicationDelegate>)[[[CIrrDelegateOSX alloc] initWithDevice:this] autorelease]];
-            
+
             // Create menu
-            
+
             NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-            
+
             NSMenu* mainMenu = [[[NSMenu alloc] initWithTitle:@"MainMenu"] autorelease];
             NSMenu* menu = [[[NSMenu alloc] initWithTitle:bundleName] autorelease];
             NSMenuItem* menuItem = [mainMenu addItemWithTitle:bundleName action:nil keyEquivalent:@""];
             [mainMenu setSubmenu:menu forItem:menuItem];
             menuItem = [menu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
             [menuItem setKeyEquivalentModifierMask:NSCommandKeyMask];
-            
+
             [NSApp setMainMenu:mainMenu];
 
             [NSApp finishLaunching];
@@ -653,7 +653,7 @@ void CIrrDeviceMacOSX::closeDevice()
 		[Window release];
 		Window = nil;
 	}
-    
+
     if (IsFullscreen)
         CGReleaseAllDisplays();
 
@@ -666,67 +666,96 @@ bool CIrrDeviceMacOSX::createWindow()
     CGDisplayErr error;
     bool result = false;
     Display = CGMainDisplayID();
-    
+
     CGRect displayRect;
 #ifdef __MAC_10_6
     CGDisplayModeRef displaymode, olddisplaymode;
 #else
     CFDictionaryRef displaymode, olddisplaymode;
 #endif
-    
+
     ScreenWidth = (int)CGDisplayPixelsWide(Display);
     ScreenHeight = (int)CGDisplayPixelsHigh(Display);
-    
+
     const NSBackingStoreType type = (CreationParams.DriverType == video::EDT_OPENGL) ? NSBackingStoreBuffered : NSBackingStoreNonretained;
-    
+
     if (!CreationParams.Fullscreen)
     {
         if (!CreationParams.WindowId) //create another window when WindowId is null
         {
             int x = (CreationParams.WindowPosition.X > 0) ? CreationParams.WindowPosition.X : 0;
             int y = (CreationParams.WindowPosition.Y > 0) ? CreationParams.WindowPosition.Y : 0;
-            
+
             if (CreationParams.WindowPosition.Y > -1)
             {
-                int screenHeight = [[[NSScreen screens] objectAtIndex:0] frame].size.height;
+                int screenHeight = (int) [[NSScreen screens][0] frame].size.height;
                 y = screenHeight - y - CreationParams.WindowSize.Height;
             }
-            
-            Window = [[NSWindow alloc] initWithContentRect:NSMakeRect(x, y, CreationParams.WindowSize.Width,CreationParams.WindowSize.Height) styleMask:NSTitledWindowMask+NSClosableWindowMask+NSResizableWindowMask backing:type defer:FALSE];
+
+            NSWindowStyleMask style = NSTitledWindowMask+NSClosableWindowMask+NSResizableWindowMask+NSMiniaturizableWindowMask;
+
+            Window = [[NSWindow alloc] initWithContentRect:NSMakeRect(x, y, CreationParams.WindowSize.Width,CreationParams.WindowSize.Height) styleMask:style backing:type defer:FALSE];
+
+            NSView* view = [Window contentView];
+            if ([view respondsToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
+                [view setWantsBestResolutionOpenGLSurface:YES];
+            NativeScale = [Window backingScaleFactor];
+            ScreenWidth *= NativeScale;
+            ScreenHeight *= NativeScale;
+            NSRect frame = [Window frame];
+
+            // get title bar height
+            CGFloat contentHeight = [Window contentRectForFrameRect: Window.frame].size.height;
+            CGFloat titlebarHeight = frame.size.height - contentHeight;
+
+            // set correct window size
+            int h = CreationParams.WindowSize.Width;
+            int w = CreationParams.WindowSize.Height;
+            if (h % 2 != 0) h += 1;
+            if (w % 2 != 0) w += 1;
+
+            frame.size.width = h / NativeScale;
+            frame.size.height = w / NativeScale + titlebarHeight;
+            [Window setFrame:frame display:YES animate:YES];
 
             if (CreationParams.WindowPosition.X == -1 && CreationParams.WindowPosition.Y == -1)
                 [Window center];
         }
-        
-        DeviceWidth = CreationParams.WindowSize.Width;
-        DeviceHeight = CreationParams.WindowSize.Height;
-        
+
+        int x = CreationParams.WindowSize.Width;
+        int y = CreationParams.WindowSize.Height;
+        if (x % 2 != 0) x += 1;
+        if (y % 2 != 0) y += 1;
+
+        DeviceWidth = (s32) (x / NativeScale);
+        DeviceHeight = (s32) (y / NativeScale);
+
         result = true;
     }
     else
     {
         IsFullscreen = true;
-        
+
 #ifdef __MAC_10_6
         displaymode = CGDisplayCopyDisplayMode(Display);
-        
+
         CFArrayRef Modes = CGDisplayCopyAllDisplayModes(Display, NULL);
-        
+
         for(int i = 0; i < CFArrayGetCount(Modes); ++i)
         {
             CGDisplayModeRef CurrentMode = (CGDisplayModeRef)CFArrayGetValueAtIndex(Modes, i);
-            
+
             u8 Depth = 0;
-            
+
             CFStringRef pixEnc = CGDisplayModeCopyPixelEncoding(CurrentMode);
-            
+
             if (CFStringCompare(pixEnc, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
                 Depth = 32;
             else if(CFStringCompare(pixEnc, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
                 Depth = 16;
             else if(CFStringCompare(pixEnc, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
                 Depth = 8;
-            
+
             if(Depth == CreationParams.Bits)
                 if((CGDisplayModeGetWidth(CurrentMode) == CreationParams.WindowSize.Width) && (CGDisplayModeGetHeight(CurrentMode) == CreationParams.WindowSize.Height))
                 {
@@ -737,7 +766,7 @@ bool CIrrDeviceMacOSX::createWindow()
 #else
         displaymode = CGDisplayBestModeForParameters(Display,CreationParams.Bits,CreationParams.WindowSize.Width,CreationParams.WindowSize.Height,NULL);
 #endif
-        
+
         if (displaymode != NULL)
         {
 #ifdef __MAC_10_6
@@ -745,7 +774,7 @@ bool CIrrDeviceMacOSX::createWindow()
 #else
             olddisplaymode = CGDisplayCurrentMode(Display);
 #endif
-            
+
             error = CGCaptureAllDisplays();
             if (error == CGDisplayNoErr)
             {
@@ -754,28 +783,28 @@ bool CIrrDeviceMacOSX::createWindow()
 #else
                 error = CGDisplaySwitchToMode(Display, displaymode);
 #endif
-                
+
                 if (error == CGDisplayNoErr)
                 {
                     Window = [[NSWindow alloc] initWithContentRect:[[NSScreen mainScreen] frame] styleMask:NSBorderlessWindowMask backing:type defer:FALSE screen:[NSScreen mainScreen]];
-                    
+
                     [Window setLevel: CGShieldingWindowLevel()];
                     [Window setBackgroundColor:[NSColor blackColor]];
-                    
+
                     displayRect = CGDisplayBounds(Display);
                     ScreenWidth = DeviceWidth = (int)displayRect.size.width;
                     ScreenHeight = DeviceHeight = (int)displayRect.size.height;
                     CreationParams.WindowSize.set(ScreenWidth, ScreenHeight);
-                    
+
                     result = true;
                 }
-                
+
                 if (!result)
                     CGReleaseAllDisplays();
             }
         }
     }
-    
+
     if (result)
     {
         if (Window)
@@ -785,7 +814,7 @@ bool CIrrDeviceMacOSX::createWindow()
             [Window setIsVisible:TRUE];
             [Window makeKeyAndOrderFront:nil];
         }
-        
+
         if (IsFullscreen) //hide menus in fullscreen mode only
         {
 #ifdef __MAC_10_6
@@ -795,12 +824,15 @@ bool CIrrDeviceMacOSX::createWindow()
 #endif
         }
     }
-    
+
     return result;
 }
 
 void CIrrDeviceMacOSX::setResize(int width, int height)
 {
+    if (width % 2 != 0) width += 1;
+    if (height % 2 != 0) height += 1;
+
 	// set new window size
 	DeviceWidth = width;
 	DeviceHeight = height;
@@ -810,7 +842,7 @@ void CIrrDeviceMacOSX::setResize(int width, int height)
 	if (CreationParams.DriverType == video::EDT_OPENGL)
     {
         NSOpenGLContext* Context = (NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context;
-        
+
         if (Context)
             [Context update];
     }
@@ -819,11 +851,21 @@ void CIrrDeviceMacOSX::setResize(int width, int height)
 	// resize the driver to the inner pane size
 	if (Window)
 	{
-		NSRect driverFrame = [Window contentRectForFrameRect:[Window frame]];
-		getVideoDriver()->OnResize(core::dimension2d<u32>( (s32)driverFrame.size.width, (s32)driverFrame.size.height));
+		core::dimension2d<u32> new_size((u32) (width * NativeScale), (u32) (height * NativeScale));
+		((CCursorControl *)CursorControl)->updateWindowSize(new_size);
+		getVideoDriver()->OnResize(new_size);
 	}
 	else
-		getVideoDriver()->OnResize(core::dimension2d<u32>( (s32)width, (s32)height));
+		getVideoDriver()->OnResize(core::dimension2d<u32>((u32) (width * NativeScale), (u32) (height * NativeScale)));
+
+    // update device size to be ready to change screen resolution
+    CGRect displayRect = CGDisplayBounds(CGMainDisplayID());
+
+    ScreenWidth = (int) (displayRect.size.width * NativeScale);
+    ScreenHeight = (int) (displayRect.size.height * NativeScale);
+
+    // reset mouse state on window resize
+    MouseButtonStates = NO;
 }
 
 
@@ -861,17 +903,11 @@ void CIrrDeviceMacOSX::createDriver()
                 {
                     os::Printer::log("Could not create OpenGL driver.", ELL_ERROR);
                 }
-                
-				if (Window) 
-				{
-					[[Window contentView] setWantsBestResolutionOpenGLSurface:NO];
-					[(NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context setView:[Window contentView]];
-				}
-				else 
-				{
-					[(NSView*)CreationParams.WindowId setWantsBestResolutionOpenGLSurface:NO];
-					[(NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context setView:(NSView*)CreationParams.WindowId];
-				}
+
+                if (Window)
+                    [(NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context setView:[Window contentView]];
+                else
+                    [(NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context setView:(NSView*)CreationParams.WindowId];
 
 #ifndef __MAC_10_6
                 CGLContextObj CGLContext = (CGLContextObj)[(NSOpenGLContext*)ContextManager->getContext().OpenGLOSX.Context CGLContextObj];
@@ -1199,7 +1235,9 @@ void CIrrDeviceMacOSX::postMouseEvent(void *event,irr::SEvent &ievent)
 	{
 		ievent.MouseInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
 		ievent.MouseInput.Control = ([(NSEvent *)event modifierFlags] & NSControlKeyMask) != 0;
-		
+ 		ievent.MouseInput.X *= NativeScale;
+ 		ievent.MouseInput.Y *= NativeScale;
+
 		postEventFromUser(ievent);
 	}
 
@@ -1235,18 +1273,23 @@ void CIrrDeviceMacOSX::storeMouseLocation()
 			irr::SEvent ievent;
 			ievent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 			ievent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
-			ievent.MouseInput.X = x;
-			ievent.MouseInput.Y = y;
+			ievent.MouseInput.X = (s32) (x * NativeScale);
+			ievent.MouseInput.Y = (s32) (y * NativeScale);
 			postEventFromUser(ievent);
 		}
 	}
 
+    x *= NativeScale;
+    y *= NativeScale;
 	((CCursorControl *)CursorControl)->updateInternalCursorPosition(x,y);
 }
 
 
 void CIrrDeviceMacOSX::setMouseLocation(int x,int y)
 {
+    x /= NativeScale;
+    y /= NativeScale;
+
 	NSPoint	p;
 	CGPoint	c;
 
@@ -1256,7 +1299,7 @@ void CIrrDeviceMacOSX::setMouseLocation(int x,int y)
 		p.x = (float) x;
 		p.y = (float) (DeviceHeight - y);
 		p = [Window convertBaseToScreen:p];
-		p.y = ScreenHeight - p.y;
+		p.y = ScreenHeight / NativeScale - p.y;
 	}
 	else
 	{
@@ -1268,9 +1311,11 @@ void CIrrDeviceMacOSX::setMouseLocation(int x,int y)
 	c.y = p.y;
 
 #ifdef __MAC_10_6
-    CGEventRef ev = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, c, static_cast<CGMouseButton>(kCGEventMouseMoved));
-    CGEventPost(kCGHIDEventTap, ev);
-    CFRelease(ev);
+//  CGEventRef ev = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, c, NULL);
+//  CGEventPost(kCGHIDEventTap, ev);
+//  CFRelease(ev);
+    CGSetLocalEventsSuppressionInterval(0);
+    CGWarpMouseCursorPosition(c);
 #else
     CGSetLocalEventsSuppressionInterval(0);
     CGWarpMouseCursorPosition(c);
@@ -1285,8 +1330,8 @@ void CIrrDeviceMacOSX::setCursorVisible(bool visible)
 	else
 		CGDisplayHideCursor(CGMainDisplayID());
 }
-    
-    
+
+
 void CIrrDeviceMacOSX::setWindow(NSWindow* window)
 {
     Window = window;
@@ -1449,7 +1494,7 @@ void CIrrDeviceMacOSX::restoreWindow()
 {
 	[Window deminiaturize:[NSApp self]];
 }
-    
+
 //! Get the position of this window on screen
 core::position2di CIrrDeviceMacOSX::getWindowPosition()
 {
@@ -1841,4 +1886,3 @@ video::IVideoModeList* CIrrDeviceMacOSX::getVideoModeList()
 } // end namespace
 
 #endif // _IRR_COMPILE_WITH_OSX_DEVICE_
-
