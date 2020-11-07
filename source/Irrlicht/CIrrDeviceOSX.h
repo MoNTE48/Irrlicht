@@ -121,13 +121,18 @@ namespace irr
 		public:
 
 			CCursorControl(const core::dimension2d<u32>& wsize, CIrrDeviceMacOSX *device)
-				: WindowSize(wsize), InvWindowSize(0.0f, 0.0f), Device(device), IsVisible(true), UseReferenceRect(false)
+				: InvWindowSize(0.0f, 0.0f), Device(device), IsVisible(true), UseReferenceRect(false)
 			{
+				updateWindowSize(wsize);
 				CursorPos.X = CursorPos.Y = 0;
-				if (WindowSize.Width!=0)
-					InvWindowSize.Width = 1.0f / WindowSize.Width;
-				if (WindowSize.Height!=0)
-					InvWindowSize.Height = 1.0f / WindowSize.Height;
+			}
+			void updateWindowSize(const core::dimension2du& size)
+			{
+						WindowSize = size;
+						if (WindowSize.Width != 0)
+									InvWindowSize.Width = 1.0f / WindowSize.Width;
+						if (WindowSize.Height != 0)
+									InvWindowSize.Height = 1.0f / WindowSize.Height;
 			}
 
 			//! Changes the visible state of the mouse cursor.
@@ -254,6 +259,7 @@ namespace irr
 		bool IsShiftDown;
 		bool IsControlDown;
 		bool IsResizable;
+		CGFloat NativeScale;
 	};
 
 
@@ -261,4 +267,3 @@ namespace irr
 
 #endif // _IRR_COMPILE_WITH_OSX_DEVICE_
 #endif // __C_IRR_DEVICE_MACOSX_H_INCLUDED__
-
