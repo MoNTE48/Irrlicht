@@ -1051,13 +1051,21 @@ bool CIrrDeviceMacOSX::run()
 
 			case NSScrollWheel:
 				ievent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-				ievent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
-				ievent.MouseInput.Wheel = [(NSEvent *)event deltaY];
-				if (ievent.MouseInput.Wheel < 1.0f)
-					ievent.MouseInput.Wheel *= 10.0f;
-				else
-					ievent.MouseInput.Wheel *= 5.0f;
-				postMouseEvent(event,ievent);
+				// MultiCraft specific thing to smoothly change HUD items,
+				// using the side scrolling on the touchpad
+				if ([event deltaX] != 0) {
+					ievent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL_X;
+					ievent.MouseInput.Wheel = (s32) [event deltaX];
+					postMouseEvent(event,ievent);
+					break;
+				}
+                ievent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
+                ievent.MouseInput.Wheel = (s32) [event deltaY];
+                if (ievent.MouseInput.Wheel < 1.0f)
+                    ievent.MouseInput.Wheel *= 10.0f;
+                else
+                    ievent.MouseInput.Wheel *= 5.0f;
+                postMouseEvent(event,ievent);
 				break;
 
 			default:
