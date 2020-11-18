@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1235,7 +1235,7 @@
 				5E34C7931B7F4AFC00F212E8 /* SMeshBuffer.h */,
 				5E34C7941B7F4AFC00F212E8 /* SMeshBufferLightMap.h */,
 				5E34C7951B7F4AFC00F212E8 /* SMeshBufferTangents.h */,
-				84A219A4249F823800E189FC /* SOverrideMaterial.h */,				
+				84A219A4249F823800E189FC /* SOverrideMaterial.h */,
 				5E34C7961B7F4AFC00F212E8 /* SParticle.h */,
 				5E34C7971B7F4AFC00F212E8 /* SSharedMeshBuffer.h */,
 				5E34C7981B7F4AFC00F212E8 /* SSkinMeshBuffer.h */,
@@ -2154,10 +2154,9 @@
 			};
 			buildConfigurationList = 5E34C6DC1B7F4A0C00F212E8 /* Build configuration list for PBXProject "Irrlicht" */;
 			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 			);
 			mainGroup = 5E34C6D81B7F4A0C00F212E8;
@@ -2537,7 +2536,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -2571,6 +2570,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
