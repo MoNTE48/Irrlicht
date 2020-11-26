@@ -921,8 +921,6 @@ void CIrrDeviceMacOSX::createDriver()
 
 		case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
 		case video::EDT_DIRECT3D9:
-		case video::EDT_OGLES1:
-		case video::EDT_OGLES2:
 			os::Printer::log("This driver is not available in OSX. Try OpenGL or Software renderer.", ELL_ERROR);
 			break;
 
