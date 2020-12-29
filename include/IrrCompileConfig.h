@@ -233,7 +233,7 @@ define out.
 Currently only enabled on Android by default.
 Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS_ as well when using it.
 */
-#if defined(_IRR_ANDROID_PLATFORM_)
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
 #define _IRR_COMPILE_WITH_OGLES1_
 #endif
 #ifdef NO_IRR_COMPILE_WITH_OGLES1_
@@ -960,4 +960,3 @@ precision will be lower but speed higher. currently X86 only
 #endif
 
 #endif // __IRR_COMPILE_CONFIG_H_INCLUDED__
-
