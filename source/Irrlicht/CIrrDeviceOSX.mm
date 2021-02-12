@@ -1110,17 +1110,25 @@ void CIrrDeviceMacOSX::sleep(u32 timeMs, bool pauseTimer=false)
 void CIrrDeviceMacOSX::setWindowCaption(const wchar_t* text)
 {
 	size_t size;
-	char title[1024];
+//	char title[1024];
 
 	if (Window != NULL)
 	{
-		size = wcstombs(title,text,1024);
-		title[1023] = 0;
-#ifdef __MAC_10_6
-		NSString* name = [NSString stringWithCString:title encoding:NSUTF8StringEncoding];
+//		size = wcstombs(title,text,1024);
+		size = wcslen(text) * sizeof(wchar_t);
+//		title[1023] = 0;
+//#ifdef __MAC_10_6
+//		NSString* name = [NSString stringWithCString:title encoding:NSUTF8StringEncoding];
+//#else
+//		NSString* name = [NSString stringWithCString:title length:size];
+//#endif
+
+#ifdef __BIG_ENDIAN__
+		NSStringEncoding encode = NSUTF32BigEndianStringEncoding;
 #else
-		NSString* name = [NSString stringWithCString:title length:size];
+		NSStringEncoding encode = NSUTF32LittleEndianStringEncoding;
 #endif
+		NSString* name = [[NSString alloc] initWithBytes:text length:size encoding:encode];
 		[Window setTitle:name];
 		[name release];
 	}
