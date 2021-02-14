@@ -779,7 +779,7 @@ B3D, MS3D or X meshes */
 
 //! Define __IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_ if you want to open ZIP and GZIP archives
 /** ZIP reading has several more options below to configure. */
-//#define __IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_
+#define __IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_
 #ifdef NO__IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_
 #undef __IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_
 #endif
@@ -788,7 +788,7 @@ B3D, MS3D or X meshes */
 /** This enables the engine to read from compressed .zip archives. If you
 disable this feature, the engine can still read archives, but only uncompressed
 ones. */
-//#define _IRR_COMPILE_WITH_ZLIB_
+#define _IRR_COMPILE_WITH_ZLIB_
 #ifdef NO_IRR_COMPILE_WITH_ZLIB_
 #undef _IRR_COMPILE_WITH_ZLIB_
 #endif
@@ -798,12 +798,12 @@ ones. */
 	defined.
 	NOTE: You will also have to modify the Makefile or project files when changing this default.
  */
-//#define _IRR_USE_NON_SYSTEM_ZLIB_
+#define _IRR_USE_NON_SYSTEM_ZLIB_
 #ifdef NO_IRR_USE_NON_SYSTEM_ZLIB_
 #undef _IRR_USE_NON_SYSTEM_ZLIB_
 #endif
 //! Define _IRR_COMPILE_WITH_ZIP_ENCRYPTION_ if you want to read AES-encrypted ZIP archives
-//#define _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
+#define _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 #ifdef NO_IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 #undef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 #endif
@@ -811,7 +811,7 @@ ones. */
 /** bzip2 is superior to the original zip file compression modes, but requires
 a certain amount of memory for decompression and adds several files to the
 library. */
-//#define _IRR_COMPILE_WITH_BZIP2_
+#define _IRR_COMPILE_WITH_BZIP2_
 #ifdef NO_IRR_COMPILE_WITH_BZIP2_
 #undef _IRR_COMPILE_WITH_BZIP2_
 #endif
@@ -828,7 +828,7 @@ NOTE: You will also have to modify the Makefile or project files when changing t
 //! Define _IRR_COMPILE_WITH_LZMA_ if you want to use LZMA compressed zip files.
 /** LZMA is a very efficient compression code, known from 7zip. Irrlicht
 currently only supports zip archives, though. */
-//#define _IRR_COMPILE_WITH_LZMA_
+#define _IRR_COMPILE_WITH_LZMA_
 #ifdef NO_IRR_COMPILE_WITH_LZMA_
 #undef _IRR_COMPILE_WITH_LZMA_
 #endif
@@ -850,7 +850,7 @@ currently only supports zip archives, though. */
 #undef __IRR_COMPILE_WITH_NPK_ARCHIVE_LOADER_
 #endif
 //! Define __IRR_COMPILE_WITH_TAR_ARCHIVE_LOADER_ if you want to open TAR archives
-//#define __IRR_COMPILE_WITH_TAR_ARCHIVE_LOADER_
+#define __IRR_COMPILE_WITH_TAR_ARCHIVE_LOADER_
 #ifdef NO__IRR_COMPILE_WITH_TAR_ARCHIVE_LOADER_
 #undef __IRR_COMPILE_WITH_TAR_ARCHIVE_LOADER_
 #endif
