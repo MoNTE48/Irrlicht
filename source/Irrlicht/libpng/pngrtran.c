@@ -18,8 +18,7 @@
 
 #include "pngpriv.h"
 
-// iOS Undefined symbols for architecture arm64
-/*#ifdef PNG_ARM_NEON_IMPLEMENTATION
+#ifdef PNG_ARM_NEON_IMPLEMENTATION
 #  if PNG_ARM_NEON_IMPLEMENTATION == 1
 #    define PNG_ARM_NEON_INTRINSICS_AVAILABLE
 #    if defined(_MSC_VER) && defined(_M_ARM64)
@@ -28,7 +27,7 @@
 #      include <arm_neon.h>
 #    endif
 #  endif
-#endif*/
+#endif
 
 #ifdef PNG_READ_SUPPORTED
 
