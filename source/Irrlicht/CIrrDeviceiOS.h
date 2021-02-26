@@ -46,28 +46,28 @@ namespace irr
 
 		virtual core::position2di getWindowPosition() _IRR_OVERRIDE_;
 
-        virtual bool activateAccelerometer(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
-        virtual bool deactivateAccelerometer() _IRR_OVERRIDE_;
-        virtual bool isAccelerometerActive() _IRR_OVERRIDE_;
-        virtual bool isAccelerometerAvailable() _IRR_OVERRIDE_;
-        virtual bool activateGyroscope(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
-        virtual bool deactivateGyroscope() _IRR_OVERRIDE_;
-        virtual bool isGyroscopeActive() _IRR_OVERRIDE_;
-        virtual bool isGyroscopeAvailable() _IRR_OVERRIDE_;
-        virtual bool activateDeviceMotion(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
-        virtual bool deactivateDeviceMotion() _IRR_OVERRIDE_;
-        virtual bool isDeviceMotionActive() _IRR_OVERRIDE_;
-        virtual bool isDeviceMotionAvailable() _IRR_OVERRIDE_;
+		virtual bool activateAccelerometer(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
+		virtual bool deactivateAccelerometer() _IRR_OVERRIDE_;
+		virtual bool isAccelerometerActive() _IRR_OVERRIDE_;
+		virtual bool isAccelerometerAvailable() _IRR_OVERRIDE_;
+		virtual bool activateGyroscope(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
+		virtual bool deactivateGyroscope() _IRR_OVERRIDE_;
+		virtual bool isGyroscopeActive() _IRR_OVERRIDE_;
+		virtual bool isGyroscopeAvailable() _IRR_OVERRIDE_;
+		virtual bool activateDeviceMotion(float updateInterval = 0.016666f) _IRR_OVERRIDE_;
+		virtual bool deactivateDeviceMotion() _IRR_OVERRIDE_;
+		virtual bool isDeviceMotionActive() _IRR_OVERRIDE_;
+		virtual bool isDeviceMotionAvailable() _IRR_OVERRIDE_;
 
-        virtual E_DEVICE_TYPE getType() const _IRR_OVERRIDE_;
+		virtual E_DEVICE_TYPE getType() const _IRR_OVERRIDE_;
 
-        void *getViewController();
+		void *getViewController();
 
 	private:
-        void createWindow();
-        void createViewAndDriver();
+		void createWindow();
+		void createViewAndDriver();
 
-        void* DataStorage;
+		void* DataStorage;
 
 		bool Close;
 	};

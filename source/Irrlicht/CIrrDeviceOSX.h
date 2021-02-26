@@ -23,7 +23,7 @@
 
 namespace irr
 {
-    class CIrrDeviceMacOSX;
+	class CIrrDeviceMacOSX;
 }
 
 @interface CIrrDelegateOSX : NSObject
@@ -89,8 +89,8 @@ namespace irr
 		//! Restore the window to normal size if possible.
 		virtual void restoreWindow() _IRR_OVERRIDE_;
 
-        //! Get the position of this window on screen
-        virtual core::position2di getWindowPosition() _IRR_OVERRIDE_;
+		//! Get the position of this window on screen
+		virtual core::position2di getWindowPosition() _IRR_OVERRIDE_;
 
 		//! Activate any joysticks, and generate events for them.
 		virtual bool activateJoysticks(core::array<SJoystickInfo> & joystickInfo) _IRR_OVERRIDE_;
@@ -108,7 +108,7 @@ namespace irr
 		void setMouseLocation(int x, int y);
 		void setResize(int width, int height);
 		void setCursorVisible(bool visible);
-        void setWindow(NSWindow* window);
+		void setWindow(NSWindow* window);
 
 	private:
 
@@ -128,11 +128,11 @@ namespace irr
 			}
 			void updateWindowSize(const core::dimension2du& size)
 			{
-						WindowSize = size;
-						if (WindowSize.Width != 0)
-									InvWindowSize.Width = 1.0f / WindowSize.Width;
-						if (WindowSize.Height != 0)
-									InvWindowSize.Height = 1.0f / WindowSize.Height;
+				WindowSize = size;
+				if (WindowSize.Width != 0)
+					InvWindowSize.Width = 1.0f / WindowSize.Width;
+				if (WindowSize.Height != 0)
+					InvWindowSize.Height = 1.0f / WindowSize.Height;
 			}
 
 			//! Changes the visible state of the mouse cursor.
@@ -245,7 +245,7 @@ namespace irr
 		void pollJoysticks();
 
 		NSWindow* Window;
-        CGDirectDisplayID Display;
+		CGDirectDisplayID Display;
 		NSBitmapImageRep* SoftwareDriverTarget;
 		std::map<int,int> KeyCodes;
 		int DeviceWidth;
@@ -253,8 +253,8 @@ namespace irr
 		int ScreenWidth;
 		int ScreenHeight;
 		u32 MouseButtonStates;
-        u32 SoftwareRendererType;
-        bool IsFullscreen;
+		u32 SoftwareRendererType;
+		bool IsFullscreen;
 		bool IsActive;
 		bool IsShiftDown;
 		bool IsControlDown;

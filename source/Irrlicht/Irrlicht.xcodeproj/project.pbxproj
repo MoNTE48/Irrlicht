@@ -902,8 +902,8 @@
 		5E34C8051B7F51D900F212E8 /* irrXML.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = irrXML.cpp; sourceTree = "<group>"; };
 		5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CIrrDeviceStub.cpp; sourceTree = "<group>"; };
 		5E34C80E1B7F52AC00F212E8 /* CIrrDeviceStub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceStub.h; sourceTree = "<group>"; };
-		5E34C8131B7F535C00F212E8 /* CIrrDeviceOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceOSX.h; sourceTree = "<group>"; };
-		5E34C8141B7F535C00F212E8 /* CIrrDeviceOSX.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CIrrDeviceOSX.mm; sourceTree = "<group>"; };
+		5E34C8131B7F535C00F212E8 /* CIrrDeviceOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceOSX.h; sourceTree = "<group>"; usesTabs = 1; };
+		5E34C8141B7F535C00F212E8 /* CIrrDeviceOSX.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CIrrDeviceOSX.mm; sourceTree = "<group>"; usesTabs = 1; };
 		5E34C8151B7F540B00F212E8 /* aes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = aes.h; path = aesGladman/aes.h; sourceTree = "<group>"; };
 		5E34C8161B7F540B00F212E8 /* aescrypt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aescrypt.cpp; path = aesGladman/aescrypt.cpp; sourceTree = "<group>"; };
 		5E34C8171B7F540B00F212E8 /* aeskey.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aeskey.cpp; path = aesGladman/aeskey.cpp; sourceTree = "<group>"; };
@@ -1330,8 +1330,8 @@
 		5E34C9EE1B7F6CCC00F212E8 /* CNSOGLManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CNSOGLManager.mm; sourceTree = "<group>"; };
 		5E34C9F31B7F6E3400F212E8 /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5733E51C18E212003F664E /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E5733E61C18E254003F664E /* CIrrDeviceiOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceiOS.h; sourceTree = "<group>"; };
-		5E5733E71C18E254003F664E /* CIrrDeviceiOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CIrrDeviceiOS.mm; sourceTree = "<group>"; };
+		5E5733E61C18E254003F664E /* CIrrDeviceiOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceiOS.h; sourceTree = "<group>"; usesTabs = 1; };
+		5E5733E71C18E254003F664E /* CIrrDeviceiOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CIrrDeviceiOS.mm; sourceTree = "<group>"; usesTabs = 1; };
 		5E5733EC1C18E2C0003F664E /* COGLESCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COGLESCommon.h; sourceTree = "<group>"; };
 		5E5733ED1C18E2C0003F664E /* COGLESDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COGLESDriver.cpp; sourceTree = "<group>"; };
 		5E5733EE1C18E2C0003F664E /* COGLESDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COGLESDriver.h; sourceTree = "<group>"; };

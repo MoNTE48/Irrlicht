@@ -187,19 +187,19 @@ namespace irr
 
 @implementation CIrrViewiOS
 {
-    irr::CIrrDeviceiOS* Device;
+	irr::CIrrDeviceiOS* Device;
 }
 
 - (id)initWithFrame:(CGRect)frame forDevice:(irr::CIrrDeviceiOS*)device;
 {
-    self = [super initWithFrame:frame];
-    self.Scale = 1.0f;
-    if (self)
-    {
-        Device = device;
-    }
+	self = [super initWithFrame:frame];
+	self.Scale = 1.0f;
+	if (self)
+	{
+		Device = device;
+	}
 
-    return self;
+	return self;
 }
 
 - (BOOL)isMultipleTouchEnabled
@@ -216,14 +216,14 @@ namespace irr
 
 	for (UITouch* touch in touches)
 	{
-        ev.TouchInput.ID = (size_t)touch;
+		ev.TouchInput.ID = (size_t)touch;
 
 		CGPoint touchPoint = [touch locationInView:self];
 
-        ev.TouchInput.X = touchPoint.x * self.Scale;
-        ev.TouchInput.Y = touchPoint.y * self.Scale;
+		ev.TouchInput.X = touchPoint.x * self.Scale;
+		ev.TouchInput.Y = touchPoint.y * self.Scale;
 
-        Device->postEventFromUser(ev);
+		Device->postEventFromUser(ev);
 	}
 }
 
@@ -236,14 +236,14 @@ namespace irr
 
 	for (UITouch* touch in touches)
 	{
-        ev.TouchInput.ID = (size_t)touch;
+		ev.TouchInput.ID = (size_t)touch;
 
 		CGPoint touchPoint = [touch locationInView:self];
 
-        ev.TouchInput.X = touchPoint.x * self.Scale;
-        ev.TouchInput.Y = touchPoint.y * self.Scale;
+		ev.TouchInput.X = touchPoint.x * self.Scale;
+		ev.TouchInput.Y = touchPoint.y * self.Scale;
 
-        Device->postEventFromUser(ev);
+		Device->postEventFromUser(ev);
 	}
 }
 
@@ -256,14 +256,14 @@ namespace irr
 
 	for (UITouch* touch in touches)
 	{
-        ev.TouchInput.ID = (size_t)touch;
+		ev.TouchInput.ID = (size_t)touch;
 
 		CGPoint touchPoint = [touch locationInView:self];
 
-        ev.TouchInput.X = touchPoint.x * self.Scale;
-        ev.TouchInput.Y = touchPoint.y * self.Scale;
+		ev.TouchInput.X = touchPoint.x * self.Scale;
+		ev.TouchInput.Y = touchPoint.y * self.Scale;
 
-        Device->postEventFromUser(ev);
+		Device->postEventFromUser(ev);
 	}
 }
 
@@ -276,14 +276,14 @@ namespace irr
 
 	for (UITouch* touch in touches)
 	{
-        ev.TouchInput.ID = (size_t)touch;
+		ev.TouchInput.ID = (size_t)touch;
 
 		CGPoint touchPoint = [touch locationInView:self];
 
-        ev.TouchInput.X = touchPoint.x * self.Scale;
-        ev.TouchInput.Y = touchPoint.y * self.Scale;
+		ev.TouchInput.X = touchPoint.x * self.Scale;
+		ev.TouchInput.Y = touchPoint.y * self.Scale;
 
-        Device->postEventFromUser(ev);
+		Device->postEventFromUser(ev);
 	}
 }
 
@@ -313,24 +313,24 @@ namespace irr
 		IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
 	}
 
-    struct SIrrDeviceiOSDataStorage
-    {
-        SIrrDeviceiOSDataStorage() : Window(0), ViewController(0), View(0), MotionManager(0), ReferenceAttitude(0)
-        {
-            MotionManager = [[CMMotionManager alloc] init];
-        }
+	struct SIrrDeviceiOSDataStorage
+	{
+		SIrrDeviceiOSDataStorage() : Window(0), ViewController(0), View(0), MotionManager(0), ReferenceAttitude(0)
+		{
+			MotionManager = [[CMMotionManager alloc] init];
+		}
 
-        UIWindow* Window;
-        UIViewController* ViewController;
-        CIrrViewiOS* View;
-        CMMotionManager* MotionManager;
-        CMAttitude* ReferenceAttitude;
-    };
+		UIWindow* Window;
+		UIViewController* ViewController;
+		CIrrViewiOS* View;
+		CMMotionManager* MotionManager;
+		CMAttitude* ReferenceAttitude;
+	};
 
-    CIrrDeviceiOS::CIrrDeviceiOS(const SIrrlichtCreationParameters& params) : CIrrDeviceStub(params), DataStorage(0), Close(false)
-    {
+	CIrrDeviceiOS::CIrrDeviceiOS(const SIrrlichtCreationParameters& params) : CIrrDeviceStub(params), DataStorage(0), Close(false)
+	{
 #ifdef _DEBUG
-        setDebugName("CIrrDeviceiOS");
+		setDebugName("CIrrDeviceiOS");
 #endif
 
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
@@ -338,35 +338,35 @@ namespace irr
 		[delegate setDevice:this];
 #endif
 
-        DataStorage = new SIrrDeviceiOSDataStorage();
+		DataStorage = new SIrrDeviceiOSDataStorage();
 
-        FileSystem->changeWorkingDirectoryTo([[[NSBundle mainBundle] resourcePath] UTF8String]);
+		FileSystem->changeWorkingDirectoryTo([[[NSBundle mainBundle] resourcePath] UTF8String]);
 
 		createWindow();
-        createViewAndDriver();
+		createViewAndDriver();
 
-        if (!VideoDriver)
-            return;
+		if (!VideoDriver)
+			return;
 
-        createGUIAndScene();
-    }
+		createGUIAndScene();
+	}
 
-    CIrrDeviceiOS::~CIrrDeviceiOS()
-    {
-        deactivateDeviceMotion();
-        deactivateGyroscope();
-        deactivateAccelerometer();
+	CIrrDeviceiOS::~CIrrDeviceiOS()
+	{
+		deactivateDeviceMotion();
+		deactivateGyroscope();
+		deactivateAccelerometer();
 
-        delete static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		delete static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 		CIrrDelegateiOS* delegate = [UIApplication sharedApplication].delegate;
 		[delegate setDevice:nil];
 #endif
-    }
+	}
 
-    bool CIrrDeviceiOS::run()
-    {
+	bool CIrrDeviceiOS::run()
+	{
 		if (!Close)
 		{
 			const CFTimeInterval timeInSeconds = 0.000002;
@@ -432,37 +432,37 @@ namespace irr
 		}
 
 		return !Close;
-    }
+	}
 
-    void CIrrDeviceiOS::yield()
-    {
-        struct timespec ts = {0,0};
-        nanosleep(&ts, NULL);
-    }
+	void CIrrDeviceiOS::yield()
+	{
+		struct timespec ts = {0,0};
+		nanosleep(&ts, NULL);
+	}
 
-    void CIrrDeviceiOS::sleep(u32 timeMs, bool pauseTimer=false)
-    {
-        bool wasStopped = Timer ? Timer->isStopped() : true;
+	void CIrrDeviceiOS::sleep(u32 timeMs, bool pauseTimer=false)
+	{
+		bool wasStopped = Timer ? Timer->isStopped() : true;
 
-        struct timespec ts;
-        ts.tv_sec = (time_t) (timeMs / 1000);
-        ts.tv_nsec = (long) (timeMs % 1000) * 1000000;
+		struct timespec ts;
+		ts.tv_sec = (time_t) (timeMs / 1000);
+		ts.tv_nsec = (long) (timeMs % 1000) * 1000000;
 
-        if (pauseTimer && !wasStopped)
-            Timer->stop();
+		if (pauseTimer && !wasStopped)
+			Timer->stop();
 
-        nanosleep(&ts, NULL);
+		nanosleep(&ts, NULL);
 
-        if (pauseTimer && !wasStopped)
-            Timer->start();
-    }
+		if (pauseTimer && !wasStopped)
+			Timer->start();
+	}
 
-    void CIrrDeviceiOS::setWindowCaption(const wchar_t* text)
-    {
-    }
+	void CIrrDeviceiOS::setWindowCaption(const wchar_t* text)
+	{
+	}
 
-    bool CIrrDeviceiOS::isWindowActive() const
-    {
+	bool CIrrDeviceiOS::isWindowActive() const
+	{
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 		CIrrDelegateiOS* delegate = [UIApplication sharedApplication].delegate;
 
@@ -470,10 +470,10 @@ namespace irr
 #else
 		return false;
 #endif
-    }
+	}
 
-    bool CIrrDeviceiOS::isWindowFocused() const
-    {
+	bool CIrrDeviceiOS::isWindowFocused() const
+	{
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 		CIrrDelegateiOS* delegate = [UIApplication sharedApplication].delegate;
 
@@ -481,10 +481,10 @@ namespace irr
 #else
 		return false;
 #endif
-    }
+	}
 
-    bool CIrrDeviceiOS::isWindowMinimized() const
-    {
+	bool CIrrDeviceiOS::isWindowMinimized() const
+	{
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 		CIrrDelegateiOS* delegate = [UIApplication sharedApplication].delegate;
 
@@ -492,219 +492,219 @@ namespace irr
 #else
 		return false;
 #endif
-    }
+	}
 
-    bool CIrrDeviceiOS::present(video::IImage* image, void * windowId, core::rect<s32>* src)
-    {
-        return false;
-    }
+	bool CIrrDeviceiOS::present(video::IImage* image, void * windowId, core::rect<s32>* src)
+	{
+		return false;
+	}
 
-    void CIrrDeviceiOS::closeDevice()
-    {
-        CFRunLoopStop(CFRunLoopGetMain());
+	void CIrrDeviceiOS::closeDevice()
+	{
+		CFRunLoopStop(CFRunLoopGetMain());
 
 		Close = true;
-    }
+	}
 
-    void CIrrDeviceiOS::setResizable(bool resize)
-    {
-    }
+	void CIrrDeviceiOS::setResizable(bool resize)
+	{
+	}
 
-    void CIrrDeviceiOS::minimizeWindow()
-    {
-    }
+	void CIrrDeviceiOS::minimizeWindow()
+	{
+	}
 
-    void CIrrDeviceiOS::maximizeWindow()
-    {
-    }
+	void CIrrDeviceiOS::maximizeWindow()
+	{
+	}
 
-    void CIrrDeviceiOS::restoreWindow()
-    {
-    }
+	void CIrrDeviceiOS::restoreWindow()
+	{
+	}
 
-    core::position2di CIrrDeviceiOS::getWindowPosition()
-    {
-        return core::position2di(0, 0);
-    }
+	core::position2di CIrrDeviceiOS::getWindowPosition()
+	{
+		return core::position2di(0, 0);
+	}
 
-    bool CIrrDeviceiOS::activateAccelerometer(float updateInterval)
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::activateAccelerometer(float updateInterval)
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isAccelerometerAvailable)
-        {
-            if (!motionManager.isAccelerometerActive)
-            {
-                motionManager.accelerometerUpdateInterval = updateInterval;
-                [motionManager startAccelerometerUpdates];
-            }
+		if (motionManager.isAccelerometerAvailable)
+		{
+			if (!motionManager.isAccelerometerActive)
+			{
+				motionManager.accelerometerUpdateInterval = updateInterval;
+				[motionManager startAccelerometerUpdates];
+			}
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::deactivateAccelerometer()
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::deactivateAccelerometer()
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isAccelerometerAvailable)
-        {
-            if (motionManager.isAccelerometerActive)
-                [motionManager stopAccelerometerUpdates];
+		if (motionManager.isAccelerometerAvailable)
+		{
+			if (motionManager.isAccelerometerActive)
+				[motionManager stopAccelerometerUpdates];
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::isAccelerometerActive()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isAccelerometerActive()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isAccelerometerActive);
-    }
+		return (dataStorage->MotionManager.isAccelerometerActive);
+	}
 
-    bool CIrrDeviceiOS::isAccelerometerAvailable()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isAccelerometerAvailable()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isAccelerometerAvailable);
-    }
+		return (dataStorage->MotionManager.isAccelerometerAvailable);
+	}
 
-    bool CIrrDeviceiOS::activateGyroscope(float updateInterval)
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::activateGyroscope(float updateInterval)
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isGyroAvailable)
-        {
-            if (!motionManager.isGyroActive)
-            {
-                motionManager.gyroUpdateInterval = updateInterval;
-                [motionManager startGyroUpdates];
-            }
+		if (motionManager.isGyroAvailable)
+		{
+			if (!motionManager.isGyroActive)
+			{
+				motionManager.gyroUpdateInterval = updateInterval;
+				[motionManager startGyroUpdates];
+			}
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::deactivateGyroscope()
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::deactivateGyroscope()
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isGyroAvailable)
-        {
-            if (motionManager.isGyroActive)
-                [motionManager stopGyroUpdates];
+		if (motionManager.isGyroAvailable)
+		{
+			if (motionManager.isGyroActive)
+				[motionManager stopGyroUpdates];
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::isGyroscopeActive()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isGyroscopeActive()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isGyroActive);
-    }
+		return (dataStorage->MotionManager.isGyroActive);
+	}
 
-    bool CIrrDeviceiOS::isGyroscopeAvailable()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isGyroscopeAvailable()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isGyroAvailable);
-    }
+		return (dataStorage->MotionManager.isGyroAvailable);
+	}
 
-    bool CIrrDeviceiOS::activateDeviceMotion(float updateInterval)
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::activateDeviceMotion(float updateInterval)
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isDeviceMotionAvailable)
-        {
-            if (!motionManager.isDeviceMotionActive)
-            {
-                dataStorage->ReferenceAttitude = nil;
+		if (motionManager.isDeviceMotionAvailable)
+		{
+			if (!motionManager.isDeviceMotionActive)
+			{
+				dataStorage->ReferenceAttitude = nil;
 
-                motionManager.deviceMotionUpdateInterval = updateInterval;
-                [motionManager startDeviceMotionUpdates];
-            }
+				motionManager.deviceMotionUpdateInterval = updateInterval;
+				[motionManager startDeviceMotionUpdates];
+			}
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::deactivateDeviceMotion()
-    {
-        bool status = false;
+	bool CIrrDeviceiOS::deactivateDeviceMotion()
+	{
+		bool status = false;
 
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        CMMotionManager* motionManager = dataStorage->MotionManager;
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		CMMotionManager* motionManager = dataStorage->MotionManager;
 
-        if (motionManager.isDeviceMotionAvailable)
-        {
-            if (motionManager.isDeviceMotionActive)
-            {
-                [motionManager stopDeviceMotionUpdates];
+		if (motionManager.isDeviceMotionAvailable)
+		{
+			if (motionManager.isDeviceMotionActive)
+			{
+				[motionManager stopDeviceMotionUpdates];
 
-                dataStorage->ReferenceAttitude = nil;
-            }
+				dataStorage->ReferenceAttitude = nil;
+			}
 
-            status = true;
-        }
+			status = true;
+		}
 
-        return status;
-    }
+		return status;
+	}
 
-    bool CIrrDeviceiOS::isDeviceMotionActive()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isDeviceMotionActive()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isDeviceMotionActive);
-    }
+		return (dataStorage->MotionManager.isDeviceMotionActive);
+	}
 
-    bool CIrrDeviceiOS::isDeviceMotionAvailable()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+	bool CIrrDeviceiOS::isDeviceMotionAvailable()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
-        return (dataStorage->MotionManager.isDeviceMotionAvailable);
-    }
+		return (dataStorage->MotionManager.isDeviceMotionAvailable);
+	}
 
-    E_DEVICE_TYPE CIrrDeviceiOS::getType() const
-    {
-        return EIDT_IOS;
-    }
+	E_DEVICE_TYPE CIrrDeviceiOS::getType() const
+	{
+		return EIDT_IOS;
+	}
 
-    void *CIrrDeviceiOS::getViewController()
-    {
-        SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
-        return (__bridge void*) dataStorage->ViewController;
-    }
+	void *CIrrDeviceiOS::getViewController()
+	{
+		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
+		return (__bridge void*) dataStorage->ViewController;
+	}
 
-    void CIrrDeviceiOS::createWindow()
-    {
+	void CIrrDeviceiOS::createWindow()
+	{
 		if (CreationParams.DriverType != video::EDT_NULL)
 		{
 			SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
@@ -748,10 +748,10 @@ namespace irr
 				while (currentResponder != nil);
 			}
 		}
-    }
+	}
 
-    void CIrrDeviceiOS::createViewAndDriver()
-    {
+	void CIrrDeviceiOS::createViewAndDriver()
+	{
 		SIrrDeviceiOSDataStorage* dataStorage = static_cast<SIrrDeviceiOSDataStorage*>(DataStorage);
 
 		video::SExposedVideoData data;
@@ -762,11 +762,11 @@ namespace irr
 
 		CGRect resolution = (externalView == nil) ? [[UIScreen mainScreen] bounds] : externalView.bounds;
 
-        switch (CreationParams.DriverType)
-        {
-            case video::EDT_OGLES1:
+		switch (CreationParams.DriverType)
+		{
+			case video::EDT_OGLES1:
 #ifdef _IRR_COMPILE_WITH_OGLES1_
-                {
+				{
 					CIrrViewEAGLiOS* view = [[CIrrViewEAGLiOS alloc] initWithFrame:resolution forDevice:this];
 					view.contentScaleFactor = dataStorage->Window.screen.nativeScale;
 					view.Scale = view.contentScaleFactor;
@@ -779,30 +779,30 @@ namespace irr
 					dataStorage->View = view;
 					data.OpenGLiOS.View = (__bridge void*)view;
 
-                    ContextManager = new video::CEAGLManager();
-                    ContextManager->initialize(CreationParams, data);
+					ContextManager = new video::CEAGLManager();
+					ContextManager->initialize(CreationParams, data);
 
-                    VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, ContextManager);
+					VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, ContextManager);
 
-                    if (!VideoDriver)
-                        os::Printer::log("Could not create OpenGL ES 1.x driver.", ELL_ERROR);
-                }
+					if (!VideoDriver)
+						os::Printer::log("Could not create OpenGL ES 1.x driver.", ELL_ERROR);
+				}
 #else
-                os::Printer::log("No OpenGL ES 1.x support compiled in.", ELL_ERROR);
+				os::Printer::log("No OpenGL ES 1.x support compiled in.", ELL_ERROR);
 #endif
-                break;
+				break;
 
 			case video::EDT_OGLES2:
 #ifdef _IRR_COMPILE_WITH_OGLES2_
 				{
 					CIrrViewEAGLiOS* view = [[CIrrViewEAGLiOS alloc] initWithFrame:resolution forDevice:this];
-                    view.contentScaleFactor = dataStorage->Window.screen.nativeScale;
-                    view.Scale = view.contentScaleFactor;
-                    CreationParams.WindowSize =
-                        {
-                            view.frame.size.width * view.contentScaleFactor,
-                            view.frame.size.height * view.contentScaleFactor
-                        };
+					view.contentScaleFactor = dataStorage->Window.screen.nativeScale;
+					view.Scale = view.contentScaleFactor;
+					CreationParams.WindowSize =
+						{
+							view.frame.size.width * view.contentScaleFactor,
+							view.frame.size.height * view.contentScaleFactor
+						};
 
 					dataStorage->View = view;
 					data.OpenGLiOS.View = (__bridge void*)view;
@@ -820,22 +820,22 @@ namespace irr
 #endif
 				break;
 
-            case video::EDT_SOFTWARE:
-            case video::EDT_BURNINGSVIDEO:
-            case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
-            case video::EDT_DIRECT3D9:
-            case video::EDT_OPENGL:
-                os::Printer::log("This driver is not available in iOS. Try OpenGL ES.", ELL_ERROR);
-                break;
+			case video::EDT_SOFTWARE:
+			case video::EDT_BURNINGSVIDEO:
+			case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
+			case video::EDT_DIRECT3D9:
+			case video::EDT_OPENGL:
+				os::Printer::log("This driver is not available in iOS. Try OpenGL ES.", ELL_ERROR);
+				break;
 
-            case video::EDT_NULL:
-                VideoDriver = video::createNullDriver(FileSystem, CreationParams.WindowSize);
-                break;
+			case video::EDT_NULL:
+				VideoDriver = video::createNullDriver(FileSystem, CreationParams.WindowSize);
+				break;
 
-            default:
-                os::Printer::log("Unable to create video driver of unknown type.", ELL_ERROR);
-                break;
-        }
+			default:
+				os::Printer::log("Unable to create video driver of unknown type.", ELL_ERROR);
+				break;
+		}
 
 		if (externalView == nil)
 			dataStorage->ViewController.view = dataStorage->View;
@@ -847,9 +847,9 @@ namespace irr
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 int main(int argc, char** argv)
 {
-    int result = UIApplicationMain(argc, argv, 0, NSStringFromClass([CIrrDelegateiOS class]));
+	int result = UIApplicationMain(argc, argv, 0, NSStringFromClass([CIrrDelegateiOS class]));
 
-    return result;
+	return result;
 }
 #endif
 
