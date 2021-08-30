@@ -742,7 +742,7 @@ namespace irr
 						currentResponder = nil;
 
 						// Could not find view controller.
-						_IRR_DEBUG_BREAK_IF(true);
+						IRR_DEBUG_BREAK_IF(true);
 					}
 				}
 				while (currentResponder != nil);
