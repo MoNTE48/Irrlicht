@@ -303,6 +303,10 @@ IImage* CImageLoaderJPG::loadImage(io::IReadFile* file) const
 	cinfo.output_gamma=2.2;
 	cinfo.do_fancy_upsampling=FALSE;
 
+	// reject unreasonable sizes
+	if (!checkImageDimensions(cinfo.image_width, cinfo.image_height))
+		longjmp(jerr.setjmp_buffer, 1);
+
 	// Start decompressor
 	jpeg_start_decompress(&cinfo);
 
