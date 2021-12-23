@@ -181,7 +181,7 @@ namespace irr
 @interface CIrrViewiOS : UIView
 
 - (id)initWithFrame:(CGRect)frame forDevice:(irr::CIrrDeviceiOS*)device;
-@property (nonatomic) float Scale;
+@property (nonatomic) CGFloat Scale;
 
 @end
 
@@ -772,8 +772,8 @@ namespace irr
 					view.Scale = view.contentScaleFactor;
 					CreationParams.WindowSize =
 						{
-							view.frame.size.width * view.contentScaleFactor,
-							view.frame.size.height * view.contentScaleFactor
+							(u32) (view.frame.size.width * view.contentScaleFactor),
+							(u32) (view.frame.size.height * view.contentScaleFactor)
 						};
 
 					dataStorage->View = view;
@@ -800,8 +800,8 @@ namespace irr
 					view.Scale = view.contentScaleFactor;
 					CreationParams.WindowSize =
 						{
-							view.frame.size.width * view.contentScaleFactor,
-							view.frame.size.height * view.contentScaleFactor
+							(u32) (view.frame.size.width * view.contentScaleFactor),
+							(u32) (view.frame.size.height * view.contentScaleFactor)
 						};
 
 					dataStorage->View = view;
@@ -847,7 +847,7 @@ namespace irr
 #ifdef _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
 int main(int argc, char** argv)
 {
-	int result = UIApplicationMain(argc, argv, 0, NSStringFromClass([CIrrDelegateiOS class]));
+	int result = UIApplicationMain(argc, argv, nil, NSStringFromClass([CIrrDelegateiOS class]));
 
 	return result;
 }
