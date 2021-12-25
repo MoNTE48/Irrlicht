@@ -150,7 +150,7 @@
 #define _IRR_MATERIAL_MAX_TEXTURES_ 8
 
 //! Whether to support XML and XML-based formats (irrmesh, collada...)
-#define _IRR_COMPILE_WITH_XML_
+//#define _IRR_COMPILE_WITH_XML_
 #ifdef NO_IRR_COMPILE_WITH_XML_
 #undef _IRR_COMPILE_WITH_XML_
 #endif
@@ -548,7 +548,7 @@ B3D, MS3D or X meshes */
 #endif // _IRR_COMPILE_WITH_SKINNED_MESH_SUPPORT_
 
 //! Define _IRR_COMPILE_WITH_IRR_MESH_LOADER_ if you want to load Irrlicht Engine .irrmesh files
-#define _IRR_COMPILE_WITH_IRR_MESH_LOADER_
+//#define _IRR_COMPILE_WITH_IRR_MESH_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_IRR_MESH_LOADER_
 #undef _IRR_COMPILE_WITH_IRR_MESH_LOADER_
 #endif
@@ -634,32 +634,32 @@ B3D, MS3D or X meshes */
 #endif
 
 //! Define _IRR_COMPILE_WITH_IRR_WRITER_ if you want to write static .irrMesh files
-#define _IRR_COMPILE_WITH_IRR_WRITER_
+//#define _IRR_COMPILE_WITH_IRR_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_IRR_WRITER_
 #undef _IRR_COMPILE_WITH_IRR_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_COLLADA_WRITER_ if you want to write Collada files
-#define _IRR_COMPILE_WITH_COLLADA_WRITER_
+//#define _IRR_COMPILE_WITH_COLLADA_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_COLLADA_WRITER_
 #undef _IRR_COMPILE_WITH_COLLADA_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_STL_WRITER_ if you want to write .stl files
-#define _IRR_COMPILE_WITH_STL_WRITER_
+//#define _IRR_COMPILE_WITH_STL_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_STL_WRITER_
 #undef _IRR_COMPILE_WITH_STL_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_OBJ_WRITER_ if you want to write .obj files
-#define _IRR_COMPILE_WITH_OBJ_WRITER_
+//#define _IRR_COMPILE_WITH_OBJ_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_OBJ_WRITER_
 #undef _IRR_COMPILE_WITH_OBJ_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_PLY_WRITER_ if you want to write .ply files
-#define _IRR_COMPILE_WITH_PLY_WRITER_
+//#define _IRR_COMPILE_WITH_PLY_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_PLY_WRITER_
 #undef _IRR_COMPILE_WITH_PLY_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_B3D_WRITER_ if you want to write .b3d files
-#define _IRR_COMPILE_WITH_B3D_WRITER_
+//#define _IRR_COMPILE_WITH_B3D_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_B3D_WRITER_
 #undef _IRR_COMPILE_WITH_B3D_WRITER_
 #endif
