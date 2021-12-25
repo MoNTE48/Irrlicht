@@ -864,8 +864,9 @@ currently only supports zip archives, though. */
 /** Irrlicht should use approximate float and integer fpu techniques
 precision will be lower but speed higher. currently X86 only
 */
-#if !defined(_IRR_OSX_PLATFORM_) && !defined(_IRR_SOLARIS_PLATFORM_)
-	//#define IRRLICHT_FAST_MATH
+//#if !defined(_IRR_OSX_PLATFORM_) && !defined(_IRR_SOLARIS_PLATFORM_)
+#if !defined(_IRR_SOLARIS_PLATFORM_)
+	#define IRRLICHT_FAST_MATH
 	#ifdef NO_IRRLICHT_FAST_MATH
 	#undef IRRLICHT_FAST_MATH
 	#endif
