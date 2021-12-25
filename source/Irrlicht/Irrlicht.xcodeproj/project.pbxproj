@@ -132,16 +132,6 @@
 		5E34CABC1B7F6EC000F212E8 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8781B7F56E900F212E8 /* pngwtran.c */; };
 		5E34CABD1B7F6EC000F212E8 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8791B7F56E900F212E8 /* pngwutil.c */; };
 		5E34CABE1B7F6EC000F212E8 /* LzmaDec.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88F1B7F57B100F212E8 /* LzmaDec.c */; };
-		5E34CAC11B7F6EC000F212E8 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87A1B7F577000F212E8 /* adler32.c */; };
-		5E34CAC21B7F6EC000F212E8 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87B1B7F577000F212E8 /* compress.c */; };
-		5E34CAC31B7F6EC000F212E8 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87C1B7F577000F212E8 /* crc32.c */; };
-		5E34CAC51B7F6EC000F212E8 /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87E1B7F577000F212E8 /* deflate.c */; };
-		5E34CAC71B7F6EC000F212E8 /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8801B7F577000F212E8 /* inffast.c */; };
-		5E34CACA1B7F6EC000F212E8 /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8831B7F577000F212E8 /* inflate.c */; };
-		5E34CACC1B7F6EC000F212E8 /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8851B7F577000F212E8 /* inftrees.c */; };
-		5E34CACE1B7F6EC100F212E8 /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8871B7F577000F212E8 /* trees.c */; };
-		5E34CAD01B7F6EC100F212E8 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8891B7F577000F212E8 /* uncompr.c */; };
-		5E34CAD31B7F6EC100F212E8 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88C1B7F577000F212E8 /* zutil.c */; };
 		5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
@@ -427,16 +417,6 @@
 		5E57332E1C18E212003F664E /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8781B7F56E900F212E8 /* pngwtran.c */; };
 		5E57332F1C18E212003F664E /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8791B7F56E900F212E8 /* pngwutil.c */; };
 		5E5733301C18E212003F664E /* LzmaDec.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88F1B7F57B100F212E8 /* LzmaDec.c */; };
-		5E5733311C18E212003F664E /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87A1B7F577000F212E8 /* adler32.c */; };
-		5E5733321C18E212003F664E /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87B1B7F577000F212E8 /* compress.c */; };
-		5E5733331C18E212003F664E /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87C1B7F577000F212E8 /* crc32.c */; };
-		5E5733341C18E212003F664E /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C87E1B7F577000F212E8 /* deflate.c */; };
-		5E5733351C18E212003F664E /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8801B7F577000F212E8 /* inffast.c */; };
-		5E5733361C18E212003F664E /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8831B7F577000F212E8 /* inflate.c */; };
-		5E5733371C18E212003F664E /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8851B7F577000F212E8 /* inftrees.c */; };
-		5E5733381C18E212003F664E /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8871B7F577000F212E8 /* trees.c */; };
-		5E5733391C18E212003F664E /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8891B7F577000F212E8 /* uncompr.c */; };
-		5E57333A1C18E212003F664E /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88C1B7F577000F212E8 /* zutil.c */; };
 		5E57333B1C18E212003F664E /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
@@ -1003,26 +983,6 @@
 		5E34C8771B7F56E900F212E8 /* pngwrite.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = pngwrite.c; path = libpng/pngwrite.c; sourceTree = "<group>"; };
 		5E34C8781B7F56E900F212E8 /* pngwtran.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = pngwtran.c; path = libpng/pngwtran.c; sourceTree = "<group>"; };
 		5E34C8791B7F56E900F212E8 /* pngwutil.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = pngwutil.c; path = libpng/pngwutil.c; sourceTree = "<group>"; };
-		5E34C87A1B7F577000F212E8 /* adler32.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = adler32.c; path = zlib/adler32.c; sourceTree = "<group>"; };
-		5E34C87B1B7F577000F212E8 /* compress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = compress.c; path = zlib/compress.c; sourceTree = "<group>"; };
-		5E34C87C1B7F577000F212E8 /* crc32.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = crc32.c; path = zlib/crc32.c; sourceTree = "<group>"; };
-		5E34C87D1B7F577000F212E8 /* crc32.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = crc32.h; path = zlib/crc32.h; sourceTree = "<group>"; };
-		5E34C87E1B7F577000F212E8 /* deflate.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = deflate.c; path = zlib/deflate.c; sourceTree = "<group>"; };
-		5E34C87F1B7F577000F212E8 /* deflate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = deflate.h; path = zlib/deflate.h; sourceTree = "<group>"; };
-		5E34C8801B7F577000F212E8 /* inffast.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = zlib/inffast.c; sourceTree = "<group>"; };
-		5E34C8811B7F577000F212E8 /* inffast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = inffast.h; path = zlib/inffast.h; sourceTree = "<group>"; };
-		5E34C8821B7F577000F212E8 /* inffixed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = inffixed.h; path = zlib/inffixed.h; sourceTree = "<group>"; };
-		5E34C8831B7F577000F212E8 /* inflate.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = inflate.c; path = zlib/inflate.c; sourceTree = "<group>"; };
-		5E34C8841B7F577000F212E8 /* inflate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = inflate.h; path = zlib/inflate.h; sourceTree = "<group>"; };
-		5E34C8851B7F577000F212E8 /* inftrees.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = inftrees.c; path = zlib/inftrees.c; sourceTree = "<group>"; };
-		5E34C8861B7F577000F212E8 /* inftrees.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = inftrees.h; path = zlib/inftrees.h; sourceTree = "<group>"; };
-		5E34C8871B7F577000F212E8 /* trees.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = trees.c; path = zlib/trees.c; sourceTree = "<group>"; };
-		5E34C8881B7F577000F212E8 /* trees.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = trees.h; path = zlib/trees.h; sourceTree = "<group>"; };
-		5E34C8891B7F577000F212E8 /* uncompr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = uncompr.c; path = zlib/uncompr.c; sourceTree = "<group>"; };
-		5E34C88A1B7F577000F212E8 /* zconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = zconf.h; path = zlib/zconf.h; sourceTree = "<group>"; };
-		5E34C88B1B7F577000F212E8 /* zlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = zlib.h; path = zlib/zlib.h; sourceTree = "<group>"; };
-		5E34C88C1B7F577000F212E8 /* zutil.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = zutil.c; path = zlib/zutil.c; sourceTree = "<group>"; };
-		5E34C88D1B7F577000F212E8 /* zutil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = zutil.h; path = zlib/zutil.h; sourceTree = "<group>"; };
 		5E34C88F1B7F57B100F212E8 /* LzmaDec.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = LzmaDec.c; path = lzma/LzmaDec.c; sourceTree = "<group>"; };
 		5E34C8901B7F57B100F212E8 /* LzmaDec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LzmaDec.h; path = lzma/LzmaDec.h; sourceTree = "<group>"; };
 		5E34C8911B7F57B100F212E8 /* Types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Types.h; path = lzma/Types.h; sourceTree = "<group>"; };
@@ -1859,7 +1819,6 @@
 				5E34C80A1B7F522E00F212E8 /* jpeglib */,
 				5E34C80B1B7F523B00F212E8 /* libpng */,
 				5E34C88E1B7F579B00F212E8 /* lzma */,
-				5E34C80C1B7F524400F212E8 /* zlib */,
 			);
 			name = extern;
 			sourceTree = "<group>";
@@ -1989,33 +1948,6 @@
 				5E34C8791B7F56E900F212E8 /* pngwutil.c */,
 			);
 			name = libpng;
-			sourceTree = "<group>";
-		};
-		5E34C80C1B7F524400F212E8 /* zlib */ = {
-			isa = PBXGroup;
-			children = (
-				5E34C87A1B7F577000F212E8 /* adler32.c */,
-				5E34C87B1B7F577000F212E8 /* compress.c */,
-				5E34C87C1B7F577000F212E8 /* crc32.c */,
-				5E34C87D1B7F577000F212E8 /* crc32.h */,
-				5E34C87E1B7F577000F212E8 /* deflate.c */,
-				5E34C87F1B7F577000F212E8 /* deflate.h */,
-				5E34C8801B7F577000F212E8 /* inffast.c */,
-				5E34C8811B7F577000F212E8 /* inffast.h */,
-				5E34C8821B7F577000F212E8 /* inffixed.h */,
-				5E34C8831B7F577000F212E8 /* inflate.c */,
-				5E34C8841B7F577000F212E8 /* inflate.h */,
-				5E34C8851B7F577000F212E8 /* inftrees.c */,
-				5E34C8861B7F577000F212E8 /* inftrees.h */,
-				5E34C8871B7F577000F212E8 /* trees.c */,
-				5E34C8881B7F577000F212E8 /* trees.h */,
-				5E34C8891B7F577000F212E8 /* uncompr.c */,
-				5E34C88A1B7F577000F212E8 /* zconf.h */,
-				5E34C88B1B7F577000F212E8 /* zlib.h */,
-				5E34C88C1B7F577000F212E8 /* zutil.c */,
-				5E34C88D1B7F577000F212E8 /* zutil.h */,
-			);
-			name = zlib;
 			sourceTree = "<group>";
 		};
 		5E34C88E1B7F579B00F212E8 /* lzma */ = {
@@ -2669,16 +2601,6 @@
 				5E34CABC1B7F6EC000F212E8 /* pngwtran.c in Sources */,
 				5E34CABD1B7F6EC000F212E8 /* pngwutil.c in Sources */,
 				5E34CABE1B7F6EC000F212E8 /* LzmaDec.c in Sources */,
-				5E34CAC11B7F6EC000F212E8 /* adler32.c in Sources */,
-				5E34CAC21B7F6EC000F212E8 /* compress.c in Sources */,
-				5E34CAC31B7F6EC000F212E8 /* crc32.c in Sources */,
-				5E34CAC51B7F6EC000F212E8 /* deflate.c in Sources */,
-				5E34CAC71B7F6EC000F212E8 /* inffast.c in Sources */,
-				5E34CACA1B7F6EC000F212E8 /* inflate.c in Sources */,
-				5E34CACC1B7F6EC000F212E8 /* inftrees.c in Sources */,
-				5E34CACE1B7F6EC100F212E8 /* trees.c in Sources */,
-				5E34CAD01B7F6EC100F212E8 /* uncompr.c in Sources */,
-				5E34CAD31B7F6EC100F212E8 /* zutil.c in Sources */,
 				5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */,
 				5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */,
 				5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */,
@@ -2979,16 +2901,6 @@
 				5E57332E1C18E212003F664E /* pngwtran.c in Sources */,
 				5E57332F1C18E212003F664E /* pngwutil.c in Sources */,
 				5E5733301C18E212003F664E /* LzmaDec.c in Sources */,
-				5E5733311C18E212003F664E /* adler32.c in Sources */,
-				5E5733321C18E212003F664E /* compress.c in Sources */,
-				5E5733331C18E212003F664E /* crc32.c in Sources */,
-				5E5733341C18E212003F664E /* deflate.c in Sources */,
-				5E5733351C18E212003F664E /* inffast.c in Sources */,
-				5E5733361C18E212003F664E /* inflate.c in Sources */,
-				5E5733371C18E212003F664E /* inftrees.c in Sources */,
-				5E5733381C18E212003F664E /* trees.c in Sources */,
-				5E5733391C18E212003F664E /* uncompr.c in Sources */,
-				5E57333A1C18E212003F664E /* zutil.c in Sources */,
 				5E57333B1C18E212003F664E /* CLogger.cpp in Sources */,
 				5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */,
 				5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */,

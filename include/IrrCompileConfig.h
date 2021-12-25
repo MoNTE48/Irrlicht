@@ -798,9 +798,11 @@ ones. */
 	defined.
 	NOTE: You will also have to modify the Makefile or project files when changing this default.
  */
+#if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_OSX_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
 #define _IRR_USE_NON_SYSTEM_ZLIB_
 #ifdef NO_IRR_USE_NON_SYSTEM_ZLIB_
 #undef _IRR_USE_NON_SYSTEM_ZLIB_
+#endif
 #endif
 //! Define _IRR_COMPILE_WITH_ZIP_ENCRYPTION_ if you want to read AES-encrypted ZIP archives
 #define _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
