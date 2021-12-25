@@ -28,7 +28,7 @@ gtags.files
 *.project
 desktop.ini
 
-## Files related to minetest development cycle
+## Files related to development cycle
 /*.patch
 *.diff
 # GNU Patch reject file
@@ -63,3 +63,4 @@ cmake-build-release/
 
 xcuserdata
 project.xcworkspace
+.idea/

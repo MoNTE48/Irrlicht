@@ -105,8 +105,8 @@ namespace irr
 				return EIDT_OSX;
 		}
 
-		void setMouseLocation(int x, int y);
-		void setResize(int width, int height);
+		void setMouseLocation(s32 x, s32 y);
+		void setResize(u32 width, u32 height);
 		void setCursorVisible(bool visible);
 		void setWindow(NSWindow* window);
 
@@ -248,10 +248,10 @@ namespace irr
 		CGDirectDisplayID Display;
 		NSBitmapImageRep* SoftwareDriverTarget;
 		std::map<int,int> KeyCodes;
-		int DeviceWidth;
-		int DeviceHeight;
-		int ScreenWidth;
-		int ScreenHeight;
+		u32 DeviceWidth;
+		u32 DeviceHeight;
+		u32 ScreenWidth;
+		u32 ScreenHeight;
 		u32 MouseButtonStates;
 		u32 SoftwareRendererType;
 		bool IsFullscreen;
