@@ -115,7 +115,6 @@ namespace irr
 		//! The mouse wheel was moved. Use Wheel value in event data to find out
 		//! in what direction and how fast.
 		EMIE_MOUSE_WHEEL,
-		EMIE_MOUSE_WHEEL_X, // only for OSX!
 
 		//! Left mouse button double click.
 		//! This event is generated after the second EMIE_LMOUSE_PRESSED_DOWN event.
