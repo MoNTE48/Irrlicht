@@ -952,7 +952,7 @@ bool CIrrDeviceMacOSX::run()
 			case NSFlagsChanged:
 				ievent.EventType = irr::EET_KEY_INPUT_EVENT;
 				ievent.KeyInput.Shift = ([event modifierFlags] & NSShiftKeyMask) != 0;
-				ievent.KeyInput.Control = ([event modifierFlags] & NSControlKeyMask) != 0;
+				ievent.KeyInput.Control = ([event modifierFlags] & NSCommandKeyMask) != 0;
 
 				if (IsShiftDown != ievent.KeyInput.Shift)
 				{
@@ -1185,7 +1185,7 @@ void CIrrDeviceMacOSX::postKeyEvent(void *event,irr::SEvent &ievent,bool pressed
 		ievent.KeyInput.Key = (irr::EKEY_CODE)mkey;
 		ievent.KeyInput.PressedDown = pressed;
 		ievent.KeyInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
-		ievent.KeyInput.Control = ([(NSEvent *)event modifierFlags] & NSControlKeyMask) != 0;
+		ievent.KeyInput.Control = ([(NSEvent *)event modifierFlags] & NSCommandKeyMask) != 0;
 		ievent.KeyInput.Char = mchar;
 
 		if (skipCommand)
@@ -1226,7 +1226,7 @@ void CIrrDeviceMacOSX::postMouseEvent(void *event,irr::SEvent &ievent)
 	if (post)
 	{
 		ievent.MouseInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
-		ievent.MouseInput.Control = ([(NSEvent *)event modifierFlags] & NSControlKeyMask) != 0;
+		ievent.MouseInput.Control = ([(NSEvent *)event modifierFlags] & NSCommandKeyMask) != 0;
 		ievent.MouseInput.X *= NativeScale;
 		ievent.MouseInput.Y *= NativeScale;
 
