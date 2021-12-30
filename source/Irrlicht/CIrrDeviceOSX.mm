@@ -1135,66 +1135,32 @@ bool CIrrDeviceMacOSX::isWindowMinimized() const
 
 void CIrrDeviceMacOSX::postKeyEvent(void *event,irr::SEvent &ievent,bool pressed)
 {
-	NSString *str;
-	int mkey;
-	u32 c, mchar;
-	const unsigned char *cStr;
-	BOOL skipCommand;
+	EKEY_CODE mkey = KEY_UNKNOWN;
+	wchar_t mchar = 0;
 
-	str = [(NSEvent *)event characters];
+	auto iter = KeyCodes.find([(NSEvent *)event keyCode]);
+	if (iter != KeyCodes.end())
+		mkey = (EKEY_CODE) (*iter).second;
+
+	NSString *str = [(NSEvent *) event characters];
 	if ((str != nil) && ([str length] > 0))
+		mchar = [str characterAtIndex:0];
+
+	// Hope it's not the worst patch you've ever seen...
+	if (mkey == KEY_UP || mkey == KEY_DOWN || mkey == KEY_LEFT || mkey == KEY_RIGHT
+		|| mkey == KEY_CONTROL || mkey == KEY_RCONTROL)
 	{
-		mkey = mchar = 0;
-		skipCommand = false;
-		c = [str characterAtIndex:0];
-		mchar = c;
-
-		auto iter = KeyCodes.find([(NSEvent *)event keyCode]);
-		if (iter != KeyCodes.end())
-			mkey = (*iter).second;
-		else if ((iter = KeyCodes.find(c)) != KeyCodes.end())
-			mkey = (*iter).second;
-		else
-		{
-			// workaround for period character
-			if (c == 0x2E)
-			{
-				mkey = irr::KEY_PERIOD;
-				mchar = '.';
-			}
-			else
-			{
-				cStr = (unsigned char *)[str cStringUsingEncoding:NSWindowsCP1252StringEncoding];
-				if (cStr != NULL && strlen((char*)cStr) > 0)
-				{
-					mchar = cStr[0];
-					mkey = toupper(mchar);
-					if ([(NSEvent *)event modifierFlags] & NSCommandKeyMask)
-					{
-						if (mkey == 'C' || mkey == 'V' || mkey == 'X')
-						{
-							mchar = 0;
-							skipCommand = true;
-						}
-					}
-				}
-			}
-		}
-
-		ievent.EventType = irr::EET_KEY_INPUT_EVENT;
-		ievent.KeyInput.Key = (irr::EKEY_CODE)mkey;
-		ievent.KeyInput.PressedDown = pressed;
-		ievent.KeyInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
-		ievent.KeyInput.Control = ([(NSEvent *)event modifierFlags] & NSCommandKeyMask) != 0;
-		ievent.KeyInput.Char = mchar;
-
-		if (skipCommand)
-			ievent.KeyInput.Control = true;
-		else if ([(NSEvent *)event modifierFlags] & NSCommandKeyMask)
-			[NSApp sendEvent:(NSEvent *)event];
-
-		postEventFromUser(ievent);
+		mchar = 0;
 	}
+
+	ievent.EventType = irr::EET_KEY_INPUT_EVENT;
+	ievent.KeyInput.Key = mkey;
+	ievent.KeyInput.PressedDown = pressed;
+	ievent.KeyInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
+	ievent.KeyInput.Control = (([(NSEvent *)event modifierFlags] & NSCommandKeyMask)) != 0;
+	ievent.KeyInput.Char = mchar;
+
+	postEventFromUser(ievent);
 }
 
 
