@@ -212,7 +212,7 @@ namespace irr
 	irr::SEvent ev;
 	ev.EventType = irr::EET_TOUCH_INPUT_EVENT;
 	ev.TouchInput.Event = irr::ETIE_PRESSED_DOWN;
-	ev.TouchInput.touchedCount = [touches count];
+	ev.TouchInput.touchedCount = [[event allTouches] count];
 
 	for (UITouch* touch in touches)
 	{
@@ -232,7 +232,7 @@ namespace irr
 	irr::SEvent ev;
 	ev.EventType = irr::EET_TOUCH_INPUT_EVENT;
 	ev.TouchInput.Event = irr::ETIE_MOVED;
-	ev.TouchInput.touchedCount = [touches count];
+	ev.TouchInput.touchedCount = [[event allTouches] count];
 
 	for (UITouch* touch in touches)
 	{
@@ -252,7 +252,7 @@ namespace irr
 	irr::SEvent ev;
 	ev.EventType = irr::EET_TOUCH_INPUT_EVENT;
 	ev.TouchInput.Event = irr::ETIE_LEFT_UP;
-	ev.TouchInput.touchedCount = [touches count];
+	ev.TouchInput.touchedCount = [[event allTouches] count];
 
 	for (UITouch* touch in touches)
 	{
@@ -272,7 +272,7 @@ namespace irr
 	irr::SEvent ev;
 	ev.EventType = irr::EET_TOUCH_INPUT_EVENT;
 	ev.TouchInput.Event = irr::ETIE_LEFT_UP;
-	ev.TouchInput.touchedCount = [touches count];
+	ev.TouchInput.touchedCount = [[event allTouches] count];
 
 	for (UITouch* touch in touches)
 	{
