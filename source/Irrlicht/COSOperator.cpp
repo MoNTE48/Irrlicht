@@ -82,16 +82,10 @@ void COSOperator::copyToClipboard(const c8* text) const
 	CloseClipboard();
 
 #elif defined(_IRR_COMPILE_WITH_OSX_DEVICE_)
-    NSString *str = nil;
-    NSPasteboard *board = nil;
-
-    if ((text != NULL) && (strlen(text) > 0))
-    {
-        str = [NSString stringWithCString:text encoding:NSWindowsCP1252StringEncoding];
-        board = [NSPasteboard generalPasteboard];
-        [board declareTypes:@[NSPasteboardTypeString] owner:NSApp];
-        [board setString:str forType:NSPasteboardTypeString];
-    }
+    NSString *str = [NSString stringWithUTF8String:text];
+    NSPasteboard *board = [NSPasteboard generalPasteboard];
+    [board declareTypes:@[NSPasteboardTypeString] owner:NSApp];
+    [board setString:str forType:NSPasteboardTypeString];
 
 #elif defined(_IRR_COMPILE_WITH_X11_DEVICE_)
     if ( IrrDeviceLinux )
@@ -123,13 +117,13 @@ const c8* COSOperator::getTextFromClipboard() const
 #elif defined(_IRR_COMPILE_WITH_OSX_DEVICE_)
     NSString* str = nil;
     NSPasteboard* board = nil;
-    char* result = 0;
+    const char* result = 0;
 
     board = [NSPasteboard generalPasteboard];
     str = [board stringForType:NSPasteboardTypeString];
 
     if (str != nil)
-        result = (char*)[str cStringUsingEncoding:NSWindowsCP1252StringEncoding];
+        result = (char*)[str UTF8String];
 
     return (result);
 
@@ -274,4 +268,3 @@ bool COSOperator::getSystemMemory(u32* Total, u32* Avail) const
 
 
 } // end namespace
-
