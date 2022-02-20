@@ -498,7 +498,12 @@ s32 CGUITabControl::calcTabWidth(s32 pos, IGUIFont* font, const wchar_t* text, b
 	if ( !font )
 		return 0;
 
-	s32 len = font->getDimension(text).Width + TabExtraWidth;
+	s32 len = font->getDimension(text).Width;
+	if ( len > 0 )
+		len += TabExtraWidth;
+	else
+		return 0;
+
 	if ( TabMaxWidth > 0 && len > TabMaxWidth )
 		len = TabMaxWidth;
 
@@ -661,6 +666,9 @@ void CGUITabControl::draw()
 
 		// get text length
 		s32 len = calcTabWidth(pos, font, text, true);
+		if ( len == 0 )
+			continue;
+
 		if ( ScrollControl && pos+len > UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
 		{
 			needRightScroll = true;
