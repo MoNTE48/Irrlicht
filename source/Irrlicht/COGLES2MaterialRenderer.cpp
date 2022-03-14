@@ -292,14 +292,21 @@ bool COGLES2MaterialRenderer::linkProgram()
 		if (num == 0)
 			return true;
 
-		GLint maxlen = 0;
+		GLint maxlen = -1;
 
 		glGetProgramiv(Program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxlen);
 
-		if (maxlen == 0)
+		if (maxlen == -1)
 		{
 			os::Printer::log("GLSL: failed to retrieve uniform information", ELL_ERROR);
 			return false;
+		}
+
+		if (maxlen == 0)
+		{
+			os::Printer::log("GLSL: there are active uniforms but max. name length is zero", ELL_WARNING);
+			UniformInfo.clear();
+			return true;
 		}
 
 		// seems that some implementations use an extra null terminator.

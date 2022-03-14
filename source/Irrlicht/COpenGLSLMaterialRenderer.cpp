@@ -449,15 +449,22 @@ bool COpenGLSLMaterialRenderer::linkProgram()
 			return true;
 		}
 
-		GLint maxlen = 0;
+		GLint maxlen = -1;
 #ifdef GL_VERSION_2_0
 		Driver->extGlGetProgramiv(Program2, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxlen);
 #endif
 
-		if (maxlen == 0)
+		if (maxlen == -1)
 		{
 			os::Printer::log("GLSL (> 2.x): failed to retrieve uniform information", ELL_ERROR);
 			return false;
+		}
+
+		if (maxlen == 0)
+		{
+			os::Printer::log("GLSL (> 2.x): there are active uniforms but max. name length is zero", ELL_WARNING);
+			UniformInfo.clear();
+			return true;
 		}
 
 		// seems that some implementations use an extra null terminator
@@ -526,15 +533,22 @@ bool COpenGLSLMaterialRenderer::linkProgram()
 			return true;
 		}
 
-		GLint maxlen = 0;
+		GLint maxlen = -1;
 	#ifdef GL_ARB_shader_objects
 		Driver->extGlGetObjectParameteriv(Program, GL_OBJECT_ACTIVE_UNIFORM_MAX_LENGTH_ARB, &maxlen);
 	#endif
 
-		if (maxlen == 0)
+		if (maxlen == -1)
 		{
 			os::Printer::log("GLSL: failed to retrieve uniform information", ELL_ERROR);
 			return false;
+		}
+
+		if (maxlen == 0)
+		{
+			os::Printer::log("GLSL: there are active uniforms but max. name length is zero", ELL_WARNING);
+			UniformInfo.clear();
+			return true;
 		}
 
 		// seems that some implementations use an extra null terminator
