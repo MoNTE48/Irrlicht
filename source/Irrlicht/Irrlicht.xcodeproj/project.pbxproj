@@ -1329,6 +1329,7 @@
 		5E9573D31C18E9B300C27989 /* CEAGLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEAGLManager.h; sourceTree = "<group>"; };
 		5E9573D61C18E9E600C27989 /* CEAGLManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CEAGLManager.mm; sourceTree = "<group>"; };
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
+		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
@@ -1561,6 +1562,7 @@
 				5E34C6EF1B7F4AFB00F212E8 /* EDriverTypes.h */,
 				5E34C6F41B7F4AFB00F212E8 /* EMaterialFlags.h */,
 				5E34C6F51B7F4AFB00F212E8 /* EMaterialTypes.h */,
+				84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */,
 				5E34C6FB1B7F4AFC00F212E8 /* EShaderTypes.h */,
 				5E9573D11C18E70000C27989 /* EVertexAttributes.h */,
 				5E34C70B1B7F4AFC00F212E8 /* IContextManager.h */,
@@ -3167,6 +3169,7 @@
 					"PNG_ARM_NEON_OPT=0",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3308,7 +3311,6 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_FAST_MATH = YES;
-				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
