@@ -613,7 +613,7 @@ bool C3DSMeshFileLoader::readTrackChunk(io::IReadFile* file, ChunkData& data,
 
 	// apply transformation to mesh buffer
 #if 0
-	if (mb)
+	if (false)//mb)
 	{
 		video::S3DVertex *vertices=(video::S3DVertex*)mb->getVertices();
 		if (data.header.id==C3DS_POS_TRACK_TAG)
@@ -1370,4 +1370,3 @@ void C3DSMeshFileLoader::readString(io::IReadFile* file, ChunkData& data, core::
 } // end namespace irr
 
 #endif // _IRR_COMPILE_WITH_3DS_LOADER_
-

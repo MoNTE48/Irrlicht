@@ -229,7 +229,6 @@
 		5E34CB931B7F6EC500F212E8 /* CSoftwareDriver2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9641B7F6A7600F212E8 /* CSoftwareDriver2.cpp */; };
 		5E34CB951B7F6EC500F212E8 /* CSoftwareTexture2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9661B7F6A7600F212E8 /* CSoftwareTexture2.cpp */; };
 		5E34CB971B7F6EC500F212E8 /* CTRGouraud2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9681B7F6A7600F212E8 /* CTRGouraud2.cpp */; };
-		5E34CB981B7F6EC500F212E8 /* CTRGouraudAlpha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9691B7F6A7600F212E8 /* CTRGouraudAlpha2.cpp */; };
 		5E34CB991B7F6EC500F212E8 /* CTRGouraudAlphaNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96A1B7F6A7600F212E8 /* CTRGouraudAlphaNoZ2.cpp */; };
 		5E34CB9A1B7F6EC500F212E8 /* CTRNormalMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96B1B7F6A7600F212E8 /* CTRNormalMap.cpp */; };
 		5E34CB9B1B7F6EC500F212E8 /* CTRStencilShadow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96C1B7F6A7600F212E8 /* CTRStencilShadow.cpp */; };
@@ -515,7 +514,6 @@
 		5E57339A1C18E212003F664E /* CSoftwareDriver2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9641B7F6A7600F212E8 /* CSoftwareDriver2.cpp */; };
 		5E57339B1C18E212003F664E /* CSoftwareTexture2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9661B7F6A7600F212E8 /* CSoftwareTexture2.cpp */; };
 		5E57339C1C18E212003F664E /* CTRGouraud2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9681B7F6A7600F212E8 /* CTRGouraud2.cpp */; };
-		5E57339D1C18E212003F664E /* CTRGouraudAlpha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9691B7F6A7600F212E8 /* CTRGouraudAlpha2.cpp */; };
 		5E57339E1C18E212003F664E /* CTRGouraudAlphaNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96A1B7F6A7600F212E8 /* CTRGouraudAlphaNoZ2.cpp */; };
 		5E57339F1C18E212003F664E /* CTRNormalMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96B1B7F6A7600F212E8 /* CTRNormalMap.cpp */; };
 		5E5733A01C18E212003F664E /* CTRStencilShadow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C96C1B7F6A7600F212E8 /* CTRStencilShadow.cpp */; };
@@ -593,6 +591,11 @@
 		5E79089B1C10FEF900DFE7FE /* CB3DMeshWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */; };
 		5E8570BC1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E8570BA1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp */; };
 		5E9573D71C18E9E600C27989 /* CEAGLManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E9573D61C18E9E600C27989 /* CEAGLManager.mm */; };
+		65E74BB3282193B50004CA1D /* CTRParallaxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65E74BB2282193B40004CA1D /* CTRParallaxMap.cpp */; };
+		842F5F8F2827D4AB00F4106F /* burning_shader_color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B6249F82E800E189FC /* burning_shader_color.cpp */; };
+		842F5F902827D4AB00F4106F /* CTR_transparent_reflection_2_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219BA249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp */; };
+		842F5F912827D4AB00F4106F /* CTRGouraudNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B8249F834000E189FC /* CTRGouraudNoZ2.cpp */; };
+		843D28262828FA210096D7D0 /* CTRParallaxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65E74BB2282193B40004CA1D /* CTRParallaxMap.cpp */; };
 		84A219B7249F82E800E189FC /* burning_shader_color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B6249F82E800E189FC /* burning_shader_color.cpp */; };
 		84A219B9249F834000E189FC /* CTRGouraudNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B8249F834000E189FC /* CTRGouraudNoZ2.cpp */; };
 		84A219BB249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219BA249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp */; };
@@ -1181,7 +1184,6 @@
 		5E34C9661B7F6A7600F212E8 /* CSoftwareTexture2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSoftwareTexture2.cpp; sourceTree = "<group>"; };
 		5E34C9671B7F6A7600F212E8 /* CSoftwareTexture2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSoftwareTexture2.h; sourceTree = "<group>"; };
 		5E34C9681B7F6A7600F212E8 /* CTRGouraud2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTRGouraud2.cpp; sourceTree = "<group>"; };
-		5E34C9691B7F6A7600F212E8 /* CTRGouraudAlpha2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTRGouraudAlpha2.cpp; sourceTree = "<group>"; };
 		5E34C96A1B7F6A7600F212E8 /* CTRGouraudAlphaNoZ2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTRGouraudAlphaNoZ2.cpp; sourceTree = "<group>"; };
 		5E34C96B1B7F6A7600F212E8 /* CTRNormalMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTRNormalMap.cpp; sourceTree = "<group>"; };
 		5E34C96C1B7F6A7600F212E8 /* CTRStencilShadow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTRStencilShadow.cpp; sourceTree = "<group>"; };
@@ -1329,6 +1331,7 @@
 		5E9573D31C18E9B300C27989 /* CEAGLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEAGLManager.h; sourceTree = "<group>"; };
 		5E9573D61C18E9E600C27989 /* CEAGLManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CEAGLManager.mm; sourceTree = "<group>"; };
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
+		65E74BB2282193B40004CA1D /* CTRParallaxMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTRParallaxMap.cpp; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
@@ -2179,10 +2182,10 @@
 				5E34C9661B7F6A7600F212E8 /* CSoftwareTexture2.cpp */,
 				5E34C9671B7F6A7600F212E8 /* CSoftwareTexture2.h */,
 				5E34C9681B7F6A7600F212E8 /* CTRGouraud2.cpp */,
-				5E34C9691B7F6A7600F212E8 /* CTRGouraudAlpha2.cpp */,
 				5E34C96A1B7F6A7600F212E8 /* CTRGouraudAlphaNoZ2.cpp */,
 				84A219B8249F834000E189FC /* CTRGouraudNoZ2.cpp */,
 				5E34C96B1B7F6A7600F212E8 /* CTRNormalMap.cpp */,
+				65E74BB2282193B40004CA1D /* CTRParallaxMap.cpp */,
 				5E34C96C1B7F6A7600F212E8 /* CTRStencilShadow.cpp */,
 				5E34C96D1B7F6A7600F212E8 /* CTRTextureBlend.cpp */,
 				5E34C96E1B7F6A7600F212E8 /* CTRTextureDetailMap2.cpp */,
@@ -2702,7 +2705,6 @@
 				5E34CB931B7F6EC500F212E8 /* CSoftwareDriver2.cpp in Sources */,
 				5E34CB951B7F6EC500F212E8 /* CSoftwareTexture2.cpp in Sources */,
 				5E34CB971B7F6EC500F212E8 /* CTRGouraud2.cpp in Sources */,
-				5E34CB981B7F6EC500F212E8 /* CTRGouraudAlpha2.cpp in Sources */,
 				5E34CB991B7F6EC500F212E8 /* CTRGouraudAlphaNoZ2.cpp in Sources */,
 				5E34CB9A1B7F6EC500F212E8 /* CTRNormalMap.cpp in Sources */,
 				5E34CB9B1B7F6EC500F212E8 /* CTRStencilShadow.cpp in Sources */,
@@ -2710,6 +2712,7 @@
 				5E34CB9D1B7F6EC500F212E8 /* CTRTextureDetailMap2.cpp in Sources */,
 				5E34CB9E1B7F6EC500F212E8 /* CTRTextureGouraud2.cpp in Sources */,
 				5E34CB9F1B7F6EC500F212E8 /* CTRTextureGouraudAdd2.cpp in Sources */,
+				65E74BB3282193B50004CA1D /* CTRParallaxMap.cpp in Sources */,
 				5E34CBA01B7F6EC500F212E8 /* CTRTextureGouraudAddNoZ2.cpp in Sources */,
 				5E34CBA11B7F6EC500F212E8 /* CTRTextureGouraudAlpha.cpp in Sources */,
 				5E34CBA21B7F6EC500F212E8 /* CTRTextureGouraudAlphaNoZ.cpp in Sources */,
@@ -2864,6 +2867,7 @@
 				5E5733091C18E212003F664E /* jdcolor.c in Sources */,
 				5E57330A1C18E212003F664E /* jddctmgr.c in Sources */,
 				5E57330B1C18E212003F664E /* jdhuff.c in Sources */,
+				842F5F8F2827D4AB00F4106F /* burning_shader_color.cpp in Sources */,
 				5E57340C1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp in Sources */,
 				5E57330C1C18E212003F664E /* jdinput.c in Sources */,
 				5E57330D1C18E212003F664E /* jdmainct.c in Sources */,
@@ -2921,6 +2925,7 @@
 				5E57334A1C18E212003F664E /* CSceneNodeAnimatorTexture.cpp in Sources */,
 				5E57334B1C18E212003F664E /* CMetaTriangleSelector.cpp in Sources */,
 				5E57334C1C18E212003F664E /* COctreeTriangleSelector.cpp in Sources */,
+				842F5F902827D4AB00F4106F /* CTR_transparent_reflection_2_layer.cpp in Sources */,
 				5E57334D1C18E212003F664E /* CSceneCollisionManager.cpp in Sources */,
 				5E57334E1C18E212003F664E /* CTerrainTriangleSelector.cpp in Sources */,
 				5E57334F1C18E212003F664E /* CTriangleBBSelector.cpp in Sources */,
@@ -2991,6 +2996,7 @@
 				5E57338D1C18E212003F664E /* CColladaMeshWriter.cpp in Sources */,
 				5E57338E1C18E212003F664E /* CIrrMeshWriter.cpp in Sources */,
 				5E57338F1C18E212003F664E /* COBJMeshWriter.cpp in Sources */,
+				842F5F912827D4AB00F4106F /* CTRGouraudNoZ2.cpp in Sources */,
 				5E5733901C18E212003F664E /* CPLYMeshWriter.cpp in Sources */,
 				5E57340A1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp in Sources */,
 				5E5733911C18E212003F664E /* CSTLMeshWriter.cpp in Sources */,
@@ -3006,7 +3012,6 @@
 				5E57339A1C18E212003F664E /* CSoftwareDriver2.cpp in Sources */,
 				5E57339B1C18E212003F664E /* CSoftwareTexture2.cpp in Sources */,
 				5E57339C1C18E212003F664E /* CTRGouraud2.cpp in Sources */,
-				5E57339D1C18E212003F664E /* CTRGouraudAlpha2.cpp in Sources */,
 				5E57339E1C18E212003F664E /* CTRGouraudAlphaNoZ2.cpp in Sources */,
 				5E57339F1C18E212003F664E /* CTRNormalMap.cpp in Sources */,
 				5E5733A01C18E212003F664E /* CTRStencilShadow.cpp in Sources */,
@@ -3015,6 +3020,7 @@
 				5E5733A31C18E212003F664E /* CTRTextureGouraud2.cpp in Sources */,
 				5E5733A41C18E212003F664E /* CTRTextureGouraudAdd2.cpp in Sources */,
 				5E5733A51C18E212003F664E /* CTRTextureGouraudAddNoZ2.cpp in Sources */,
+				843D28262828FA210096D7D0 /* CTRParallaxMap.cpp in Sources */,
 				5E5733A61C18E212003F664E /* CTRTextureGouraudAlpha.cpp in Sources */,
 				5E5733A71C18E212003F664E /* CTRTextureGouraudAlphaNoZ.cpp in Sources */,
 				5E5733A81C18E212003F664E /* CTRTextureGouraudNoZ2.cpp in Sources */,
@@ -3087,20 +3093,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -3115,9 +3113,7 @@
 					"PNG_ARM_NEON_OPT=0",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /;
@@ -3141,19 +3137,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -3171,9 +3160,9 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /;
@@ -3207,13 +3196,14 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Irrlicht;
 				SDKROOT = macosx;
 			};
@@ -3264,17 +3254,13 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				DSTROOT = "$(SRCROOT)/../../lib/iOS";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_FAST_MATH = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/../../include";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = (
@@ -3311,11 +3297,6 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_FAST_MATH = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/../../include";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
