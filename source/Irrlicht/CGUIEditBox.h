@@ -168,6 +168,7 @@ namespace gui
 		bool processKey(const SEvent& event);
 		bool processMouse(const SEvent& event);
 		s32 getCursorPos(s32 x, s32 y);
+		void handleBackspace();
 
 		bool OverwriteMode;
 		bool MouseMarking;
@@ -196,6 +197,9 @@ namespace gui
 		core::array< s32 > BrokenTextPositions;
 
 		core::rect<s32> CurrentTextRect, FrameRect; // temporary values
+	
+	private:
+		bool IsSDL2Device;
 	};
 
 

@@ -22,6 +22,9 @@
 #if defined(_IRR_COMPILE_WITH_X11_DEVICE_)
 #include "CIrrDeviceLinux.h"
 #endif
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#include "CIrrDeviceSDL2.h"
+#endif
 #if defined(_IRR_COMPILE_WITH_OSX_DEVICE_)
 #import <Cocoa/Cocoa.h>
 #endif
@@ -31,16 +34,15 @@
 namespace irr
 {
 
-#if defined(_IRR_COMPILE_WITH_X11_DEVICE_)
 // constructor  linux
-	COSOperator::COSOperator(const core::stringc& osVersion, CIrrDeviceLinux* device)
-: OperatingSystem(osVersion), IrrDeviceLinux(device)
+COSOperator::COSOperator(const core::stringc& osVersion, IrrlichtDevice* device)
+: OperatingSystem(osVersion), IrrDevice(device)
 {
 }
-#endif
 
 // constructor
-COSOperator::COSOperator(const core::stringc& osVersion) : OperatingSystem(osVersion)
+COSOperator::COSOperator(const core::stringc& osVersion) : OperatingSystem(osVersion),
+	IrrDevice(0)
 {
 	#ifdef _DEBUG
 	setDebugName("COSOperator");
@@ -61,6 +63,21 @@ void COSOperator::copyToClipboard(const c8* text) const
 	if (strlen(text)==0)
 		return;
 
+#if defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+	if ( IrrDevice )
+	{
+#if defined(_IRR_COMPILE_WITH_X11_DEVICE_)
+		if ( IrrDevice->getType() == EIDT_X11 )
+			((CIrrDeviceLinux*)IrrDevice)->copyToClipboard(text);
+#endif
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+		if ( IrrDevice->getType() == EIDT_SDL2 )
+			((CIrrDeviceSDL2*)IrrDevice)->copyToClipboard(text);
+#endif
+		return;
+	}
+#endif
+	
 // Windows version
 #if defined(_IRR_XBOX_PLATFORM_)
 #elif defined(_IRR_WINDOWS_API_)
@@ -91,9 +108,6 @@ void COSOperator::copyToClipboard(const c8* text) const
     [board declareTypes:@[NSPasteboardTypeString] owner:NSApp];
     [board setString:str forType:NSPasteboardTypeString];
 
-#elif defined(_IRR_COMPILE_WITH_X11_DEVICE_)
-    if ( IrrDeviceLinux )
-        IrrDeviceLinux->copyToClipboard(text);
 #else
 
 #endif
@@ -104,6 +118,22 @@ void COSOperator::copyToClipboard(const c8* text) const
 //! \return Returns 0 if no string is in there.
 const c8* COSOperator::getTextFromClipboard() const
 {
+#if defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+	if ( IrrDevice )
+	{
+#if defined(_IRR_COMPILE_WITH_X11_DEVICE_)
+		if ( IrrDevice->getType() == EIDT_X11 )
+			return ((CIrrDeviceLinux*)IrrDevice)->getTextFromClipboard();
+#endif
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+		if ( IrrDevice->getType() == EIDT_SDL2 )
+			return ((CIrrDeviceSDL2*)IrrDevice)->getTextFromClipboard();
+#endif
+
+		return 0;
+	}
+#endif
+
 #if defined(_IRR_XBOX_PLATFORM_)
 		return 0;
 #elif defined(_IRR_WINDOWS_API_)
@@ -130,12 +160,6 @@ const c8* COSOperator::getTextFromClipboard() const
         result = (char*)[str UTF8String];
 
     return (result);
-
-#elif defined(_IRR_COMPILE_WITH_X11_DEVICE_)
-    if ( IrrDeviceLinux )
-        return IrrDeviceLinux->getTextFromClipboard();
-    return 0;
-
 #else
 
 	return 0;

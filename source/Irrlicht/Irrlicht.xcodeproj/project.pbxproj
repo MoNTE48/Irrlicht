@@ -596,6 +596,9 @@
 		842F5F902827D4AB00F4106F /* CTR_transparent_reflection_2_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219BA249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp */; };
 		842F5F912827D4AB00F4106F /* CTRGouraudNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B8249F834000E189FC /* CTRGouraudNoZ2.cpp */; };
 		843D28262828FA210096D7D0 /* CTRParallaxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65E74BB2282193B40004CA1D /* CTRParallaxMap.cpp */; };
+		8495A666289C6FFC009FCF4D /* CIrrDeviceSDL2.h in Headers */ = {isa = PBXBuildFile; fileRef = 8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */; };
+		8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
+		8495A668289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
 		84A219B7249F82E800E189FC /* burning_shader_color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B6249F82E800E189FC /* burning_shader_color.cpp */; };
 		84A219B9249F834000E189FC /* CTRGouraudNoZ2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219B8249F834000E189FC /* CTRGouraudNoZ2.cpp */; };
 		84A219BB249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84A219BA249F835B00E189FC /* CTR_transparent_reflection_2_layer.cpp */; };
@@ -1335,6 +1338,8 @@
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
+		8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceSDL2.h; sourceTree = "<group>"; };
+		8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CIrrDeviceSDL2.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
 		84A219A6249F82DC00E189FC /* burning_shader_compile_verify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_verify.h; sourceTree = "<group>"; };
 		84A219A7249F82DC00E189FC /* burning_shader_compile_triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_triangle.h; sourceTree = "<group>"; };
@@ -1804,6 +1809,8 @@
 		5E34C8061B7F51F100F212E8 /* device */ = {
 			isa = PBXGroup;
 			children = (
+				8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */,
+				8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */,
 				5E8570BA1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp */,
 				5E8570BB1B7F9AC400B267D2 /* CIrrDeviceConsole.h */,
 				5E5733E61C18E254003F664E /* CIrrDeviceiOS.h */,
@@ -2404,6 +2411,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8495A666289C6FFC009FCF4D /* CIrrDeviceSDL2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2723,6 +2731,7 @@
 				5E34CBA71B7F6EC500F212E8 /* CTRTextureLightMap2_M2.cpp in Sources */,
 				5E34CBA81B7F6EC500F212E8 /* CTRTextureLightMap2_M4.cpp in Sources */,
 				5E34CBA91B7F6EC500F212E8 /* CTRTextureLightMapGouraud2_M4.cpp in Sources */,
+				8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E34CBAA1B7F6EC500F212E8 /* CTRTextureWire2.cpp in Sources */,
 				5E34CBAB1B7F6EC500F212E8 /* IBurningShader.cpp in Sources */,
 				5E34CBB11B7F6EC500F212E8 /* CImageLoaderBMP.cpp in Sources */,
@@ -2863,6 +2872,7 @@
 				5E5733051C18E212003F664E /* jdarith.c in Sources */,
 				5E5733061C18E212003F664E /* jdatadst.c in Sources */,
 				5E5733071C18E212003F664E /* jdatasrc.c in Sources */,
+				8495A668289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E5733081C18E212003F664E /* jdcoefct.c in Sources */,
 				5E5733091C18E212003F664E /* jdcolor.c in Sources */,
 				5E57330A1C18E212003F664E /* jddctmgr.c in Sources */,

@@ -13,6 +13,11 @@
 #include "os.h"
 #include "Keycodes.h"
 
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#include "CIrrDeviceSDL2.h"
+#endif
+
+
 /*
 	todo:
 	optional scrollbars
@@ -37,11 +42,18 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
-	CurrentTextRect(0,0,1,1), FrameRect(rectangle)
+	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDL2Device(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIEditBox");
 	#endif
+	
+	// We should check if device type is EIDT_SDL2 but there is no
+	// access to the device class from gui element, so check if
+	// SDL2 has been initialized instead.
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+	IsSDL2Device = SDL_WasInit(SDL_INIT_VIDEO);
+#endif
 
 	Text = text;
 
@@ -70,6 +82,14 @@ CGUIEditBox::~CGUIEditBox()
 
 	if (Operator)
 		Operator->drop();
+		
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
+	if (IsSDL2Device)
+	{
+		if (SDL_IsTextInputActive())
+			SDL_StopTextInput();
+	}
+#endif
 }
 
 
@@ -242,6 +262,39 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 					MouseMarking = false;
 					setTextMarkers(0,0);
 				}
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
+				if (IsSDL2Device)
+				{
+					if (SDL_IsTextInputActive())
+						SDL_StopTextInput();
+				}
+#endif
+			}
+			else if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUSED)
+			{
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
+				if (IsSDL2Device)
+				{
+					SDL_StartTextInput();
+				}
+#endif
+			}
+			break;
+		case EET_SDL_TEXT_EVENT:
+			if (event.SDLTextEvent.Type == irr::ESDLET_TEXTINPUT)
+			{
+				wchar_t* text = new wchar_t[32]();
+				irr::core::utf8ToWchar(event.SDLTextEvent.Text, text, 32 * sizeof(wchar_t));
+				size_t textLength = wcslen(text);
+				
+				for (size_t i = 0; i < textLength; i++)
+				{
+					inputChar(text[i]);
+				}
+				
+				delete[] text;
+
+				return true;
 			}
 			break;
 		case EET_KEY_INPUT_EVENT:
@@ -260,6 +313,38 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 	return IGUIElement::OnEvent(event);
 }
 
+void CGUIEditBox::handleBackspace()
+{
+	core::stringw s;
+
+	if (MarkBegin != MarkEnd)
+	{
+		// delete marked text
+		const s32 realmbgn = MarkBegin < MarkEnd ? MarkBegin : MarkEnd;
+		const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
+
+		s = Text.subString(0, realmbgn);
+		s.append( Text.subString(realmend, Text.size()-realmend) );
+		Text = s;
+
+		CursorPos = realmbgn;
+	}
+	else
+	{
+		// delete text behind cursor
+		if (CursorPos>0)
+			s = Text.subString(0, CursorPos-1);
+		else
+			s = L"";
+		s.append( Text.subString(CursorPos, Text.size()-CursorPos) );
+		Text = s;
+		--CursorPos;
+	}
+
+	if (CursorPos < 0)
+		CursorPos = 0;
+	BlinkStartTime = os::Timer::getTime();
+}
 
 bool CGUIEditBox::processKey(const SEvent& event)
 {
@@ -270,9 +355,22 @@ bool CGUIEditBox::processKey(const SEvent& event)
 	s32 newMarkBegin = MarkBegin;
 	s32 newMarkEnd = MarkEnd;
 
+	// On Windows right alt simulates additional control press/release events.
+	// It causes unexpected bahavior, for example right alt + A would clear text
+	// in the edit box. At least for SDL2 we can easily check if alt key is 
+	// pressed
+	bool altPressed = false;
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+	if (IsSDL2Device)
+	{
+		SDL_Keymod keymod = SDL_GetModState();
+		altPressed = keymod & KMOD_ALT;
+	}
+#endif
+
 	// control shortcut handling
 
-	if (event.KeyInput.Control)
+	if (event.KeyInput.Control && !altPressed)
 	{
 		// german backlash '\' entered with control + '?'
 		if ( event.KeyInput.Char == '\\' )
@@ -296,7 +394,21 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
 
 				core::stringc s;
-				s = Text.subString(realmbgn, realmend - realmbgn).c_str();
+				
+				if (IsSDL2Device)
+				{
+					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
+					size_t length = selectedText.size();
+					char* text = new char[length * sizeof(wchar_t) + 1]();
+					irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
+					s = text;
+					delete[] text;
+				}
+				else
+				{
+					s = Text.subString(realmbgn, realmend - realmbgn).c_str();
+				}
+				
 				Operator->copyToClipboard(s.c_str());
 			}
 			break;
@@ -309,7 +421,21 @@ bool CGUIEditBox::processKey(const SEvent& event)
 
 				// copy
 				core::stringc sc;
-				sc = Text.subString(realmbgn, realmend - realmbgn).c_str();
+
+				if (IsSDL2Device)
+				{
+					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
+					size_t length = selectedText.size();
+					char* text = new char[length * sizeof(wchar_t) + 1]();
+					irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
+					sc = text;
+					delete[] text;
+				}
+				else
+				{
+					sc = Text.subString(realmbgn, realmend - realmbgn).c_str();
+				}
+
 				Operator->copyToClipboard(sc.c_str());
 
 				if (isEnabled())
@@ -342,7 +468,19 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				if (p)
 				{
 					irr::core::stringw widep;
-					core::multibyteToWString(widep, p);
+					
+					if (IsSDL2Device)
+					{
+						size_t length = strlen(p);
+						wchar_t* text = new wchar_t[length + 1]();
+						irr::core::utf8ToWchar(p, text, (length + 1) * sizeof(wchar_t));
+						widep.append(text);
+						delete[] text;
+					}
+					else
+					{
+						core::multibyteToWString(widep, p);
+					}
 
 					if (MarkBegin == MarkEnd)
 					{
@@ -581,6 +719,30 @@ bool CGUIEditBox::processKey(const SEvent& event)
 
 			OverwriteMode = !OverwriteMode;
 			break;
+		case KEY_RETURN:
+			if (MultiLine)
+			{
+				inputChar(L'\n');
+			}
+			else
+			{
+				calculateScrollPos();
+				sendGuiEvent( EGET_EDITBOX_ENTER );
+			}
+			return true;
+
+		case KEY_BACK:
+			if (!isEnabled())
+				break;
+				
+			if (Text.size())
+			{
+				handleBackspace();
+				newMarkBegin = 0;
+				newMarkEnd = 0;
+				textChanged = true;
+			}
+			break;
 		case KEY_DELETE:
 			if ( !isEnabled() )
 				break;
@@ -615,40 +777,12 @@ bool CGUIEditBox::processKey(const SEvent& event)
 			return true;
 
 		case KEY_BACK:
-			if ( !isEnabled() )
+			if (!isEnabled())
 				break;
-
+				
 			if (Text.size())
 			{
-				core::stringw s;
-
-				if (MarkBegin != MarkEnd)
-				{
-					// delete marked text
-					const s32 realmbgn = MarkBegin < MarkEnd ? MarkBegin : MarkEnd;
-					const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
-
-					s = Text.subString(0, realmbgn);
-					s.append( Text.subString(realmend, Text.size()-realmend) );
-					Text = s;
-
-					CursorPos = realmbgn;
-				}
-				else
-				{
-					// delete text behind cursor
-					if (CursorPos>0)
-						s = Text.subString(0, CursorPos-1);
-					else
-						s = L"";
-					s.append( Text.subString(CursorPos, Text.size()-CursorPos) );
-					Text = s;
-					--CursorPos;
-				}
-
-				if (CursorPos < 0)
-					CursorPos = 0;
-				BlinkStartTime = os::Timer::getTime();
+				handleBackspace();
 				newMarkBegin = 0;
 				newMarkEnd = 0;
 				textChanged = true;

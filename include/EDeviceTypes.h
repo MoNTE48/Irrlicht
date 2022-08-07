@@ -38,6 +38,11 @@ namespace irr
 		in by defining the _IRR_COMPILE_WITH_SDL_DEVICE_ macro in IrrCompileConfig.h */
 		EIDT_SDL,
 
+		//! A device which uses Simple DirectMedia Layer 2
+		/** The SDL2 device works under all platforms supported by SDL2 but first must be compiled
+		in by defining the _IRR_COMPILE_WITH_SDL2_DEVICE_ macro in IrrCompileConfig.h */
+		EIDT_SDL2,
+
 		//! A device for raw framebuffer access
 		/** Best used with embedded devices and mobile systems.
 		Does not need X11 or other graphical subsystems.

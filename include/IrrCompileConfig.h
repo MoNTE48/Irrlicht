@@ -33,6 +33,7 @@
 //! _IRR_COMPILE_WITH_OSX_DEVICE_ for Cocoa native windowing on OSX
 //! _IRR_COMPILE_WITH_X11_DEVICE_ for Linux X11 based device
 //! _IRR_COMPILE_WITH_SDL_DEVICE_ for platform independent SDL framework
+//! _IRR_COMPILE_WITH_SDL2_DEVICE_ for platform independent SDL2 framework
 //! _IRR_COMPILE_WITH_CONSOLE_DEVICE_ for no windowing system, used as a fallback
 //! _IRR_COMPILE_WITH_FB_DEVICE_ for framebuffer systems
 
@@ -46,6 +47,28 @@
 //#define _IRR_COMPILE_WITH_SDL_DEVICE_
 #ifdef NO_IRR_COMPILE_WITH_SDL_DEVICE_
 #undef _IRR_COMPILE_WITH_SDL_DEVICE_
+#endif
+
+//! Uncomment this line to compile with the SDL2 device
+//#define _IRR_COMPILE_WITH_SDL2_DEVICE_
+#ifdef NO_IRR_COMPILE_WITH_SDL2_DEVICE_
+#undef _IRR_COMPILE_WITH_SDL2_DEVICE_
+#endif
+
+#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
+//! Comment this line to compile without SDL2 textinput support
+#define _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
+#ifdef NO_IRR_COMPILE_WITH_SDL2_TEXTINPUT_
+#undef _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
+#endif
+
+//! Comment this line to compile without SDL2 mouse events
+//! This is for better compatibility with CIrrDeviceAndroid that doesn't send
+//! mouse events even for real USB mouse and it sends touch events instead
+#define _IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
+#ifdef NO_IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
+#undef _IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
+#endif
 #endif
 
 //! Comment this line to compile without the fallback console device.
@@ -118,8 +141,10 @@
 
 #if defined(__ANDROID__)
 #define _IRR_ANDROID_PLATFORM_
+#if !defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 #define _IRR_COMPILE_WITH_ANDROID_DEVICE_
 #define _IRR_COMPILE_ANDROID_ASSET_READER_
+#endif
 #define NO_IRR_COMPILE_WITH_OPENGL_
 #endif
 
@@ -224,6 +249,8 @@ define out. */
 		#define _IRR_COMPILE_WITH_GLX_MANAGER_
 	#elif defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 		#define _IRR_OPENGL_USE_EXTPOINTER_
+	#elif defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+		#define _IRR_OPENGL_USE_EXTPOINTER_
 	#endif
 #endif
 
@@ -247,7 +274,7 @@ Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS
 
 //! Define required options for OpenGL ES 1.1 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES1_)
-#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 #define _IRR_OGLES1_USE_EXTPOINTER_
 #ifndef _IRR_COMPILE_WITH_EGL_MANAGER_
 #define _IRR_COMPILE_WITH_EGL_MANAGER_
@@ -279,7 +306,7 @@ define out. */
 
 //! Define required options for OpenGL ES 2.0 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
-#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(__EMSCRIPTEN__)
+#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) || defined(__EMSCRIPTEN__)
 #define _IRR_OGLES2_USE_EXTPOINTER_
 #ifndef _IRR_COMPILE_WITH_EGL_MANAGER_
 #define _IRR_COMPILE_WITH_EGL_MANAGER_
@@ -969,7 +996,7 @@ precision will be lower but speed higher. currently X86 only
 //! Solve Camera errors - Debug Feature
 /* - Allow Camera 90 degree up, Target==Position,buildCameraLookAtMatrixLH
    - pre v1.9 CCameraSceneNode moved the up non-particular in the positive x-Direction. not compatible
-   - Enabled is not compatible with Irrlicht Collision and Response. 
+   - Enabled is not compatible with Irrlicht Collision and Response.
 */
 //#define _IRR_COMPILE_WITH_90_DEGREE_CAMERA
 

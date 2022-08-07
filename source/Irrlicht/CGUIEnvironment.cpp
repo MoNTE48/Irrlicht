@@ -636,6 +636,7 @@ bool CGUIEnvironment::postEventFromUser(const SEvent& event)
 
 		break;
 	case EET_KEY_INPUT_EVENT:
+	case EET_SDL_TEXT_EVENT:
 		{
 			if (Focus && Focus->OnEvent(event))
 				return true;
@@ -644,6 +645,7 @@ bool CGUIEnvironment::postEventFromUser(const SEvent& event)
 			// Send focus changing event
 			// CAREFUL when changing - there's an identical check in CGUIModalScreen::OnEvent
 			if (FocusFlags & EFF_SET_ON_TAB &&
+				event.EventType == EET_KEY_INPUT_EVENT &&
 				event.KeyInput.PressedDown &&
 				event.KeyInput.Key == KEY_TAB)
 			{
