@@ -9,7 +9,7 @@
 
 #ifdef _IRR_COMPILE_WITH_OGLES1_
 
-#if defined(_IRR_COMPILE_WITH_IOS_DEVICE_)
+#if defined(_IRR_IOS_PLATFORM_)
 #include <OpenGLES/ES1/gl.h>
 #include <OpenGLES/ES1/glext.h>
 #elif defined(_IRR_OGLES1_USE_KHRONOS_API_HEADERS_)

@@ -255,14 +255,21 @@ bool COGLES1Driver::endScene()
 
 	if (ContextManager)
 		status = ContextManager->swapBuffers();
-
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
+		
+	#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
 	if ( DeviceType == EIDT_SDL2 )
 	{
+		#ifdef _IRR_IOS_PLATFORM_
+		SDL_SysWMinfo info;
+		SDL_VERSION(&info.version);
+		SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
+		glBindRenderbufferOES(GL_RENDERBUFFER_OES, info.info.uikit.colorbuffer);
+		#endif
+		
 		SDL_GL_SwapWindow(SDL2Device->getWindow());
 		status = true;
 	}
-#endif
+	#endif
 
 	return status;
 }
@@ -2824,7 +2831,21 @@ bool COGLES1Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SCol
 	else
 	{
 		if (supportForFBO)
-			CacheHandler->setFBO(0);
+		{
+			GLuint frameBufferID = 0;
+			
+			#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
+			if ( DeviceType == EIDT_SDL2 )
+			{
+				SDL_SysWMinfo info;
+				SDL_VERSION(&info.version);
+				SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
+				frameBufferID = info.info.uikit.framebuffer;
+			}
+			#endif
+			
+			CacheHandler->setFBO(frameBufferID);
+		}
 		else
 		{
 			COGLES1RenderTarget* prevRenderTarget = static_cast<COGLES1RenderTarget*>(CurrentRenderTarget);

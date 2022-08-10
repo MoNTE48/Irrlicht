@@ -108,13 +108,15 @@
 #endif
 #if defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) || defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #define _IRR_IOS_PLATFORM_
+#if !defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 #define _IRR_COMPILE_WITH_IOS_DEVICE_
-#define NO_IRR_COMPILE_WITH_OPENGL_
 // The application state events and following methods: IrrlichtDevice::isWindowActive, IrrlichtDevice::isWindowFocused,
 // IrrlichtDevice::isWindowMinimized works out of box only if you'll use built-in CIrrDelegateiOS,
 // so _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_ must be enabled in this case. If you need a custom UIApplicationDelegate
 // you must disable _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_ definition and handle all application events yourself.
 #define _IRR_COMPILE_WITH_IOS_BUILTIN_MAIN_
+#endif
+#define NO_IRR_COMPILE_WITH_OPENGL_
 #else
 #define _IRR_OSX_PLATFORM_
 #define _IRR_COMPILE_WITH_OSX_DEVICE_
@@ -274,7 +276,11 @@ Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS
 
 //! Define required options for OpenGL ES 1.1 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES1_)
-#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if !defined(_IRR_IOS_PLATFORM_)
+#define _IRR_OGLES1_USE_EXTPOINTER_
+#endif
+#elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_)
 #define _IRR_OGLES1_USE_EXTPOINTER_
 #ifndef _IRR_COMPILE_WITH_EGL_MANAGER_
 #define _IRR_COMPILE_WITH_EGL_MANAGER_
@@ -306,7 +312,11 @@ define out. */
 
 //! Define required options for OpenGL ES 2.0 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
-#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) || defined(__EMSCRIPTEN__)
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if !defined(_IRR_IOS_PLATFORM_)
+#define _IRR_OGLES2_USE_EXTPOINTER_
+#endif
+#elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(__EMSCRIPTEN__)
 #define _IRR_OGLES2_USE_EXTPOINTER_
 #ifndef _IRR_COMPILE_WITH_EGL_MANAGER_
 #define _IRR_COMPILE_WITH_EGL_MANAGER_
