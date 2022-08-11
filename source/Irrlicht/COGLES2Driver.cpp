@@ -146,6 +146,16 @@ COGLES2Driver::~COGLES2Driver()
 		// reset cache handler
 		delete CacheHandler;
 		CacheHandler = new COGLES2CacheHandler(this);
+		
+		#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
+		if ( DeviceType == EIDT_SDL2 )
+		{
+			SDL_SysWMinfo info;
+			SDL_VERSION(&info.version);
+			SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
+			CacheHandler->setFBO(info.info.uikit.framebuffer);
+		}
+		#endif
 
 		StencilBuffer = stencilBuffer;
 
