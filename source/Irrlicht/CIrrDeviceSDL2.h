@@ -235,6 +235,8 @@ namespace irr
 		bool createWindowWithContext();
 
 		void createKeyMap();
+		
+		void updateNativeScale();
 
 		SDL_Window* Window;
 		SDL_GLContext Context;
@@ -243,7 +245,6 @@ namespace irr
 #endif
 
 		s32 MouseX, MouseY;
-		s32 MouseXRel, MouseYRel;
 		u32 MouseButtonStates;
 
 		u32 Width, Height;
@@ -256,8 +257,10 @@ namespace irr
 		s32 AccelerometerInstance;
 		s32 GyroscopeIndex;
 		s32 GyroscopeInstance;
+		
+		f32 NativeScaleX, NativeScaleY;
 
-		std::set<int> TouchIDs;
+		std::set<SDL_FingerID> TouchIDs;
 
 		struct SKeyMap
 		{
