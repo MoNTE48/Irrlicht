@@ -65,7 +65,8 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 	Resizable(param.WindowResizable == 1 ? true : false),
 	AccelerometerIndex(-1), AccelerometerInstance(-1),
 	GyroscopeIndex(-1), GyroscopeInstance(-1), 
-	NativeScaleX(1.0f), NativeScaleY(1.0f)
+	NativeScaleX(1.0f), NativeScaleY(1.0f), 
+	IgnoreWarpMouseEvent(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL2");
@@ -616,6 +617,12 @@ bool CIrrDeviceSDL2::run()
 			break;
 
 		case SDL_MOUSEMOTION:
+			if (IgnoreWarpMouseEvent)
+			{
+				IgnoreWarpMouseEvent = false;
+				break;
+			}
+			
 			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 			irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
 			MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;

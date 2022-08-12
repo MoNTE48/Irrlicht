@@ -125,6 +125,10 @@ namespace irr
 		virtual bool isGyroscopeAvailable() IRR_OVERRIDE;
 
 		SDL_Window* getWindow() const { return Window; }
+		
+		f32 getNativeScaleX() { return NativeScaleX; }
+
+		f32 getNativeScaleY() { return NativeScaleY; }
 
 		//! Implementation of the linux cursor control
 		class CCursorControl : public gui::ICursorControl
@@ -177,7 +181,14 @@ namespace irr
 			//! Sets the new position of the cursor.
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
-				SDL_WarpMouseInWindow(Device->Window, x, y );
+				SDL_WarpMouseInWindow(Device->Window, 
+					x / Device->getNativeScaleX(), 
+					y / Device->getNativeScaleY());
+				
+				Device->IgnoreWarpMouseEvent = true;
+				Device->MouseX = x;
+				Device->MouseY = y;
+
 				CursorPos.X = x;
 				CursorPos.Y = y;
 			}
@@ -259,6 +270,8 @@ namespace irr
 		s32 GyroscopeInstance;
 		
 		f32 NativeScaleX, NativeScaleY;
+		
+		bool IgnoreWarpMouseEvent;
 
 		std::set<SDL_FingerID> TouchIDs;
 
