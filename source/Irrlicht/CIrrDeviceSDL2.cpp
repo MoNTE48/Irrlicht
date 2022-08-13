@@ -614,8 +614,13 @@ bool CIrrDeviceSDL2::run()
 				
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 				
+				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+					keyboardState[SDL_SCANCODE_RGUI];
+				#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
 					keyboardState[SDL_SCANCODE_RCTRL];
+				#endif
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
 					keyboardState[SDL_SCANCODE_RSHIFT];
 					
@@ -640,8 +645,13 @@ bool CIrrDeviceSDL2::run()
 				
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 				
+				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+					keyboardState[SDL_SCANCODE_RGUI];
+				#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
-					keyboardState[SDL_SCANCODE_RCTRL];		
+					keyboardState[SDL_SCANCODE_RCTRL];
+				#endif	
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
 					keyboardState[SDL_SCANCODE_RSHIFT];
 					
@@ -659,8 +669,13 @@ bool CIrrDeviceSDL2::run()
 				
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 				
+				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+					keyboardState[SDL_SCANCODE_RGUI];
+				#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
 					keyboardState[SDL_SCANCODE_RCTRL];
+				#endif
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -751,7 +766,11 @@ bool CIrrDeviceSDL2::run()
 				irrevent.KeyInput.Key = key;
 				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_KEYDOWN);
 				irrevent.KeyInput.Shift = (SDL_event.key.keysym.mod & KMOD_SHIFT) != 0;
+				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_GUI ) != 0;
+				#else
 				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_CTRL ) != 0;
+				#endif
 				postEventFromUser(irrevent);
 			}
 			break;
