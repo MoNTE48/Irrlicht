@@ -603,104 +603,130 @@ bool CIrrDeviceSDL2::run()
 
 #if defined(_IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_)
 		case SDL_MOUSEWHEEL:
-			if (SDL_event.wheel.x > 0 || SDL_event.wheel.x < 0)
-				break;
-
-			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-			irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
-			irrevent.MouseInput.X = MouseX;
-			irrevent.MouseInput.Y = MouseY;
-			irrevent.MouseInput.ButtonStates = MouseButtonStates;
-			irrevent.MouseInput.Wheel = SDL_event.wheel.y > 0 ? 1.0f : -1.0f;
-
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_MOUSEMOTION:
-			if (IgnoreWarpMouseEvent)
 			{
-				IgnoreWarpMouseEvent = false;
-				break;
+				if (SDL_event.wheel.x > 0 || SDL_event.wheel.x < 0)
+					break;
+
+				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+				irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
+				irrevent.MouseInput.X = MouseX;
+				irrevent.MouseInput.Y = MouseY;
+				
+				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+					keyboardState[SDL_SCANCODE_RCTRL];
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+					keyboardState[SDL_SCANCODE_RSHIFT];
+					
+				irrevent.MouseInput.ButtonStates = MouseButtonStates;
+				irrevent.MouseInput.Wheel = SDL_event.wheel.y > 0 ? 1.0f : -1.0f;
+
+				postEventFromUser(irrevent);
 			}
-			
-			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-			irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
-			MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;
-			MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
-			irrevent.MouseInput.ButtonStates = MouseButtonStates;
-
-			postEventFromUser(irrevent);
 			break;
+		case SDL_MOUSEMOTION:
+			{
+				if (IgnoreWarpMouseEvent)
+				{
+					IgnoreWarpMouseEvent = false;
+					break;
+				}
+				
+				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
+				MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;
+				MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
+				
+				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+					keyboardState[SDL_SCANCODE_RCTRL];		
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+					keyboardState[SDL_SCANCODE_RSHIFT];
+					
+				irrevent.MouseInput.ButtonStates = MouseButtonStates;
 
+				postEventFromUser(irrevent);
+			}
+			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-
-			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-			irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
-			irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
-
-			irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
-
-			switch(SDL_event.button.button)
 			{
-			case SDL_BUTTON_LEFT:
-				if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
-				{
-					irrevent.MouseInput.Event = irr::EMIE_LMOUSE_PRESSED_DOWN;
-					MouseButtonStates |= irr::EMBSM_LEFT;
-				}
-				else
-				{
-					irrevent.MouseInput.Event = irr::EMIE_LMOUSE_LEFT_UP;
-					MouseButtonStates &= ~irr::EMBSM_LEFT;
-				}
-				break;
+				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+				irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
+				irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
+				
+				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+					keyboardState[SDL_SCANCODE_RCTRL];
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+					keyboardState[SDL_SCANCODE_RSHIFT];
 
-			case SDL_BUTTON_RIGHT:
-				if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
-				{
-					irrevent.MouseInput.Event = irr::EMIE_RMOUSE_PRESSED_DOWN;
-					MouseButtonStates |= irr::EMBSM_RIGHT;
-				}
-				else
-				{
-					irrevent.MouseInput.Event = irr::EMIE_RMOUSE_LEFT_UP;
-					MouseButtonStates &= ~irr::EMBSM_RIGHT;
-				}
-				break;
+				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
 
-			case SDL_BUTTON_MIDDLE:
-				if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+				switch(SDL_event.button.button)
 				{
-					irrevent.MouseInput.Event = irr::EMIE_MMOUSE_PRESSED_DOWN;
-					MouseButtonStates |= irr::EMBSM_MIDDLE;
-				}
-				else
-				{
-					irrevent.MouseInput.Event = irr::EMIE_MMOUSE_LEFT_UP;
-					MouseButtonStates &= ~irr::EMBSM_MIDDLE;
-				}
-				break;
-			}
-
-			irrevent.MouseInput.ButtonStates = MouseButtonStates;
-
-			if (irrevent.MouseInput.Event != irr::EMIE_MOUSE_MOVED)
-			{
-				postEventFromUser(irrevent);
-
-				if ( irrevent.MouseInput.Event >= EMIE_LMOUSE_PRESSED_DOWN && irrevent.MouseInput.Event <= EMIE_MMOUSE_PRESSED_DOWN )
-				{
-					u32 clicks = checkSuccessiveClicks(irrevent.MouseInput.X, irrevent.MouseInput.Y, irrevent.MouseInput.Event);
-					if ( clicks == 2 )
+				case SDL_BUTTON_LEFT:
+					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
 					{
-						irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_DOUBLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
-						postEventFromUser(irrevent);
+						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_LEFT;
 					}
-					else if ( clicks == 3 )
+					else
 					{
-						irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_TRIPLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
-						postEventFromUser(irrevent);
+						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_LEFT;
+					}
+					break;
+
+				case SDL_BUTTON_RIGHT:
+					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+					{
+						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_RIGHT;
+					}
+					else
+					{
+						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_RIGHT;
+					}
+					break;
+
+				case SDL_BUTTON_MIDDLE:
+					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+					{
+						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_MIDDLE;
+					}
+					else
+					{
+						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_MIDDLE;
+					}
+					break;
+				}
+
+				irrevent.MouseInput.ButtonStates = MouseButtonStates;
+
+				if (irrevent.MouseInput.Event != irr::EMIE_MOUSE_MOVED)
+				{
+					postEventFromUser(irrevent);
+
+					if ( irrevent.MouseInput.Event >= EMIE_LMOUSE_PRESSED_DOWN && irrevent.MouseInput.Event <= EMIE_MMOUSE_PRESSED_DOWN )
+					{
+						u32 clicks = checkSuccessiveClicks(irrevent.MouseInput.X, irrevent.MouseInput.Y, irrevent.MouseInput.Event);
+						if ( clicks == 2 )
+						{
+							irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_DOUBLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
+							postEventFromUser(irrevent);
+						}
+						else if ( clicks == 3 )
+						{
+							irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_TRIPLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
+							postEventFromUser(irrevent);
+						}
 					}
 				}
 			}
