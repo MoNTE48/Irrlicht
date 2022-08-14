@@ -200,6 +200,7 @@ namespace gui
 	
 	private:
 		bool IsSDL2Device;
+		bool StartedTextInput;
 	};
 
 

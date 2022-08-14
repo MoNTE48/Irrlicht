@@ -42,7 +42,8 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
-	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDL2Device(false)
+	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDL2Device(false),
+	StartedTextInput(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIEditBox");
@@ -86,8 +87,11 @@ CGUIEditBox::~CGUIEditBox()
 #if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
 	if (IsSDL2Device)
 	{
-		if (SDL_IsTextInputActive())
-			SDL_StopTextInput();
+		if (StartedTextInput)
+		{
+			if (SDL_IsTextInputActive())
+				SDL_StopTextInput();
+		}
 	}
 #endif
 }
@@ -265,6 +269,7 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 #if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
 				if (IsSDL2Device)
 				{
+					StartedTextInput = false;
 					if (SDL_IsTextInputActive())
 						SDL_StopTextInput();
 				}
@@ -275,6 +280,7 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 #if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
 				if (IsSDL2Device)
 				{
+					StartedTextInput = true;
 					SDL_StartTextInput();
 				}
 #endif
