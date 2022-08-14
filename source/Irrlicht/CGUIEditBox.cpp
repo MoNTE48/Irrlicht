@@ -755,8 +755,39 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				textChanged = true;
 			}
 			break;
-		default:
+			
+		case KEY_ESCAPE:
+		case KEY_TAB:
+		case KEY_SHIFT:
+		case KEY_F1:
+		case KEY_F2:
+		case KEY_F3:
+		case KEY_F4:
+		case KEY_F5:
+		case KEY_F6:
+		case KEY_F7:
+		case KEY_F8:
+		case KEY_F9:
+		case KEY_F10:
+		case KEY_F11:
+		case KEY_F12:
+		case KEY_F13:
+		case KEY_F14:
+		case KEY_F15:
+		case KEY_F16:
+		case KEY_F17:
+		case KEY_F18:
+		case KEY_F19:
+		case KEY_F20:
+		case KEY_F21:
+		case KEY_F22:
+		case KEY_F23:
+		case KEY_F24:
+			// ignore these keys
 			return false;
+			
+		default:
+			return true;
 		}
 	}
 	else
