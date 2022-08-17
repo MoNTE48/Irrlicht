@@ -126,6 +126,8 @@ namespace irr
 
 		SDL_Window* getWindow() const { return Window; }
 		
+		SDL_GLContext getContext() const { return Context; }
+		
 		f32 getNativeScaleX() { return NativeScaleX; }
 
 		f32 getNativeScaleY() { return NativeScaleY; }

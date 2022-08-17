@@ -74,6 +74,9 @@ COGLES1Driver::COGLES1Driver(const SIrrlichtCreationParameters& params, io::IFil
 #ifdef _DEBUG
 	setDebugName("COGLESDriver");
 #endif
+	
+	ExposedData.OpenGLSDL2.Window = device->getWindow();
+	ExposedData.OpenGLSDL2.Context = device->getContext();
 }
 
 #endif
