@@ -64,8 +64,8 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 	WindowHasFocus(false), WindowMinimized(false),
 	Resizable(param.WindowResizable == 1 ? true : false),
 	AccelerometerIndex(-1), AccelerometerInstance(-1),
-	GyroscopeIndex(-1), GyroscopeInstance(-1), 
-	NativeScaleX(1.0f), NativeScaleY(1.0f), 
+	GyroscopeIndex(-1), GyroscopeInstance(-1),
+	NativeScaleX(1.0f), NativeScaleY(1.0f),
 	IgnoreWarpMouseEvent(false)
 {
 	#ifdef _DEBUG
@@ -378,13 +378,13 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 
 void CIrrDeviceSDL2::updateNativeScale()
 {
-	int width = 0; 
+	int width = 0;
 	int height = 0;
 	SDL_GetWindowSize(Window, &width, &height);
-	
+
 	int real_width = width;
 	int real_height = height;
-	
+
 	if (CreationParams.DriverType == video::EDT_OPENGL ||
 		CreationParams.DriverType == video::EDT_OGLES2 ||
 		CreationParams.DriverType == video::EDT_OGLES1)
@@ -611,19 +611,19 @@ bool CIrrDeviceSDL2::run()
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
 				irrevent.MouseInput.X = MouseX;
 				irrevent.MouseInput.Y = MouseY;
-				
+
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-				
+
 				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
 				#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
 				#endif
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
-					
+
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
 				irrevent.MouseInput.Wheel = SDL_event.wheel.y > 0 ? 1.0f : -1.0f;
 
@@ -637,24 +637,24 @@ bool CIrrDeviceSDL2::run()
 					IgnoreWarpMouseEvent = false;
 					break;
 				}
-				
+
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
 				MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;
 				MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
-				
+
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-				
+
 				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
 				#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
-				#endif	
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+				#endif
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
-					
+
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
 
 				postEventFromUser(irrevent);
@@ -666,17 +666,17 @@ bool CIrrDeviceSDL2::run()
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
 				irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
-				
+
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-				
+
 				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
 				#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] || 
+				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
 				#endif
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] || 
+				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
@@ -752,7 +752,7 @@ bool CIrrDeviceSDL2::run()
 		case SDL_KEYUP:
 			{
 				SDL_Scancode scancode = SDL_GetScancodeFromKey(SDL_event.key.keysym.sym);
-				
+
 				SKeyMap mp;
 				mp.Scancode = scancode;
 				s32 idx = KeyMap.binary_search(mp);
@@ -792,15 +792,15 @@ bool CIrrDeviceSDL2::run()
 				if (SDL_event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				{
 					updateNativeScale();
-					
+
 					u32 new_width = SDL_event.window.data1 * NativeScaleX;
 					u32 new_height = SDL_event.window.data2 * NativeScaleY;
-					
+
 					if (new_width != Width || new_height != Height)
 					{
 						Width = new_width;
 						Height = new_height;
-						
+
 						if (VideoDriver)
 							VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
 					}
