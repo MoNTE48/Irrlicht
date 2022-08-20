@@ -125,9 +125,9 @@ namespace irr
 		virtual bool isGyroscopeAvailable() IRR_OVERRIDE;
 
 		SDL_Window* getWindow() const { return Window; }
-		
+
 		SDL_GLContext getContext() const { return Context; }
-		
+
 		f32 getNativeScaleX() { return NativeScaleX; }
 
 		f32 getNativeScaleY() { return NativeScaleY; }
@@ -183,10 +183,10 @@ namespace irr
 			//! Sets the new position of the cursor.
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
-				SDL_WarpMouseInWindow(Device->Window, 
-					x / Device->getNativeScaleX(), 
+				SDL_WarpMouseInWindow(Device->Window,
+					x / Device->getNativeScaleX(),
 					y / Device->getNativeScaleY());
-				
+
 				Device->IgnoreWarpMouseEvent = true;
 				Device->MouseX = x;
 				Device->MouseY = y;
@@ -248,7 +248,9 @@ namespace irr
 		bool createWindowWithContext();
 
 		void createKeyMap();
-		
+
+		void updateNativeScaleFromWindow();
+
 		void updateNativeScale();
 
 		SDL_Window* Window;
@@ -270,9 +272,9 @@ namespace irr
 		s32 AccelerometerInstance;
 		s32 GyroscopeIndex;
 		s32 GyroscopeInstance;
-		
+
 		f32 NativeScaleX, NativeScaleY;
-		
+
 		bool IgnoreWarpMouseEvent;
 
 		std::set<SDL_FingerID> TouchIDs;

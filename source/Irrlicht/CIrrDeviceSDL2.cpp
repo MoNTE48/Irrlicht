@@ -211,6 +211,34 @@ bool CIrrDeviceSDL2::createWindow()
 	if (Close)
 		return false;
 
+	// Get native scale before window creation on platforms that support
+	// high dpi.
+	#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+	updateNativeScaleFromWindow();
+	#endif
+
+	// SDL2 ignores window dimensions equal to 0 only for fullscreen
+	// window. Use desktop size in windowed mode.
+	if (!CreationParams.Fullscreen && (Width == 0 || Height == 0))
+	{
+		SDL_DisplayMode mode = {};
+		int err = SDL_GetDesktopDisplayMode(0, &mode);
+
+		if (err == 0)
+		{
+			Width = mode.w * NativeScaleX;
+			Height = mode.h * NativeScaleY;
+
+		}
+		else
+		{
+			// Shouldn't happen, just in case
+			Width = 640;
+			Height = 480;
+
+		}
+	}
+
 	bool success = createWindowWithContext();
 
 	if (!success)
@@ -338,7 +366,7 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 	}
 
 	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-							Width, Height, SDL_Flags);
+							Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
 
 	if (!Window)
 		return false;
@@ -357,23 +385,51 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 		}
 	}
 
-	if (Width == 0 || Height == 0)
+	updateNativeScale();
+
+	if (CreationParams.WindowSize.Width == 0 || CreationParams.WindowSize.Height == 0)
 	{
 		int w = 0;
 		int h = 0;
 		SDL_GetWindowSize(Window, &w, &h);
 
-		Width = w;
-		Height = h;
+		Width = w * NativeScaleX;
+		Height = h * NativeScaleX;
 	}
-	
-	updateNativeScale();
-	Width = (u32)((f32)Width * NativeScaleX);
-	Height = (u32)((f32)Height * NativeScaleY);
+
 	CreationParams.WindowSize.Width = Width;
 	CreationParams.WindowSize.Height = Height;
 
 	return true;
+}
+
+void CIrrDeviceSDL2::updateNativeScaleFromWindow()
+{
+	SDL_Window* window = NULL;
+	SDL_Renderer* renderer = NULL;
+
+	Uint32 flags = SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_HIDDEN;
+	int err = SDL_CreateWindowAndRenderer(640, 480, flags, &window, &renderer);
+
+	if (err == 0)
+	{
+		int width = 0;
+		int height = 0;
+		SDL_GetWindowSize(window, &width, &height);
+
+		int real_width = 0;
+		int real_height = 0;
+		SDL_GetRendererOutputSize(renderer, &real_width, &real_height);
+
+		if (width > 0 && height > 0 && real_width > 0 && real_height > 0)
+		{
+			NativeScaleX = (float)real_width / (float)width;
+			NativeScaleY = (float)real_height / (float)height;
+		}
+
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
+	}
 }
 
 void CIrrDeviceSDL2::updateNativeScale()
