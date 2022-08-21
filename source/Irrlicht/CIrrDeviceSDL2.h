@@ -249,7 +249,7 @@ namespace irr
 
 		void createKeyMap();
 
-		void updateNativeScaleFromWindow();
+		void updateNativeScaleFromSystem();
 
 		void updateNativeScale();
 
