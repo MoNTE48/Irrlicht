@@ -672,7 +672,11 @@ bool CIrrDeviceSDL2::run()
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-				irrevent.MouseInput.Wheel = SDL_event.wheel.y > 0 ? 1.0f : -1.0f;
+				#if SDL_VERSION_ATLEAST(2, 0, 18)
+				irrevent.MouseInput.Wheel = SDL_event.wheel.preciseY;
+				#else
+				irrevent.MouseInput.Wheel = SDL_event.wheel.y;
+				#endif
 
 				postEventFromUser(irrevent);
 			}
