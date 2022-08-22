@@ -34,21 +34,20 @@ namespace irr
 {
 	namespace video
 	{
-
-		#ifdef _IRR_COMPILE_WITH_OPENGL_
+#ifdef _IRR_COMPILE_WITH_OPENGL_
 		IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
 				io::IFileSystem* io, CIrrDeviceSDL2* device);
-		#endif
+#endif
 
-		#if defined(_IRR_COMPILE_WITH_OGLES2_)
+#if defined(_IRR_COMPILE_WITH_OGLES2_)
 		IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
 				io::IFileSystem* io, CIrrDeviceSDL2* device);
-		#endif
+#endif
 
-		#if defined(_IRR_COMPILE_WITH_OGLES1_)
+#if defined(_IRR_COMPILE_WITH_OGLES1_)
 		IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params,
 				io::IFileSystem* io, CIrrDeviceSDL2* device);
-		#endif
+#endif
 	} // end namespace video
 
 } // end namespace irr
@@ -70,9 +69,9 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
 	IgnoreWarpMouseEvent(false)
 {
-	#ifdef _DEBUG
+#ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL2");
-	#endif
+#endif
 
 	if ( ++SDLDeviceInstances == 1 )
 	{
@@ -104,12 +103,10 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 			os::Printer::log("SDL initialized", ELL_INFORMATION);
 		}
 
-	#if SDL_VERSION_ATLEAST(2, 0, 9)
 		if (SDL_InitSubSystem(SDL_INIT_SENSOR) < 0)
 		{
 			os::Printer::log("Failed to init SDL sensor!", SDL_GetError());
 		}
-	#endif
 	}
 
 	SDL_version version;
@@ -134,7 +131,6 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 
 	if (CreationParams.DriverType != video::EDT_NULL)
 	{
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 		for (int i = 0; i < SDL_NumSensors(); i++)
 		{
 			if (SDL_SensorGetDeviceType(i) == SDL_SENSOR_ACCEL)
@@ -146,7 +142,6 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 				GyroscopeIndex = i;
 			}
 		}
-#endif
 
 		// create the window, only if we do not use the null device
 		createWindow();
@@ -215,9 +210,9 @@ bool CIrrDeviceSDL2::createWindow()
 
 	// Get native scale before window creation on platforms that support
 	// high dpi.
-	#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 	updateNativeScaleFromSystem();
-	#endif
+#endif
 
 	// SDL2 accepts window dimensions equal to 0 only for fullscreen
 	// window. Use desktop size in windowed mode.
@@ -308,9 +303,9 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 		CreationParams.DriverType == video::EDT_OGLES2 ||
 		CreationParams.DriverType == video::EDT_OGLES1)
 	{
-		#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 		SDL_Flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-		#endif
+#endif
 
 		SDL_Flags |= SDL_WINDOW_OPENGL;
 
@@ -452,27 +447,27 @@ void CIrrDeviceSDL2::createDriver()
 		break;
 
 	case video::EDT_OPENGL:
-		#ifdef _IRR_COMPILE_WITH_OPENGL_
+#ifdef _IRR_COMPILE_WITH_OPENGL_
 		VideoDriver = video::createOpenGLDriver(CreationParams, FileSystem, this);
-		#else
+#else
 		os::Printer::log("No OpenGL support compiled in.", ELL_ERROR);
-		#endif
+#endif
 		break;
 
 	case video::EDT_OGLES2:
-		#ifdef _IRR_COMPILE_WITH_OGLES2_
+#ifdef _IRR_COMPILE_WITH_OGLES2_
 		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this);
-		#else
+#else
 		os::Printer::log("No OpenGL ES2 support compiled in.", ELL_ERROR);
-		#endif
+#endif
 		break;
 
 	case video::EDT_OGLES1:
-		#ifdef _IRR_COMPILE_WITH_OGLES1_
+#ifdef _IRR_COMPILE_WITH_OGLES1_
 		VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, this);
-		#else
+#else
 		os::Printer::log("No OpenGL ES1 support compiled in.", ELL_ERROR);
-		#endif
+#endif
 		break;
 
 	case video::EDT_NULL:
@@ -544,7 +539,6 @@ bool CIrrDeviceSDL2::run()
 			Close = true;
 			break;
 
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 		case SDL_SENSORUPDATE:
 			if (SDL_event.sensor.which == AccelerometerInstance)
 			{
@@ -588,7 +582,6 @@ bool CIrrDeviceSDL2::run()
 				postEventFromUser(irrevent);
 			}
 			break;
-#endif
 
 		case SDL_FINGERMOTION:
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
@@ -635,22 +628,22 @@ bool CIrrDeviceSDL2::run()
 
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 
-				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
-				#else
+#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
-				#endif
+#endif
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-				#if SDL_VERSION_ATLEAST(2, 0, 18)
+#if SDL_VERSION_ATLEAST(2, 0, 18)
 				irrevent.MouseInput.Wheel = SDL_event.wheel.preciseY;
-				#else
+#else
 				irrevent.MouseInput.Wheel = SDL_event.wheel.y;
-				#endif
+#endif
 
 				postEventFromUser(irrevent);
 			}
@@ -670,13 +663,13 @@ bool CIrrDeviceSDL2::run()
 
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 
-				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
-				#else
+#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
-				#endif
+#endif
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -694,13 +687,13 @@ bool CIrrDeviceSDL2::run()
 
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 
-				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
 					keyboardState[SDL_SCANCODE_RGUI];
-				#else
+#else
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
 					keyboardState[SDL_SCANCODE_RCTRL];
-				#endif
+#endif
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -799,11 +792,11 @@ bool CIrrDeviceSDL2::run()
 				irrevent.KeyInput.Key = key;
 				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_KEYDOWN);
 				irrevent.KeyInput.Shift = (SDL_event.key.keysym.mod & KMOD_SHIFT) != 0;
-				#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_GUI ) != 0;
-				#else
+#else
 				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_CTRL ) != 0;
-				#endif
+#endif
 				postEventFromUser(irrevent);
 			}
 			break;
@@ -1190,10 +1183,8 @@ void CIrrDeviceSDL2::setResizable(bool resize)
 	if (CreationParams.Fullscreen)
 		return;
 
-#if SDL_VERSION_ATLEAST(2, 0, 5)
 	SDL_SetWindowResizable(Window, resize ? SDL_TRUE : SDL_FALSE);
 	Resizable = resize;
-#endif
 }
 
 
@@ -1458,7 +1449,6 @@ void CIrrDeviceSDL2::createKeyMap()
 
 bool CIrrDeviceSDL2::activateAccelerometer(float updateInterval)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 	if (AccelerometerInstance == -1 && AccelerometerIndex != -1)
 	{
 		SDL_Sensor* accel = SDL_SensorOpen(AccelerometerIndex);
@@ -1468,14 +1458,12 @@ bool CIrrDeviceSDL2::activateAccelerometer(float updateInterval)
 			AccelerometerInstance = SDL_SensorGetInstanceID(accel);
 		}
 	}
-#endif
 
 	return AccelerometerInstance != -1;
 }
 
 bool CIrrDeviceSDL2::deactivateAccelerometer()
 {
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 	if (AccelerometerInstance == -1)
 		return false;
 
@@ -1486,7 +1474,7 @@ bool CIrrDeviceSDL2::deactivateAccelerometer()
 
 	SDL_SensorClose(accel);
 	AccelerometerInstance = -1;
-#endif
+
 	return true;
 }
 
@@ -1502,7 +1490,6 @@ bool CIrrDeviceSDL2::isAccelerometerAvailable()
 
 bool CIrrDeviceSDL2::activateGyroscope(float updateInterval)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 	if (GyroscopeInstance == -1 && GyroscopeIndex != -1)
 	{
 		SDL_Sensor* gyro = SDL_SensorOpen(GyroscopeIndex);
@@ -1512,13 +1499,12 @@ bool CIrrDeviceSDL2::activateGyroscope(float updateInterval)
 			GyroscopeInstance = SDL_SensorGetInstanceID(gyro);
 		}
 	}
-#endif
+
 	return GyroscopeInstance != -1;
 }
 
 bool CIrrDeviceSDL2::deactivateGyroscope()
 {
-#if SDL_VERSION_ATLEAST(2, 0, 9)
 	if (GyroscopeInstance == -1)
 		return false;
 
@@ -1529,7 +1515,7 @@ bool CIrrDeviceSDL2::deactivateGyroscope()
 
 	SDL_SensorClose(gyro);
 	GyroscopeInstance = -1;
-#endif
+
 	return true;
 }
 
