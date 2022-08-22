@@ -107,6 +107,12 @@ CIrrDeviceSDL2::CIrrDeviceSDL2(const SIrrlichtCreationParameters& param)
 		{
 			os::Printer::log("Failed to init SDL sensor!", SDL_GetError());
 		}
+
+#if defined(_IRR_OSX_PLATFORM_)
+		// Enable AppleMomentumScrollSupported on macOS
+		[[NSUserDefaults standardUserDefaults] setBool: YES
+							   forKey: @"AppleMomentumScrollSupported"];
+#endif
 	}
 
 	SDL_version version;
@@ -640,9 +646,9 @@ bool CIrrDeviceSDL2::run()
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-				irrevent.MouseInput.Wheel = SDL_event.wheel.preciseY;
+				irrevent.MouseInput.Wheel = -SDL_event.wheel.preciseX + SDL_event.wheel.preciseY;
 #else
-				irrevent.MouseInput.Wheel = SDL_event.wheel.y;
+				irrevent.MouseInput.Wheel = -SDL_event.wheel.x + SDL_event.wheel.y;
 #endif
 
 				postEventFromUser(irrevent);
