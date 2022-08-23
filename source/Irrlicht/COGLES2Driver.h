@@ -451,9 +451,9 @@ private:
 
 		core::array<RequestedLight> RequestedLights;
 
-		#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-			CIrrDeviceSDL2 *SDL2Device;
-		#endif
+#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
+		CIrrDeviceSDL2 *SDL2Device;
+#endif
 
 		IContextManager* ContextManager;
 

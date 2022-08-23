@@ -149,7 +149,7 @@ COGLES2Driver::~COGLES2Driver()
 		// reset cache handler
 		delete CacheHandler;
 		CacheHandler = new COGLES2CacheHandler(this);
-		
+
 		#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
 		if ( DeviceType == EIDT_SDL2 )
 		{
@@ -462,7 +462,7 @@ COGLES2Driver::~COGLES2Driver()
 	bool COGLES2Driver::beginScene(u16 clearFlag, SColor clearColor, f32 clearDepth, u8 clearStencil, const SExposedVideoData& videoData, core::rect<s32>* sourceRect)
 	{
 		IRR_PROFILE(CProfileScope p1(EPID_ES2_BEGIN_SCENE);)
-		
+
 		CNullDriver::beginScene(clearFlag, clearColor, clearDepth, clearStencil, videoData, sourceRect);
 
 		if (ContextManager)
@@ -491,21 +491,21 @@ COGLES2Driver::~COGLES2Driver()
 
 		if (ContextManager)
 			status = ContextManager->swapBuffers();
-		
-		#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
+
+#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
 		if ( DeviceType == EIDT_SDL2 )
 		{
-			#ifdef _IRR_IOS_PLATFORM_
+#ifdef _IRR_IOS_PLATFORM_
 			SDL_SysWMinfo info;
 			SDL_VERSION(&info.version);
 			SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
 			glBindRenderbuffer(GL_RENDERBUFFER, info.info.uikit.colorbuffer);
-			#endif
-			
+#endif
+
 			SDL_GL_SwapWindow(SDL2Device->getWindow());
 			status = true;
 		}
-		#endif
+#endif
 
 		return status;
 	}
@@ -2528,7 +2528,7 @@ COGLES2Driver::~COGLES2Driver()
 		else
 		{
 			GLuint frameBufferID = 0;
-			
+
 			#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
 			if ( DeviceType == EIDT_SDL2 )
 			{
@@ -2538,7 +2538,7 @@ COGLES2Driver::~COGLES2Driver()
 				frameBufferID = info.info.uikit.framebuffer;
 			}
 			#endif
-			
+
 			CacheHandler->setFBO(frameBufferID);
 
 			destRenderTargetSize = core::dimension2d<u32>(0, 0);

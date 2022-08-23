@@ -197,7 +197,7 @@ namespace gui
 		core::array< s32 > BrokenTextPositions;
 
 		core::rect<s32> CurrentTextRect, FrameRect; // temporary values
-	
+
 	private:
 		bool IsSDL2Device;
 		bool StartedTextInput;

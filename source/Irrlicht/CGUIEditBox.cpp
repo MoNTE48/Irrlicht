@@ -48,7 +48,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	#ifdef _DEBUG
 	setDebugName("CGUIEditBox");
 	#endif
-	
+
 	// We should check if device type is EIDT_SDL2 but there is no
 	// access to the device class from gui element, so check if
 	// SDL2 has been initialized instead.
@@ -83,7 +83,7 @@ CGUIEditBox::~CGUIEditBox()
 
 	if (Operator)
 		Operator->drop();
-		
+
 #if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
 	if (IsSDL2Device)
 	{
@@ -292,12 +292,12 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 				wchar_t* text = new wchar_t[32]();
 				irr::core::utf8ToWchar(event.SDLTextEvent.Text, text, 32 * sizeof(wchar_t));
 				size_t textLength = wcslen(text);
-				
+
 				for (size_t i = 0; i < textLength; i++)
 				{
 					inputChar(text[i]);
 				}
-				
+
 				delete[] text;
 
 				return true;
@@ -363,7 +363,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 
 	// On Windows right alt simulates additional control press/release events.
 	// It causes unexpected bahavior, for example right alt + A would clear text
-	// in the edit box. At least for SDL2 we can easily check if alt key is 
+	// in the edit box. At least for SDL2 we can easily check if alt key is
 	// pressed
 	bool altPressed = false;
 #if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
@@ -400,7 +400,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
 
 				core::stringc s;
-				
+
 				if (IsSDL2Device)
 				{
 					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
@@ -414,7 +414,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				{
 					s = Text.subString(realmbgn, realmend - realmbgn).c_str();
 				}
-				
+
 				Operator->copyToClipboard(s.c_str());
 			}
 			break;
@@ -474,7 +474,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				if (p)
 				{
 					irr::core::stringw widep;
-					
+
 					if (IsSDL2Device)
 					{
 						size_t length = strlen(p);
@@ -740,7 +740,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 		case KEY_BACK:
 			if (!isEnabled())
 				break;
-				
+
 			if (Text.size())
 			{
 				handleBackspace();
@@ -761,7 +761,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				textChanged = true;
 			}
 			break;
-			
+
 		case KEY_ESCAPE:
 		case KEY_TAB:
 		case KEY_SHIFT:
@@ -791,7 +791,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 		case KEY_F24:
 			// ignore these keys
 			return false;
-			
+
 		default:
 			return true;
 		}
@@ -816,7 +816,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 		case KEY_BACK:
 			if (!isEnabled())
 				break;
-				
+
 			if (Text.size())
 			{
 				handleBackspace();
