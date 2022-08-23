@@ -624,9 +624,6 @@ bool CIrrDeviceSDL2::run()
 #if defined(_IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_)
 		case SDL_MOUSEWHEEL:
 			{
-				if (SDL_event.wheel.x > 0 || SDL_event.wheel.x < 0)
-					break;
-
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
 				irrevent.MouseInput.X = MouseX;
@@ -646,7 +643,7 @@ bool CIrrDeviceSDL2::run()
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-				irrevent.MouseInput.Wheel = -SDL_event.wheel.preciseX + SDL_event.wheel.preciseY;
+				irrevent.MouseInput.Wheel = SDL_event.wheel.preciseX + SDL_event.wheel.preciseY;
 #else
 				irrevent.MouseInput.Wheel = -SDL_event.wheel.x + SDL_event.wheel.y;
 #endif
