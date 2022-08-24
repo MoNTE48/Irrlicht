@@ -515,7 +515,6 @@
 		5E9573D71C18E9E600C27989 /* CEAGLManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E9573D61C18E9E600C27989 /* CEAGLManager.mm */; };
 		8495A666289C6FFC009FCF4D /* CIrrDeviceSDL2.h in Headers */ = {isa = PBXBuildFile; fileRef = 8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */; };
 		8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
-		8495A668289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -2601,7 +2600,6 @@
 				5E5733051C18E212003F664E /* jdarith.c in Sources */,
 				5E5733061C18E212003F664E /* jdatadst.c in Sources */,
 				5E5733071C18E212003F664E /* jdatasrc.c in Sources */,
-				8495A668289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E5733081C18E212003F664E /* jdcoefct.c in Sources */,
 				5E5733091C18E212003F664E /* jdcolor.c in Sources */,
 				5E57330A1C18E212003F664E /* jddctmgr.c in Sources */,

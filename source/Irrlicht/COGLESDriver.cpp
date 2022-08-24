@@ -125,7 +125,7 @@ bool COGLES1Driver::genericDriverInit(const core::dimension2d<u32>& screenSize, 
 	delete CacheHandler;
 	CacheHandler = new COGLES1CacheHandler(this);
 
-	#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
 	if ( DeviceType == EIDT_SDL2 )
 	{
 		SDL_SysWMinfo info;
@@ -133,7 +133,7 @@ bool COGLES1Driver::genericDriverInit(const core::dimension2d<u32>& screenSize, 
 		SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
 		CacheHandler->setFBO(info.info.uikit.framebuffer);
 	}
-	#endif
+#endif
 
 	StencilBuffer = stencilBuffer;
 
@@ -246,10 +246,10 @@ bool COGLES1Driver::beginScene(u16 clearFlag, SColor clearColor, f32 clearDepth,
 		ContextManager->activateContext(videoData, true);
 
 	// Copied from OpenGL driver
-	#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 	if ( DeviceType == EIDT_SDL2 )
 		glFrontFace(GL_CW);
-	#endif
+#endif
 
 	clearBuffers(clearFlag, clearColor, clearDepth, clearStencil);
 
@@ -2847,7 +2847,7 @@ bool COGLES1Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SCol
 		{
 			GLuint frameBufferID = 0;
 
-			#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
+#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
 			if ( DeviceType == EIDT_SDL2 )
 			{
 				SDL_SysWMinfo info;
@@ -2855,7 +2855,7 @@ bool COGLES1Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SCol
 				SDL_GetWindowWMInfo(SDL2Device->getWindow(), &info);
 				frameBufferID = info.info.uikit.framebuffer;
 			}
-			#endif
+#endif
 
 			CacheHandler->setFBO(frameBufferID);
 		}
