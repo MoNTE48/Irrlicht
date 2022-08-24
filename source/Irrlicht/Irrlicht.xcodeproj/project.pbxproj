@@ -251,7 +251,6 @@
 		5E34CBE51B7F6EC700F212E8 /* COpenGLParallaxMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9B81B7F6BA700F212E8 /* COpenGLParallaxMapRenderer.cpp */; };
 		5E34CBE71B7F6EC700F212E8 /* COpenGLShaderMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9BA1B7F6BA700F212E8 /* COpenGLShaderMaterialRenderer.cpp */; };
 		5E34CBE91B7F6EC700F212E8 /* COpenGLSLMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9BC1B7F6BA700F212E8 /* COpenGLSLMaterialRenderer.cpp */; };
-		5E34CC191B7F6EC900F212E8 /* CNSOGLManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EE1B7F6CCC00F212E8 /* CNSOGLManager.mm */; };
 		5E34CC1A1B7F6EC900F212E8 /* CVideoModeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */; };
 		5E5732B31C18E212003F664E /* CDefaultGUIElementFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E21B7F50DE00F212E8 /* CDefaultGUIElementFactory.cpp */; };
 		5E5732B41C18E212003F664E /* CGUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7A91B7F50A900F212E8 /* CGUIButton.cpp */; };
@@ -499,7 +498,6 @@
 		5E5733CB1C18E212003F664E /* COpenGLParallaxMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9B81B7F6BA700F212E8 /* COpenGLParallaxMapRenderer.cpp */; };
 		5E5733CC1C18E212003F664E /* COpenGLShaderMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9BA1B7F6BA700F212E8 /* COpenGLShaderMaterialRenderer.cpp */; };
 		5E5733CD1C18E212003F664E /* COpenGLSLMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9BC1B7F6BA700F212E8 /* COpenGLSLMaterialRenderer.cpp */; };
-		5E5733DB1C18E212003F664E /* CNSOGLManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EE1B7F6CCC00F212E8 /* CNSOGLManager.mm */; };
 		5E5733DC1C18E212003F664E /* CVideoModeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */; };
 		5E5733F31C18E2C0003F664E /* COGLESDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5733ED1C18E2C0003F664E /* COGLESDriver.cpp */; };
 		5E5733F51C18E2C0003F664E /* COGLESExtensionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5733EF1C18E2C0003F664E /* COGLESExtensionHandler.cpp */; };
@@ -1149,8 +1147,6 @@
 		5E34C9BD1B7F6BA700F212E8 /* COpenGLSLMaterialRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COpenGLSLMaterialRenderer.h; sourceTree = "<group>"; };
 		5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CVideoModeList.cpp; sourceTree = "<group>"; };
 		5E34C9EC1B7F6C8200F212E8 /* CVideoModeList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVideoModeList.h; sourceTree = "<group>"; };
-		5E34C9ED1B7F6CCC00F212E8 /* CNSOGLManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNSOGLManager.h; sourceTree = "<group>"; };
-		5E34C9EE1B7F6CCC00F212E8 /* CNSOGLManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CNSOGLManager.mm; sourceTree = "<group>"; };
 		5E34C9F31B7F6E3400F212E8 /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5733E51C18E212003F664E /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5733EC1C18E2C0003F664E /* COGLESCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COGLESCommon.h; sourceTree = "<group>"; };
@@ -2169,8 +2165,6 @@
 			children = (
 				5E9573D61C18E9E600C27989 /* CEAGLManager.mm */,
 				5E9573D31C18E9B300C27989 /* CEAGLManager.h */,
-				5E34C9ED1B7F6CCC00F212E8 /* CNSOGLManager.h */,
-				5E34C9EE1B7F6CCC00F212E8 /* CNSOGLManager.mm */,
 			);
 			name = "OpenGL Context";
 			sourceTree = "<group>";
@@ -2505,7 +2499,6 @@
 				5E34CBE51B7F6EC700F212E8 /* COpenGLParallaxMapRenderer.cpp in Sources */,
 				5E34CBE71B7F6EC700F212E8 /* COpenGLShaderMaterialRenderer.cpp in Sources */,
 				5E34CBE91B7F6EC700F212E8 /* COpenGLSLMaterialRenderer.cpp in Sources */,
-				5E34CC191B7F6EC900F212E8 /* CNSOGLManager.mm in Sources */,
 				5E34CC1A1B7F6EC900F212E8 /* CVideoModeList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2770,7 +2763,6 @@
 				5E5733CB1C18E212003F664E /* COpenGLParallaxMapRenderer.cpp in Sources */,
 				5E5733CC1C18E212003F664E /* COpenGLShaderMaterialRenderer.cpp in Sources */,
 				5E5733CD1C18E212003F664E /* COpenGLSLMaterialRenderer.cpp in Sources */,
-				5E5733DB1C18E212003F664E /* CNSOGLManager.mm in Sources */,
 				5E5733DC1C18E212003F664E /* CVideoModeList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2968,6 +2960,10 @@
 					"-fno-unwind-tables",
 					"-fno-asynchronous-unwind-tables",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-U__STRICT_ANSI__",
+				);
 				PRODUCT_MODULE_NAME = Irrlicht;
 				PRODUCT_NAME = Irrlicht;
 				SDKROOT = iphoneos;
@@ -3003,6 +2999,10 @@
 					"-ffunction-sections",
 					"-fno-unwind-tables",
 					"-fno-asynchronous-unwind-tables",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-U__STRICT_ANSI__",
 				);
 				PRODUCT_MODULE_NAME = Irrlicht;
 				PRODUCT_NAME = Irrlicht;
