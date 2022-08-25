@@ -510,9 +510,8 @@
 		5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734051C18E2E2003F664E /* COGLES2Renderer2D.cpp */; };
 		5E7908971C10EF3F00DFE7FE /* COpenGLCacheHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908911C10EEC000DFE7FE /* COpenGLCacheHandler.cpp */; };
 		5E79089B1C10FEF900DFE7FE /* CB3DMeshWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */; };
-		5E9573D71C18E9E600C27989 /* CEAGLManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E9573D61C18E9E600C27989 /* CEAGLManager.mm */; };
-		8495A666289C6FFC009FCF4D /* CIrrDeviceSDL2.h in Headers */ = {isa = PBXBuildFile; fileRef = 8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */; };
 		8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
+		8495BD0428B784FA009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1181,8 +1180,6 @@
 		5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CB3DMeshWriter.cpp; sourceTree = "<group>"; };
 		5E7908991C10FE4A00DFE7FE /* CB3DMeshWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CB3DMeshWriter.h; sourceTree = "<group>"; };
 		5E9573D11C18E70000C27989 /* EVertexAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EVertexAttributes.h; path = ../../include/EVertexAttributes.h; sourceTree = "<group>"; };
-		5E9573D31C18E9B300C27989 /* CEAGLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEAGLManager.h; sourceTree = "<group>"; };
-		5E9573D61C18E9E600C27989 /* CEAGLManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CEAGLManager.mm; sourceTree = "<group>"; };
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
@@ -1620,7 +1617,6 @@
 			children = (
 				5E34C95B1B7F693800F212E8 /* Null */,
 				5E34C95C1B7F694500F212E8 /* OpenGL */,
-				5E79088C1C10EDF000DFE7FE /* OpenGL Context */,
 				5E5733EA1C18E27E003F664E /* OpenGL ES1.x */,
 				5E5733EB1C18E29B003F664E /* OpenGL ES2.x */,
 				5E79088B1C10ED5000DFE7FE /* OpenGL Core */,
@@ -2160,15 +2156,6 @@
 			name = "OpenGL Core";
 			sourceTree = "<group>";
 		};
-		5E79088C1C10EDF000DFE7FE /* OpenGL Context */ = {
-			isa = PBXGroup;
-			children = (
-				5E9573D61C18E9E600C27989 /* CEAGLManager.mm */,
-				5E9573D31C18E9B300C27989 /* CEAGLManager.h */,
-			);
-			name = "OpenGL Context";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2176,7 +2163,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8495A666289C6FFC009FCF4D /* CIrrDeviceSDL2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2609,6 +2595,7 @@
 				5E5733151C18E212003F664E /* jerror.c in Sources */,
 				5E5733161C18E212003F664E /* jfdctflt.c in Sources */,
 				5E5733171C18E212003F664E /* jfdctfst.c in Sources */,
+				8495BD0428B784FA009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E5733181C18E212003F664E /* jfdctint.c in Sources */,
 				5E5733191C18E212003F664E /* jidctflt.c in Sources */,
 				5E57331A1C18E212003F664E /* jidctfst.c in Sources */,
@@ -2627,7 +2614,6 @@
 				5E5733271C18E212003F664E /* pngrio.c in Sources */,
 				5E5733281C18E212003F664E /* pngrtran.c in Sources */,
 				5E5733291C18E212003F664E /* pngrutil.c in Sources */,
-				5E9573D71C18E9E600C27989 /* CEAGLManager.mm in Sources */,
 				5E57332A1C18E212003F664E /* pngset.c in Sources */,
 				5E57332B1C18E212003F664E /* pngtrans.c in Sources */,
 				5E57332C1C18E212003F664E /* pngwio.c in Sources */,
@@ -2810,7 +2796,7 @@
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
 					"-D_IRR_COMPILE_WITH_SDL2_DEVICE_",
-					"-I${SRCROOT}/../../../SDL2/SDL2.framework/Headers",
+					"-I${SRCROOT}/../../../SDL2/include",
 				);
 				STRIP_STYLE = "non-global";
 			};
@@ -2860,7 +2846,7 @@
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
 					"-D_IRR_COMPILE_WITH_SDL2_DEVICE_",
-					"-I${SRCROOT}/../../../SDL2/SDL2.framework/Headers",
+					"-I${SRCROOT}/../../../SDL2/include",
 				);
 				STRIP_STYLE = "non-global";
 			};
@@ -2960,10 +2946,6 @@
 					"-fno-unwind-tables",
 					"-fno-asynchronous-unwind-tables",
 				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-U__STRICT_ANSI__",
-				);
 				PRODUCT_MODULE_NAME = Irrlicht;
 				PRODUCT_NAME = Irrlicht;
 				SDKROOT = iphoneos;
@@ -2999,10 +2981,6 @@
 					"-ffunction-sections",
 					"-fno-unwind-tables",
 					"-fno-asynchronous-unwind-tables",
-				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-U__STRICT_ANSI__",
 				);
 				PRODUCT_MODULE_NAME = Irrlicht;
 				PRODUCT_NAME = Irrlicht;
