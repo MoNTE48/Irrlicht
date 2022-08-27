@@ -318,7 +318,7 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 		if (CreationParams.DriverType == video::EDT_OGLES2)
 		{
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 		}
 		else if (CreationParams.DriverType == video::EDT_OGLES1)
@@ -370,6 +370,14 @@ bool CIrrDeviceSDL2::createWindowWithContext()
 
 	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 							Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
+
+	if (!Window && CreationParams.DriverType == video::EDT_OGLES2)
+	{
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+
+		Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+								Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
+	}
 
 	if (!Window)
 		return false;
