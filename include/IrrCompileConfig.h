@@ -57,7 +57,7 @@
 
 #ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
 //! Comment this line to compile without SDL2 textinput support
-#define _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
+//#define _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
 #ifdef NO_IRR_COMPILE_WITH_SDL2_TEXTINPUT_
 #undef _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
 #endif
