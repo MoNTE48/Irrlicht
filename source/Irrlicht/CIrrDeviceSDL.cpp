@@ -64,7 +64,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	MouseX(0), MouseY(0), MouseButtonStates(0),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
 	WindowHasFocus(false), WindowMinimized(false),
-	Resizable(param.WindowResizable == 1 ? true : false),
+	Resizable(param.WindowResizable == 1),
 	AccelerometerIndex(-1), AccelerometerInstance(-1),
 	GyroscopeIndex(-1), GyroscopeInstance(-1),
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
@@ -505,7 +505,7 @@ bool CIrrDeviceSDL::run()
 
 	while (!Close && SDL_PollEvent(&SDL_event))
 	{
-		// os::Printer::log("event: ", core::stringc((int)SDL_event.type).c_str(),   ELL_INFORMATION);	// just for debugging
+		// os::Printer::log("event: ", core::stringc((int)SDL_event.type).c_str(), ELL_INFORMATION); // just for debugging
 
 		switch (SDL_event.type)
 		{
@@ -805,9 +805,9 @@ bool CIrrDeviceSDL::run()
 				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_KEYDOWN);
 				irrevent.KeyInput.Shift = (SDL_event.key.keysym.mod & KMOD_SHIFT) != 0;
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_GUI ) != 0;
+				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_GUI) != 0;
 #else
-				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_CTRL ) != 0;
+				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_CTRL) != 0;
 #endif
 				postEventFromUser(irrevent);
 			}
@@ -1121,7 +1121,7 @@ bool CIrrDeviceSDL::present(video::IImage* surface, void* windowId, core::rect<s
 		sdlSurface->format->Ashift=15;
 	}
 
-	SDL_Surface* scr = (SDL_Surface* )windowId;
+	SDL_Surface* scr = (SDL_Surface*)windowId;
 	if (scr)
 	{
 		if (srcClip)
@@ -1220,7 +1220,7 @@ core::position2di CIrrDeviceSDL::getWindowPosition()
 	int y = -1;
 	SDL_GetWindowPosition(Window, &x, &y);
 
-    return core::position2di(x, y);
+	return core::position2di(x, y);
 }
 
 
@@ -1466,9 +1466,7 @@ bool CIrrDeviceSDL::activateAccelerometer(float updateInterval)
 		SDL_Sensor* accel = SDL_SensorOpen(AccelerometerIndex);
 
 		if (accel)
-		{
 			AccelerometerInstance = SDL_SensorGetInstanceID(accel);
-		}
 	}
 
 	return AccelerometerInstance != -1;
@@ -1507,9 +1505,7 @@ bool CIrrDeviceSDL::activateGyroscope(float updateInterval)
 		SDL_Sensor* gyro = SDL_SensorOpen(GyroscopeIndex);
 
 		if (gyro)
-		{
 			GyroscopeInstance = SDL_SensorGetInstanceID(gyro);
-		}
 	}
 
 	return GyroscopeInstance != -1;
