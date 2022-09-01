@@ -8,11 +8,6 @@
 #include "irrMath.h"
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-	#include <SDL/SDL_endian.h>
-	#define bswap_16(X) SDL_Swap16(X)
-	#define bswap_32(X) SDL_Swap32(X)
-	#define bswap_64(X) SDL_Swap64(X)
-#elif defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 	#include <SDL_endian.h>
 	#define bswap_16(X) SDL_Swap16(X)
 	#define bswap_32(X) SDL_Swap32(X)

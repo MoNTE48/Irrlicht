@@ -13,8 +13,8 @@
 #include "os.h"
 #include "Keycodes.h"
 
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
-#include "CIrrDeviceSDL2.h"
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
+#include "CIrrDeviceSDL.h"
 #endif
 
 
@@ -42,18 +42,18 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
-	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDL2Device(false),
+	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false),
 	StartedTextInput(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIEditBox");
 	#endif
 
-	// We should check if device type is EIDT_SDL2 but there is no
+	// We should check if device type is EIDT_SDL but there is no
 	// access to the device class from gui element, so check if
-	// SDL2 has been initialized instead.
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
-	IsSDL2Device = SDL_WasInit(SDL_INIT_VIDEO);
+	// SDL has been initialized instead.
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
+	IsSDLDevice = SDL_WasInit(SDL_INIT_VIDEO);
 #endif
 
 	Text = text;
@@ -84,8 +84,8 @@ CGUIEditBox::~CGUIEditBox()
 	if (Operator)
 		Operator->drop();
 
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
-	if (IsSDL2Device)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
+	if (IsSDLDevice)
 	{
 		if (StartedTextInput)
 		{
@@ -266,8 +266,8 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 					MouseMarking = false;
 					setTextMarkers(0,0);
 				}
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
-				if (IsSDL2Device)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
+				if (IsSDLDevice)
 				{
 					StartedTextInput = false;
 					if (SDL_IsTextInputActive())
@@ -277,8 +277,8 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 			}
 			else if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUSED)
 			{
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL2_TEXTINPUT_)
-				if (IsSDL2Device)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
+				if (IsSDLDevice)
 				{
 					StartedTextInput = true;
 					SDL_StartTextInput();
@@ -363,11 +363,11 @@ bool CGUIEditBox::processKey(const SEvent& event)
 
 	// On Windows right alt simulates additional control press/release events.
 	// It causes unexpected bahavior, for example right alt + A would clear text
-	// in the edit box. At least for SDL2 we can easily check if alt key is
+	// in the edit box. At least for SDL we can easily check if alt key is
 	// pressed
 	bool altPressed = false;
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
-	if (IsSDL2Device)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
+	if (IsSDLDevice)
 	{
 		SDL_Keymod keymod = SDL_GetModState();
 		altPressed = keymod & KMOD_ALT;
@@ -401,7 +401,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 
 				core::stringc s;
 
-				if (IsSDL2Device)
+				if (IsSDLDevice)
 				{
 					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
 					size_t length = selectedText.size();
@@ -428,7 +428,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				// copy
 				core::stringc sc;
 
-				if (IsSDL2Device)
+				if (IsSDLDevice)
 				{
 					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
 					size_t length = selectedText.size();
@@ -475,7 +475,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				{
 					irr::core::stringw widep;
 
-					if (IsSDL2Device)
+					if (IsSDLDevice)
 					{
 						size_t length = strlen(p);
 						wchar_t* text = new wchar_t[length + 1]();

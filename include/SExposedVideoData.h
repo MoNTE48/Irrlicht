@@ -100,7 +100,7 @@ struct SExposedVideoData
 		void* Window;
 	};
 	
-	struct SOpenGLSDL2
+	struct SOpenGLSDL
 	{
 		//! The SDL_Window object.
 		void* Window;
@@ -118,7 +118,7 @@ struct SExposedVideoData
 		SOpenGLFB OpenGLFB;
 		SOpenGLiOS OpenGLiOS;
 		SOGLESAndroid OGLESAndroid;
-		SOpenGLSDL2 OpenGLSDL2;
+		SOpenGLSDL OpenGLSDL;
 	};
 };
 

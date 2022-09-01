@@ -223,7 +223,7 @@ namespace irr
 		EAET_COUNT
 	};
 
-	//! Enumeration for SDL2 text input events
+	//! Enumeration for SDL text input events
 	enum ESDL_EVENT_TYPE
 	{
 		//! SDL_TEXTEDITING

@@ -33,7 +33,6 @@
 //! _IRR_COMPILE_WITH_OSX_DEVICE_ for Cocoa native windowing on OSX
 //! _IRR_COMPILE_WITH_X11_DEVICE_ for Linux X11 based device
 //! _IRR_COMPILE_WITH_SDL_DEVICE_ for platform independent SDL framework
-//! _IRR_COMPILE_WITH_SDL2_DEVICE_ for platform independent SDL2 framework
 //! _IRR_COMPILE_WITH_CONSOLE_DEVICE_ for no windowing system, used as a fallback
 //! _IRR_COMPILE_WITH_FB_DEVICE_ for framebuffer systems
 
@@ -49,25 +48,19 @@
 #undef _IRR_COMPILE_WITH_SDL_DEVICE_
 #endif
 
-//! Uncomment this line to compile with the SDL2 device
-//#define _IRR_COMPILE_WITH_SDL2_DEVICE_
-#ifdef NO_IRR_COMPILE_WITH_SDL2_DEVICE_
-#undef _IRR_COMPILE_WITH_SDL2_DEVICE_
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
+//! Comment this line to compile without SDL textinput support
+//#define _IRR_COMPILE_WITH_SDL_TEXTINPUT_
+#ifdef NO_IRR_COMPILE_WITH_SDL_TEXTINPUT_
+#undef _IRR_COMPILE_WITH_SDL_TEXTINPUT_
 #endif
 
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-//! Comment this line to compile without SDL2 textinput support
-//#define _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
-#ifdef NO_IRR_COMPILE_WITH_SDL2_TEXTINPUT_
-#undef _IRR_COMPILE_WITH_SDL2_TEXTINPUT_
-#endif
-
-//! Comment this line to compile without SDL2 mouse events
+//! Comment this line to compile without SDL mouse events
 //! This is for better compatibility with CIrrDeviceAndroid that doesn't send
 //! mouse events even for real USB mouse and it sends touch events instead
-#define _IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
-#ifdef NO_IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
-#undef _IRR_COMPILE_WITH_SDL2_MOUSE_EVENTS_
+#define _IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
+#ifdef NO_IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
+#undef _IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
 #endif
 #endif
 
@@ -83,7 +76,9 @@
 #if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
 #define _IRR_WINDOWS_
 #define _IRR_WINDOWS_API_
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_WINDOWS_DEVICE_
+#endif
 #endif
 
 #if defined(_MSC_VER) && (_MSC_VER < 1500)
@@ -108,7 +103,7 @@
 #endif
 #if defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) || defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #define _IRR_IOS_PLATFORM_
-#if !defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_IOS_DEVICE_
 // The application state events and following methods: IrrlichtDevice::isWindowActive, IrrlichtDevice::isWindowFocused,
 // IrrlichtDevice::isWindowMinimized works out of box only if you'll use built-in CIrrDelegateiOS,
@@ -119,7 +114,7 @@
 #define NO_IRR_COMPILE_WITH_OPENGL_
 #else
 #define _IRR_OSX_PLATFORM_
-#if !defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_OSX_DEVICE_
 #endif
 #define NO_IRR_COMPILE_WITH_OGLES1_
@@ -145,7 +140,7 @@
 
 #if defined(__ANDROID__)
 #define _IRR_ANDROID_PLATFORM_
-#if !defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_ANDROID_DEVICE_
 #define _IRR_COMPILE_ANDROID_ASSET_READER_
 #endif
@@ -164,7 +159,9 @@
 #define _IRR_LINUX_PLATFORM_
 #endif
 #define _IRR_POSIX_API_
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_X11_DEVICE_
+#endif
 #endif
 
 
@@ -241,7 +238,9 @@ define out. */
 
 //! Define required options for OpenGL drivers.
 #if defined(_IRR_COMPILE_WITH_OPENGL_)
-	#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_)
+	#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
+		#define _IRR_OPENGL_USE_EXTPOINTER_
+	#elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_)
 		#define _IRR_OPENGL_USE_EXTPOINTER_
 		#define _IRR_COMPILE_WITH_WGL_MANAGER_
 	#elif defined(_IRR_COMPILE_WITH_X11_DEVICE_)
@@ -251,10 +250,6 @@ define out. */
 		#define _IRR_COMPILE_WITH_NSOGL_MANAGER_
 	#elif defined(_IRR_SOLARIS_PLATFORM_)
 		#define _IRR_COMPILE_WITH_GLX_MANAGER_
-	#elif defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-		#define _IRR_OPENGL_USE_EXTPOINTER_
-	#elif defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
-		#define _IRR_OPENGL_USE_EXTPOINTER_
 	#endif
 #endif
 
@@ -278,7 +273,7 @@ Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS
 
 //! Define required options for OpenGL ES 1.1 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES1_)
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #if !defined(_IRR_IOS_PLATFORM_)
 #define _IRR_OGLES1_USE_EXTPOINTER_
 #endif
@@ -314,7 +309,7 @@ define out. */
 
 //! Define required options for OpenGL ES 2.0 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #if !defined(_IRR_IOS_PLATFORM_)
 #define _IRR_OGLES2_USE_EXTPOINTER_
 #endif

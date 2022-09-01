@@ -11,7 +11,7 @@ IRRLICHT_LIB_NAME := lib$(LOCAL_MODULE).a
 
 LOCAL_CFLAGS := -Wall -pipe -fno-exceptions -fno-rtti -fstrict-aliasing
 
-LOCAL_CFLAGS += -D_IRR_COMPILE_WITH_SDL2_DEVICE_ \
+LOCAL_CFLAGS += -D_IRR_COMPILE_WITH_SDL_DEVICE_ \
 		-DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_ \
 		-DPNG_ARM_NEON_OPT=0
 
@@ -113,7 +113,7 @@ LOCAL_SRC_FILES := \
 					CImageWriterPSD.cpp \
 					CImageWriterTGA.cpp \
 					CImageLoaderPVR.cpp \
-					CIrrDeviceSDL2.cpp \
+					CIrrDeviceSDL.cpp \
 					CIrrDeviceStub.cpp \
 					CIrrMeshFileLoader.cpp \
 					CIrrMeshWriter.cpp \

@@ -34,10 +34,6 @@ static const char* const copyright = "Irrlicht Engine (c) 2002-2017 Nikolaus Geb
 #include "CIrrDeviceSDL.h"
 #endif
 
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-#include "CIrrDeviceSDL2.h"
-#endif
-
 #ifdef _IRR_COMPILE_WITH_CONSOLE_DEVICE_
 #include "CIrrDeviceConsole.h"
 #endif
@@ -77,9 +73,9 @@ namespace irr
 
 		IrrlichtDevice* dev = 0;
 
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-		if (params.DeviceType == EIDT_SDL2 || (!dev && params.DeviceType == EIDT_BEST))
-			dev = new CIrrDeviceSDL2(params);
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
+		if (params.DeviceType == EIDT_SDL || (!dev && params.DeviceType == EIDT_BEST))
+			dev = new CIrrDeviceSDL(params);
 #endif
 
 #ifdef _IRR_COMPILE_WITH_WINDOWS_DEVICE_
@@ -105,11 +101,6 @@ namespace irr
 #ifdef _IRR_COMPILE_WITH_ANDROID_DEVICE_
 		if (params.DeviceType == EIDT_ANDROID || (!dev && params.DeviceType == EIDT_BEST))
 			dev = new CIrrDeviceAndroid(params);
-#endif
-
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-		if (params.DeviceType == EIDT_SDL || (!dev && params.DeviceType == EIDT_BEST))
-			dev = new CIrrDeviceSDL(params);
 #endif
 
 #ifdef _IRR_COMPILE_WITH_FB_DEVICE_

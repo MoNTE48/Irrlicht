@@ -510,8 +510,8 @@
 		5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734051C18E2E2003F664E /* COGLES2Renderer2D.cpp */; };
 		5E7908971C10EF3F00DFE7FE /* COpenGLCacheHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908911C10EEC000DFE7FE /* COpenGLCacheHandler.cpp */; };
 		5E79089B1C10FEF900DFE7FE /* CB3DMeshWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */; };
-		8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
-		8495BD0428B784FA009FCF4D /* CIrrDeviceSDL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */; };
+		8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
+		8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1184,8 +1184,8 @@
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
-		8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceSDL2.h; sourceTree = "<group>"; };
-		8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CIrrDeviceSDL2.cpp; sourceTree = "<group>"; };
+		8495BD2B28C0E591009FCF4D /* CIrrDeviceSDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceSDL.h; sourceTree = "<group>"; };
+		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
 		84A219A6249F82DC00E189FC /* burning_shader_compile_verify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_verify.h; sourceTree = "<group>"; };
 		84A219A7249F82DC00E189FC /* burning_shader_compile_triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_triangle.h; sourceTree = "<group>"; };
@@ -1649,8 +1649,8 @@
 		5E34C8061B7F51F100F212E8 /* device */ = {
 			isa = PBXGroup;
 			children = (
-				8495A665289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp */,
-				8495A664289C6FFC009FCF4D /* CIrrDeviceSDL2.h */,
+				8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */,
+				8495BD2B28C0E591009FCF4D /* CIrrDeviceSDL.h */,
 				5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */,
 				5E34C80E1B7F52AC00F212E8 /* CIrrDeviceStub.h */,
 			);
@@ -2392,6 +2392,7 @@
 				5E34CB0A1B7F6EC200F212E8 /* CBSPMeshFileLoader.cpp in Sources */,
 				5E34CB0C1B7F6EC200F212E8 /* CColladaFileLoader.cpp in Sources */,
 				5E34CB0E1B7F6EC200F212E8 /* CCSMLoader.cpp in Sources */,
+				8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */,
 				5E34CB101B7F6EC200F212E8 /* CDMFLoader.cpp in Sources */,
 				5E34CB121B7F6EC200F212E8 /* CIrrMeshFileLoader.cpp in Sources */,
 				5E34CB141B7F6EC200F212E8 /* CLMTSMeshFileLoader.cpp in Sources */,
@@ -2455,7 +2456,6 @@
 				5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */,
 				5E34CB8A1B7F6EC400F212E8 /* CMeshManipulator.cpp in Sources */,
 				5E34CB8C1B7F6EC400F212E8 /* CSceneManager.cpp in Sources */,
-				8495A667289C6FFC009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E34CBB11B7F6EC500F212E8 /* CImageLoaderBMP.cpp in Sources */,
 				5E34CBB31B7F6EC500F212E8 /* CImageLoaderDDS.cpp in Sources */,
 				5E34CBB51B7F6EC600F212E8 /* CImageLoaderJPG.cpp in Sources */,
@@ -2512,6 +2512,7 @@
 				5E5732C21C18E212003F664E /* CGUIMeshViewer.cpp in Sources */,
 				5E5732C31C18E212003F664E /* CGUIMessageBox.cpp in Sources */,
 				5E5732C41C18E212003F664E /* CGUIModalScreen.cpp in Sources */,
+				8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */,
 				5E5732C51C18E212003F664E /* CGUIProfiler.cpp in Sources */,
 				5E5732C61C18E212003F664E /* CGUIScrollBar.cpp in Sources */,
 				5E5732C71C18E212003F664E /* CGUISkin.cpp in Sources */,
@@ -2595,7 +2596,6 @@
 				5E5733151C18E212003F664E /* jerror.c in Sources */,
 				5E5733161C18E212003F664E /* jfdctflt.c in Sources */,
 				5E5733171C18E212003F664E /* jfdctfst.c in Sources */,
-				8495BD0428B784FA009FCF4D /* CIrrDeviceSDL2.cpp in Sources */,
 				5E5733181C18E212003F664E /* jfdctint.c in Sources */,
 				5E5733191C18E212003F664E /* jidctflt.c in Sources */,
 				5E57331A1C18E212003F664E /* jidctfst.c in Sources */,
@@ -2795,7 +2795,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-D_IRR_COMPILE_WITH_SDL2_DEVICE_",
+					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
 				STRIP_STYLE = "non-global";
@@ -2845,7 +2845,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-D_IRR_COMPILE_WITH_SDL2_DEVICE_",
+					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
 				STRIP_STYLE = "non-global";

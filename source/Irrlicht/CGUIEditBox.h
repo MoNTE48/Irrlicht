@@ -199,7 +199,7 @@ namespace gui
 		core::rect<s32> CurrentTextRect, FrameRect; // temporary values
 
 	private:
-		bool IsSDL2Device;
+		bool IsSDLDevice;
 		bool StartedTextInput;
 	};
 

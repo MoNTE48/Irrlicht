@@ -21,11 +21,7 @@
 #include "COpenGLCoreRenderTarget.h"
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-#include <SDL/SDL.h>
-#endif
-
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-#include "CIrrDeviceSDL2.h"
+#include "CIrrDeviceSDL.h"
 #endif
 
 namespace irr
@@ -66,24 +62,8 @@ COpenGLDriver::COpenGLDriver(const SIrrlichtCreationParameters& params, io::IFil
 	setDebugName("COpenGLDriver");
 #endif
 
-	genericDriverInit();
-}
-
-#endif
-
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-COpenGLDriver::COpenGLDriver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL2* device)
-	: CNullDriver(io, params.WindowSize), COpenGLExtensionHandler(), CacheHandler(0),
-	CurrentRenderMode(ERM_NONE), ResetRenderStates(true), Transformation3DChanged(true),
-	AntiAlias(params.AntiAlias), ColorFormat(ECF_R8G8B8), FixedPipelineState(EOFPS_ENABLE),
-	Params(params), SDL2Device(device), ContextManager(0), DeviceType(EIDT_SDL2)
-{
-#ifdef _DEBUG
-	setDebugName("COpenGLDriver");
-#endif
-
-	ExposedData.OpenGLSDL2.Window = device->getWindow();
-	ExposedData.OpenGLSDL2.Context = device->getContext();
+	ExposedData.OpenGLSDL.Window = device->getWindow();
+	ExposedData.OpenGLSDL.Context = device->getContext();
 
 	genericDriverInit();
 }
@@ -318,11 +298,6 @@ bool COpenGLDriver::beginScene(u16 clearFlag, SColor clearColor, f32 clearDepth,
 		glFrontFace(GL_CW);
 #endif
 
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
-	if ( DeviceType == EIDT_SDL2 )
-		glFrontFace(GL_CW);
-#endif
-
 	clearBuffers(clearFlag, clearColor, clearDepth, clearStencil);
 
 	return true;
@@ -342,15 +317,7 @@ bool COpenGLDriver::endScene()
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 	if ( DeviceType == EIDT_SDL )
 	{
-		SDL_GL_SwapBuffers();
-		status = true;
-	}
-#endif
-
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-	if ( DeviceType == EIDT_SDL2 )
-	{
-		SDL_GL_SwapWindow(SDL2Device->getWindow());
+		SDL_GL_SwapWindow(SDLDevice->getWindow());
 		status = true;
 	}
 #endif
@@ -4522,21 +4489,6 @@ IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
 #endif //  _IRR_COMPILE_WITH_OPENGL_
 }
 #endif // _IRR_COMPILE_WITH_SDL_DEVICE_
-
-// -----------------------------------
-// SDL2 VERSION
-// -----------------------------------
-#ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
-IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
-		io::IFileSystem* io, CIrrDeviceSDL2* device)
-{
-#ifdef _IRR_COMPILE_WITH_OPENGL_
-	return new COpenGLDriver(params, io, device);
-#else
-	return 0;
-#endif //  _IRR_COMPILE_WITH_OPENGL_
-}
-#endif // _IRR_COMPILE_WITH_SDL2_DEVICE_
 
 } // end namespace
 } // end namespace
