@@ -1,4 +1,5 @@
 // Copyright (C) 2002-2012 Nikolaus Gebhardt
+// Copyright (C) 2022 Dawid Gan
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 // This device code is based on the original SDL device implementation
@@ -16,16 +17,14 @@
 #include "IImagePresenter.h"
 #include "ICursorControl.h"
 
-#ifdef _IRR_EMSCRIPTEN_PLATFORM_
-#include <emscripten/html5.h>
-#endif
+#include <SDL.h>
+#include <SDL_syswm.h>
+#include <SDL_video.h>
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_syswm.h>
+#include <set>
 
 namespace irr
 {
-
 	class CIrrDeviceSDL : public CIrrDeviceStub, video::IImagePresenter
 	{
 	public:
@@ -97,11 +96,42 @@ namespace irr
 		//! Get the current Gamma Value for the Display
 		virtual bool getGammaRamp( f32 &red, f32 &green, f32 &blue, f32 &brightness, f32 &contrast ) IRR_OVERRIDE;
 
+		//! gets text from the clipboard
+		//! \return Returns empty string on failure.
+		virtual const c8* getTextFromClipboard() const;
+
+		//! copies text to the clipboard
+		virtual void copyToClipboard(const c8* text) const;
+
 		//! Get the device type
 		virtual E_DEVICE_TYPE getType() const IRR_OVERRIDE
 		{
 			return EIDT_SDL;
 		}
+
+		virtual bool activateAccelerometer(float updateInterval) IRR_OVERRIDE;
+
+		virtual bool deactivateAccelerometer() IRR_OVERRIDE;
+
+		virtual bool isAccelerometerActive() IRR_OVERRIDE;
+
+		virtual bool isAccelerometerAvailable() IRR_OVERRIDE;
+
+		virtual bool activateGyroscope(float updateInterval) IRR_OVERRIDE;
+
+		virtual bool deactivateGyroscope() IRR_OVERRIDE;
+
+		virtual bool isGyroscopeActive() IRR_OVERRIDE;
+
+		virtual bool isGyroscopeAvailable() IRR_OVERRIDE;
+
+		SDL_Window* getWindow() const { return Window; }
+
+		SDL_GLContext getContext() const { return Context; }
+
+		f32 getNativeScaleX() { return NativeScaleX; }
+
+		f32 getNativeScaleY() { return NativeScaleY; }
 
 		//! Implementation of the linux cursor control
 		class CCursorControl : public gui::ICursorControl
@@ -118,7 +148,9 @@ namespace irr
 			{
 				IsVisible = visible;
 				if ( visible )
+				{
 					SDL_ShowCursor( SDL_ENABLE );
+				}
 				else
 				{
 					SDL_ShowCursor( SDL_DISABLE );
@@ -152,7 +184,16 @@ namespace irr
 			//! Sets the new position of the cursor.
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
-				SDL_WarpMouse( x, y );
+				SDL_WarpMouseInWindow(Device->Window,
+					x / Device->getNativeScaleX(),
+					y / Device->getNativeScaleY());
+
+				Device->IgnoreWarpMouseEvent = true;
+				Device->MouseX = x;
+				Device->MouseY = y;
+
+				CursorPos.X = x;
+				CursorPos.Y = y;
 			}
 
 			//! Returns the current position of the mouse cursor.
@@ -180,24 +221,6 @@ namespace irr
 
 			void updateCursorPos()
 			{
-#ifdef _IRR_EMSCRIPTEN_PLATFORM_
-				EmscriptenPointerlockChangeEvent pointerlockStatus; // let's hope that test is not expensive ...
-				if ( emscripten_get_pointerlock_status(&pointerlockStatus) == EMSCRIPTEN_RESULT_SUCCESS )
-				{
-					if ( pointerlockStatus.isActive )
-					{
-						CursorPos.X += Device->MouseXRel;
-						CursorPos.Y += Device->MouseYRel;
-						Device->MouseXRel = 0;
-						Device->MouseYRel = 0;
-					}
-					else
-					{
-						CursorPos.X = Device->MouseX;
-						CursorPos.Y = Device->MouseY;
-					}
-				}
-#else
 				CursorPos.X = Device->MouseX;
 				CursorPos.Y = Device->MouseY;
 
@@ -209,7 +232,6 @@ namespace irr
 					CursorPos.Y = 0;
 				if (CursorPos.Y > (s32)Device->Height)
 					CursorPos.Y = Device->Height;
-#endif
 			}
 
 			CIrrDeviceSDL* Device;
@@ -219,58 +241,63 @@ namespace irr
 
 	private:
 
-#ifdef _IRR_EMSCRIPTEN_PLATFORM_
-	static EM_BOOL MouseUpDownCallback(int eventType, const EmscriptenMouseEvent * event, void* userData);
-	static EM_BOOL MouseEnterCallback(int eventType, const EmscriptenMouseEvent *mouseEvent, void *userData);
-	static EM_BOOL MouseLeaveCallback(int eventType, const EmscriptenMouseEvent *mouseEvent, void *userData);
-
-	// Check if it's a special key like left, right, up down and so on which shouldn't have a Unicode character.
-	bool isNoUnicodeKey(EKEY_CODE key) const;
-#endif
-
 		//! create the driver
 		void createDriver();
 
 		bool createWindow();
 
+		bool createWindowWithContext();
+
 		void createKeyMap();
 
-		void logAttributes();
+		void updateNativeScaleFromSystem();
 
-		SDL_Surface* Screen;
-		int SDL_Flags;
+		void updateNativeScale();
+
+		SDL_Window* Window;
+		SDL_GLContext Context;
 #if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 		core::array<SDL_Joystick*> Joysticks;
 #endif
 
 		s32 MouseX, MouseY;
-		s32 MouseXRel, MouseYRel;
 		u32 MouseButtonStates;
 
 		u32 Width, Height;
 
-		bool Resizable;
+		bool WindowHasFocus;
 		bool WindowMinimized;
+		bool Resizable;
+
+		s32 AccelerometerIndex;
+		s32 AccelerometerInstance;
+		s32 GyroscopeIndex;
+		s32 GyroscopeInstance;
+
+		f32 NativeScaleX, NativeScaleY;
+
+		bool IgnoreWarpMouseEvent;
+
+		std::set<SDL_FingerID> TouchIDs;
 
 		struct SKeyMap
 		{
 			SKeyMap() {}
-			SKeyMap(s32 x11, s32 win32)
-				: SDLKey(x11), Win32Key(win32)
+			SKeyMap(SDL_Scancode scancode, s32 irrKeycode)
+				: Scancode(scancode), IrrKeycode(irrKeycode)
 			{
 			}
 
-			s32 SDLKey;
-			s32 Win32Key;
+			SDL_Scancode Scancode;
+			s32 IrrKeycode;
 
 			bool operator<(const SKeyMap& o) const
 			{
-				return SDLKey<o.SDLKey;
+				return Scancode<o.Scancode;
 			}
 		};
 
 		core::array<SKeyMap> KeyMap;
-		SDL_SysWMinfo Info;
 	};
 
 } // end namespace irr

@@ -21,7 +21,7 @@
 #include "COpenGLCoreRenderTarget.h"
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-#include <SDL/SDL.h>
+#include "CIrrDeviceSDL.h"
 #endif
 
 namespace irr
@@ -61,6 +61,9 @@ COpenGLDriver::COpenGLDriver(const SIrrlichtCreationParameters& params, io::IFil
 #ifdef _DEBUG
 	setDebugName("COpenGLDriver");
 #endif
+
+	ExposedData.OpenGLSDL.Window = device->getWindow();
+	ExposedData.OpenGLSDL.Context = device->getContext();
 
 	genericDriverInit();
 }
@@ -314,7 +317,7 @@ bool COpenGLDriver::endScene()
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 	if ( DeviceType == EIDT_SDL )
 	{
-		SDL_GL_SwapBuffers();
+		SDL_GL_SwapWindow(SDLDevice->getWindow());
 		status = true;
 	}
 #endif

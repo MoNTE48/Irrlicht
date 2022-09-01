@@ -82,6 +82,9 @@ namespace irr
 		//! Application state events like a resume, pause etc.
 		EET_APPLICATION_EVENT,
 
+		//! SDL text event
+		EET_SDL_TEXT_EVENT,
+
 		//! This enum is never used, it only forces the compiler to
 		//! compile these enumeration values to 32 bit.
 		EGUIET_FORCE_32_BIT = 0x7fffffff
@@ -218,6 +221,16 @@ namespace irr
 
 		//! No real event, but to get number of event types.
 		EAET_COUNT
+	};
+
+	//! Enumeration for SDL text input events
+	enum ESDL_EVENT_TYPE
+	{
+		//! SDL_TEXTEDITING
+		ESDLET_TEXTEDITING,
+
+		//! SDL_TEXTINPUT
+		ESDLET_TEXTINPUT
 	};
 
 	namespace gui
@@ -575,6 +588,14 @@ struct SEvent
 		EAPPLICATION_EVENT_TYPE EventType;
 	};
 
+	struct SSDLTextEvent
+	{
+		ESDL_EVENT_TYPE Type;
+		c8 Text[32];
+		s32 Start; // SDL_TEXTEDITING usage
+		s32 Length; // SDL_TEXTEDITING usage
+	};
+
 	EEVENT_TYPE EventType;
 	union
 	{
@@ -590,6 +611,7 @@ struct SEvent
 		struct SUserEvent UserEvent;
 		struct SSystemEvent SystemEvent;
 		struct SApplicationEvent ApplicationEvent;
+		struct SSDLTextEvent SDLTextEvent;
 	};
 
 };

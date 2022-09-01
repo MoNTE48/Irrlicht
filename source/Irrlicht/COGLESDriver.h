@@ -9,6 +9,14 @@
 
 #include "SIrrCreationParameters.h"
 
+namespace irr
+{
+	class CIrrDeviceWin32;
+	class CIrrDeviceLinux;
+	class CIrrDeviceSDL;
+	class CIrrDeviceMacOSX;
+}
+
 #ifdef _IRR_COMPILE_WITH_OGLES1_
 
 #include "CNullDriver.h"
@@ -38,10 +46,15 @@ namespace video
 	class COGLES1Driver : public CNullDriver, public IMaterialRendererServices, public COGLES1ExtensionHandler
 	{
 		friend class COpenGLCoreTexture<COGLES1Driver>;
+		friend IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device);
 
 	public:
 		//! constructor
 		COGLES1Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
+
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
+		COGLES1Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device);
+#endif
 
 		//! destructor
 		virtual ~COGLES1Driver();
@@ -389,7 +402,13 @@ namespace video
 		};
 		core::array<RequestedLight> RequestedLights;
 
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
+		CIrrDeviceSDL *SDLDevice;
+#endif
+
 		IContextManager* ContextManager;
+
+		E_DEVICE_TYPE DeviceType;
 	};
 
 } // end namespace video

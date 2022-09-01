@@ -99,6 +99,15 @@ struct SExposedVideoData
 		//! The ANativeWindow object.
 		void* Window;
 	};
+	
+	struct SOpenGLSDL
+	{
+		//! The SDL_Window object.
+		void* Window;
+		
+		//! The SDL_GLContext object.
+		void* Context;
+	};
 
 	union
 	{
@@ -109,6 +118,7 @@ struct SExposedVideoData
 		SOpenGLFB OpenGLFB;
 		SOpenGLiOS OpenGLiOS;
 		SOGLESAndroid OGLESAndroid;
+		SOpenGLSDL OpenGLSDL;
 	};
 };
 
