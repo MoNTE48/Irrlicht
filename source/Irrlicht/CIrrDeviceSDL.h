@@ -146,15 +146,8 @@ namespace irr
 			//! Changes the visible state of the mouse cursor.
 			virtual void setVisible(bool visible) IRR_OVERRIDE
 			{
+				Device->setCursorVisible(visible);
 				IsVisible = visible;
-				if ( visible )
-				{
-					SDL_ShowCursor( SDL_ENABLE );
-				}
-				else
-				{
-					SDL_ShowCursor( SDL_DISABLE );
-				}
 			}
 
 			//! Returns if the cursor is currently visible.
@@ -253,6 +246,8 @@ namespace irr
 		void updateNativeScaleFromSystem();
 
 		void updateNativeScale();
+
+		void setCursorVisible(bool visible);
 
 		SDL_Window* Window;
 		SDL_GLContext Context;

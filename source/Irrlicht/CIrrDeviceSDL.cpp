@@ -449,6 +449,24 @@ void CIrrDeviceSDL::updateNativeScale()
 	NativeScaleY = (f32)real_height / (f32)height;
 }
 
+void CIrrDeviceSDL::setCursorVisible(bool visible)
+{
+	if (visible)
+	{
+		SDL_ShowCursor(SDL_ENABLE);
+#if defined(_IRR_OSX_PLATFORM_)
+		NSApp.presentationOptions &= ~NSApplicationPresentationDisableCursorLocationAssistance;
+#endif
+	}
+	else
+	{
+		SDL_ShowCursor(SDL_DISABLE);
+#if defined(_IRR_OSX_PLATFORM_)
+		NSApp.presentationOptions |= NSApplicationPresentationDisableCursorLocationAssistance;
+#endif
+	}
+}
+
 //! create the driver
 void CIrrDeviceSDL::createDriver()
 {
