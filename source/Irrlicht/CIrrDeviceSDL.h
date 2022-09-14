@@ -254,10 +254,16 @@ namespace irr
 
 		void updateNativeScale();
 
+		void handleControllerEvents(SDL_Event event);
+
+		void handleControllerMouseMovement();
+
+		void updateJoysticks();
+
 		SDL_Window* Window;
 		SDL_GLContext Context;
 #if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		core::array<SDL_Joystick*> Joysticks;
+		core::array<SDL_JoystickID> Joysticks;
 #endif
 
 		s32 MouseX, MouseY;
@@ -283,12 +289,12 @@ namespace irr
 		struct SKeyMap
 		{
 			SKeyMap() {}
-			SKeyMap(SDL_Scancode scancode, s32 irrKeycode)
+			SKeyMap(s32 scancode, s32 irrKeycode)
 				: Scancode(scancode), IrrKeycode(irrKeycode)
 			{
 			}
 
-			SDL_Scancode Scancode;
+			s32 Scancode;
 			s32 IrrKeycode;
 
 			bool operator<(const SKeyMap& o) const
@@ -297,7 +303,37 @@ namespace irr
 			}
 		};
 
+		struct SGameControllerState
+		{
+			SGameControllerState() : AxisLeftX(0), AxisLeftY(0),
+				AxisRightX(0), AxisRightY(0),
+				LeftTrigger(0), RightTrigger(0), AxisRightTime(0) {}
+
+			s16 AxisLeftX;
+			s16 AxisLeftY;
+			s16 AxisRightX;
+			s16 AxisRightY;
+			s16 LeftTrigger;
+			s16 RightTrigger;
+
+			u32 AxisRightTime;
+		};
+
+		SGameControllerState GameControllerState;
+
+		enum
+		{
+			GAME_CONTROLLER_LEFT_AXIS_LEFT,
+			GAME_CONTROLLER_LEFT_AXIS_RIGHT,
+			GAME_CONTROLLER_LEFT_AXIS_UP,
+			GAME_CONTROLLER_LEFT_AXIS_DOWN,
+			GAME_CONTROLLER_LEFT_TRIGGER,
+			GAME_CONTROLLER_RIGHT_TRIGGER,
+		};
+
 		core::array<SKeyMap> KeyMap;
+		core::array<SKeyMap> GameControllerMap;
+		core::array<SKeyMap> GameControllerAxisMap;
 	};
 
 } // end namespace irr

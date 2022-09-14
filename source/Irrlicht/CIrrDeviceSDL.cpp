@@ -29,6 +29,8 @@
 #pragma comment(lib, "SDL2.lib")
 #endif // _MSC_VER
 
+#define GAME_CONTROLLER_DEADZONE 5000
+
 static int SDLDeviceInstances = 0;
 
 namespace irr
@@ -74,7 +76,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	setDebugName("CIrrDeviceSDL");
 #endif
 
-	if ( ++SDLDeviceInstances == 1 )
+	if (++SDLDeviceInstances == 1)
 	{
 		SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 		SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
@@ -89,14 +91,16 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 		u32 flags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
 
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_)
+		flags |= SDL_INIT_GAMECONTROLLER;
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 		flags |= SDL_INIT_JOYSTICK;
 #endif
 
 		// Initialize SDL... Timer for sleep, video for the obvious
 		if (SDL_Init(flags) < 0)
 		{
-			os::Printer::log( "Unable to initialize SDL!", SDL_GetError());
+			os::Printer::log("Unable to initialize SDL!", SDL_GetError());
 			Close = true;
 		}
 		else
@@ -128,7 +132,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	sdlversion += version.patch;
 
 	Operator = new COSOperator(sdlversion, this);
-	if ( SDLDeviceInstances == 1 )
+	if (SDLDeviceInstances == 1)
 	{
 		os::Printer::log(sdlversion.c_str(), ELL_INFORMATION);
 	}
@@ -184,29 +188,33 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 //! destructor
 CIrrDeviceSDL::~CIrrDeviceSDL()
 {
-	if ( --SDLDeviceInstances == 0 )
+	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-		if (VideoDriver)
-		{
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		const u32 numJoysticks = Joysticks.size();
-		for (u32 i=0; i<numJoysticks; ++i)
-			SDL_JoystickClose(Joysticks[i]);
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_)
+		SDL_GameController* gameController = SDL_GameControllerFromInstanceID(Joysticks[i]);
+		SDL_GameControllerClose(gameController);
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
+		SDL_JoystickClose(joystick);
 #endif
-		if (Context)
-		{
-			SDL_GL_DeleteContext(Context);
-			Context = NULL;
-		}
-		if (Window)
-		{
-			SDL_DestroyWindow(Window);
-			Window = NULL;
-		}
+	}
 
+	if (Context)
+	{
+		SDL_GL_DeleteContext(Context);
+		Context = NULL;
+	}
+
+	if (Window)
+	{
+		SDL_DestroyWindow(Window);
+		Window = NULL;
+	}
+
+	if (--SDLDeviceInstances == 0)
+	{
 		SDL_Quit();
 		os::Printer::log("Quit SDL", ELL_INFORMATION);
-		}
 	}
 }
 
@@ -901,42 +909,415 @@ bool CIrrDeviceSDL::run()
 			break;
 		} // end switch
 
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_)
+		handleControllerEvents(SDL_event);
+#endif
+
 	} // end while
 
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-	// TODO: Check if the multiple open/close calls are too expensive, then
-	// open/close in the constructor/destructor instead
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_)
+	handleControllerMouseMovement();
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+	updateJoysticks();
+#endif
 
-	// update joystick states manually
-	SDL_JoystickUpdate();
-	// we'll always send joystick input events...
+	return !Close;
+}
+
+void CIrrDeviceSDL::handleControllerMouseMovement()
+{
+	bool changed = false;
+
+	u32 currentTime = getTimer()->getRealTime();
+	s32 dt = currentTime - GameControllerState.AxisRightTime;
+
+	if (GameControllerState.AxisRightX > GAME_CONTROLLER_DEADZONE ||
+		GameControllerState.AxisRightX < -GAME_CONTROLLER_DEADZONE)
+	{
+		MouseX += (GameControllerState.AxisRightX * dt / 30000);
+		if (MouseX < 0)
+			MouseX = 0;
+		if (MouseX > Width)
+			MouseX = Width;
+		changed = true;
+	}
+
+	if (GameControllerState.AxisRightY > GAME_CONTROLLER_DEADZONE ||
+		GameControllerState.AxisRightY < -GAME_CONTROLLER_DEADZONE)
+	{
+		MouseY += (GameControllerState.AxisRightY * dt / 30000);
+		if (MouseY < 0)
+			MouseY = 0;
+		if (MouseY > Height)
+			MouseY = Height;
+		changed = true;
+	}
+
+	if (changed)
+	{
+		SEvent irrevent;
+		irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+		irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
+		irrevent.MouseInput.X = MouseX;
+		irrevent.MouseInput.Y = MouseY;
+		irrevent.MouseInput.Control = false;
+		irrevent.MouseInput.Shift = false;
+		irrevent.MouseInput.ButtonStates = MouseButtonStates;
+		postEventFromUser(irrevent);
+
+		CursorControl->setPosition(MouseX, MouseY);
+	}
+
+	GameControllerState.AxisRightTime = currentTime;
+}
+
+void CIrrDeviceSDL::handleControllerEvents(SDL_Event event)
+{
+	SEvent irrevent;
+
+	switch (event.type)
+	{
+	case SDL_CONTROLLERBUTTONDOWN:
+	case SDL_CONTROLLERBUTTONUP:
+		{
+			SKeyMap mp;
+			mp.Scancode = event.cbutton.button;
+			s32 idx = GameControllerMap.binary_search(mp);
+
+			EKEY_CODE key;
+			if (idx == -1)
+				key = (EKEY_CODE)0;
+			else
+				key = (EKEY_CODE)GameControllerMap[idx].IrrKeycode;
+
+			// Handle left/right/middle button click as mouse events
+			// for better support
+			if (key == KEY_LBUTTON || key == KEY_RBUTTON || key == KEY_MBUTTON)
+			{
+				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+				irrevent.MouseInput.X = MouseX;
+				irrevent.MouseInput.Y = MouseY;
+				irrevent.MouseInput.Control = false;
+				irrevent.MouseInput.Shift = false;
+
+				switch(key)
+				{
+				case KEY_LBUTTON:
+					if (event.type == SDL_CONTROLLERBUTTONDOWN)
+					{
+						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_LEFT;
+					}
+					else
+					{
+						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_LEFT;
+					}
+					break;
+
+				case KEY_RBUTTON:
+					if (event.type == SDL_CONTROLLERBUTTONDOWN)
+					{
+						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_RIGHT;
+					}
+					else
+					{
+						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_RIGHT;
+					}
+					break;
+
+				case KEY_MBUTTON:
+					if (event.type == SDL_CONTROLLERBUTTONDOWN)
+					{
+						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_PRESSED_DOWN;
+						MouseButtonStates |= irr::EMBSM_MIDDLE;
+					}
+					else
+					{
+						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_LEFT_UP;
+						MouseButtonStates &= ~irr::EMBSM_MIDDLE;
+					}
+					break;
+
+				default:
+					break;
+				}
+
+				irrevent.MouseInput.ButtonStates = MouseButtonStates;
+
+				postEventFromUser(irrevent);
+
+				if ( irrevent.MouseInput.Event >= EMIE_LMOUSE_PRESSED_DOWN && irrevent.MouseInput.Event <= EMIE_MMOUSE_PRESSED_DOWN )
+				{
+					u32 clicks = checkSuccessiveClicks(irrevent.MouseInput.X, irrevent.MouseInput.Y, irrevent.MouseInput.Event);
+					if ( clicks == 2 )
+					{
+						irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_DOUBLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
+						postEventFromUser(irrevent);
+					}
+					else if ( clicks == 3 )
+					{
+						irrevent.MouseInput.Event = (EMOUSE_INPUT_EVENT)(EMIE_LMOUSE_TRIPLE_CLICK + irrevent.MouseInput.Event-EMIE_LMOUSE_PRESSED_DOWN);
+						postEventFromUser(irrevent);
+					}
+				}
+			}
+			else
+			{
+				irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+				irrevent.KeyInput.Char = 0;
+				irrevent.KeyInput.Key = key;
+				irrevent.KeyInput.PressedDown = (event.type == SDL_CONTROLLERBUTTONDOWN);
+				irrevent.KeyInput.Shift = false;
+				irrevent.KeyInput.Control = false;
+				postEventFromUser(irrevent);
+			}
+		}
+		break;
+
+	case SDL_CONTROLLERAXISMOTION:
+		{
+			switch (event.caxis.axis)
+			{
+			case SDL_CONTROLLER_AXIS_LEFTX:
+				{
+					SKeyMap mp;
+					mp.Scancode = GAME_CONTROLLER_LEFT_AXIS_LEFT;
+					s32 idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE buttonLeft = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+					mp.Scancode = GAME_CONTROLLER_LEFT_AXIS_RIGHT;
+					idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE buttonRight = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+
+					irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+					irrevent.KeyInput.Char = 0;
+					irrevent.KeyInput.Shift = false;
+					irrevent.KeyInput.Control = false;
+
+					if (event.caxis.value <= GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftX > GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonRight;
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+					else if (event.caxis.value >= -GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftX < -GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonLeft;
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+
+					if (event.caxis.value > GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftX <= GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonRight;
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+
+					}
+					else if (event.caxis.value < -GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftX >= -GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonLeft;
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+					}
+
+					GameControllerState.AxisLeftX = event.caxis.value;
+				}
+				break;
+
+			case SDL_CONTROLLER_AXIS_LEFTY:
+				{
+					SKeyMap mp;
+					mp.Scancode = GAME_CONTROLLER_LEFT_AXIS_UP;
+					s32 idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE buttonUp = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+					mp.Scancode = GAME_CONTROLLER_LEFT_AXIS_DOWN;
+					idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE buttonDown = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+
+					irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+					irrevent.KeyInput.Char = 0;
+					irrevent.KeyInput.Shift = false;
+					irrevent.KeyInput.Control = false;
+
+					if (event.caxis.value <= GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftY > GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonDown;
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+					else if (event.caxis.value >= -GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftY < -GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonUp;
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+
+					if (event.caxis.value > GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftY <= GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonDown;
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+
+					}
+					else if (event.caxis.value < -GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.AxisLeftY >= -GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.Key = buttonUp;
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+					}
+
+					GameControllerState.AxisLeftY = event.caxis.value;
+				}
+				break;
+
+			case SDL_CONTROLLER_AXIS_RIGHTX:
+				GameControllerState.AxisRightX = event.caxis.value;
+				break;
+
+			case SDL_CONTROLLER_AXIS_RIGHTY:
+				GameControllerState.AxisRightY = event.caxis.value;
+				break;
+
+			case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+				{
+					SKeyMap mp;
+					mp.Scancode = GAME_CONTROLLER_LEFT_TRIGGER;
+					s32 idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE button = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+
+					irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+					irrevent.KeyInput.Char = 0;
+					irrevent.KeyInput.Shift = false;
+					irrevent.KeyInput.Control = false;
+					irrevent.KeyInput.Key = button;
+
+					if (event.caxis.value <= GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.LeftTrigger > GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+					else if (event.caxis.value > GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.LeftTrigger <= GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+					}
+
+					GameControllerState.LeftTrigger = event.caxis.value;
+				}
+				break;
+
+			case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+				{
+					SKeyMap mp;
+					mp.Scancode = GAME_CONTROLLER_RIGHT_TRIGGER;
+					s32 idx = GameControllerAxisMap.binary_search(mp);
+					EKEY_CODE button = (EKEY_CODE)GameControllerAxisMap[idx].IrrKeycode;
+
+					irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+					irrevent.KeyInput.Char = 0;
+					irrevent.KeyInput.Shift = false;
+					irrevent.KeyInput.Control = false;
+					irrevent.KeyInput.Key = button;
+
+					if (event.caxis.value <= GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.RightTrigger > GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.PressedDown = false;
+						postEventFromUser(irrevent);
+					}
+					else if (event.caxis.value > GAME_CONTROLLER_DEADZONE &&
+						GameControllerState.RightTrigger <= GAME_CONTROLLER_DEADZONE)
+					{
+						irrevent.KeyInput.PressedDown = true;
+						postEventFromUser(irrevent);
+					}
+
+					GameControllerState.RightTrigger = event.caxis.value;
+				}
+				break;
+			}
+		}
+		break;
+
+	case SDL_CONTROLLERDEVICEADDED:
+		{
+			int index = event.cdevice.which;
+
+			SDL_GameController* gameController = SDL_GameControllerOpen(index);
+
+			if (gameController)
+			{
+				SDL_Joystick* joystick = SDL_GameControllerGetJoystick(gameController);
+				SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+				Joysticks.push_back(instanceId);
+			}
+		}
+		break;
+
+	case SDL_CONTROLLERDEVICEREMOVED:
+		{
+			SDL_JoystickID instanceId = event.cdevice.which;
+
+			for (u32 i = 0; i < Joysticks.size(); i++)
+			{
+				if (instanceId != Joysticks[i])
+					continue;
+
+				SDL_GameController* gameController = SDL_GameControllerFromInstanceID(instanceId);
+				SDL_GameControllerClose(gameController);
+				Joysticks.erase(i);
+				break;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CIrrDeviceSDL::updateJoysticks()
+{
 	SEvent joyevent;
 	joyevent.EventType = EET_JOYSTICK_INPUT_EVENT;
-	for (u32 i=0; i<Joysticks.size(); ++i)
+	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-		SDL_Joystick* joystick = Joysticks[i];
+		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
+
 		if (joystick)
 		{
-			int j;
 			// query all buttons
 			const int numButtons = core::min_(SDL_JoystickNumButtons(joystick), 32);
-			joyevent.JoystickEvent.ButtonStates=0;
-			for (j=0; j<numButtons; ++j)
-				joyevent.JoystickEvent.ButtonStates |= (SDL_JoystickGetButton(joystick, j)<<j);
+			joyevent.JoystickEvent.ButtonStates = 0;
+			for (int j = 0; j < numButtons; j++)
+				joyevent.JoystickEvent.ButtonStates |= (SDL_JoystickGetButton(joystick, j) << j);
 
 			// query all axes, already in correct range
 			const int numAxes = core::min_(SDL_JoystickNumAxes(joystick), (int)SEvent::SJoystickEvent::NUMBER_OF_AXES);
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_X]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Y]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_R]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_U]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_V]=0;
-			for (j=0; j<numAxes; ++j)
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_X] = 0;
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Y] = 0;
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z] = 0;
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_R] = 0;
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_U] = 0;
+			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_V] = 0;
+			for (int j = 0; j < numAxes; j++)
 				joyevent.JoystickEvent.Axis[j] = SDL_JoystickGetAxis(joystick, j);
 
 			// we can only query one hat, SDL only supports 8 directions
-			if (SDL_JoystickNumHats(joystick)>0)
+			if (SDL_JoystickNumHats(joystick) > 0)
 			{
 				switch (SDL_JoystickGetHat(joystick, 0))
 				{
@@ -976,20 +1357,20 @@ bool CIrrDeviceSDL::run()
 			}
 
 			// we map the number directly
-			joyevent.JoystickEvent.Joystick=static_cast<u8>(i);
+			joyevent.JoystickEvent.Joystick = static_cast<u8>(i);
 			// now post the event
 			postEventFromUser(joyevent);
-			// and close the joystick
 		}
 	}
-#endif
-	return !Close;
 }
 
 //! Activate any joysticks, and generate events for them.
 bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 {
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_)
+	return true;
+
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 	joystickInfo.clear();
 
 	// we can name up to 256 different joysticks
@@ -997,34 +1378,38 @@ bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 	Joysticks.reallocate(numJoysticks);
 	joystickInfo.reallocate(numJoysticks);
 
-	int joystick = 0;
-	for (; joystick<numJoysticks; ++joystick)
+	for (int i = 0; i < numJoysticks; i++)
 	{
-		Joysticks.push_back(SDL_JoystickOpen(joystick));
-		SJoystickInfo info;
+		SDL_Joystick* joystick = SDL_JoystickOpen(i);
+		SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+		Joysticks.push_back(instanceId);
 
-		info.Joystick = joystick;
-		info.Axes = SDL_JoystickNumAxes(Joysticks[joystick]);
-		info.Buttons = SDL_JoystickNumButtons(Joysticks[joystick]);
-		info.Name = SDL_JoystickNameForIndex(joystick);
-		info.PovHat = (SDL_JoystickNumHats(Joysticks[joystick]) > 0)
-						? SJoystickInfo::POV_HAT_PRESENT : SJoystickInfo::POV_HAT_ABSENT;
+		SJoystickInfo info;
+		info.Joystick = i;
+		info.Axes = SDL_JoystickNumAxes(joystick);
+		info.Buttons = SDL_JoystickNumButtons(joystick);
+		info.Name = SDL_JoystickNameForIndex(i);
+
+		if (SDL_JoystickNumHats(joystick) > 0)
+			info.PovHat = SJoystickInfo::POV_HAT_PRESENT;
+		else
+			info.PovHat = SJoystickInfo::POV_HAT_ABSENT;
 
 		joystickInfo.push_back(info);
 	}
 
-	for(joystick = 0; joystick < (int)joystickInfo.size(); ++joystick)
+	for(u32 i = 0; i < joystickInfo.size(); i++)
 	{
 		char logString[256];
-		(void)sprintf(logString, "Found joystick %d, %d axes, %d buttons '%s'",
-		joystick, joystickInfo[joystick].Axes,
-		joystickInfo[joystick].Buttons, joystickInfo[joystick].Name.c_str());
+		sprintf(logString, "Found joystick %d, %d axes, %d buttons '%s'",
+				i, joystickInfo[i].Axes, joystickInfo[i].Buttons,
+				joystickInfo[i].Name.c_str());
 		os::Printer::log(logString, ELL_INFORMATION);
 	}
 
 	return true;
 
-#endif // _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
+#endif
 
 	return false;
 }
@@ -1457,6 +1842,43 @@ void CIrrDeviceSDL::createKeyMap()
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_WWW, KEY_BROWSER_HOME));
 
 	KeyMap.sort();
+
+	GameControllerMap.reallocate(21);
+
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_A, KEY_KEY_I));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_B, KEY_ESCAPE));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_X, KEY_LSHIFT));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_Y, KEY_SPACE));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_BACK, KEY_ESCAPE));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_GUIDE, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_START, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSTICK, KEY_KEY_C));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSTICK, KEY_KEY_Q));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSHOULDER, KEY_LBUTTON));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, KEY_RBUTTON));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_UP, KEY_UP));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_DOWN, KEY_DOWN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_LEFT, KEY_LEFT));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_RIGHT, KEY_RIGHT));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_MISC1, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE1, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE2, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE3, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE4, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_TOUCHPAD, KEY_KEY_E));
+
+	GameControllerMap.sort();
+
+	GameControllerAxisMap.reallocate(6);
+
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_LEFT_AXIS_LEFT, KEY_KEY_A));
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_LEFT_AXIS_RIGHT, KEY_KEY_D));
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_LEFT_AXIS_UP, KEY_KEY_W));
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_LEFT_AXIS_DOWN, KEY_KEY_S));
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_LEFT_TRIGGER, KEY_KEY_B));
+	GameControllerAxisMap.push_back(SKeyMap(GAME_CONTROLLER_RIGHT_TRIGGER, KEY_KEY_N));
+
+	GameControllerAxisMap.sort();
 }
 
 bool CIrrDeviceSDL::activateAccelerometer(float updateInterval)

@@ -62,6 +62,14 @@
 #ifdef NO_IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
 #undef _IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
 #endif
+
+//! If enabled, GameController events are sent as mouse and keyboard events,
+//! so that the application doesn't need to implement gamepad support.
+#define _IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_
+#ifdef NO_IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_
+#undef _IRR_COMPILE_WITH_SDL_GAMECONTROLLER_AS_KEYBOARD_
+#endif
+
 #endif
 
 //! Comment this line to compile without the fallback console device.
@@ -101,8 +109,7 @@
 #if !defined(MACOSX)
 #define MACOSX // legacy support
 #endif
-#if defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) || defined(__IPHONE_OS_VERSION_MIN_REQUIRED) || \
-	defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) || defined(__TV_OS_VERSION_MIN_REQUIRED)
+#if defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) || defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #define _IRR_IOS_PLATFORM_
 #if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_IOS_DEVICE_
