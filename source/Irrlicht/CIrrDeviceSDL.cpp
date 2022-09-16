@@ -451,20 +451,27 @@ void CIrrDeviceSDL::updateNativeScale()
 
 void CIrrDeviceSDL::setCursorVisible(bool visible)
 {
+#if defined(_IRR_OSX_PLATFORM_)
+	if (visible)
+		CGDisplayShowCursor(CGMainDisplayID());
+	else
+		CGDisplayHideCursor(CGMainDisplayID());
+#else
 	if (visible)
 	{
 		SDL_ShowCursor(SDL_ENABLE);
-#if defined(_IRR_OSX_PLATFORM_)
-		NSApp.presentationOptions &= ~NSApplicationPresentationDisableCursorLocationAssistance;
-#endif
+//#if defined(_IRR_OSX_PLATFORM_)
+//		NSApp.presentationOptions &= ~NSApplicationPresentationDisableCursorLocationAssistance;
+//#endif
 	}
 	else
 	{
 		SDL_ShowCursor(SDL_DISABLE);
-#if defined(_IRR_OSX_PLATFORM_)
-		NSApp.presentationOptions |= NSApplicationPresentationDisableCursorLocationAssistance;
-#endif
+//#if defined(_IRR_OSX_PLATFORM_)
+//		NSApp.presentationOptions |= NSApplicationPresentationDisableCursorLocationAssistance;
+//#endif
 	}
+#endif
 }
 
 //! create the driver
