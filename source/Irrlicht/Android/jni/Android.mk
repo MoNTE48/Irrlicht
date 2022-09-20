@@ -15,7 +15,6 @@ LOCAL_CFLAGS += -fexpensive-optimizations -O3
 endif
 
 LOCAL_C_INCLUDES := ../../../include
-LOCAL_C_INCLUDES += ../jpeglib ../libpng
 
 LOCAL_SRC_FILES := \
 					Android/CIrrDeviceAndroid.cpp \
@@ -268,67 +267,6 @@ LOCAL_SRC_FILES := \
 					bzip2/decompress.c \
 					bzip2/huffman.c \
 					bzip2/randtable.c \
-					jpeglib/jaricom.c \
-					jpeglib/jcapimin.c \
-					jpeglib/jcapistd.c \
-					jpeglib/jcarith.c \
-					jpeglib/jccoefct.c \
-					jpeglib/jccolor.c \
-					jpeglib/jcdctmgr.c \
-					jpeglib/jchuff.c \
-					jpeglib/jcinit.c \
-					jpeglib/jcmainct.c \
-					jpeglib/jcmarker.c \
-					jpeglib/jcmaster.c \
-					jpeglib/jcomapi.c \
-					jpeglib/jcparam.c \
-					jpeglib/jcprepct.c \
-					jpeglib/jcsample.c \
-					jpeglib/jctrans.c \
-					jpeglib/jdapimin.c \
-					jpeglib/jdapistd.c \
-					jpeglib/jdarith.c \
-					jpeglib/jdatadst.c \
-					jpeglib/jdatasrc.c \
-					jpeglib/jdcoefct.c \
-					jpeglib/jdcolor.c \
-					jpeglib/jddctmgr.c \
-					jpeglib/jdhuff.c \
-					jpeglib/jdinput.c \
-					jpeglib/jdmainct.c \
-					jpeglib/jdmarker.c \
-					jpeglib/jdmaster.c \
-					jpeglib/jdmerge.c \
-					jpeglib/jdpostct.c \
-					jpeglib/jdsample.c \
-					jpeglib/jdtrans.c \
-					jpeglib/jerror.c \
-					jpeglib/jfdctflt.c \
-					jpeglib/jfdctfst.c \
-					jpeglib/jfdctint.c \
-					jpeglib/jidctflt.c \
-					jpeglib/jidctfst.c \
-					jpeglib/jidctint.c \
-					jpeglib/jmemmgr.c \
-					jpeglib/jmemnobs.c \
-					jpeglib/jquant1.c \
-					jpeglib/jquant2.c \
-					jpeglib/jutils.c \
-					libpng/png.c \
-					libpng/pngerror.c \
-					libpng/pngget.c \
-					libpng/pngmem.c \
-					libpng/pngpread.c \
-					libpng/pngread.c \
-					libpng/pngrio.c \
-					libpng/pngrtran.c \
-					libpng/pngrutil.c \
-					libpng/pngset.c \
-					libpng/pngtrans.c \
-					libpng/pngwio.c \
-					libpng/pngwrite.c \
-					libpng/pngwtran.c \
-					libpng/pngwutil.c \
 					lzma/LzmaDec.c
 
 LOCAL_STATIC_LIBRARIES := android_native_app_glue
@@ -340,4 +278,3 @@ $(call import-module,android/native_app_glue)
 all: $(IRRLICHT_LIB_PATH)
 $(IRRLICHT_LIB_PATH) : $(TARGET_OUT)/$(IRRLICHT_LIB_NAME)
 	cp $< $@
-
