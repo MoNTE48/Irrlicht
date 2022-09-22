@@ -1851,7 +1851,7 @@ void CIrrDeviceSDL::createKeyMap()
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_Y, KEY_SPACE));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_BACK, KEY_ESCAPE));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_GUIDE, KEY_RETURN));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_START, KEY_RETURN));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_START, KEY_KEY_T));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSTICK, KEY_KEY_C));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSTICK, KEY_KEY_Q));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSHOULDER, KEY_LBUTTON));
