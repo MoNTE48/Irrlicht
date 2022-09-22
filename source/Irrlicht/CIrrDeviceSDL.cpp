@@ -96,7 +96,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		// Initialize SDL... Timer for sleep, video for the obvious
 		if (SDL_Init(flags) < 0)
 		{
-			os::Printer::log( "Unable to initialize SDL!", SDL_GetError());
+			os::Printer::log("Unable to initialize SDL!", SDL_GetError());
 			Close = true;
 		}
 		else
