@@ -1845,21 +1845,21 @@ void CIrrDeviceSDL::createKeyMap()
 
 	GameControllerMap.reallocate(21);
 
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_A, KEY_KEY_I));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_B, KEY_ESCAPE));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_X, KEY_LSHIFT));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_Y, KEY_SPACE));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_BACK, KEY_ESCAPE));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_A, KEY_SPACE)); // Jump
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_B, KEY_LSHIFT)); // Sneak
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_X, KEY_KEY_E)); // Aux1
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_Y, KEY_KEY_V)); // Minimap
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_BACK, KEY_KEY_T)); // Chat
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_GUIDE, KEY_RETURN));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_START, KEY_KEY_T));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSTICK, KEY_KEY_C));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSTICK, KEY_KEY_Q));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSHOULDER, KEY_LBUTTON));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, KEY_RBUTTON));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_UP, KEY_UP));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_DOWN, KEY_DOWN));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_LEFT, KEY_LEFT));
-	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_RIGHT, KEY_RIGHT));
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_START, KEY_ESCAPE)); // Escape
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSTICK, KEY_KEY_C)); // Camera
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSTICK, KEY_LBUTTON)); // Lmouse
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_LEFTSHOULDER, KEY_LBUTTON)); // Lmouse
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, KEY_RBUTTON)); //Rmouse
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_UP, KEY_KEY_R)); // Range
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_DOWN, KEY_KEY_Q)); // Drop
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_LEFT, KEY_ESCAPE)); // Escape
+	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_DPAD_RIGHT, KEY_KEY_I)); // Inv
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_MISC1, KEY_RETURN));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE1, KEY_RETURN));
 	GameControllerMap.push_back(SKeyMap(SDL_CONTROLLER_BUTTON_PADDLE2, KEY_RETURN));
