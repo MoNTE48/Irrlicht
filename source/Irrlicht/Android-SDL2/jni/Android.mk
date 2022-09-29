@@ -12,8 +12,7 @@ IRRLICHT_LIB_NAME := lib$(LOCAL_MODULE).a
 LOCAL_CFLAGS := -Wall -pipe -fno-exceptions -fno-rtti -fstrict-aliasing
 
 LOCAL_CFLAGS += -D_IRR_COMPILE_WITH_SDL_DEVICE_ \
-		-DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_ \
-		-DPNG_ARM_NEON_OPT=0
+		-DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_
 
 ifndef NDEBUG
 LOCAL_CFLAGS += -g -D_DEBUG
@@ -22,7 +21,6 @@ LOCAL_CFLAGS += -fexpensive-optimizations -O3
 endif
 
 LOCAL_C_INCLUDES := ../../../include
-LOCAL_C_INCLUDES += ../jpeglib ../libpng
 
 SDL2_PATH ?= $(error SDL2_PATH variable is not set)
 
@@ -215,77 +213,8 @@ LOCAL_SRC_FILES := \
 					CZipReader.cpp \
 					Irrlicht.cpp \
 					irrXML.cpp \
-					os.cpp	 \
-					utf8.cpp	 \
-					bzip2/blocksort.c \
-					bzip2/bzcompress.c \
-					bzip2/bzlib.c \
-					bzip2/crctable.c \
-					bzip2/decompress.c \
-					bzip2/huffman.c \
-					bzip2/randtable.c \
-					jpeglib/jaricom.c \
-					jpeglib/jcapimin.c \
-					jpeglib/jcapistd.c \
-					jpeglib/jcarith.c \
-					jpeglib/jccoefct.c \
-					jpeglib/jccolor.c \
-					jpeglib/jcdctmgr.c \
-					jpeglib/jchuff.c \
-					jpeglib/jcinit.c \
-					jpeglib/jcmainct.c \
-					jpeglib/jcmarker.c \
-					jpeglib/jcmaster.c \
-					jpeglib/jcomapi.c \
-					jpeglib/jcparam.c \
-					jpeglib/jcprepct.c \
-					jpeglib/jcsample.c \
-					jpeglib/jctrans.c \
-					jpeglib/jdapimin.c \
-					jpeglib/jdapistd.c \
-					jpeglib/jdarith.c \
-					jpeglib/jdatadst.c \
-					jpeglib/jdatasrc.c \
-					jpeglib/jdcoefct.c \
-					jpeglib/jdcolor.c \
-					jpeglib/jddctmgr.c \
-					jpeglib/jdhuff.c \
-					jpeglib/jdinput.c \
-					jpeglib/jdmainct.c \
-					jpeglib/jdmarker.c \
-					jpeglib/jdmaster.c \
-					jpeglib/jdmerge.c \
-					jpeglib/jdpostct.c \
-					jpeglib/jdsample.c \
-					jpeglib/jdtrans.c \
-					jpeglib/jerror.c \
-					jpeglib/jfdctflt.c \
-					jpeglib/jfdctfst.c \
-					jpeglib/jfdctint.c \
-					jpeglib/jidctflt.c \
-					jpeglib/jidctfst.c \
-					jpeglib/jidctint.c \
-					jpeglib/jmemmgr.c \
-					jpeglib/jmemnobs.c \
-					jpeglib/jquant1.c \
-					jpeglib/jquant2.c \
-					jpeglib/jutils.c \
-					libpng/png.c \
-					libpng/pngerror.c \
-					libpng/pngget.c \
-					libpng/pngmem.c \
-					libpng/pngpread.c \
-					libpng/pngread.c \
-					libpng/pngrio.c \
-					libpng/pngrtran.c \
-					libpng/pngrutil.c \
-					libpng/pngset.c \
-					libpng/pngtrans.c \
-					libpng/pngwio.c \
-					libpng/pngwrite.c \
-					libpng/pngwtran.c \
-					libpng/pngwutil.c \
-					lzma/LzmaDec.c
+					os.cpp \
+					utf8.cpp
 
 include $(BUILD_STATIC_LIBRARY)
 
