@@ -259,15 +259,7 @@ LOCAL_SRC_FILES := \
 					IBurningShader.cpp \
 					Irrlicht.cpp \
 					irrXML.cpp \
-					os.cpp	 \
-					bzip2/blocksort.c \
-					bzip2/bzcompress.c \
-					bzip2/bzlib.c \
-					bzip2/crctable.c \
-					bzip2/decompress.c \
-					bzip2/huffman.c \
-					bzip2/randtable.c \
-					lzma/LzmaDec.c
+					os.cpp
 
 LOCAL_STATIC_LIBRARIES := android_native_app_glue
 

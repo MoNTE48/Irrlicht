@@ -63,14 +63,6 @@
 		5E34CA661B7F6EBF00F212E8 /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8201B7F540B00F212E8 /* pwd2key.cpp */; };
 		5E34CA681B7F6EBF00F212E8 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8221B7F540B00F212E8 /* sha1.cpp */; };
 		5E34CA6A1B7F6EBF00F212E8 /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8241B7F540B00F212E8 /* sha2.cpp */; };
-		5E34CA6C1B7F6EBF00F212E8 /* blocksort.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8261B7F54FE00F212E8 /* blocksort.c */; };
-		5E34CA6D1B7F6EBF00F212E8 /* bzcompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8271B7F54FE00F212E8 /* bzcompress.c */; };
-		5E34CA6F1B7F6EBF00F212E8 /* bzlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8291B7F54FE00F212E8 /* bzlib.c */; };
-		5E34CA711B7F6EBF00F212E8 /* crctable.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82B1B7F54FE00F212E8 /* crctable.c */; };
-		5E34CA721B7F6EBF00F212E8 /* decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82C1B7F54FE00F212E8 /* decompress.c */; };
-		5E34CA731B7F6EBF00F212E8 /* huffman.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82D1B7F54FE00F212E8 /* huffman.c */; };
-		5E34CA741B7F6EBF00F212E8 /* randtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82E1B7F54FE00F212E8 /* randtable.c */; };
-		5E34CABE1B7F6EC000F212E8 /* LzmaDec.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88F1B7F57B100F212E8 /* LzmaDec.c */; };
 		5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
@@ -285,15 +277,7 @@
 		5E5732E81C18E212003F664E /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8201B7F540B00F212E8 /* pwd2key.cpp */; };
 		5E5732E91C18E212003F664E /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8221B7F540B00F212E8 /* sha1.cpp */; };
 		5E5732EA1C18E212003F664E /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8241B7F540B00F212E8 /* sha2.cpp */; };
-		5E5732EB1C18E212003F664E /* blocksort.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8261B7F54FE00F212E8 /* blocksort.c */; };
-		5E5732EC1C18E212003F664E /* bzcompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8271B7F54FE00F212E8 /* bzcompress.c */; };
-		5E5732ED1C18E212003F664E /* bzlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8291B7F54FE00F212E8 /* bzlib.c */; };
-		5E5732EE1C18E212003F664E /* crctable.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82B1B7F54FE00F212E8 /* crctable.c */; };
-		5E5732EF1C18E212003F664E /* decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82C1B7F54FE00F212E8 /* decompress.c */; };
-		5E5732F01C18E212003F664E /* huffman.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82D1B7F54FE00F212E8 /* huffman.c */; };
-		5E5732F11C18E212003F664E /* randtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C82E1B7F54FE00F212E8 /* randtable.c */; };
 		5E5733131C18E212003F664E /* CIrrDeviceConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E8570BA1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp */; };
-		5E5733301C18E212003F664E /* LzmaDec.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C88F1B7F57B100F212E8 /* LzmaDec.c */; };
 		5E57333B1C18E212003F664E /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
@@ -782,18 +766,6 @@
 		5E34C8231B7F540B00F212E8 /* sha1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = aesGladman/sha1.h; sourceTree = "<group>"; };
 		5E34C8241B7F540B00F212E8 /* sha2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sha2.cpp; path = aesGladman/sha2.cpp; sourceTree = "<group>"; };
 		5E34C8251B7F540B00F212E8 /* sha2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sha2.h; path = aesGladman/sha2.h; sourceTree = "<group>"; };
-		5E34C8261B7F54FE00F212E8 /* blocksort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = blocksort.c; path = bzip2/blocksort.c; sourceTree = "<group>"; };
-		5E34C8271B7F54FE00F212E8 /* bzcompress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = bzcompress.c; path = bzip2/bzcompress.c; sourceTree = "<group>"; };
-		5E34C8281B7F54FE00F212E8 /* bzlib_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bzlib_private.h; path = bzip2/bzlib_private.h; sourceTree = "<group>"; };
-		5E34C8291B7F54FE00F212E8 /* bzlib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = bzlib.c; path = bzip2/bzlib.c; sourceTree = "<group>"; };
-		5E34C82A1B7F54FE00F212E8 /* bzlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bzlib.h; path = bzip2/bzlib.h; sourceTree = "<group>"; };
-		5E34C82B1B7F54FE00F212E8 /* crctable.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = crctable.c; path = bzip2/crctable.c; sourceTree = "<group>"; };
-		5E34C82C1B7F54FE00F212E8 /* decompress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = decompress.c; path = bzip2/decompress.c; sourceTree = "<group>"; };
-		5E34C82D1B7F54FE00F212E8 /* huffman.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = huffman.c; path = bzip2/huffman.c; sourceTree = "<group>"; };
-		5E34C82E1B7F54FE00F212E8 /* randtable.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = randtable.c; path = bzip2/randtable.c; sourceTree = "<group>"; };
-		5E34C88F1B7F57B100F212E8 /* LzmaDec.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = LzmaDec.c; path = lzma/LzmaDec.c; sourceTree = "<group>"; };
-		5E34C8901B7F57B100F212E8 /* LzmaDec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LzmaDec.h; path = lzma/LzmaDec.h; sourceTree = "<group>"; };
-		5E34C8911B7F57B100F212E8 /* Types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Types.h; path = lzma/Types.h; sourceTree = "<group>"; };
 		5E34C8921B7F652600F212E8 /* CLogger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CLogger.cpp; sourceTree = "<group>"; };
 		5E34C8931B7F652600F212E8 /* CLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLogger.h; sourceTree = "<group>"; };
 		5E34C8941B7F652600F212E8 /* COSOperator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = COSOperator.cpp; sourceTree = "<group>"; };
@@ -1625,8 +1597,6 @@
 			isa = PBXGroup;
 			children = (
 				5E34C8081B7F521A00F212E8 /* aesGladman */,
-				5E34C8091B7F522700F212E8 /* bzip2 */,
-				5E34C88E1B7F579B00F212E8 /* lzma */,
 			);
 			name = extern;
 			sourceTree = "<group>";
@@ -1653,32 +1623,6 @@
 				5E34C8251B7F540B00F212E8 /* sha2.h */,
 			);
 			name = aesGladman;
-			sourceTree = "<group>";
-		};
-		5E34C8091B7F522700F212E8 /* bzip2 */ = {
-			isa = PBXGroup;
-			children = (
-				5E34C8261B7F54FE00F212E8 /* blocksort.c */,
-				5E34C8271B7F54FE00F212E8 /* bzcompress.c */,
-				5E34C8281B7F54FE00F212E8 /* bzlib_private.h */,
-				5E34C8291B7F54FE00F212E8 /* bzlib.c */,
-				5E34C82A1B7F54FE00F212E8 /* bzlib.h */,
-				5E34C82B1B7F54FE00F212E8 /* crctable.c */,
-				5E34C82C1B7F54FE00F212E8 /* decompress.c */,
-				5E34C82D1B7F54FE00F212E8 /* huffman.c */,
-				5E34C82E1B7F54FE00F212E8 /* randtable.c */,
-			);
-			name = bzip2;
-			sourceTree = "<group>";
-		};
-		5E34C88E1B7F579B00F212E8 /* lzma */ = {
-			isa = PBXGroup;
-			children = (
-				5E34C88F1B7F57B100F212E8 /* LzmaDec.c */,
-				5E34C8901B7F57B100F212E8 /* LzmaDec.h */,
-				5E34C8911B7F57B100F212E8 /* Types.h */,
-			);
-			name = lzma;
 			sourceTree = "<group>";
 		};
 		5E34C89F1B7F655200F212E8 /* animators */ = {
@@ -2252,15 +2196,7 @@
 				5E34CA661B7F6EBF00F212E8 /* pwd2key.cpp in Sources */,
 				5E34CA681B7F6EBF00F212E8 /* sha1.cpp in Sources */,
 				5E34CA6A1B7F6EBF00F212E8 /* sha2.cpp in Sources */,
-				5E34CA6C1B7F6EBF00F212E8 /* blocksort.c in Sources */,
-				5E34CA6D1B7F6EBF00F212E8 /* bzcompress.c in Sources */,
-				5E34CA6F1B7F6EBF00F212E8 /* bzlib.c in Sources */,
-				5E34CA711B7F6EBF00F212E8 /* crctable.c in Sources */,
-				5E34CA721B7F6EBF00F212E8 /* decompress.c in Sources */,
-				5E34CA731B7F6EBF00F212E8 /* huffman.c in Sources */,
-				5E34CA741B7F6EBF00F212E8 /* randtable.c in Sources */,
 				5E8570BC1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp in Sources */,
-				5E34CABE1B7F6EC000F212E8 /* LzmaDec.c in Sources */,
 				5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */,
 				5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */,
 				5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */,
@@ -2488,19 +2424,11 @@
 				5E5732E81C18E212003F664E /* pwd2key.cpp in Sources */,
 				5E5732E91C18E212003F664E /* sha1.cpp in Sources */,
 				5E5732EA1C18E212003F664E /* sha2.cpp in Sources */,
-				5E5732EB1C18E212003F664E /* blocksort.c in Sources */,
-				5E5732EC1C18E212003F664E /* bzcompress.c in Sources */,
-				5E5732ED1C18E212003F664E /* bzlib.c in Sources */,
-				5E5732EE1C18E212003F664E /* crctable.c in Sources */,
-				5E5732EF1C18E212003F664E /* decompress.c in Sources */,
-				5E5732F01C18E212003F664E /* huffman.c in Sources */,
-				5E5732F11C18E212003F664E /* randtable.c in Sources */,
 				5E5734081C18E2E2003F664E /* COGLES2Driver.cpp in Sources */,
 				842F5F8F2827D4AB00F4106F /* burning_shader_color.cpp in Sources */,
 				5E57340C1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp in Sources */,
 				5E5733131C18E212003F664E /* CIrrDeviceConsole.cpp in Sources */,
 				5E9573D71C18E9E600C27989 /* CEAGLManager.mm in Sources */,
-				5E5733301C18E212003F664E /* LzmaDec.c in Sources */,
 				5E57333B1C18E212003F664E /* CLogger.cpp in Sources */,
 				5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */,
 				5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */,
