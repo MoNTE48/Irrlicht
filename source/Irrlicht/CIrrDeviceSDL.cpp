@@ -270,6 +270,24 @@ bool CIrrDeviceSDL::createWindow()
 			}
 		}
 
+		if (!success && CreationParams.ZBufferBits > 16)
+		{
+			while (CreationParams.ZBufferBits > 16)
+			{
+				CreationParams.ZBufferBits -= 8;
+
+				success = createWindowWithContext();
+
+				if (success)
+					break;
+			}
+
+			if (success)
+			{
+				os::Printer::log("Use lower ZBufferBits due to lack of support!");
+			}
+		}
+
 		if (!success && CreationParams.Doublebuffer)
 		{
 			// Try single buffer
