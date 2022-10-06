@@ -19,6 +19,10 @@
 #include <stdlib.h>
 #include "SIrrCreationParameters.h"
 
+#if defined(_IRR_ANDROID_PLATFORM_)
+#include <jni.h>
+#endif
+
 #if defined(_IRR_IOS_PLATFORM_)
 #import <UIKit/UIKit.h>
 #elif defined(_IRR_OSX_PLATFORM_)
@@ -68,10 +72,14 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	AccelerometerIndex(-1), AccelerometerInstance(-1),
 	GyroscopeIndex(-1), GyroscopeInstance(-1),
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
-	IgnoreWarpMouseEvent(false)
+	IgnoreWarpMouseEvent(false), ShouldUseRelativeMouse(false)
 {
 #ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL");
+#endif
+
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+	ShouldUseRelativeMouse = supportsRelativeMouse();
 #endif
 
 	if ( ++SDLDeviceInstances == 1 )
@@ -82,9 +90,12 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		// Disable simulated mouse events
 		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
 
-#if !defined(_IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_)
-		// Enable simulated touch events if mouse events are disabled
-		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
+		// Enable simulated touch events on Android versions that don't support
+		// relative mouse mode. Disable on other platforms.
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, ShouldUseRelativeMouse ? "0" : "1");
+#else
+		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
 #endif
 
 		u32 flags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
@@ -456,6 +467,16 @@ void CIrrDeviceSDL::setCursorVisible(bool visible)
 		CGDisplayShowCursor(CGMainDisplayID());
 	else
 		CGDisplayHideCursor(CGMainDisplayID());
+#elif defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+	// Hiding cursor on Android has a sense only when relative mouse mode is
+	// available because SDL_WarpMouseInWindow doesn't work anyway.
+	if (ShouldUseRelativeMouse)
+	{
+		if (visible)
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+		else
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
 #else
 	if (visible)
 	{
@@ -655,7 +676,6 @@ bool CIrrDeviceSDL::run()
 			TouchIDs.erase(SDL_event.tfinger.fingerId);
 			break;
 
-#if defined(_IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_)
 		case SDL_MOUSEWHEEL:
 			{
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
@@ -687,6 +707,11 @@ bool CIrrDeviceSDL::run()
 			break;
 		case SDL_MOUSEMOTION:
 			{
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+				if (!ShouldUseRelativeMouse)
+					break;
+#endif
+
 				if (IgnoreWarpMouseEvent)
 				{
 					IgnoreWarpMouseEvent = false;
@@ -695,8 +720,17 @@ bool CIrrDeviceSDL::run()
 
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
-				MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;
-				MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
+
+				if (ShouldUseRelativeMouse && SDL_GetRelativeMouseMode())
+				{
+					MouseX = irrevent.MouseInput.X = MouseX + SDL_event.motion.xrel * NativeScaleX;
+					MouseY = irrevent.MouseInput.Y = MouseY + SDL_event.motion.yrel * NativeScaleY;
+				}
+				else
+				{
+					MouseX = irrevent.MouseInput.X = SDL_event.motion.x * NativeScaleX;
+					MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
+				}
 
 				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
 
@@ -718,6 +752,11 @@ bool CIrrDeviceSDL::run()
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			{
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+				if (!ShouldUseRelativeMouse)
+					break;
+#endif
+
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
 				irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
@@ -801,7 +840,6 @@ bool CIrrDeviceSDL::run()
 				}
 			}
 			break;
-#endif
 
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
@@ -1560,6 +1598,42 @@ bool CIrrDeviceSDL::isGyroscopeActive()
 bool CIrrDeviceSDL::isGyroscopeAvailable()
 {
 	return GyroscopeIndex != -1;
+}
+
+bool CIrrDeviceSDL::supportsRelativeMouse()
+{
+#if defined(_IRR_ANDROID_PLATFORM_)
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+
+	if (!env)
+		return false;
+
+	jobject activity = (jobject)SDL_AndroidGetActivity();
+
+	if (!activity)
+		return false;
+
+	jclass activityClass = env->GetObjectClass(activity);
+
+	if (!activityClass)
+		return false;
+
+	jmethodID supportsRelativeMouse = env->GetStaticMethodID(activityClass, "supportsRelativeMouse", "()Z");
+
+	if (!supportsRelativeMouse)
+		return false;
+
+	return env->CallStaticBooleanMethod(activityClass, supportsRelativeMouse);
+
+#elif defined(_IRR_IOS_PLATFORM_)
+	if (@available(iOS 14.1, *))
+		return true;
+	else
+		return false;
+
+#else
+	return true;
+#endif
 }
 
 } // end namespace irr
