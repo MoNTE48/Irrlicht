@@ -177,11 +177,14 @@ namespace irr
 			//! Sets the new position of the cursor.
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
+#if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
 				SDL_WarpMouseInWindow(Device->Window,
 					x / Device->getNativeScaleX(),
 					y / Device->getNativeScaleY());
 
 				Device->IgnoreWarpMouseEvent = true;
+#endif
+
 				Device->MouseX = x;
 				Device->MouseY = y;
 
@@ -249,6 +252,8 @@ namespace irr
 
 		void setCursorVisible(bool visible);
 
+		bool supportsRelativeMouse();
+
 		SDL_Window* Window;
 		SDL_GLContext Context;
 #if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
@@ -272,6 +277,7 @@ namespace irr
 		f32 NativeScaleX, NativeScaleY;
 
 		bool IgnoreWarpMouseEvent;
+		bool ShouldUseRelativeMouse;
 
 		std::set<SDL_FingerID> TouchIDs;
 

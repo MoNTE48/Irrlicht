@@ -54,14 +54,6 @@
 #ifdef NO_IRR_COMPILE_WITH_SDL_TEXTINPUT_
 #undef _IRR_COMPILE_WITH_SDL_TEXTINPUT_
 #endif
-
-//! Comment this line to compile without SDL mouse events
-//! This is for better compatibility with CIrrDeviceAndroid that doesn't send
-//! mouse events even for real USB mouse and it sends touch events instead
-#define _IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
-#ifdef NO_IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
-#undef _IRR_COMPILE_WITH_SDL_MOUSE_EVENTS_
-#endif
 #endif
 
 //! Comment this line to compile without the fallback console device.
