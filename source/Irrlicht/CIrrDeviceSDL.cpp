@@ -1654,6 +1654,44 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 #endif
 }
 
+void CIrrDeviceSDL::CCursorControl::initCursors()
+{
+	Cursors.reallocate(gui::ECI_COUNT);
+
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));     // ECI_NORMAL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR)); // ECI_CROSS
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));      // ECI_HAND
+	Cursors.push_back(nullptr);                                             // ECI_HELP
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_IBEAM));     // ECI_IBEAM
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NO));        // ECI_NO
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT));      // ECI_WAIT
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));   // ECI_SIZEALL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENESW));  // ECI_SIZENESW
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENWSE));  // ECI_SIZENWSE
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS));    // ECI_SIZENS
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));    // ECI_SIZEWE
+	Cursors.push_back(nullptr);                                             // ECI_UP
+}
+
+CIrrDeviceSDL::CCursorControl::~CCursorControl()
+{
+	const u32 count = Cursors.size();
+	for (u32 i = 0; i < count; i++)
+		SDL_FreeCursor(Cursors[i]);
+}
+
+void CIrrDeviceSDL::CCursorControl::setActiveIcon(gui::ECURSOR_ICON iconId)
+{
+	ActiveIcon = iconId;
+	if (iconId >= Cursors.size() || !Cursors[iconId]) 
+	{
+		iconId = gui::ECI_NORMAL;
+		if (iconId >= Cursors.size() || !Cursors[iconId])
+			return;
+	}
+	SDL_SetCursor(Cursors[iconId]);
+}
+
 } // end namespace irr
 
 #endif // _IRR_COMPILE_WITH_SDL_DEVICE_
