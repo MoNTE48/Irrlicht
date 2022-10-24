@@ -85,6 +85,12 @@ namespace irr
 		//! SDL text event
 		EET_SDL_TEXT_EVENT,
 
+		//! SDL controller button event
+		EET_SDL_CONTROLLER_BUTTON_EVENT,
+
+		//! SDL controller axis event
+		EET_SDL_CONTROLLER_AXIS_EVENT,
+
 		//! This enum is never used, it only forces the compiler to
 		//! compile these enumeration values to 32 bit.
 		EGUIET_FORCE_32_BIT = 0x7fffffff
@@ -596,6 +602,20 @@ struct SEvent
 		s32 Length; // SDL_TEXTEDITING usage
 	};
 
+	struct SSDLControllerButtonEvent
+	{
+		u8 Joystick;
+		u8 Button;
+		bool Pressed;
+	};
+
+	struct SSDLControllerAxisEvent
+	{
+		u8 Joystick;
+		u8 Axis;
+		s16 Value;
+	};
+
 	EEVENT_TYPE EventType;
 	union
 	{
@@ -612,6 +632,8 @@ struct SEvent
 		struct SSystemEvent SystemEvent;
 		struct SApplicationEvent ApplicationEvent;
 		struct SSDLTextEvent SDLTextEvent;
+		struct SSDLControllerButtonEvent SDLControllerButtonEvent;
+		struct SSDLControllerAxisEvent SDLControllerAxisEvent;
 	};
 
 };
