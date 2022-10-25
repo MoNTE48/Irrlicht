@@ -1042,15 +1042,17 @@ bool CIrrDeviceSDL::run()
 
 		if (gameController)
 		{
-			for (s32 j = 0; j < SDL_CONTROLLER_AXIS_MAX; j++)
+			SEvent irrevent;
+			irrevent.EventType = EET_SDL_CONTROLLER_AXIS_EVENT;
+			irrevent.SDLControllerAxisEvent.Joystick = Joysticks[i];
+
+			for (s32 j = 0; j < 6; j++)
 			{
-				SEvent irrevent;
-				irrevent.EventType = EET_SDL_CONTROLLER_AXIS_EVENT;
-				irrevent.SDLControllerAxisEvent.Joystick = Joysticks[i];
-				irrevent.SDLControllerAxisEvent.Axis = j;
-				irrevent.SDLControllerAxisEvent.Value = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
-				postEventFromUser(irrevent);
+				irrevent.SDLControllerAxisEvent.Axis[j] = j;
+				irrevent.SDLControllerAxisEvent.Value[j]  = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
 			}
+
+			postEventFromUser(irrevent);
 		}
 	}
 

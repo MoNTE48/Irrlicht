@@ -612,8 +612,8 @@ struct SEvent
 	struct SSDLControllerAxisEvent
 	{
 		u8 Joystick;
-		u8 Axis;
-		s16 Value;
+		u8 Axis[6];
+		s16 Value[6];
 	};
 
 	EEVENT_TYPE EventType;
