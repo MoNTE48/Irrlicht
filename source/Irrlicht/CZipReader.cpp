@@ -506,6 +506,22 @@ namespace
 }
 #endif
 
+#if defined(_IRR_COMPILE_WITH_ZLIB_) && defined(_IRR_COMPILE_WITH_ZIP_ENCRYPTION_)
+void updateKeys(uLong (&keys)[3], Bytef c) {
+	keys[0] = ~crc32(~keys[0], &c, 1);
+	keys[1] = (keys[1] + (keys[0] & 0xFF)) * 134775813L + 1;
+	const Bytef k = keys[1] >> 24;
+	keys[2] = ~crc32(~keys[2], &k, 1);
+}
+
+u8 decryptByte(uLong (&keys)[3], Bytef c) {
+	const uLong k = keys[2] | 2;
+	Bytef res = c ^ ((k * (k ^ 1)) >> 8);
+	updateKeys(keys, res);
+	return res;
+}
+#endif
+
 //! opens a file by index
 IReadFile* CZipReader::createAndOpenFile(u32 index)
 {
@@ -610,6 +626,43 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 		}
 #endif
 	}
+#ifdef _IRR_COMPILE_WITH_ZLIB_
+	else if (e.header.GeneralBitFlag & ZIP_FILE_ENCRYPTED)
+	{
+		// Set up keys
+		uLong keys[3] = {0x12345678L, 0x23456789L, 0x34567890L};
+		for (u32 i = 0; i < Password.size(); i++)
+			updateKeys(keys, Password[i]);
+
+		// Decrypt the header and make sure the password is correct
+		u8 header[12];
+		File->seek(e.Offset);
+		File->read(header, 12);
+		decryptedSize -= 12;
+
+		for (int i = 0; i < 11; i++)
+			decryptByte(keys, header[i]);
+
+		Bytef check;
+		if (e.header.GeneralBitFlag & ZIP_INFO_IN_DATA_DESCRIPTOR)
+			check = e.header.LastModFileTime >> 8;
+		else
+			check = e.header.DataDescriptor.CRC32 >> 24;
+
+		if (decryptByte(keys, header[11]) != check)
+		{
+			os::Printer::log("Wrong password");
+			return 0;
+		}
+
+		// Decrypt the contents
+		decryptedBuf = new u8[decryptedSize];
+		File->read(decryptedBuf, decryptedSize);
+		for (u32 i = 0; i < decryptedSize; i++)
+			decryptedBuf[i] = decryptByte(keys, decryptedBuf[i]);
+		decrypted = FileSystem->createMemoryReadFile(decryptedBuf, decryptedSize, Files[index].FullName, true);
+	}
+#endif
 #endif
 	switch(actualCompressionMethod)
 	{
