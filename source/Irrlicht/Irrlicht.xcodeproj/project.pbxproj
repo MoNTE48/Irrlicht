@@ -54,15 +54,6 @@
 		5E34CA541B7F6EBF00F212E8 /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E34CA581B7F6EBF00F212E8 /* CIrrDeviceOSX.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8141B7F535C00F212E8 /* CIrrDeviceOSX.mm */; };
 		5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
-		5E34CA5C1B7F6EBF00F212E8 /* aescrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8161B7F540B00F212E8 /* aescrypt.cpp */; };
-		5E34CA5D1B7F6EBF00F212E8 /* aeskey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8171B7F540B00F212E8 /* aeskey.cpp */; };
-		5E34CA5F1B7F6EBF00F212E8 /* aestab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8191B7F540B00F212E8 /* aestab.cpp */; };
-		5E34CA601B7F6EBF00F212E8 /* fileenc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81A1B7F540B00F212E8 /* fileenc.cpp */; };
-		5E34CA621B7F6EBF00F212E8 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81C1B7F540B00F212E8 /* hmac.cpp */; };
-		5E34CA641B7F6EBF00F212E8 /* prng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81E1B7F540B00F212E8 /* prng.cpp */; };
-		5E34CA661B7F6EBF00F212E8 /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8201B7F540B00F212E8 /* pwd2key.cpp */; };
-		5E34CA681B7F6EBF00F212E8 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8221B7F540B00F212E8 /* sha1.cpp */; };
-		5E34CA6A1B7F6EBF00F212E8 /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8241B7F540B00F212E8 /* sha2.cpp */; };
 		5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
@@ -268,15 +259,6 @@
 		5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8021B7F51D900F212E8 /* CZipReader.cpp */; };
 		5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
-		5E5732E21C18E212003F664E /* aescrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8161B7F540B00F212E8 /* aescrypt.cpp */; };
-		5E5732E31C18E212003F664E /* aeskey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8171B7F540B00F212E8 /* aeskey.cpp */; };
-		5E5732E41C18E212003F664E /* aestab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8191B7F540B00F212E8 /* aestab.cpp */; };
-		5E5732E51C18E212003F664E /* fileenc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81A1B7F540B00F212E8 /* fileenc.cpp */; };
-		5E5732E61C18E212003F664E /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81C1B7F540B00F212E8 /* hmac.cpp */; };
-		5E5732E71C18E212003F664E /* prng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C81E1B7F540B00F212E8 /* prng.cpp */; };
-		5E5732E81C18E212003F664E /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8201B7F540B00F212E8 /* pwd2key.cpp */; };
-		5E5732E91C18E212003F664E /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8221B7F540B00F212E8 /* sha1.cpp */; };
-		5E5732EA1C18E212003F664E /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8241B7F540B00F212E8 /* sha2.cpp */; };
 		5E5733131C18E212003F664E /* CIrrDeviceConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E8570BA1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp */; };
 		5E57333B1C18E212003F664E /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
@@ -749,23 +731,6 @@
 		5E34C80E1B7F52AC00F212E8 /* CIrrDeviceStub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceStub.h; sourceTree = "<group>"; };
 		5E34C8131B7F535C00F212E8 /* CIrrDeviceOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceOSX.h; sourceTree = "<group>"; usesTabs = 1; };
 		5E34C8141B7F535C00F212E8 /* CIrrDeviceOSX.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CIrrDeviceOSX.mm; sourceTree = "<group>"; usesTabs = 1; };
-		5E34C8151B7F540B00F212E8 /* aes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = aes.h; path = aesGladman/aes.h; sourceTree = "<group>"; };
-		5E34C8161B7F540B00F212E8 /* aescrypt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aescrypt.cpp; path = aesGladman/aescrypt.cpp; sourceTree = "<group>"; };
-		5E34C8171B7F540B00F212E8 /* aeskey.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aeskey.cpp; path = aesGladman/aeskey.cpp; sourceTree = "<group>"; };
-		5E34C8181B7F540B00F212E8 /* aesopt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = aesopt.h; path = aesGladman/aesopt.h; sourceTree = "<group>"; };
-		5E34C8191B7F540B00F212E8 /* aestab.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aestab.cpp; path = aesGladman/aestab.cpp; sourceTree = "<group>"; };
-		5E34C81A1B7F540B00F212E8 /* fileenc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = fileenc.cpp; path = aesGladman/fileenc.cpp; sourceTree = "<group>"; };
-		5E34C81B1B7F540B00F212E8 /* fileenc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = fileenc.h; path = aesGladman/fileenc.h; sourceTree = "<group>"; };
-		5E34C81C1B7F540B00F212E8 /* hmac.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = hmac.cpp; path = aesGladman/hmac.cpp; sourceTree = "<group>"; };
-		5E34C81D1B7F540B00F212E8 /* hmac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = hmac.h; path = aesGladman/hmac.h; sourceTree = "<group>"; };
-		5E34C81E1B7F540B00F212E8 /* prng.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = prng.cpp; path = aesGladman/prng.cpp; sourceTree = "<group>"; };
-		5E34C81F1B7F540B00F212E8 /* prng.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = prng.h; path = aesGladman/prng.h; sourceTree = "<group>"; };
-		5E34C8201B7F540B00F212E8 /* pwd2key.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = pwd2key.cpp; path = aesGladman/pwd2key.cpp; sourceTree = "<group>"; };
-		5E34C8211B7F540B00F212E8 /* pwd2key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pwd2key.h; path = aesGladman/pwd2key.h; sourceTree = "<group>"; };
-		5E34C8221B7F540B00F212E8 /* sha1.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sha1.cpp; path = aesGladman/sha1.cpp; sourceTree = "<group>"; };
-		5E34C8231B7F540B00F212E8 /* sha1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = aesGladman/sha1.h; sourceTree = "<group>"; };
-		5E34C8241B7F540B00F212E8 /* sha2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sha2.cpp; path = aesGladman/sha2.cpp; sourceTree = "<group>"; };
-		5E34C8251B7F540B00F212E8 /* sha2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sha2.h; path = aesGladman/sha2.h; sourceTree = "<group>"; };
 		5E34C8921B7F652600F212E8 /* CLogger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CLogger.cpp; sourceTree = "<group>"; };
 		5E34C8931B7F652600F212E8 /* CLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLogger.h; sourceTree = "<group>"; };
 		5E34C8941B7F652600F212E8 /* COSOperator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = COSOperator.cpp; sourceTree = "<group>"; };
@@ -1596,33 +1561,8 @@
 		5E34C8071B7F520000F212E8 /* extern */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C8081B7F521A00F212E8 /* aesGladman */,
 			);
 			name = extern;
-			sourceTree = "<group>";
-		};
-		5E34C8081B7F521A00F212E8 /* aesGladman */ = {
-			isa = PBXGroup;
-			children = (
-				5E34C8151B7F540B00F212E8 /* aes.h */,
-				5E34C8161B7F540B00F212E8 /* aescrypt.cpp */,
-				5E34C8171B7F540B00F212E8 /* aeskey.cpp */,
-				5E34C8181B7F540B00F212E8 /* aesopt.h */,
-				5E34C8191B7F540B00F212E8 /* aestab.cpp */,
-				5E34C81A1B7F540B00F212E8 /* fileenc.cpp */,
-				5E34C81B1B7F540B00F212E8 /* fileenc.h */,
-				5E34C81C1B7F540B00F212E8 /* hmac.cpp */,
-				5E34C81D1B7F540B00F212E8 /* hmac.h */,
-				5E34C81E1B7F540B00F212E8 /* prng.cpp */,
-				5E34C81F1B7F540B00F212E8 /* prng.h */,
-				5E34C8201B7F540B00F212E8 /* pwd2key.cpp */,
-				5E34C8211B7F540B00F212E8 /* pwd2key.h */,
-				5E34C8221B7F540B00F212E8 /* sha1.cpp */,
-				5E34C8231B7F540B00F212E8 /* sha1.h */,
-				5E34C8241B7F540B00F212E8 /* sha2.cpp */,
-				5E34C8251B7F540B00F212E8 /* sha2.h */,
-			);
-			name = aesGladman;
 			sourceTree = "<group>";
 		};
 		5E34C89F1B7F655200F212E8 /* animators */ = {
@@ -2187,15 +2127,6 @@
 				5E34CA581B7F6EBF00F212E8 /* CIrrDeviceOSX.mm in Sources */,
 				84A219B7249F82E800E189FC /* burning_shader_color.cpp in Sources */,
 				5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */,
-				5E34CA5C1B7F6EBF00F212E8 /* aescrypt.cpp in Sources */,
-				5E34CA5D1B7F6EBF00F212E8 /* aeskey.cpp in Sources */,
-				5E34CA5F1B7F6EBF00F212E8 /* aestab.cpp in Sources */,
-				5E34CA601B7F6EBF00F212E8 /* fileenc.cpp in Sources */,
-				5E34CA621B7F6EBF00F212E8 /* hmac.cpp in Sources */,
-				5E34CA641B7F6EBF00F212E8 /* prng.cpp in Sources */,
-				5E34CA661B7F6EBF00F212E8 /* pwd2key.cpp in Sources */,
-				5E34CA681B7F6EBF00F212E8 /* sha1.cpp in Sources */,
-				5E34CA6A1B7F6EBF00F212E8 /* sha2.cpp in Sources */,
 				5E8570BC1B7F9AC400B267D2 /* CIrrDeviceConsole.cpp in Sources */,
 				5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */,
 				5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */,
@@ -2415,15 +2346,6 @@
 				5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */,
 				5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */,
 				5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */,
-				5E5732E21C18E212003F664E /* aescrypt.cpp in Sources */,
-				5E5732E31C18E212003F664E /* aeskey.cpp in Sources */,
-				5E5732E41C18E212003F664E /* aestab.cpp in Sources */,
-				5E5732E51C18E212003F664E /* fileenc.cpp in Sources */,
-				5E5732E61C18E212003F664E /* hmac.cpp in Sources */,
-				5E5732E71C18E212003F664E /* prng.cpp in Sources */,
-				5E5732E81C18E212003F664E /* pwd2key.cpp in Sources */,
-				5E5732E91C18E212003F664E /* sha1.cpp in Sources */,
-				5E5732EA1C18E212003F664E /* sha2.cpp in Sources */,
 				5E5734081C18E2E2003F664E /* COGLES2Driver.cpp in Sources */,
 				842F5F8F2827D4AB00F4106F /* burning_shader_color.cpp in Sources */,
 				5E57340C1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp in Sources */,

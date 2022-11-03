@@ -21,15 +21,6 @@ LOCAL_SRC_FILES := \
 					Android/CAndroidAssetReader.cpp \
 					Android/CAndroidAssetFileArchive.cpp \
 					Android/CKeyEventWrapper.cpp \
-					aesGladman/aescrypt.cpp \
-					aesGladman/aeskey.cpp \
-					aesGladman/aestab.cpp \
-					aesGladman/fileenc.cpp \
-					aesGladman/hmac.cpp \
-					aesGladman/prng.cpp \
-					aesGladman/pwd2key.cpp \
-					aesGladman/sha1.cpp \
-					aesGladman/sha2.cpp \
 					burning_shader_color.cpp \
 					C3DSMeshFileLoader.cpp \
 					CAnimatedMeshHalfLife.cpp \
