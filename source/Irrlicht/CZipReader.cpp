@@ -506,7 +506,7 @@ namespace
 }
 #endif
 
-#if defined(_IRR_COMPILE_WITH_ZLIB_) && defined(_IRR_COMPILE_WITH_ZIP_ENCRYPTION_)
+#ifdef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 void updateKeys(uLong (&keys)[3], Bytef c) {
 	keys[0] = ~crc32(~keys[0], &c, 1);
 	keys[1] = (keys[1] + (keys[0] & 0xFF)) * 134775813L + 1;
