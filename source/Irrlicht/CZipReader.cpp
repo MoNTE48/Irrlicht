@@ -626,8 +626,9 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 		}
 #endif
 	}
+#endif
 #ifdef _IRR_COMPILE_WITH_ZLIB_
-	else if (e.header.GeneralBitFlag & ZIP_FILE_ENCRYPTED)
+	if (e.header.GeneralBitFlag & ZIP_FILE_ENCRYPTED && !decrypted)
 	{
 		// Set up keys
 		uLong keys[3] = {0x12345678L, 0x23456789L, 0x34567890L};
@@ -662,7 +663,6 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 			decryptedBuf[i] = decryptByte(keys, decryptedBuf[i]);
 		decrypted = FileSystem->createMemoryReadFile(decryptedBuf, decryptedSize, Files[index].FullName, true);
 	}
-#endif
 #endif
 	switch(actualCompressionMethod)
 	{
