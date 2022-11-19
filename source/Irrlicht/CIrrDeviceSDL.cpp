@@ -281,6 +281,30 @@ bool CIrrDeviceSDL::createWindow()
 			}
 		}
 
+		if (!success && CreationParams.WithAlphaChannel)
+		{
+			CreationParams.WithAlphaChannel = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("AlphaChannel disabled due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Stencilbuffer)
+		{
+			CreationParams.Stencilbuffer = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("Stencilbuffer disabled due to lack of support!");
+			}
+		}
+
 		if (!success && CreationParams.ZBufferBits > 16)
 		{
 			while (CreationParams.ZBufferBits > 16)
@@ -296,6 +320,36 @@ bool CIrrDeviceSDL::createWindow()
 			if (success)
 			{
 				os::Printer::log("Use lower ZBufferBits due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Bits > 16)
+		{
+			while (CreationParams.Bits > 16)
+			{
+				CreationParams.Bits -= 8;
+
+				success = createWindowWithContext();
+
+				if (success)
+					break;
+			}
+
+			if (success)
+			{
+				os::Printer::log("Use lower Bits due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Stereobuffer)
+		{
+			CreationParams.Stereobuffer = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("Stereobuffer disabled due to lack of support!");
 			}
 		}
 
@@ -367,7 +421,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 		}
 
-		if (CreationParams.Bits == 16)
+		if (CreationParams.Bits <= 16)
 		{
 			SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 4);
 			SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 4);
