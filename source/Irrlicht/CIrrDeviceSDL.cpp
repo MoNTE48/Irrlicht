@@ -455,23 +455,39 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 							Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
 
-	if (!Window && CreationParams.DriverType == video::EDT_OGLES2)
+	if (CreationParams.DriverType == video::EDT_OPENGL ||
+		CreationParams.DriverType == video::EDT_OGLES2 ||
+		CreationParams.DriverType == video::EDT_OGLES1)
 	{
+		if (Window)
+		{
+			Context = SDL_GL_CreateContext(Window);
+		}
+	}
+
+	if (!Context && CreationParams.DriverType == video::EDT_OGLES2)
+	{
+		if (Window)
+		{
+			SDL_DestroyWindow(Window);
+			Window = NULL;
+		}
+
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 
 		Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 								Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
-	}
 
-	if (!Window)
-		return false;
+		if (Window)
+		{
+			Context = SDL_GL_CreateContext(Window);
+		}
+	}
 
 	if (CreationParams.DriverType == video::EDT_OPENGL ||
 		CreationParams.DriverType == video::EDT_OGLES2 ||
 		CreationParams.DriverType == video::EDT_OGLES1)
 	{
-		Context = SDL_GL_CreateContext(Window);
-
 		if (!Context)
 		{
 			SDL_DestroyWindow(Window);
