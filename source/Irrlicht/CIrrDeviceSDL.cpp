@@ -162,7 +162,10 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		}
 
 		// create the window, only if we do not use the null device
-		createWindow();
+		bool success = createWindow();
+
+		if (!success)
+			return;
 
 		if (CreationParams.DriverType == video::EDT_OPENGL ||
 			CreationParams.DriverType == video::EDT_OGLES2 ||
@@ -1753,7 +1756,7 @@ CIrrDeviceSDL::CCursorControl::~CCursorControl()
 void CIrrDeviceSDL::CCursorControl::setActiveIcon(gui::ECURSOR_ICON iconId)
 {
 	ActiveIcon = iconId;
-	if (iconId >= Cursors.size() || !Cursors[iconId]) 
+	if (iconId >= Cursors.size() || !Cursors[iconId])
 	{
 		iconId = gui::ECI_NORMAL;
 		if (iconId >= Cursors.size() || !Cursors[iconId])
