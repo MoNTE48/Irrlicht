@@ -72,7 +72,8 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	AccelerometerIndex(-1), AccelerometerInstance(-1),
 	GyroscopeIndex(-1), GyroscopeInstance(-1),
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
-	IgnoreWarpMouseEvent(false), ShouldUseRelativeMouse(false)
+	IgnoreWarpMouseEvent(false), ShouldUseRelativeMouse(false),
+	LongTouchTimer(0), LongTouchX(0), LongTouchY(0), LongTouchHandled(true)
 {
 #ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL");
@@ -736,6 +737,15 @@ bool CIrrDeviceSDL::run()
 			break;
 
 		case SDL_FINGERMOTION:
+			if (TouchIDs.size() == 1)
+			{
+				if (fabsf(LongTouchX - SDL_event.tfinger.x * Width) > Width * 0.05f ||
+					fabsf(LongTouchY - SDL_event.tfinger.y * Height) > Height * 0.05f)
+				{
+					LongTouchHandled = true;
+				}
+			}
+
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_MOVED;
 			irrevent.TouchInput.ID = SDL_event.tfinger.fingerId;
@@ -746,6 +756,19 @@ bool CIrrDeviceSDL::run()
 			break;
 
 		case SDL_FINGERDOWN:
+			// Long touch only for first finger
+			if (TouchIDs.size() == 0)
+			{
+				LongTouchTimer = os::Timer::getTime();
+				LongTouchX = SDL_event.tfinger.x * Width;
+				LongTouchY = SDL_event.tfinger.y * Height;
+				LongTouchHandled = false;
+			}
+			else
+			{
+				LongTouchHandled = true;
+			}
+
 			TouchIDs.insert(SDL_event.tfinger.fingerId);
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_PRESSED_DOWN;
@@ -757,6 +780,11 @@ bool CIrrDeviceSDL::run()
 			break;
 
 		case SDL_FINGERUP:
+			if (TouchIDs.size() == 1)
+			{
+				LongTouchHandled = true;
+			}
+
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_LEFT_UP;
 			irrevent.TouchInput.ID = SDL_event.tfinger.fingerId;
@@ -1137,6 +1165,21 @@ bool CIrrDeviceSDL::run()
 		}
 	}
 #endif
+
+	if (os::Timer::getTime() > LongTouchTimer + 1000 && !LongTouchHandled)
+	{
+		LongTouchHandled = true;
+
+		SEvent irrevent;
+		irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
+		irrevent.TouchInput.Event = irr::ETIE_PRESSED_LONG;
+		irrevent.TouchInput.ID = *(TouchIDs.begin());
+		irrevent.TouchInput.X = LongTouchX;
+		irrevent.TouchInput.Y = LongTouchY;
+		irrevent.TouchInput.touchedCount = TouchIDs.size();
+		postEventFromUser(irrevent);
+	}
+
 	return !Close;
 }
 
