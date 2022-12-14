@@ -293,6 +293,11 @@ namespace irr
 		bool IgnoreWarpMouseEvent;
 		bool ShouldUseRelativeMouse;
 
+		u32 LongTouchTimer;
+		s32 LongTouchX;
+		s32 LongTouchY;
+		bool LongTouchHandled;
+
 		std::set<SDL_FingerID> TouchIDs;
 
 		struct SKeyMap
