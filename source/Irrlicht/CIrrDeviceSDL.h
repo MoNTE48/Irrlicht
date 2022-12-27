@@ -141,7 +141,10 @@ namespace irr
 			CCursorControl(CIrrDeviceSDL* dev)
 				: Device(dev), IsVisible(true)
 			{
+				initCursors();
 			}
+
+			~CCursorControl();
 
 			//! Changes the visible state of the mouse cursor.
 			virtual void setVisible(bool visible) IRR_OVERRIDE
@@ -213,6 +216,13 @@ namespace irr
 			{
 			}
 
+			virtual void setActiveIcon(gui::ECURSOR_ICON iconId) IRR_OVERRIDE;
+
+			virtual gui::ECURSOR_ICON getActiveIcon() const IRR_OVERRIDE
+			{
+				return ActiveIcon;
+			}
+
 		private:
 
 			void updateCursorPos()
@@ -230,9 +240,13 @@ namespace irr
 					CursorPos.Y = Device->Height;
 			}
 
+			void initCursors();
+
 			CIrrDeviceSDL* Device;
 			core::position2d<s32> CursorPos;
 			bool IsVisible;
+			core::array<SDL_Cursor*> Cursors;
+			gui::ECURSOR_ICON ActiveIcon;
 		};
 
 	private:

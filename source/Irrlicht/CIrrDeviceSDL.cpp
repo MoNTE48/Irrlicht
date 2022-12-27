@@ -164,7 +164,10 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		}
 
 		// create the window, only if we do not use the null device
-		createWindow();
+		bool success = createWindow();
+
+		if (!success)
+			return;
 
 		if (CreationParams.DriverType == video::EDT_OPENGL ||
 			CreationParams.DriverType == video::EDT_OGLES2 ||
@@ -287,6 +290,30 @@ bool CIrrDeviceSDL::createWindow()
 			}
 		}
 
+		if (!success && CreationParams.WithAlphaChannel)
+		{
+			CreationParams.WithAlphaChannel = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("AlphaChannel disabled due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Stencilbuffer)
+		{
+			CreationParams.Stencilbuffer = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("Stencilbuffer disabled due to lack of support!");
+			}
+		}
+
 		if (!success && CreationParams.ZBufferBits > 16)
 		{
 			while (CreationParams.ZBufferBits > 16)
@@ -302,6 +329,36 @@ bool CIrrDeviceSDL::createWindow()
 			if (success)
 			{
 				os::Printer::log("Use lower ZBufferBits due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Bits > 16)
+		{
+			while (CreationParams.Bits > 16)
+			{
+				CreationParams.Bits -= 8;
+
+				success = createWindowWithContext();
+
+				if (success)
+					break;
+			}
+
+			if (success)
+			{
+				os::Printer::log("Use lower Bits due to lack of support!");
+			}
+		}
+
+		if (!success && CreationParams.Stereobuffer)
+		{
+			CreationParams.Stereobuffer = false;
+
+			success = createWindowWithContext();
+
+			if (success)
+			{
+				os::Printer::log("Stereobuffer disabled due to lack of support!");
 			}
 		}
 
@@ -373,7 +430,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 		}
 
-		if (CreationParams.Bits == 16)
+		if (CreationParams.Bits <= 16)
 		{
 			SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 4);
 			SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 4);
@@ -407,23 +464,39 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 							Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
 
-	if (!Window && CreationParams.DriverType == video::EDT_OGLES2)
+	if (CreationParams.DriverType == video::EDT_OPENGL ||
+		CreationParams.DriverType == video::EDT_OGLES2 ||
+		CreationParams.DriverType == video::EDT_OGLES1)
 	{
+		if (Window)
+		{
+			Context = SDL_GL_CreateContext(Window);
+		}
+	}
+
+	if (!Context && CreationParams.DriverType == video::EDT_OGLES2)
+	{
+		if (Window)
+		{
+			SDL_DestroyWindow(Window);
+			Window = NULL;
+		}
+
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 
 		Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 								Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
-	}
 
-	if (!Window)
-		return false;
+		if (Window)
+		{
+			Context = SDL_GL_CreateContext(Window);
+		}
+	}
 
 	if (CreationParams.DriverType == video::EDT_OPENGL ||
 		CreationParams.DriverType == video::EDT_OGLES2 ||
 		CreationParams.DriverType == video::EDT_OGLES1)
 	{
-		Context = SDL_GL_CreateContext(Window);
-
 		if (!Context)
 		{
 			SDL_DestroyWindow(Window);
@@ -1731,6 +1804,44 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 #else
 	return true;
 #endif
+}
+
+void CIrrDeviceSDL::CCursorControl::initCursors()
+{
+	Cursors.reallocate(gui::ECI_COUNT);
+
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));     // ECI_NORMAL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR)); // ECI_CROSS
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));      // ECI_HAND
+	Cursors.push_back(nullptr);                                             // ECI_HELP
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_IBEAM));     // ECI_IBEAM
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NO));        // ECI_NO
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT));      // ECI_WAIT
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));   // ECI_SIZEALL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENESW));  // ECI_SIZENESW
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENWSE));  // ECI_SIZENWSE
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS));    // ECI_SIZENS
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));    // ECI_SIZEWE
+	Cursors.push_back(nullptr);                                             // ECI_UP
+}
+
+CIrrDeviceSDL::CCursorControl::~CCursorControl()
+{
+	const u32 count = Cursors.size();
+	for (u32 i = 0; i < count; i++)
+		SDL_FreeCursor(Cursors[i]);
+}
+
+void CIrrDeviceSDL::CCursorControl::setActiveIcon(gui::ECURSOR_ICON iconId)
+{
+	ActiveIcon = iconId;
+	if (iconId >= Cursors.size() || !Cursors[iconId])
+	{
+		iconId = gui::ECI_NORMAL;
+		if (iconId >= Cursors.size() || !Cursors[iconId])
+			return;
+	}
+	SDL_SetCursor(Cursors[iconId]);
 }
 
 } // end namespace irr
