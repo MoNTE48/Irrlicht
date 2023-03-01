@@ -189,7 +189,6 @@
 		5E34C6E61B7F4AFB00F212E8 /* coreutil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = coreutil.h; path = ../../include/coreutil.h; sourceTree = "<group>"; };
 		5E34C6E71B7F4AFB00F212E8 /* CVertexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CVertexBuffer.h; path = ../../include/CVertexBuffer.h; sourceTree = "<group>"; };
 		5E34C6E81B7F4AFB00F212E8 /* dimension2d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = dimension2d.h; path = ../../include/dimension2d.h; sourceTree = "<group>"; };
-		5E34C6E91B7F4AFB00F212E8 /* driverChoice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = driverChoice.h; path = ../../include/driverChoice.h; sourceTree = "<group>"; };
 		5E34C6EA1B7F4AFB00F212E8 /* EAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EAttributes.h; path = ../../include/EAttributes.h; sourceTree = "<group>"; };
 		5E34C6EB1B7F4AFB00F212E8 /* ECullingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ECullingTypes.h; path = ../../include/ECullingTypes.h; sourceTree = "<group>"; };
 		5E34C6EC1B7F4AFB00F212E8 /* EDebugSceneTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EDebugSceneTypes.h; path = ../../include/EDebugSceneTypes.h; sourceTree = "<group>"; };
@@ -606,7 +605,6 @@
 				5E34C7A11B7F4BF000F212E8 /* io */,
 				5E34C7A01B7F4BC900F212E8 /* scene */,
 				5E34C7A21B7F4C1900F212E8 /* video */,
-				5E34C6E91B7F4AFB00F212E8 /* driverChoice.h */,
 				5EC24F5E1B8B861200DCA615 /* exampleHelper.h */,
 				5E34C6ED1B7F4AFB00F212E8 /* EDeviceTypes.h */,
 				5E34C70F1B7F4AFC00F212E8 /* IEventReceiver.h */,
