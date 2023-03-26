@@ -189,6 +189,9 @@ namespace irr
 		//! The touch changed its position.
 		ETIE_MOVED,
 
+		//! Long touch press
+		ETIE_PRESSED_LONG,
+
 		//! No real event. Just for convenience to get number of events
 		ETIE_COUNT
 	};

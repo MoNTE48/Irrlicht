@@ -311,6 +311,10 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 			if (processMouse(event))
 				return true;
 			break;
+		case EET_TOUCH_INPUT_EVENT:
+			if (event.TouchInput.Event == irr::ETIE_PRESSED_LONG)
+				return true;
+			break;
 		default:
 			break;
 		}
