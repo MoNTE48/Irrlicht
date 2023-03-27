@@ -1150,7 +1150,7 @@ bool CIrrDeviceSDL::run()
 			for (s32 j = 0; j < 6; j++)
 			{
 				irrevent.SDLControllerAxisEvent.Axis[j] = j;
-				irrevent.SDLControllerAxisEvent.Value[j]  = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
+				irrevent.SDLControllerAxisEvent.Value[j] = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
 			}
 
 			postEventFromUser(irrevent);
