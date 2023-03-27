@@ -54,6 +54,12 @@
 #ifdef NO_IRR_COMPILE_WITH_SDL_TEXTINPUT_
 #undef _IRR_COMPILE_WITH_SDL_TEXTINPUT_
 #endif
+
+//! Comment this line to disable SDL gamecontroller and use irrlicht joystick instead
+#define _IRR_COMPILE_WITH_SDL_GAMECONTROLLER
+#ifdef NO_IRR_COMPILE_WITH_SDL_GAMECONTROLLER
+#undef _IRR_COMPILE_WITH_SDL_GAMECONTROLLER
+#endif
 #endif
 
 //! Comment this line to compile without the fallback console device.

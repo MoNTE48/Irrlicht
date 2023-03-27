@@ -101,7 +101,9 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 		u32 flags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
 
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
+		flags |= SDL_INIT_GAMECONTROLLER;
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 		flags |= SDL_INIT_JOYSTICK;
 #endif
 
@@ -199,29 +201,33 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 //! destructor
 CIrrDeviceSDL::~CIrrDeviceSDL()
 {
-	if ( --SDLDeviceInstances == 0 )
+	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-		if (VideoDriver)
-		{
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		const u32 numJoysticks = Joysticks.size();
-		for (u32 i=0; i<numJoysticks; ++i)
-			SDL_JoystickClose(Joysticks[i]);
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
+		SDL_GameController* gameController = SDL_GameControllerFromInstanceID(Joysticks[i]);
+		SDL_GameControllerClose(gameController);
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
+		SDL_JoystickClose(joystick);
 #endif
-		if (Context)
-		{
-			SDL_GL_DeleteContext(Context);
-			Context = NULL;
-		}
-		if (Window)
-		{
-			SDL_DestroyWindow(Window);
-			Window = NULL;
-		}
+	}
 
+	if (Context)
+	{
+		SDL_GL_DeleteContext(Context);
+		Context = NULL;
+	}
+
+	if (Window)
+	{
+		SDL_DestroyWindow(Window);
+		Window = NULL;
+	}
+
+	if (--SDLDeviceInstances == 0)
+	{
 		SDL_Quit();
 		os::Printer::log("Quit SDL", ELL_INFORMATION);
-		}
 	}
 }
 
@@ -995,6 +1001,51 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
+		case SDL_CONTROLLERBUTTONDOWN:
+		case SDL_CONTROLLERBUTTONUP:
+			{
+				irrevent.EventType = irr::EET_SDL_CONTROLLER_BUTTON_EVENT;
+				irrevent.SDLControllerButtonEvent.Joystick = SDL_event.cbutton.which;
+				irrevent.SDLControllerButtonEvent.Button = SDL_event.cbutton.button;
+				irrevent.SDLControllerButtonEvent.Pressed = SDL_event.cbutton.state;
+				postEventFromUser(irrevent);
+			}
+			break;
+
+		case SDL_CONTROLLERDEVICEADDED:
+			{
+				int index = SDL_event.cdevice.which;
+
+				SDL_GameController* gameController = SDL_GameControllerOpen(index);
+
+				if (gameController)
+				{
+					SDL_Joystick* joystick = SDL_GameControllerGetJoystick(gameController);
+					SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+					Joysticks.push_back(instanceId);
+				}
+			}
+			break;
+
+		case SDL_CONTROLLERDEVICEREMOVED:
+			{
+				SDL_JoystickID instanceId = SDL_event.cdevice.which;
+
+				for (u32 i = 0; i < Joysticks.size(); i++)
+				{
+					if (instanceId != Joysticks[i])
+						continue;
+
+					SDL_GameController* gameController = SDL_GameControllerFromInstanceID(instanceId);
+					SDL_GameControllerClose(gameController);
+					Joysticks.erase(i);
+					break;
+				}
+			}
+			break;
+#endif
+
 		case SDL_QUIT:
 			Close = true;
 			break;
@@ -1085,7 +1136,28 @@ bool CIrrDeviceSDL::run()
 
 	} // end while
 
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
+	for (u32 i = 0; i < Joysticks.size(); i++)
+	{
+		SDL_GameController* gameController = SDL_GameControllerFromInstanceID(Joysticks[i]);
+
+		if (gameController)
+		{
+			SEvent irrevent;
+			irrevent.EventType = EET_SDL_CONTROLLER_AXIS_EVENT;
+			irrevent.SDLControllerAxisEvent.Joystick = Joysticks[i];
+
+			for (s32 j = 0; j < 6; j++)
+			{
+				irrevent.SDLControllerAxisEvent.Axis[j] = j;
+				irrevent.SDLControllerAxisEvent.Value[j] = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
+			}
+
+			postEventFromUser(irrevent);
+		}
+	}
+
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 	// TODO: Check if the multiple open/close calls are too expensive, then
 	// open/close in the constructor/destructor instead
 
@@ -1096,7 +1168,7 @@ bool CIrrDeviceSDL::run()
 	joyevent.EventType = EET_JOYSTICK_INPUT_EVENT;
 	for (u32 i=0; i<Joysticks.size(); ++i)
 	{
-		SDL_Joystick* joystick = Joysticks[i];
+		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
 		if (joystick)
 		{
 			int j;
@@ -1186,7 +1258,10 @@ bool CIrrDeviceSDL::run()
 //! Activate any joysticks, and generate events for them.
 bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 {
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
+#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
+	return true;
+
+#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 	joystickInfo.clear();
 
 	// we can name up to 256 different joysticks
@@ -1194,34 +1269,38 @@ bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 	Joysticks.reallocate(numJoysticks);
 	joystickInfo.reallocate(numJoysticks);
 
-	int joystick = 0;
-	for (; joystick<numJoysticks; ++joystick)
+	for (int i = 0; i < numJoysticks; i++)
 	{
-		Joysticks.push_back(SDL_JoystickOpen(joystick));
-		SJoystickInfo info;
+		SDL_Joystick* joystick = SDL_JoystickOpen(i);
+		SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+		Joysticks.push_back(instanceId);
 
-		info.Joystick = joystick;
-		info.Axes = SDL_JoystickNumAxes(Joysticks[joystick]);
-		info.Buttons = SDL_JoystickNumButtons(Joysticks[joystick]);
-		info.Name = SDL_JoystickNameForIndex(joystick);
-		info.PovHat = (SDL_JoystickNumHats(Joysticks[joystick]) > 0)
-						? SJoystickInfo::POV_HAT_PRESENT : SJoystickInfo::POV_HAT_ABSENT;
+		SJoystickInfo info;
+		info.Joystick = i;
+		info.Axes = SDL_JoystickNumAxes(joystick);
+		info.Buttons = SDL_JoystickNumButtons(joystick);
+		info.Name = SDL_JoystickNameForIndex(i);
+
+		if (SDL_JoystickNumHats(joystick) > 0)
+			info.PovHat = SJoystickInfo::POV_HAT_PRESENT;
+		else
+			info.PovHat = SJoystickInfo::POV_HAT_ABSENT;
 
 		joystickInfo.push_back(info);
 	}
 
-	for(joystick = 0; joystick < (int)joystickInfo.size(); ++joystick)
+	for(u32 i = 0; i < joystickInfo.size(); i++)
 	{
 		char logString[256];
-		(void)sprintf(logString, "Found joystick %d, %d axes, %d buttons '%s'",
-		joystick, joystickInfo[joystick].Axes,
-		joystickInfo[joystick].Buttons, joystickInfo[joystick].Name.c_str());
+		sprintf(logString, "Found joystick %d, %d axes, %d buttons '%s'",
+				i, joystickInfo[i].Axes, joystickInfo[i].Buttons,
+				joystickInfo[i].Name.c_str());
 		os::Printer::log(logString, ELL_INFORMATION);
 	}
 
 	return true;
 
-#endif // _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
+#endif
 
 	return false;
 }
