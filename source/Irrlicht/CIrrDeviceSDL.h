@@ -216,6 +216,14 @@ namespace irr
 			{
 			}
 
+			virtual bool getReferenceRect(core::rect<s32>& rect) IRR_OVERRIDE
+			{
+				rect.UpperLeftCorner = core::vector2di(0,0);
+				rect.LowerRightCorner.X = (irr::s32)Device->Width;
+				rect.LowerRightCorner.Y = (irr::s32)Device->Height;
+				return false;
+			}
+
 			virtual void setActiveIcon(gui::ECURSOR_ICON iconId) IRR_OVERRIDE;
 
 			virtual gui::ECURSOR_ICON getActiveIcon() const IRR_OVERRIDE
