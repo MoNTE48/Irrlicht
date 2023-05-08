@@ -661,6 +661,11 @@ public:
 	Unless you create your own GUI elements removing themselves you won't need it.
 	\param element: Element to remove */
 	virtual void addToDeletionQueue(IGUIElement* element) = 0;
+
+	//! Updates hovered element
+	/** It may be needed to call it after hovered element removal, so that
+	GUI Environment drops previously grabbed element */
+	virtual void forceUpdateHoveredElement() = 0;
 };
 
 
