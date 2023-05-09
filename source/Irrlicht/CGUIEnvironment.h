@@ -272,6 +272,10 @@ public:
 	//! Adds a IGUIElement to deletion queue.
 	virtual void addToDeletionQueue(IGUIElement* element) IRR_OVERRIDE;
 
+	//! Updates hovered element
+	/** It may be needed to call it after hovered element removal, so that
+	GUI Environment drops previously grabbed element */
+	virtual void forceUpdateHoveredElement() IRR_OVERRIDE;
 private:
 
 	//! clears the deletion queue

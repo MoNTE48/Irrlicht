@@ -574,6 +574,11 @@ void CGUIEnvironment::updateHoveredElement(core::position2d<s32> mousePos)
 		lastHoveredNoSubelement->drop();
 }
 
+//! Updates hovered element
+void CGUIEnvironment::forceUpdateHoveredElement()
+{
+	updateHoveredElement(LastHoveredMousePos);
+}
 
 //! This sets a new event receiver for gui events. Usually you do not have to
 //! use this method, it is used by the internal engine.
