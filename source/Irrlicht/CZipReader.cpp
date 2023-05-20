@@ -6,11 +6,6 @@
 
 #include "os.h"
 
-// This method is used for error output from bzip2.
-extern "C" void bz_internal_error(int errorCode)
-{
-	irr::os::Printer::log("Error in bzip2 handling", irr::core::stringc(errorCode), irr::ELL_ERROR);
-}
 
 #ifdef __IRR_COMPILE_WITH_ZIP_ARCHIVE_LOADER_
 
@@ -20,24 +15,10 @@ extern "C" void bz_internal_error(int errorCode)
 
 #include "IrrCompileConfig.h"
 #ifdef _IRR_COMPILE_WITH_ZLIB_
-	#ifndef _IRR_USE_NON_SYSTEM_ZLIB_
 	#include <zlib.h> // use system lib
-	#else
-	#include "zlib/zlib.h"
-	#endif
 
 	#ifdef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 	#include "aesGladman/fileenc.h"
-	#endif
-	#ifdef _IRR_COMPILE_WITH_BZIP2_
-	#ifndef _IRR_USE_NON_SYSTEM_BZLIB_
-	#include <bzlib.h>
-	#else
-	#include "bzip2/bzlib.h"
-	#endif
-	#endif
-	#ifdef _IRR_COMPILE_WITH_LZMA_
-	#include "lzma/LzmaDec.h"
 	#endif
 #endif
 
@@ -488,23 +469,6 @@ IReadFile* CZipReader::createAndOpenFile(const io::path& filename)
 	return 0;
 }
 
-#ifdef _IRR_COMPILE_WITH_LZMA_
-//! Used for LZMA decompression. The lib has no default memory management
-namespace
-{
-	void *SzAlloc(void *p, size_t size)
-	{
-		(void)p; // disable unused variable warnings
-		return malloc(size);
-	}
-	void SzFree(void *p, void *address)
-	{
-		(void)p; // disable unused variable warnings
-		free(address);
-	}
-	ISzAlloc lzmaAlloc = { SzAlloc, SzFree };
-}
-#endif
 
 #ifdef _IRR_COMPILE_WITH_ZLIB_
 void updateKeys(uLong (&keys)[3], Bytef c) {
@@ -749,139 +713,13 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 		}
 	case 12:
 		{
-  			#ifdef _IRR_COMPILE_WITH_BZIP2_
-
-			const u32 uncompressedSize = e.header.DataDescriptor.UncompressedSize;
-			c8* pBuf = new c8[ uncompressedSize ];
-			if (!pBuf)
-			{
-				swprintf_irr ( buf, 64, L"Not enough memory for decompressing %s", core::stringw(Files[index].FullName).c_str() );
-				os::Printer::log( buf, ELL_ERROR);
-				if (decrypted)
-					decrypted->drop();
-				return 0;
-			}
-
-			u8 *pcData = decryptedBuf;
-			if (!pcData)
-			{
-				pcData = new u8[decryptedSize];
-				if (!pcData)
-				{
-					swprintf_irr ( buf, 64, L"Not enough memory for decompressing %s", core::stringw(Files[index].FullName).c_str() );
-					os::Printer::log( buf, ELL_ERROR);
-					delete [] pBuf;
-					return 0;
-				}
-
-				//memset(pcData, 0, decryptedSize);
-				File->seek(e.Offset);
-				File->read(pcData, decryptedSize);
-			}
-
-			bz_stream bz_ctx;
-			memset(&bz_ctx, 0, sizeof(bz_ctx));
-			/* use BZIP2's default memory allocation
-			bz_ctx->bzalloc = NULL;
-			bz_ctx->bzfree  = NULL;
-			bz_ctx->opaque  = NULL;
-			*/
-			int err = BZ2_bzDecompressInit(&bz_ctx, 0, 0); /* decompression */
-			if(err != BZ_OK)
-			{
-				os::Printer::log("bzip2 decompression failed. File cannot be read.", ELL_ERROR);
-				return 0;
-			}
-			bz_ctx.next_in = (char*)pcData;
-			bz_ctx.avail_in = decryptedSize;
-			/* pass all input to decompressor */
-			bz_ctx.next_out = pBuf;
-			bz_ctx.avail_out = uncompressedSize;
-			err = BZ2_bzDecompress(&bz_ctx);
-			err = BZ2_bzDecompressEnd(&bz_ctx);
-
-			if (decrypted)
-				decrypted->drop();
-			else
-				delete[] pcData;
-
-			if (err != BZ_OK)
-			{
-				swprintf_irr ( buf, 64, L"Error decompressing %s", core::stringw(Files[index].FullName).c_str() );
-				os::Printer::log( buf, ELL_ERROR);
-				delete [] pBuf;
-				return 0;
-			}
-			else
-				return FileSystem->createMemoryReadFile(pBuf, uncompressedSize, Files[index].FullName, true);
-
-			#else
 			os::Printer::log("bzip2 decompression not supported. File cannot be read.", ELL_ERROR);
 			return 0;
-			#endif
 		}
 	case 14:
 		{
-  			#ifdef _IRR_COMPILE_WITH_LZMA_
-
-			u32 uncompressedSize = e.header.DataDescriptor.UncompressedSize;
-			c8* pBuf = new c8[ uncompressedSize ];
-			if (!pBuf)
-			{
-				swprintf_irr ( buf, 64, L"Not enough memory for decompressing %s", core::stringw(Files[index].FullName).c_str() );
-				os::Printer::log( buf, ELL_ERROR);
-				if (decrypted)
-					decrypted->drop();
-				return 0;
-			}
-
-			u8 *pcData = decryptedBuf;
-			if (!pcData)
-			{
-				pcData = new u8[decryptedSize];
-				if (!pcData)
-				{
-					swprintf_irr ( buf, 64, L"Not enough memory for decompressing %s", core::stringw(Files[index].FullName).c_str() );
-					os::Printer::log( buf, ELL_ERROR);
-					delete [] pBuf;
-					return 0;
-				}
-
-				//memset(pcData, 0, decryptedSize);
-				File->seek(e.Offset);
-				File->read(pcData, decryptedSize);
-			}
-
-			ELzmaStatus status;
-			SizeT tmpDstSize = uncompressedSize;
-			SizeT tmpSrcSize = decryptedSize;
-
-			unsigned int propSize = (pcData[3]<<8)+pcData[2];
-			int err = LzmaDecode((Byte*)pBuf, &tmpDstSize,
-					pcData+4+propSize, &tmpSrcSize,
-					pcData+4, propSize,
-					e.header.GeneralBitFlag&0x1?LZMA_FINISH_END:LZMA_FINISH_ANY, &status,
-					&lzmaAlloc);
-			uncompressedSize = tmpDstSize; // may be different to expected value
-
-			if (decrypted)
-				decrypted->drop();
-			else
-				delete[] pcData;
-
-			if (err != SZ_OK)
-			{
-				os::Printer::log( "Error decompressing", Files[index].FullName, ELL_ERROR);
-				delete [] pBuf;
-				return 0;
-			}
-			else
-				return FileSystem->createMemoryReadFile(pBuf, uncompressedSize, Files[index].FullName, true);
-
-			#else
 			os::Printer::log("lzma decompression not supported. File cannot be read.", ELL_ERROR);
 			return 0;
-			#endif
 		}
 	case 99:
 		// If we come here with an encrypted file, decryption support is missing

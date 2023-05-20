@@ -45,30 +45,19 @@ IRROBJ = CBillboardSceneNode.o CCameraSceneNode.o CDummyTransformationSceneNode.
 IRRPARTICLEOBJ = CParticleAnimatedMeshSceneNodeEmitter.o CParticleBoxEmitter.o CParticleCylinderEmitter.o CParticleMeshEmitter.o CParticlePointEmitter.o CParticleRingEmitter.o CParticleSphereEmitter.o CParticleAttractionAffector.o CParticleFadeOutAffector.o CParticleGravityAffector.o CParticleRotationAffector.o CParticleSystemSceneNode.o CParticleScaleAffector.o
 IRRANIMOBJ = CSceneNodeAnimatorCameraFPS.o CSceneNodeAnimatorCameraMaya.o CSceneNodeAnimatorCollisionResponse.o CSceneNodeAnimatorDelete.o CSceneNodeAnimatorFlyCircle.o CSceneNodeAnimatorFlyStraight.o CSceneNodeAnimatorFollowSpline.o CSceneNodeAnimatorRotation.o CSceneNodeAnimatorTexture.o
 IRRDRVROBJ = CNullDriver.o COpenGLCacheHandler.o COpenGLDriver.o COpenGLNormalMapRenderer.o COpenGLParallaxMapRenderer.o COpenGLShaderMaterialRenderer.o COpenGLSLMaterialRenderer.o COpenGLExtensionHandler.o \
-	CD3D9Driver.o CD3D9HLSLMaterialRenderer.o CD3D9NormalMapRenderer.o CD3D9ParallaxMapRenderer.o CD3D9ShaderMaterialRenderer.o CD3D9Texture.o \
-	COGLESDriver.o COGLESExtensionHandler.o COGLES2Driver.o COGLES2ExtensionHandler.o COGLES2FixedPipelineRenderer.o COGLES2MaterialRenderer.o COGLES2NormalMapRenderer.o COGLES2ParallaxMapRenderer.o COGLES2Renderer2D.o CWebGL1Driver.o \
-	CGLXManager.o CWGLManager.o CEGLManager.o
+	COGLESDriver.o COGLESExtensionHandler.o COGLES2Driver.o COGLES2ExtensionHandler.o COGLES2FixedPipelineRenderer.o COGLES2MaterialRenderer.o COGLES2NormalMapRenderer.o COGLES2ParallaxMapRenderer.o COGLES2Renderer2D.o
 IRRIMAGEOBJ = CColorConverter.o CImage.o CImageLoaderBMP.o CImageLoaderDDS.o CImageLoaderJPG.o CImageLoaderPCX.o CImageLoaderPNG.o CImageLoaderPSD.o CImageLoaderPVR.o CImageLoaderTGA.o CImageLoaderPPM.o CImageLoaderWAL.o CImageLoaderRGB.o \
 	CImageWriterBMP.o CImageWriterJPG.o CImageWriterPCX.o CImageWriterPNG.o CImageWriterPPM.o CImageWriterPSD.o CImageWriterTGA.o
 IRRVIDEOOBJ = CVideoModeList.o CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
-IRRSWRENDEROBJ = CSoftwareDriver.o CSoftwareTexture.o CTRFlat.o CTRFlatWire.o CTRGouraud.o CTRGouraudWire.o  \
-	CTRTextureFlat.o CTRTextureFlatWire.o CTRTextureGouraud.o CTRTextureGouraudAdd.o CTRTextureGouraudNoZ.o \
-	CTRTextureGouraudWire.o CZBuffer.o
-IRRBURNINGOBJ = CSoftwareDriver2.o CSoftwareTexture2.o CDepthBuffer.o IBurningShader.o CTRNormalMap.o CTRParallaxMap.o \
-	CTRStencilShadow.o CTRTextureGouraudVertexAlpha2.o CTRTextureGouraudNoZ2.o CTRTextureLightMap2_M2.o \
-	CTRTextureLightMap2_M1.o CTRTextureLightMapGouraud2_M4.o CTRTextureLightMap2_M4.o  CTRTextureGouraud2.o CTRGouraud2.o \
-	CTRGouraudAlphaNoZ2.o CTRTextureDetailMap2.o CTRTextureGouraudAdd2.o CTRTextureGouraudAddNoZ2.o CTRTextureWire2.o \
-	CTRTextureLightMap2_Add.o CTRTextureBlend.o CTRTextureGouraudAlpha.o burning_shader_color.o \
-	CTRTextureGouraudAlphaNoZ.o  CBurningShader_Raster_Reference.o CTR_transparent_reflection_2_layer.o CTRGouraudNoZ2.o
-IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CXMLWriter.o CWADReader.o CZipReader.o CPakReader.o CNPKReader.o CTarReader.o CMountPointReader.o irrXML.o CAttributes.o lzma/LzmaDec.o
-IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceLinux.o CIrrDeviceConsole.o CIrrDeviceStub.o CIrrDeviceWin32.o CIrrDeviceFB.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o 	CProfiler.o utf8.o
+IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CXMLWriter.o CWADReader.o CZipReader.o CPakReader.o CNPKReader.o CTarReader.o CMountPointReader.o irrXML.o CAttributes.o
+IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o
 IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIContextMenu.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIInOutFader.o CGUIListBox.o CGUIMenu.o CGUIMeshViewer.o CGUIMessageBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISpinBox.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CGUITable.o CGUIToolBar.o CGUIWindow.o CGUIColorSelectDialog.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o CGUITreeView.o CGUIProfiler.o
 LIBAESGM = aesGladman/aescrypt.o aesGladman/aeskey.o aesGladman/aestab.o aesGladman/fileenc.o aesGladman/hmac.o aesGladman/prng.o aesGladman/pwd2key.o aesGladman/sha1.o aesGladman/sha2.o
 
 # Next variable is for additional scene nodes etc. of customized Irrlicht versions
 EXTRAOBJ =
 LINKOBJ = $(IRRMESHOBJ) $(IRROBJ) $(IRRPARTICLEOBJ) $(IRRANIMOBJ) \
-	$(IRRVIDEOOBJ) $(IRRSWRENDEROBJ) $(IRRBURNINGOBJ) $(IRRIOOBJ) $(IRROTHEROBJ) \
+	$(IRRVIDEOOBJ) $(IRRIOOBJ) $(IRROTHEROBJ) \
 	$(IRRGUIOBJ) $(LIBAESGM) $(EXTRAOBJ)
 
 emscripten: EMSCRIPTEN=1
@@ -88,7 +77,6 @@ endif
 ifdef PROFILE
 CPPFLAGS += -pg
 endif
-CFLAGS += -DPNG_THREAD_UNSAFE_OK -DPNG_NO_MMX_CODE -DPNG_NO_MNG_FEATURES -DPNG_ARM_NEON_OPT=0
 ifdef EMSCRIPTEN
   CXXFLAGS += -std=gnu++11 -U__STRICT_ANSI__
   ifdef WASM
@@ -96,6 +84,8 @@ ifdef EMSCRIPTEN
     CXXFLAGS += -s WASM=1
   endif  
 endif
+
+sharedlib sharedlib_osx sharedlib_win32: LDFLAGS += -lz -ljpeg -lpng
 
 sharedlib sharedlib_osx: CPPFLAGS += -fPIC
 # TODO: also necessary on sharedlib_osx?
@@ -110,7 +100,7 @@ endif
 staticlib sharedlib install: SYSTEM = Linux
 sharedlib install: SHARED_LIB = libIrrlicht.so
 sharedlib: LDFLAGS += -L/usr/X11R6/lib$(LIBSELECT) -lGL -lXxf86vm
-staticlib sharedlib: CXXINCS += -I/usr/X11R6/include
+staticlib sharedlib: CXXINCS += -I/usr/X11R6/include -I/usr/include/SDL2
 
 #OSX specific options
 staticlib_osx sharedlib_osx install_osx: SYSTEM = MacOSX
