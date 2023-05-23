@@ -929,13 +929,6 @@
 		8495BD2B28C0E591009FCF4D /* CIrrDeviceSDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceSDL.h; sourceTree = "<group>"; };
 		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
-		84A219A6249F82DC00E189FC /* burning_shader_compile_verify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_verify.h; sourceTree = "<group>"; };
-		84A219A7249F82DC00E189FC /* burning_shader_compile_triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_triangle.h; sourceTree = "<group>"; };
-		84A219A8249F82DC00E189FC /* burning_shader_compile_fragment_start.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_fragment_start.h; sourceTree = "<group>"; };
-		84A219A9249F82DC00E189FC /* burning_shader_color_fraq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_color_fraq.h; sourceTree = "<group>"; };
-		84A219AA249F82DC00E189FC /* burning_shader_compile_start.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_start.h; sourceTree = "<group>"; };
-		84A219AC249F82DC00E189FC /* burning_shader_compile_fragment_default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_fragment_default.h; sourceTree = "<group>"; };
-		84A219AD249F82DD00E189FC /* burning_shader_compile_fragment_end.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = burning_shader_compile_fragment_end.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1144,13 +1137,6 @@
 		5E34C7A21B7F4C1900F212E8 /* video */ = {
 			isa = PBXGroup;
 			children = (
-				84A219A9249F82DC00E189FC /* burning_shader_color_fraq.h */,
-				84A219AC249F82DC00E189FC /* burning_shader_compile_fragment_default.h */,
-				84A219AD249F82DD00E189FC /* burning_shader_compile_fragment_end.h */,
-				84A219A8249F82DC00E189FC /* burning_shader_compile_fragment_start.h */,
-				84A219AA249F82DC00E189FC /* burning_shader_compile_start.h */,
-				84A219A7249F82DC00E189FC /* burning_shader_compile_triangle.h */,
-				84A219A6249F82DC00E189FC /* burning_shader_compile_verify.h */,
 				5E34C6EE1B7F4AFB00F212E8 /* EDriverFeatures.h */,
 				5E34C6EF1B7F4AFB00F212E8 /* EDriverTypes.h */,
 				5E34C6F41B7F4AFB00F212E8 /* EMaterialFlags.h */,
@@ -1370,7 +1356,6 @@
 			isa = PBXGroup;
 			children = (
 				5E34C8061B7F51F100F212E8 /* device */,
-				5E34C8071B7F520000F212E8 /* extern */,
 				5E34C8921B7F652600F212E8 /* CLogger.cpp */,
 				5E34C8931B7F652600F212E8 /* CLogger.h */,
 				5E34C8941B7F652600F212E8 /* COSOperator.cpp */,
@@ -1397,13 +1382,6 @@
 				5E34C80E1B7F52AC00F212E8 /* CIrrDeviceStub.h */,
 			);
 			name = device;
-			sourceTree = "<group>";
-		};
-		5E34C8071B7F520000F212E8 /* extern */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = extern;
 			sourceTree = "<group>";
 		};
 		5E34C89F1B7F655200F212E8 /* animators */ = {
@@ -2242,7 +2220,6 @@
 					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
-				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
 		};
@@ -2292,7 +2269,6 @@
 					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
-				STRIP_STYLE = "non-global";
 			};
 			name = Release;
 		};
