@@ -2217,7 +2217,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
 			};
@@ -2266,7 +2265,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-D_IRR_COMPILE_WITH_SDL_DEVICE_",
 					"-I${SRCROOT}/../../../SDL2/include",
 				);
 			};
