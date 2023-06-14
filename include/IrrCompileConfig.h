@@ -769,7 +769,7 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_PCX_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_PNG_WRITER_ if you want to write .png files
-//#define _IRR_COMPILE_WITH_PNG_WRITER_
+#define _IRR_COMPILE_WITH_PNG_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_PNG_WRITER_
 #undef _IRR_COMPILE_WITH_PNG_WRITER_
 #endif
