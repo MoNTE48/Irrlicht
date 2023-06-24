@@ -47,7 +47,8 @@ namespace video
 			case EVDF_TEXTURE_MATRIX:
 				return true;
 			case EVDF_TEXTURE_NPOT:
-				return FeatureAvailable[IRR_GL_APPLE_texture_2D_limited_npot] || FeatureAvailable[IRR_GL_OES_texture_npot];
+			//	return FeatureAvailable[IRR_GL_APPLE_texture_2D_limited_npot] || FeatureAvailable[IRR_GL_OES_texture_npot];
+				return FeatureAvailable[IRR_GL_OES_texture_npot];
 			case EVDF_MIP_MAP_AUTO_UPDATE:
 				return Version>100;
 			case EVDF_BLEND_OPERATIONS:
