@@ -181,8 +181,12 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 				if (ret == -1)
 				{
-					SDL_GL_SetSwapInterval(param.Vsync ? 1 : 0);
+					SDL_GL_SetSwapInterval(1);
 				}
+			}
+			else
+			{
+				SDL_GL_SetSwapInterval(0);
 			}
 		}
 	}
