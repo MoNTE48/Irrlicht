@@ -139,7 +139,7 @@ namespace irr
 		public:
 
 			CCursorControl(CIrrDeviceSDL* dev)
-				: Device(dev), IsVisible(true)
+				: Device(dev), IsVisible(true), ActiveIcon(gui::ECI_NORMAL)
 			{
 				initCursors();
 			}
