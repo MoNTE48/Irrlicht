@@ -830,13 +830,6 @@ void CIrrDeviceSDL::createDriver()
 {
 	switch(CreationParams.DriverType)
 	{
-	case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
-	case video::EDT_DIRECT3D9:
-	case video::EDT_SOFTWARE:
-	case video::EDT_BURNINGSVIDEO:
-		os::Printer::log("SDL device does not support this driver. Try another one.", ELL_ERROR);
-		break;
-
 	case video::EDT_OPENGL:
 #ifdef _IRR_COMPILE_WITH_OPENGL_
 		VideoDriver = video::createOpenGLDriver(CreationParams, FileSystem, this);

@@ -564,21 +564,6 @@ bool CIrrDeviceLinux::createWindow()
 	long num;
 	XGetWMNormalHints(XDisplay, XWindow, StdHints, &num);
 
-	// create an XImage for the software renderer
-	//(thx to Nadav for some clues on how to do that!)
-
-	if (CreationParams.DriverType == video::EDT_SOFTWARE || CreationParams.DriverType == video::EDT_BURNINGSVIDEO)
-	{
-		SoftwareImage = XCreateImage(XDisplay,
-			VisualInfo->visual, VisualInfo->depth,
-			ZPixmap, 0, 0, Width, Height,
-			BitmapPad(XDisplay), 0);
-
-		// use malloc because X will free it later on
-		if (SoftwareImage)
-			SoftwareImage->data = (char*) malloc(SoftwareImage->bytes_per_line * SoftwareImage->height * sizeof(char));
-	}
-
 	initXAtoms();
 
 	// check netwm support
@@ -599,20 +584,6 @@ void CIrrDeviceLinux::createDriver()
 	switch(CreationParams.DriverType)
 	{
 #ifdef _IRR_COMPILE_WITH_X11_
-	case video::EDT_SOFTWARE:
-#ifdef _IRR_COMPILE_WITH_SOFTWARE_
-		VideoDriver = video::createSoftwareDriver(CreationParams.WindowSize, CreationParams.Fullscreen, FileSystem, this);
-#else
-		os::Printer::log("No Software driver support compiled in.", ELL_ERROR);
-#endif
-		break;
-	case video::EDT_BURNINGSVIDEO:
-#ifdef _IRR_COMPILE_WITH_BURNINGSVIDEO_
-		VideoDriver = video::createBurningVideoDriver(CreationParams, FileSystem, this);
-#else
-		os::Printer::log("Burning's video driver was not compiled in.", ELL_ERROR);
-#endif
-		break;
 	case video::EDT_OPENGL:
 #ifdef _IRR_COMPILE_WITH_OPENGL_
 		{
@@ -659,11 +630,6 @@ void CIrrDeviceLinux::createDriver()
 #else
 		os::Printer::log("No WebGL1 support compiled in.", ELL_ERROR);
 #endif
-		break;
-	case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
-	case video::EDT_DIRECT3D9:
-		os::Printer::log("This driver is not available in Linux. Try OpenGL or Software renderer.",
-			ELL_ERROR);
 		break;
 	case video::EDT_NULL:
 		VideoDriver = video::createNullDriver(FileSystem, CreationParams.WindowSize);

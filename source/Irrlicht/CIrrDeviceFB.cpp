@@ -202,22 +202,6 @@ void CIrrDeviceFB::createDriver()
 {
 	switch(CreationParams.DriverType)
 	{
-	case video::EDT_SOFTWARE:
-		#ifdef _IRR_COMPILE_WITH_SOFTWARE_
-		VideoDriver = video::createSoftwareDriver(CreationParams.WindowSize, CreationParams.Fullscreen, FileSystem, this);
-		#else
-		os::Printer::log("No Software driver support compiled in.", ELL_WARNING);
-		#endif
-		break;
-
-	case video::EDT_BURNINGSVIDEO:
-		#ifdef _IRR_COMPILE_WITH_BURNINGSVIDEO_
-		VideoDriver = video::createBurningVideoDriver(CreationParams, FileSystem, this);
-		#else
-		os::Printer::log("Burning's video driver was not compiled in.", ELL_WARNING);
-		#endif
-		break;
-
 	case video::EDT_OGLES2:
 		#ifdef _IRR_COMPILE_WITH_OGLES2_
 		{
@@ -236,9 +220,7 @@ void CIrrDeviceFB::createDriver()
 		#endif
 		break;
 
-	case video::DEPRECATED_EDT_DIRECT3D8_NO_LONGER_EXISTS:
 	case video::EDT_OPENGL:
-	case video::EDT_DIRECT3D9:
 		os::Printer::log("This driver is not available in FB. Try Software renderer.",
 			ELL_WARNING);
 		break;
@@ -415,9 +397,8 @@ void CIrrDeviceFB::sleep(u32 timeMs, bool pauseTimer=false)
 //! presents a surface in the client area
 bool CIrrDeviceFB::present(video::IImage* image, void* windowId, core::rect<s32>* src )
 {
-	// this is only necessary for software drivers.
-	if (CreationParams.DriverType != video::EDT_SOFTWARE && CreationParams.DriverType != video::EDT_BURNINGSVIDEO)
-		return false;
+	// only the software drivers presented a surface here
+	return false;
 
 	if (!SoftwareImage)
 		return false;

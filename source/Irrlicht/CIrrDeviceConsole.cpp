@@ -117,23 +117,6 @@ CIrrDeviceConsole::CIrrDeviceConsole(const SIrrlichtCreationParameters& params)
 
 	switch (params.DriverType)
 	{
-	case video::EDT_SOFTWARE:
-		#ifdef _IRR_COMPILE_WITH_SOFTWARE_
-		VideoDriver = video::createSoftwareDriver(CreationParams.WindowSize, CreationParams.Fullscreen, FileSystem, this);
-		#else
-		os::Printer::log("Software driver was not compiled in.", ELL_ERROR);
-		#endif
-		break;
-
-	case video::EDT_BURNINGSVIDEO:
-		#ifdef _IRR_COMPILE_WITH_BURNINGSVIDEO_
-		VideoDriver = video::createBurningVideoDriver(CreationParams, FileSystem, this);
-		#else
-		os::Printer::log("Burning's Video driver was not compiled in.", ELL_ERROR);
-		#endif
-		break;
-
-	case video::EDT_DIRECT3D9:
 	case video::EDT_OPENGL:
 		os::Printer::log("The console device cannot use hardware drivers yet.", ELL_ERROR);
 		break;

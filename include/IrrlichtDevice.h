@@ -356,24 +356,6 @@ namespace irr
 			{
 				case video::EDT_NULL:
 					return true;
-				case video::EDT_SOFTWARE:
-#ifdef _IRR_COMPILE_WITH_SOFTWARE_
-					return true;
-#else
-					return false;
-#endif
-				case video::EDT_BURNINGSVIDEO:
-#ifdef _IRR_COMPILE_WITH_BURNINGSVIDEO_
-					return true;
-#else
-					return false;
-#endif
-				case video::EDT_DIRECT3D9:
-#ifdef _IRR_COMPILE_WITH_DIRECT3D_9_
-					return true;
-#else
-					return false;
-#endif
 				case video::EDT_OPENGL:
 #ifdef _IRR_COMPILE_WITH_OPENGL_
 					return true;

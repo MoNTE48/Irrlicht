@@ -100,14 +100,6 @@ enum E_TEXTURE_CREATION_FLAG
 	  */
 	ETCF_AUTO_GENERATE_MIP_MAPS = 0x00000100,
 
-	//! Enable support for vertex shader texture sampling on some drivers
-	/** Default is false.
-	This adds a small costs to all texture switches.
-	Currently only affects D3D9.
-	On OpenGL vertex shaders use the same texture unit as pixel shaders, so support there only depends on GL version and not on this flag
-	*/
-	ETCF_SUPPORT_VERTEXT_TEXTURE = 0x00000200,
-
 	/** This flag is never used, it only forces the compiler to compile
 	these enumeration values to 32 bit. */
 	ETCF_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
@@ -205,9 +197,6 @@ public:
 
 	The size of the i-th mipmap level is defined as max(getSize().Width>>i,1)
 	and max(getSize().Height>>i,1).
-	Except for textures of EDT_SOFTWARE driver which returns data for
-	getOriginalSize(). Reason: Both original sized and modified sized textures are used
-	in that driver depending on whether the texture is used in 2d or 3d.
 
 	\param mode Specifies what kind of changes to the locked texture are
 	allowed. Unspecified behavior will arise if texture is written in read
