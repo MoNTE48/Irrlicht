@@ -15,7 +15,8 @@
 
 #include "IrrCompileConfig.h"
 #ifdef _IRR_COMPILE_WITH_ZLIB_
-	#include <zlib.h> // use system lib
+//	#include <zlib.h> // use system lib
+	#include "zlib.h"
 
 	#ifdef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
 	#include "aesGladman/fileenc.h"
@@ -471,14 +472,14 @@ IReadFile* CZipReader::createAndOpenFile(const io::path& filename)
 
 
 #ifdef _IRR_COMPILE_WITH_ZLIB_
-void updateKeys(uLong (&keys)[3], Bytef c) {
+inline void updateKeys(uLong (&keys)[3], Bytef c) {
 	keys[0] = ~crc32(~keys[0], &c, 1);
 	keys[1] = (keys[1] + (keys[0] & 0xFF)) * 134775813L + 1;
 	const Bytef k = keys[1] >> 24;
 	keys[2] = ~crc32(~keys[2], &k, 1);
 }
 
-u8 decryptByte(uLong (&keys)[3], Bytef c) {
+inline u8 decryptByte(uLong (&keys)[3], Bytef c) {
 	const uLong k = keys[2] | 2;
 	Bytef res = c ^ ((k * (k ^ 1)) >> 8);
 	updateKeys(keys, res);
@@ -622,9 +623,19 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 
 		// Decrypt the contents
 		decryptedBuf = new u8[decryptedSize];
-		File->read(decryptedBuf, decryptedSize);
-		for (u32 i = 0; i < decryptedSize; i++)
-			decryptedBuf[i] = decryptByte(keys, decryptedBuf[i]);
+		const u32 CHUNK_SIZE = 4096;
+
+		for (u32 offset = 0; offset < decryptedSize; offset += CHUNK_SIZE)
+		{
+			u32 currentChunkSize = CHUNK_SIZE;
+			if (offset + currentChunkSize > decryptedSize)
+				currentChunkSize = decryptedSize - offset;
+
+			File->read(decryptedBuf + offset, currentChunkSize);
+			for (u32 i = 0; i < currentChunkSize; i++)
+				decryptedBuf[offset + i] = decryptByte(keys, decryptedBuf[offset + i]);
+		}
+
 		decrypted = FileSystem->createMemoryReadFile(decryptedBuf, decryptedSize, Files[index].FullName, true);
 	}
 #endif
