@@ -356,6 +356,24 @@
 		5E79089B1C10FEF900DFE7FE /* CB3DMeshWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */; };
 		8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 		8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
+		84F8F0A72AD4B0D500808A33 /* prng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0952AD4B0D500808A33 /* prng.cpp */; };
+		84F8F0A82AD4B0D500808A33 /* prng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0952AD4B0D500808A33 /* prng.cpp */; };
+		84F8F0A92AD4B0D500808A33 /* aeskey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0962AD4B0D500808A33 /* aeskey.cpp */; };
+		84F8F0AA2AD4B0D500808A33 /* aeskey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0962AD4B0D500808A33 /* aeskey.cpp */; };
+		84F8F0AB2AD4B0D500808A33 /* aestab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0972AD4B0D500808A33 /* aestab.cpp */; };
+		84F8F0AC2AD4B0D500808A33 /* aestab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0972AD4B0D500808A33 /* aestab.cpp */; };
+		84F8F0AF2AD4B0D500808A33 /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09A2AD4B0D500808A33 /* sha2.cpp */; };
+		84F8F0B02AD4B0D500808A33 /* sha2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09A2AD4B0D500808A33 /* sha2.cpp */; };
+		84F8F0B22AD4B0D500808A33 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09D2AD4B0D500808A33 /* hmac.cpp */; };
+		84F8F0B32AD4B0D500808A33 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09D2AD4B0D500808A33 /* hmac.cpp */; };
+		84F8F0B42AD4B0D500808A33 /* aescrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09E2AD4B0D500808A33 /* aescrypt.cpp */; };
+		84F8F0B52AD4B0D500808A33 /* aescrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F09E2AD4B0D500808A33 /* aescrypt.cpp */; };
+		84F8F0B72AD4B0D500808A33 /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A02AD4B0D500808A33 /* pwd2key.cpp */; };
+		84F8F0B82AD4B0D500808A33 /* pwd2key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A02AD4B0D500808A33 /* pwd2key.cpp */; };
+		84F8F0B92AD4B0D500808A33 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A12AD4B0D500808A33 /* sha1.cpp */; };
+		84F8F0BA2AD4B0D500808A33 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A12AD4B0D500808A33 /* sha1.cpp */; };
+		84F8F0BC2AD4B0D500808A33 /* fileenc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A32AD4B0D500808A33 /* fileenc.cpp */; };
+		84F8F0BD2AD4B0D500808A33 /* fileenc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0A32AD4B0D500808A33 /* fileenc.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -929,6 +947,23 @@
 		8495BD2B28C0E591009FCF4D /* CIrrDeviceSDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceSDL.h; sourceTree = "<group>"; };
 		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
+		84F8F0942AD4B0D500808A33 /* aesopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aesopt.h; path = aesGladman/aesopt.h; sourceTree = "<group>"; };
+		84F8F0952AD4B0D500808A33 /* prng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = prng.cpp; path = aesGladman/prng.cpp; sourceTree = "<group>"; };
+		84F8F0962AD4B0D500808A33 /* aeskey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aeskey.cpp; path = aesGladman/aeskey.cpp; sourceTree = "<group>"; };
+		84F8F0972AD4B0D500808A33 /* aestab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aestab.cpp; path = aesGladman/aestab.cpp; sourceTree = "<group>"; };
+		84F8F0982AD4B0D500808A33 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = aesGladman/sha1.h; sourceTree = "<group>"; };
+		84F8F0992AD4B0D500808A33 /* pwd2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pwd2key.h; path = aesGladman/pwd2key.h; sourceTree = "<group>"; };
+		84F8F09A2AD4B0D500808A33 /* sha2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sha2.cpp; path = aesGladman/sha2.cpp; sourceTree = "<group>"; };
+		84F8F09C2AD4B0D500808A33 /* prng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = prng.h; path = aesGladman/prng.h; sourceTree = "<group>"; };
+		84F8F09D2AD4B0D500808A33 /* hmac.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = hmac.cpp; path = aesGladman/hmac.cpp; sourceTree = "<group>"; };
+		84F8F09E2AD4B0D500808A33 /* aescrypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aescrypt.cpp; path = aesGladman/aescrypt.cpp; sourceTree = "<group>"; };
+		84F8F09F2AD4B0D500808A33 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hmac.h; path = aesGladman/hmac.h; sourceTree = "<group>"; };
+		84F8F0A02AD4B0D500808A33 /* pwd2key.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pwd2key.cpp; path = aesGladman/pwd2key.cpp; sourceTree = "<group>"; };
+		84F8F0A12AD4B0D500808A33 /* sha1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sha1.cpp; path = aesGladman/sha1.cpp; sourceTree = "<group>"; };
+		84F8F0A22AD4B0D500808A33 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aes.h; path = aesGladman/aes.h; sourceTree = "<group>"; };
+		84F8F0A32AD4B0D500808A33 /* fileenc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fileenc.cpp; path = aesGladman/fileenc.cpp; sourceTree = "<group>"; };
+		84F8F0A42AD4B0D500808A33 /* fileenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fileenc.h; path = aesGladman/fileenc.h; sourceTree = "<group>"; };
+		84F8F0A52AD4B0D500808A33 /* sha2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha2.h; path = aesGladman/sha2.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1355,6 +1390,7 @@
 		5E34C7A81B7F506D00F212E8 /* irr */ = {
 			isa = PBXGroup;
 			children = (
+				84F8F0932AD4B0BF00808A33 /* aesGladman */,
 				5E34C8061B7F51F100F212E8 /* device */,
 				5E34C8921B7F652600F212E8 /* CLogger.cpp */,
 				5E34C8931B7F652600F212E8 /* CLogger.h */,
@@ -1734,6 +1770,30 @@
 			name = "OpenGL Core";
 			sourceTree = "<group>";
 		};
+		84F8F0932AD4B0BF00808A33 /* aesGladman */ = {
+			isa = PBXGroup;
+			children = (
+				84F8F0A22AD4B0D500808A33 /* aes.h */,
+				84F8F09E2AD4B0D500808A33 /* aescrypt.cpp */,
+				84F8F0962AD4B0D500808A33 /* aeskey.cpp */,
+				84F8F0942AD4B0D500808A33 /* aesopt.h */,
+				84F8F0972AD4B0D500808A33 /* aestab.cpp */,
+				84F8F0A32AD4B0D500808A33 /* fileenc.cpp */,
+				84F8F0A42AD4B0D500808A33 /* fileenc.h */,
+				84F8F09D2AD4B0D500808A33 /* hmac.cpp */,
+				84F8F09F2AD4B0D500808A33 /* hmac.h */,
+				84F8F0952AD4B0D500808A33 /* prng.cpp */,
+				84F8F09C2AD4B0D500808A33 /* prng.h */,
+				84F8F0A02AD4B0D500808A33 /* pwd2key.cpp */,
+				84F8F0992AD4B0D500808A33 /* pwd2key.h */,
+				84F8F0A12AD4B0D500808A33 /* sha1.cpp */,
+				84F8F0982AD4B0D500808A33 /* sha1.h */,
+				84F8F09A2AD4B0D500808A33 /* sha2.cpp */,
+				84F8F0A52AD4B0D500808A33 /* sha2.h */,
+			);
+			name = aesGladman;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1836,6 +1896,7 @@
 				5E34CA1B1B7F6EBF00F212E8 /* CGUIModalScreen.cpp in Sources */,
 				5E34CA1D1B7F6EBF00F212E8 /* CGUIProfiler.cpp in Sources */,
 				5E34CA1F1B7F6EBF00F212E8 /* CGUIScrollBar.cpp in Sources */,
+				84F8F0B92AD4B0D500808A33 /* sha1.cpp in Sources */,
 				5E34CA211B7F6EBF00F212E8 /* CGUISkin.cpp in Sources */,
 				5E34CA231B7F6EBF00F212E8 /* CGUISpinBox.cpp in Sources */,
 				5E34CA251B7F6EBF00F212E8 /* CGUISpriteBank.cpp in Sources */,
@@ -1899,12 +1960,15 @@
 				5E34CB161B7F6EC200F212E8 /* CLWOMeshFileLoader.cpp in Sources */,
 				5E34CB181B7F6EC200F212E8 /* CMD2MeshFileLoader.cpp in Sources */,
 				5E34CB1A1B7F6EC200F212E8 /* CMD3MeshFileLoader.cpp in Sources */,
+				84F8F0AF2AD4B0D500808A33 /* sha2.cpp in Sources */,
 				5E34CB1C1B7F6EC200F212E8 /* CMeshTextureLoader.cpp in Sources */,
 				5E34CB1E1B7F6EC200F212E8 /* CMS3DMeshFileLoader.cpp in Sources */,
 				5E34CB211B7F6EC200F212E8 /* CMY3DMeshFileLoader.cpp in Sources */,
 				5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */,
+				84F8F0B42AD4B0D500808A33 /* aescrypt.cpp in Sources */,
 				5E34CB251B7F6EC200F212E8 /* COCTLoader.cpp in Sources */,
 				5E34CB271B7F6EC200F212E8 /* COgreMeshFileLoader.cpp in Sources */,
+				84F8F0A92AD4B0D500808A33 /* aeskey.cpp in Sources */,
 				5E34CB291B7F6EC200F212E8 /* CPLYMeshFileLoader.cpp in Sources */,
 				5E34CB2B1B7F6EC200F212E8 /* CQ3LevelMesh.cpp in Sources */,
 				5E34CB2D1B7F6EC200F212E8 /* CSceneLoaderIrr.cpp in Sources */,
@@ -1917,10 +1981,12 @@
 				5E34CB3C1B7F6EC300F212E8 /* CParticleBoxEmitter.cpp in Sources */,
 				5E34CB3E1B7F6EC300F212E8 /* CParticleCylinderEmitter.cpp in Sources */,
 				5E34CB401B7F6EC300F212E8 /* CParticleFadeOutAffector.cpp in Sources */,
+				84F8F0B22AD4B0D500808A33 /* hmac.cpp in Sources */,
 				5E34CB421B7F6EC300F212E8 /* CParticleGravityAffector.cpp in Sources */,
 				5E34CB441B7F6EC300F212E8 /* CParticleMeshEmitter.cpp in Sources */,
 				5E34CB461B7F6EC300F212E8 /* CParticlePointEmitter.cpp in Sources */,
 				5E34CB481B7F6EC300F212E8 /* CParticleRingEmitter.cpp in Sources */,
+				84F8F0BC2AD4B0D500808A33 /* fileenc.cpp in Sources */,
 				5E34CB4A1B7F6EC300F212E8 /* CParticleRotationAffector.cpp in Sources */,
 				5E34CB4C1B7F6EC300F212E8 /* CParticleScaleAffector.cpp in Sources */,
 				5E34CB4E1B7F6EC300F212E8 /* CParticleSphereEmitter.cpp in Sources */,
@@ -1952,16 +2018,19 @@
 				5E34CB801B7F6EC400F212E8 /* CSTLMeshWriter.cpp in Sources */,
 				5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */,
+				84F8F0AB2AD4B0D500808A33 /* aestab.cpp in Sources */,
 				5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */,
 				5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */,
 				5E34CB8A1B7F6EC400F212E8 /* CMeshManipulator.cpp in Sources */,
 				5E34CB8C1B7F6EC400F212E8 /* CSceneManager.cpp in Sources */,
 				5E34CBB11B7F6EC500F212E8 /* CImageLoaderBMP.cpp in Sources */,
+				84F8F0B72AD4B0D500808A33 /* pwd2key.cpp in Sources */,
 				5E34CBB31B7F6EC500F212E8 /* CImageLoaderDDS.cpp in Sources */,
 				5E34CBB51B7F6EC600F212E8 /* CImageLoaderJPG.cpp in Sources */,
 				5E34CBB71B7F6EC600F212E8 /* CImageLoaderPCX.cpp in Sources */,
 				5E34CBB91B7F6EC600F212E8 /* CImageLoaderPNG.cpp in Sources */,
 				5E34CBBB1B7F6EC600F212E8 /* CImageLoaderPPM.cpp in Sources */,
+				84F8F0A72AD4B0D500808A33 /* prng.cpp in Sources */,
 				5E34CBBD1B7F6EC600F212E8 /* CImageLoaderPSD.cpp in Sources */,
 				5E34CBBF1B7F6EC600F212E8 /* CImageLoaderPVR.cpp in Sources */,
 				5E34CBC11B7F6EC600F212E8 /* CImageLoaderRGB.cpp in Sources */,
@@ -1999,9 +2068,11 @@
 				5E5732B51C18E212003F664E /* CGUICheckBox.cpp in Sources */,
 				5E5732B61C18E212003F664E /* CGUIColorSelectDialog.cpp in Sources */,
 				5E5732B71C18E212003F664E /* CGUIComboBox.cpp in Sources */,
+				84F8F0BD2AD4B0D500808A33 /* fileenc.cpp in Sources */,
 				5E5732B81C18E212003F664E /* CGUIContextMenu.cpp in Sources */,
 				5E5732B91C18E212003F664E /* CGUIEditBox.cpp in Sources */,
 				5E5732BA1C18E212003F664E /* CGUIEnvironment.cpp in Sources */,
+				84F8F0BA2AD4B0D500808A33 /* sha1.cpp in Sources */,
 				5E5732BB1C18E212003F664E /* CGUIFileOpenDialog.cpp in Sources */,
 				5E5732BC1C18E212003F664E /* CGUIFont.cpp in Sources */,
 				5E5732BD1C18E212003F664E /* CGUIImage.cpp in Sources */,
@@ -2025,6 +2096,7 @@
 				5E5732CE1C18E212003F664E /* CGUITreeView.cpp in Sources */,
 				5E5732CF1C18E212003F664E /* CGUIWindow.cpp in Sources */,
 				5E5732D01C18E212003F664E /* CAttributes.cpp in Sources */,
+				84F8F0B82AD4B0D500808A33 /* pwd2key.cpp in Sources */,
 				5E5732D11C18E212003F664E /* CFileList.cpp in Sources */,
 				5E5732D21C18E212003F664E /* CFileSystem.cpp in Sources */,
 				5E5732D31C18E212003F664E /* CLimitReadFile.cpp in Sources */,
@@ -2107,6 +2179,7 @@
 				5E5733781C18E212003F664E /* CParticleSystemSceneNode.cpp in Sources */,
 				5E5733791C18E212003F664E /* CAnimatedMeshSceneNode.cpp in Sources */,
 				5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */,
+				84F8F0B32AD4B0D500808A33 /* hmac.cpp in Sources */,
 				5E57337A1C18E212003F664E /* CBillboardSceneNode.cpp in Sources */,
 				5E57337B1C18E212003F664E /* CBoneSceneNode.cpp in Sources */,
 				5E57337C1C18E212003F664E /* CCameraSceneNode.cpp in Sources */,
@@ -2121,12 +2194,16 @@
 				5E5733841C18E212003F664E /* CShadowVolumeSceneNode.cpp in Sources */,
 				5E5733851C18E212003F664E /* CSkyBoxSceneNode.cpp in Sources */,
 				5E5733861C18E212003F664E /* CSkyDomeSceneNode.cpp in Sources */,
+				84F8F0B02AD4B0D500808A33 /* sha2.cpp in Sources */,
+				84F8F0A82AD4B0D500808A33 /* prng.cpp in Sources */,
+				84F8F0AA2AD4B0D500808A33 /* aeskey.cpp in Sources */,
 				5E5733871C18E212003F664E /* CSphereSceneNode.cpp in Sources */,
 				5E5733881C18E212003F664E /* CTerrainSceneNode.cpp in Sources */,
 				5E5733F31C18E2C0003F664E /* COGLESDriver.cpp in Sources */,
 				5E5733891C18E212003F664E /* CTextSceneNode.cpp in Sources */,
 				5E57338A1C18E212003F664E /* CVolumeLightSceneNode.cpp in Sources */,
 				5E57338B1C18E212003F664E /* CWaterSurfaceSceneNode.cpp in Sources */,
+				84F8F0B52AD4B0D500808A33 /* aescrypt.cpp in Sources */,
 				5E57338C1C18E212003F664E /* CB3DMeshWriter.cpp in Sources */,
 				5E57338D1C18E212003F664E /* CColladaMeshWriter.cpp in Sources */,
 				5E57338E1C18E212003F664E /* CIrrMeshWriter.cpp in Sources */,
@@ -2138,6 +2215,7 @@
 				5E5733931C18E212003F664E /* CDefaultSceneNodeFactory.cpp in Sources */,
 				5E5733941C18E212003F664E /* CGeometryCreator.cpp in Sources */,
 				5E5733951C18E212003F664E /* CMeshCache.cpp in Sources */,
+				84F8F0AC2AD4B0D500808A33 /* aestab.cpp in Sources */,
 				5E5733961C18E212003F664E /* CMeshManipulator.cpp in Sources */,
 				5E5733971C18E212003F664E /* CSceneManager.cpp in Sources */,
 				5E5734121C18E2E2003F664E /* COGLES2ParallaxMapRenderer.cpp in Sources */,
