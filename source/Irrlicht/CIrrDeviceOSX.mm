@@ -637,7 +637,7 @@ void CIrrDeviceMacOSX::closeDevice()
 		[SoftwareDriverTarget release];
 		SoftwareDriverTarget = nil;
 	}
-	
+
 	if (Window != nil)
 	{
 		[Window setIsVisible:FALSE];
@@ -659,10 +659,10 @@ bool CIrrDeviceMacOSX::createWindow()
 	CGDisplayErr error;
 	CGRect displayRect;
 	CGDisplayModeRef displaymode, olddisplaymode;
-    
+
     ScreenWidth = (int)CGDisplayPixelsWide(Display);
     ScreenHeight = (int)CGDisplayPixelsHigh(Display);
-    
+
 	//NSBackingStoreNonretained not working since El Capitan (TA has)
     const NSBackingStoreType backing_type = NSBackingStoreBuffered;
 
@@ -672,13 +672,13 @@ bool CIrrDeviceMacOSX::createWindow()
         {
             int x = (CreationParams.WindowPosition.X > 0) ? CreationParams.WindowPosition.X : 0;
             int y = (CreationParams.WindowPosition.Y > 0) ? CreationParams.WindowPosition.Y : 0;
-            
+
             if (CreationParams.WindowPosition.Y > -1)
             {
                 int screenHeight = [[[NSScreen screens] objectAtIndex:0] frame].size.height;
                 y = screenHeight - y - CreationParams.WindowSize.Height;
             }
-            
+
             Window = [[NSWindow alloc] initWithContentRect:NSMakeRect(x, y, CreationParams.WindowSize.Width,CreationParams.WindowSize.Height)
 			styleMask:NSTitledWindowMask+NSClosableWindowMask+NSResizableWindowMask
 			backing:backing_type
@@ -894,7 +894,7 @@ void CIrrDeviceMacOSX::setResize(u32 width, u32 height)
 		ievent.MouseInput.Event = irr::EMIE_LMOUSE_LEFT_UP;
 		ievent.MouseInput.Control = false;
 		ievent.MouseInput.Shift = false;
-		
+
 		const core::position2di& curr = ((CCursorControl *)CursorControl)->getPosition(false);
 		ievent.MouseInput.X = curr.X;
 		ievent.MouseInput.Y = curr.Y;
@@ -925,7 +925,7 @@ void CIrrDeviceMacOSX::createDriver()
 			SoftwareRendererType = 2;
 			if (Window)
 			{
-				Window.contentView.wantsLayer = YES;
+				[[Window contentView] setWantsLayer:YES];
 			}
 #else
 			os::Printer::log("No Software driver support compiled in.", ELL_ERROR);
@@ -938,10 +938,10 @@ void CIrrDeviceMacOSX::createDriver()
 			SoftwareRendererType = 1;
 			if (Window)
 			{
-				Window.contentView.wantsLayer = YES;
+				[[Window contentView] setWantsLayer:YES];
 				[ Window setOpaque:YES];
 			}
-			
+
 #else
 			os::Printer::log("Burning's video driver was not compiled in.", ELL_ERROR);
 #endif
@@ -1529,12 +1529,12 @@ bool CIrrDeviceMacOSX::present(video::IImage* surface, void* windowId, core::rec
 
 		const u8* src = (u8*)surface->getData();
 		const video::ECOLOR_FORMAT src_format = surface->getColorFormat();
-		
+
 		//little endian likely not in memory ARGB
 		//ECOLOR_FORMAT dstFormat = ECF_B8G8R8A8;
 		const u32 dst_colorsamples = SoftwareRendererType == 2 ? 3 : 3;
 		const u32 dst_pitch = src_width * dst_colorsamples;
-		
+
 		@autoreleasepool {
         NSBitmapImageRep *rep = [[
 			[NSBitmapImageRep alloc] initWithBitmapDataPlanes: nil
@@ -1549,13 +1549,13 @@ bool CIrrDeviceMacOSX::present(video::IImage* surface, void* windowId, core::rec
 			bytesPerRow: dst_pitch
 			bitsPerPixel: 8 * dst_colorsamples] autorelease
 								  ];
-		
+
         if ( rep == nil) return false;
         // convert to BGR
 		u8* dst = (u8*) [rep bitmapData];
 		if ( 0 == dst ) return false;
 
-	
+
 		int blitter = 0;
 		if ( src_format == video::ECF_A8R8G8B8 && dst_colorsamples == 3 ) blitter = 1;
 		else if ( src_format == video::ECF_A8R8G8B8 && dst_colorsamples == 4 ) blitter = 2;
@@ -1570,7 +1570,7 @@ bool CIrrDeviceMacOSX::present(video::IImage* surface, void* windowId, core::rec
 				{
 					const u8* sB = src;
 					u8* dB = dst;
-					
+
 					for (s32 x = 0; x < src_width; ++x)
 					{
 						dB[0] = sB[2];
@@ -1582,23 +1582,23 @@ bool CIrrDeviceMacOSX::present(video::IImage* surface, void* windowId, core::rec
 						dB += 3;
 					}
 				} break;
-				
+
 				case 2:
 				{
 					const u32* sB = (const u32*)src;
 					u32 * dB = (u32*)dst;
-					
+
 					for (s32 x = 0; x < src_width; ++x)
 					{
 						size_t v = *sB++;
-						*dB++ = 
+						*dB++ =
 							(( v & 0x00ff0000 ) >> 16 ) |
 							(( v & 0x0000ff00 )       ) |
 							(( v & 0x000000ff ) << 16 ) |
 							0xff000000;
 					}
 				} break;
-				
+
 				case 3: video::CColorConverter::convert_A1R5G5B5toB8G8R8(src, src_width, dst); break;
 				default: video::CColorConverter::convert_viaFormat(src, src_format, src_width, dst, video::ECF_R8G8B8); break;
 			}
@@ -1609,11 +1609,11 @@ bool CIrrDeviceMacOSX::present(video::IImage* surface, void* windowId, core::rec
 		// add layer
         NSSize imageSize = NSMakeSize(src_width, src_height);
         NSImage *image = [[[NSImage alloc] initWithSize: imageSize] autorelease];
-		
+
         [image addRepresentation: rep];
-        Window.contentView.layer.contents = image;
+        [[[Window contentView] layer] setContents:image];
 		}
-		return true;		
+		return true;
 	}
 #endif
 	return false;
