@@ -5,6 +5,10 @@
 #ifndef S_EXPOSED_VIDEO_DATA_H_INCLUDED
 #define S_EXPOSED_VIDEO_DATA_H_INCLUDED
 
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
+#include <SDL.h>
+#endif
+
 // forward declarations for internal pointers
 struct IDirect3D9;
 struct IDirect3DDevice9;
@@ -100,14 +104,16 @@ struct SExposedVideoData
 		void* Window;
 	};
 	
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_	
 	struct SOpenGLSDL
 	{
 		//! The SDL_Window object.
-		void* Window;
+		SDL_Window* Window;
 		
 		//! The SDL_GLContext object.
-		void* Context;
+		SDL_GLContext Context;
 	};
+#endif
 
 	union
 	{
@@ -118,7 +124,9 @@ struct SExposedVideoData
 		SOpenGLFB OpenGLFB;
 		SOpenGLiOS OpenGLiOS;
 		SOGLESAndroid OGLESAndroid;
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 		SOpenGLSDL OpenGLSDL;
+#endif
 	};
 };
 
