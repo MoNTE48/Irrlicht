@@ -94,6 +94,9 @@ enum EGUI_ELEMENT_TYPE
 	//! IGUIProfiler
 	EGUIET_PROFILER,
 
+	//! Scroll container
+	EGUIET_CUSTOM_SCROLLCONTAINER,
+
 	//! Not an element, amount of elements in there
 	EGUIET_COUNT,
 
@@ -131,6 +134,7 @@ const c8* const GUIElementTypeNames[] =
 	"element",
 	"root",
 	"profiler",
+	"scrollContainer",
 	0
 };
 
