@@ -100,6 +100,12 @@ enum EGUI_ELEMENT_TYPE
 	//! GUI table
 	EGUIET_CUSTOM_GUITABLE,
 
+	//! GUI scrollbar
+	EGUIET_CUSTOM_SCROLLBAR,
+
+	//! GUI hypertext
+	EGUIET_CUSTOM_HYPERTEXT,
+
 	//! Not an element, amount of elements in there
 	EGUIET_COUNT,
 
@@ -139,6 +145,8 @@ const c8* const GUIElementTypeNames[] =
 	"profiler",
 	"scrollContainer",
 	"guiTable",
+	"customScrollBar",
+	"hyperText",
 	0
 };
 
