@@ -648,6 +648,9 @@ bool CIrrDeviceSDL::run()
 {
 	os::Timer::tick();
 
+	if (Close)
+		return false;
+
 	SEvent irrevent;
 	SDL_Event SDL_event;
 
@@ -700,7 +703,7 @@ bool CIrrDeviceSDL::run()
 		// your textures manually or quit the app.
 		case SDL_RENDER_DEVICE_RESET:
 			Close = true;
-			break;
+			return false;
 
 		case SDL_SENSORUPDATE:
 			if (SDL_event.sensor.which == AccelerometerInstance)
@@ -1052,7 +1055,7 @@ bool CIrrDeviceSDL::run()
 
 		case SDL_QUIT:
 			Close = true;
-			break;
+			return false;
 
 		case SDL_WINDOWEVENT:
 			{
