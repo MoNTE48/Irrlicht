@@ -11,6 +11,30 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 --------------------------
 Changes in 1.9 (not yet released)
 
+- Avoid unnecessary string copies in GUI code when drawing fonts (accidentally introduced in Irrlicht 1.6).
+- IGUIScrollBar has now getters for the scrollbar buttons and the options to disable background drawing
+- Improved scrollbar handling in CGUITreeView (stepsizes, reacting to keys)
+- Add IGUITreeView::getNextNode (traverse full tree), getPrevNode, getLastSelectTriggerEvent (to get mouse-keys) and scrollTo.
+- Bugfix: CGUITreeView no longer dropping EGET_TREEVIEW_NODE_SELECT events when moving mouse while clicking
+- CGUITreeView now shows expand icon (+/-) for sub-nodes with correct text-color
+- Bugfix: CGUITreeView now aligns scrollbars correct so they work on resize
+- obj/mtl loader no longer messes up bump textures when the name starts with a number
+- CImageLoaderBMP now supports loading 1-bit images with palette data
+- Hardware meshbuffers are now deleted when they hold the last reference to a meshbuffer
+- Variable order inside SMaterial and SMaterialLayer changed for better packing
+- line3d::getClosestPoint can now chose between using line or line segment
+- MY3D loader deprecated and disabled by default as MY3D tools can't be found on the web anymore. Also could always be used as external loader.
+- createCylinderMesh, createArrowMesh and createConeMesh in GeometryCreator tessellation numbers now for full instead of semi-circle.
+  Double your tessellation numbers to get same results as in 1.8
+  Sorry had to break as old solution didn't allow for odd numbers. Also was documented otherwise, so was a bug.
+- Change in UV's for top/bottom center vertex in CGeometryCreator::createCylinderMesh
+- Add some default UV's in CGeometryCreator::createConeMesh
+- Bugfix: CTriangleSelector::getTriangles with bounding-box parameter no longer ignores an additionally passed matrix transformation in the box check
+- Fix: CGUITabControl now catching EMIE_LMOUSE_PRESSED_DOWN
+- Add options for transparency node sorting algorithm.
+- CImageWriterPNG now also supports the writeImageToFile param to allow setting compressing level. 0 stays default, 1-10 for range increasing compression level.
+- Add io::IUserData which can be set in SMaterial to make it easer passing additional material values to shaders
+- Add lens shift support for the camera and the perspective projection functions
 - TGA loader no longer reduces 24&32 bit TGA's with palettes to 16 bit. Thanks @erlehmann for report: https://irrlicht.sourceforge.io/forum/viewtopic.php?t=52925
 - Fix compile error with OS X 10.10 SDK, bug #463. Thanks @Ryan Schmidt for report and patch.
 - Optimize quaternion::rotationFromTo. Thanks @Robert Eisele for patch and proof (https://raw.org/proof/quaternion-from-two-vectors)
@@ -141,7 +165,7 @@ Changes in 1.9 (not yet released)
 - Material.ZWriteEnable is now of type E_ZWRITE instead of bool. This allows now setting materials to always "on" independent of material type and transparency.
   This breaks compiling. To have old values replace false with EZW_OFF and true with EWZ_AUTO.
 - Materials EMT_REFLECTION_2_LAYER and EMT_TRANSPARENT_REFLECTION_2_LAYER on OpenGL are now same as in D3D9. Before GL used a sphere-map for those instead of reflection.
-- Bugfix: CGUIToolBar automatic placement no longer outside of screen when there are modals screens when creating it.
+- Bugfix: CGUIToolBar automatic placement no longer outside of screen when there are modal screens when creating it.
   Or when there are other window elements going over full window-size.
   Thanks to Stephen Lynx for the bugreport and to Sérgio Augusto Vianna for writing a test case with a bug example.
   Changes: a) Never move the toolbar below it's parents lower border. b) No longer check all element-types, but only try to be below other toolbars or menus.

@@ -395,7 +395,8 @@ bool CD3D9Driver::initDriver(HWND hwnd, bool pureSoftware)
 	// get caps
 	pID3DDevice->GetDeviceCaps(&Caps);
 
-	os::Printer::log("Currently available Video Memory (kB)", core::stringc(pID3DDevice->GetAvailableTextureMem()/1024).c_str());
+	// Uses 32-bit value, so maxes out around 4gb
+	os::Printer::log("At least available dedicated+shared system texture memory (kB)", core::stringc(pID3DDevice->GetAvailableTextureMem()/1024).c_str());
 
 	// disable stencilbuffer if necessary
 	if (Params.Stencilbuffer &&
@@ -1464,8 +1465,6 @@ void CD3D9Driver::draw2DImage(const video::ITexture* texture,
 	tcoords.UpperLeftCorner.Y = (f32)sourceRect.UpperLeftCorner.Y / (f32)ss.Height;
 	tcoords.LowerRightCorner.X = (f32)sourceRect.LowerRightCorner.X / (f32)ss.Width;
 	tcoords.LowerRightCorner.Y = (f32)sourceRect.LowerRightCorner.Y / (f32)ss.Height;
-
-	const core::dimension2d<u32>& renderTargetSize = getCurrentRenderTargetSize();
 
 	const video::SColor temp[4] =
 	{

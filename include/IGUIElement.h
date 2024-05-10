@@ -561,8 +561,11 @@ public:
 		{
 			if (element == (*it))
 			{
-				Children.erase(it);
-				Children.push_back(element);
+				if ( (it+1) != Children.end() )
+				{
+					Children.erase(it);
+					Children.push_back(element);
+				}
 				return true;
 			}
 		}

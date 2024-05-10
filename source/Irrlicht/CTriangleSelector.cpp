@@ -15,7 +15,7 @@ namespace scene
 
 //! constructor
 CTriangleSelector::CTriangleSelector(ISceneNode* node)
-: SceneNode(node), MeshBuffer(0), MaterialIndex(0), AnimatedNode(0), LastMeshFrame(0)
+: SceneNode(node), AnimatedNode(0), LastMeshFrame(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CTriangleSelector");
@@ -27,7 +27,7 @@ CTriangleSelector::CTriangleSelector(ISceneNode* node)
 
 //! constructor
 CTriangleSelector::CTriangleSelector(const core::aabbox3d<f32>& box, ISceneNode* node)
-: SceneNode(node), MeshBuffer(0), MaterialIndex(0), AnimatedNode(0), LastMeshFrame(0)
+: SceneNode(node), AnimatedNode(0), LastMeshFrame(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CTriangleSelector");
@@ -40,7 +40,7 @@ CTriangleSelector::CTriangleSelector(const core::aabbox3d<f32>& box, ISceneNode*
 
 //! constructor
 CTriangleSelector::CTriangleSelector(const IMesh* mesh, ISceneNode* node, bool separateMeshbuffers)
-: SceneNode(node), MeshBuffer(0), MaterialIndex(0), AnimatedNode(0), LastMeshFrame(0)
+: SceneNode(node), AnimatedNode(0), LastMeshFrame(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CTriangleSelector");
@@ -50,12 +50,14 @@ CTriangleSelector::CTriangleSelector(const IMesh* mesh, ISceneNode* node, bool s
 }
 
 CTriangleSelector::CTriangleSelector(const IMeshBuffer* meshBuffer, irr::u32 materialIndex, ISceneNode* node)
-	: SceneNode(node), MeshBuffer(meshBuffer), MaterialIndex(materialIndex), AnimatedNode(0), LastMeshFrame(0)
+	: SceneNode(node), AnimatedNode(0), LastMeshFrame(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CTriangleSelector");
 	#endif
 
+	SingleBufferRange.MeshBuffer = meshBuffer;
+	SingleBufferRange.MaterialIndex = materialIndex;
 	createFromMeshBuffer(meshBuffer);
 }
 
@@ -90,7 +92,7 @@ void CTriangleSelector::createFromMesh(const IMesh* mesh, bool createBufferRange
 	u32 totalFaceCount = 0;
 	for (u32 j=0; j<cnt; ++j)
 	{
-		SCollisionTriangleRange range;
+		SBufferTriangleRange range;
 		range.MeshBuffer = mesh->getMeshBuffer(j);
 		range.MaterialIndex = j;
 		range.RangeSize = range.MeshBuffer->getIndexCount() / 3;
@@ -272,11 +274,17 @@ void CTriangleSelector::getTriangles(core::triangle3df* triangles,
 	if (cnt > (u32)arraySize)
 		cnt = (u32)arraySize;
 
-	core::matrix4 mat;
+	core::matrix4 mat(core::matrix4::EM4CONST_NOTHING);
 	if (transform)
+	{
 		mat = *transform;
-	if (SceneNode&&useNodeTransform)
-		mat *= SceneNode->getAbsoluteTransformation();
+		if (SceneNode && useNodeTransform)
+			mat *= SceneNode->getAbsoluteTransformation();
+	}
+	else if (SceneNode && useNodeTransform)
+		mat = SceneNode->getAbsoluteTransformation();
+	else
+		mat.makeIdentity();
 
 	for (u32 i=0; i<cnt; ++i)
 	{
@@ -295,8 +303,8 @@ void CTriangleSelector::getTriangles(core::triangle3df* triangles,
 			triRange.RangeSize = cnt;
 			triRange.Selector = this;
 			triRange.SceneNode = SceneNode;
-			triRange.MeshBuffer = MeshBuffer;
-			triRange.MaterialIndex = MaterialIndex;
+			triRange.MeshBuffer = SingleBufferRange.MeshBuffer;
+			triRange.MaterialIndex = SingleBufferRange.MaterialIndex;
 			outTriangleInfo->push_back(triRange);
 		}
 		else
@@ -337,26 +345,30 @@ void CTriangleSelector::getTriangles(core::triangle3df* triangles,
 	update();
 
 	core::matrix4 mat(core::matrix4::EM4CONST_NOTHING);
-	core::aabbox3df tBox(box);
-
-	if (SceneNode && useNodeTransform)
-	{
-		if ( SceneNode->getAbsoluteTransformation().getInverse(mat) )
-			mat.transformBoxEx(tBox);
-		else
-		{
-			// TODO: else is not yet handled optimally. 
-			// If a node has an axis scaled to 0 we return all triangles without any check
-			return getTriangles(triangles, arraySize, outTriangleCount,
-					transform, useNodeTransform, outTriangleInfo );
-		}
-	}
 	if (transform)
+	{
 		mat = *transform;
+		if (SceneNode && useNodeTransform)
+			mat *= SceneNode->getAbsoluteTransformation();
+	}
+	else if (SceneNode && useNodeTransform)
+		mat = SceneNode->getAbsoluteTransformation();
 	else
 		mat.makeIdentity();
-	if (SceneNode && useNodeTransform)
-		mat *= SceneNode->getAbsoluteTransformation();
+
+	core::aabbox3df tBox(box);
+	core::matrix4 invMat(core::matrix4::EM4CONST_NOTHING);
+	if ( mat.getInverse(invMat) )
+	{
+		invMat.transformBoxEx(tBox);
+	}
+	else
+	{
+		// TODO: else is not yet handled optimally. 
+		// If a node has an axis scaled to 0 we return all triangles without any check
+		return getTriangles(triangles, arraySize, outTriangleCount,
+			transform, useNodeTransform, outTriangleInfo );
+	}
 
 	outTriangleCount = 0;
 
@@ -435,8 +447,8 @@ void CTriangleSelector::getTriangles(core::triangle3df* triangles,
 			triRange.RangeSize = triangleCount;
 			triRange.Selector = this;
 			triRange.SceneNode = SceneNode;
-			triRange.MeshBuffer = MeshBuffer;
-			triRange.MaterialIndex = MaterialIndex;
+			triRange.MeshBuffer = SingleBufferRange.MeshBuffer;
+			triRange.MaterialIndex = SingleBufferRange.MaterialIndex;
 			outTriangleInfo->push_back(triRange);
 		}
 	}

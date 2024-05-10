@@ -3048,7 +3048,7 @@ void COpenGLDriver::deleteAllDynamicLights()
 	for (s32 i=0; i<MaxLights; ++i)
 		glDisable(GL_LIGHT0 + i);
 
-	RequestedLights.clear();
+	RequestedLights.set_used(0);
 
 	CNullDriver::deleteAllDynamicLights();
 }

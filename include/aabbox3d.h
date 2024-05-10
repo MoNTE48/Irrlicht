@@ -145,15 +145,15 @@ class aabbox3d
 			return 2*(e.X*e.Y + e.X*e.Z + e.Y*e.Z);
 		}
 
-		//! Stores all 8 edges of the box into an array
-		/** \param edges: Pointer to array of 8 edges. */
-		void getEdges(vector3d<T> *edges) const
+		//! Stores all 8 corners of the box into an array
+		/** \param corners: Pointer to array of 8 corners. */
+		void getEdges(vector3d<T> *corners) const
 		{
 			const core::vector3d<T> middle = getCenter();
 			const core::vector3d<T> diag = middle - MaxEdge;
 
 			/*
-			Edges are stored in this way:
+			Corners are stored in this way:
 			Hey, am I an ascii artist, or what? :) niko.
                    /3--------/7
                   / |       / |
@@ -165,15 +165,30 @@ class aabbox3d
                 0---------4/
 			*/
 
-			edges[0].set(middle.X + diag.X, middle.Y + diag.Y, middle.Z + diag.Z);
-			edges[1].set(middle.X + diag.X, middle.Y - diag.Y, middle.Z + diag.Z);
-			edges[2].set(middle.X + diag.X, middle.Y + diag.Y, middle.Z - diag.Z);
-			edges[3].set(middle.X + diag.X, middle.Y - diag.Y, middle.Z - diag.Z);
-			edges[4].set(middle.X - diag.X, middle.Y + diag.Y, middle.Z + diag.Z);
-			edges[5].set(middle.X - diag.X, middle.Y - diag.Y, middle.Z + diag.Z);
-			edges[6].set(middle.X - diag.X, middle.Y + diag.Y, middle.Z - diag.Z);
-			edges[7].set(middle.X - diag.X, middle.Y - diag.Y, middle.Z - diag.Z);
+			corners[0].set(middle.X + diag.X, middle.Y + diag.Y, middle.Z + diag.Z);
+			corners[1].set(middle.X + diag.X, middle.Y - diag.Y, middle.Z + diag.Z);
+			corners[2].set(middle.X + diag.X, middle.Y + diag.Y, middle.Z - diag.Z);
+			corners[3].set(middle.X + diag.X, middle.Y - diag.Y, middle.Z - diag.Z);
+			corners[4].set(middle.X - diag.X, middle.Y + diag.Y, middle.Z + diag.Z);
+			corners[5].set(middle.X - diag.X, middle.Y - diag.Y, middle.Z + diag.Z);
+			corners[6].set(middle.X - diag.X, middle.Y + diag.Y, middle.Z - diag.Z);
+			corners[7].set(middle.X - diag.X, middle.Y - diag.Y, middle.Z - diag.Z);
 		}
+
+		//! Stores all 6 centers of the box side faces into an array
+		/** \param sideCenters: Pointer to array of 6 corners. */
+		void getSideCenters(vector3d<T> *corners) const
+		{
+			const core::vector3d<T> middle = getCenter();
+
+			corners[0].set(MinEdge.X, middle.Y, middle.Z);
+			corners[1].set(MaxEdge.X, middle.Y, middle.Z);
+			corners[2].set(middle.X, MinEdge.Y, middle.Z);
+			corners[3].set(middle.X, MaxEdge.Y, middle.Z);
+			corners[4].set(middle.X, middle.Y, MinEdge.Z);
+			corners[5].set(middle.X, middle.Y, MaxEdge.Z);
+		}
+
 
 		//! Repairs the box.
 		/** Necessary if for example MinEdge and MaxEdge are swapped. */
@@ -207,7 +222,7 @@ class aabbox3d
 		\return Interpolated box. */
 		aabbox3d<T> getInterpolated(const aabbox3d<T>& other, f32 d) const
 		{
-			f32 inv = 1.0f - d;
+			const f32 inv = 1.0f - d;
 			return aabbox3d<T>((other.MinEdge*inv) + (MinEdge*d),
 				(other.MaxEdge*inv) + (MaxEdge*d));
 		}

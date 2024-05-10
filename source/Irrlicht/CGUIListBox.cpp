@@ -573,14 +573,14 @@ void CGUIListBox::draw()
 
 				if ( i==selected && hl )
 				{
-					Font->draw(Items[i].Text.c_str(), textRect,
+					Font->draw(Items[i].Text, textRect,
 						hasItemOverrideColor(i, EGUI_LBC_TEXT_HIGHLIGHT) ?
 						getItemOverrideColor(i, EGUI_LBC_TEXT_HIGHLIGHT) : getItemDefaultColor(EGUI_LBC_TEXT_HIGHLIGHT),
 						false, true, &clientClip);
 				}
 				else
 				{
-					Font->draw(Items[i].Text.c_str(), textRect,
+					Font->draw(Items[i].Text, textRect,
 						hasItemOverrideColor(i, EGUI_LBC_TEXT) ? getItemOverrideColor(i, EGUI_LBC_TEXT) : getItemDefaultColor(EGUI_LBC_TEXT),
 						false, true, &clientClip);
 				}

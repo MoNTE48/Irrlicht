@@ -305,7 +305,7 @@ void CGUITextureCacheBrowser::draw()
 
 		IGUIFont* font = skin->getFont();
 		if (font)
-			font->draw(Text.c_str(), rect, skin->getColor(EGDC_ACTIVE_CAPTION), false, true, cl);
+			font->draw(Text, rect, skin->getColor(EGDC_ACTIVE_CAPTION), false, true, cl);
 	}
 
 	IGUIElement::draw();

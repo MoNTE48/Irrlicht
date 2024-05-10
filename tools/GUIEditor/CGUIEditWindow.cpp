@@ -232,7 +232,7 @@ void CGUIEditWindow::draw()
 
 		IGUIFont* font = skin->getFont();
 		if (font)
-			font->draw(Text.c_str(), rect, skin->getColor(EGDC_ACTIVE_CAPTION), false, true, &AbsoluteClippingRect);
+			font->draw(Text, rect, skin->getColor(EGDC_ACTIVE_CAPTION), false, true, &AbsoluteClippingRect);
 	}
 
 	IGUIElement::draw();

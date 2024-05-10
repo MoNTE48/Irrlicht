@@ -576,7 +576,7 @@ void CGUIContextMenu::draw()
 				c = EGDC_GRAY_TEXT;
 
 			if (font)
-				font->draw(Items[i].Text.c_str(), rect,
+				font->draw(Items[i].Text, rect,
 					skin->getColor(c), false, true, clip);
 
 			// draw submenu symbol
