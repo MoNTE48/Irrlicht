@@ -11,6 +11,15 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 --------------------------
 Changes in 1.9 (not yet released)
 
+- New ETCF_ALLOW_MEMORY_COPY texture creation flag makes having an extra texture copy for OpenGL textures optional.
+  This is now disabled by default. It saves a lot memory, but the cost is that lock() calls get slower.
+  So enable it for textures which you need to read a lot on CPU (like for example font textures).
+- CGUIEditBox::setText now resets cursorpos and text markers
+- Add parameter to setViewPort which allows disabling clipping of the area. Will only work in OpenGL.
+  Thanks @Andrey01 for mentioning a use-case for this: https://irrlicht.sourceforge.io/forum/viewtopic.php?t=53020
+- Empty meshes and meshbuffers now have invalid bounding-boxes. 
+  Meshes no longer add invalid meshbuffer bounding boxes when recalculating their bounding box.
+  Fixes bugs that empty meshbuffers could increase the bounding box sometimes and that SMesh could ignore meshbuffers with a single point.
 - Avoid unnecessary string copies in GUI code when drawing fonts (accidentally introduced in Irrlicht 1.6).
 - IGUIScrollBar has now getters for the scrollbar buttons and the options to disable background drawing
 - Improved scrollbar handling in CGUITreeView (stepsizes, reacting to keys)
@@ -33,7 +42,7 @@ Changes in 1.9 (not yet released)
 - Fix: CGUITabControl now catching EMIE_LMOUSE_PRESSED_DOWN
 - Add options for transparency node sorting algorithm.
 - CImageWriterPNG now also supports the writeImageToFile param to allow setting compressing level. 0 stays default, 1-10 for range increasing compression level.
-- Add io::IUserData which can be set in SMaterial to make it easer passing additional material values to shaders
+- Add io::IUserData which can be set in SMaterial to make it easier passing additional material values to shaders
 - Add lens shift support for the camera and the perspective projection functions
 - TGA loader no longer reduces 24&32 bit TGA's with palettes to 16 bit. Thanks @erlehmann for report: https://irrlicht.sourceforge.io/forum/viewtopic.php?t=52925
 - Fix compile error with OS X 10.10 SDK, bug #463. Thanks @Ryan Schmidt for report and patch.
@@ -42,9 +51,9 @@ Changes in 1.9 (not yet released)
   In 1.8 we could still use gl_FrontMaterial, but that is no longer supported in shaders
 - Get IMeshBuffer::append functions working for a few more cases and adapt interface so one can prevent the BoundingBox update.
 - Bugfix: SMaterialLayer::operator!= no longer returns true when comparing a layer without texture matrix with one with a set identity texture matrix. Those are the same.
-- SMaterialLayer no longer releases allocated texture memory before destructor unless explicitly requested.
+- SMaterialLayer no longer releases allocated TextureMatrix memory before destructor unless explicitly requested.
   This can avoid constantly allocation/releasing memory in the active driver material when setting materials.
-  Note that it does not copy texture memory when it's unused. This is still optimized.
+  Note that it does not copy the TextureMatrix memory when it's unused. This is still optimized.
 - Add IMeshSceneNode::setNodeRegistration to allow registering MeshSceneNodes to the SceneManager per buffer instead of per node
 - Add SMaterialLayer::hasSetTextureMatrix and SMaterialLayer::resetTextureMatrix
 - Add IShaderConstantSetCallBack::OnCreate to allow earlier access to IMaterialRendererServices

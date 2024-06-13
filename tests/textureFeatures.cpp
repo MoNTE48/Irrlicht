@@ -136,8 +136,9 @@ bool lockAllMipLevels(video::E_DRIVER_TYPE driverType)
 					mipdata[index++]=val-i;
 			}
 		}
+		image->setMipMapsData(mipdata, false, true);
 
-		video::ITexture* tex = driver->addTexture("miptest", image, mipdata);
+		video::ITexture* tex = driver->addTexture("miptest", image);
 		if (!tex)
 			// is probably an error in the mipdata handling
 			return false;

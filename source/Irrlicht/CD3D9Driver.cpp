@@ -887,11 +887,14 @@ bool CD3D9Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SColor
 
 
 //! sets a viewport
-void CD3D9Driver::setViewPort(const core::rect<s32>& area)
+void CD3D9Driver::setViewPort(const core::rect<s32>& area, bool clipToRenderTarget)
 {
 	core::rect<s32> vp = area;
-	core::rect<s32> rendert(0,0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
-	vp.clipAgainst(rendert);
+	if ( clipToRenderTarget )
+	{
+		core::rect<s32> rendert(0,0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
+		vp.clipAgainst(rendert);
+	}
 	if (vp.getHeight()>0 && vp.getWidth()>0)
 	{
 		D3DVIEWPORT9 viewPort;

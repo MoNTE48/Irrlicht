@@ -3226,11 +3226,14 @@ void COpenGLDriver::setAmbientLight(const SColorf& color)
 
 // this code was sent in by Oliver Klems, thank you! (I modified the glViewport
 // method just a bit.
-void COpenGLDriver::setViewPort(const core::rect<s32>& area)
+void COpenGLDriver::setViewPort(const core::rect<s32>& area, bool clipToRenderTarget)
 {
 	core::rect<s32> vp = area;
-	core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
-	vp.clipAgainst(rendert);
+	if ( clipToRenderTarget )
+	{
+		core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
+		vp.clipAgainst(rendert);
+	}
 
 	if (vp.getHeight() > 0 && vp.getWidth() > 0)
 		CacheHandler->setViewport(vp.UpperLeftCorner.X, getCurrentRenderTargetSize().Height - vp.UpperLeftCorner.Y - vp.getHeight(), vp.getWidth(), vp.getHeight());
@@ -3763,9 +3766,9 @@ s32 COpenGLDriver::addHighLevelShaderMaterial(
 
 	COpenGLSLMaterialRenderer* r = new COpenGLSLMaterialRenderer(
 			this, nr,
-			vertexShaderProgram, vertexShaderEntryPointName, vsCompileTarget,
-			pixelShaderProgram, pixelShaderEntryPointName, psCompileTarget,
-			geometryShaderProgram, geometryShaderEntryPointName, gsCompileTarget,
+			vertexShaderProgram, 
+			pixelShaderProgram, 
+			geometryShaderProgram,
 			inType, outType, verticesOut,
 			callback,baseMaterial, userData);
 

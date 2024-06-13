@@ -205,7 +205,7 @@ namespace video
 			video::SColor rightDownEdge = video::SColor(0,0,0,0)) IRR_OVERRIDE;
 
 		//! sets a viewport
-		virtual void setViewPort(const core::rect<s32>& area) IRR_OVERRIDE;
+		virtual void setViewPort(const core::rect<s32>& area, bool clipToRenderTarget=true) IRR_OVERRIDE;
 
 		//! Only used internally by the engine
 		virtual void OnResize(const core::dimension2d<u32>& size) IRR_OVERRIDE;

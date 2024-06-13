@@ -68,7 +68,7 @@ public:
 	virtual core::line3df getLine3d() const  { return core::line3df(); }
 	virtual core::line3di getLine3di() const { return core::line3di(); }
 	virtual core::dimension2du getDimension2d() const { return core::dimension2du(); }
-	virtual core::aabbox3d<f32> getBBox() const	{ return core::aabbox3d<f32>(); }
+	virtual core::aabbox3d<f32> getBBox() const	{ return core::aabbox3d<f32>(1,-1); }
 	virtual core::plane3df getPlane() const	    { return core::plane3df(); }
 
 	virtual video::ITexture* getTexture() const	{ return 0; }

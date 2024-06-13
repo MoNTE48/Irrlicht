@@ -395,7 +395,7 @@ void CTriangleSelector::getTriangles(core::triangle3df* triangles,
 			if (Triangles[i].isTotalOutsideBox(tBox))
 			   continue;
 
-			if ( i >= BufferRanges[activeRange].RangeStart + BufferRanges[activeRange].RangeSize )
+			while ( i >= BufferRanges[activeRange].RangeStart + BufferRanges[activeRange].RangeSize )
 			{
 				triRange.RangeSize = triangleCount-triRange.RangeStart;
 				if ( triRange.RangeSize > 0 )

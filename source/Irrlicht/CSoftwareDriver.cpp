@@ -314,14 +314,17 @@ void CSoftwareDriver::setRenderTargetImage(video::CImage* image)
 
 
 //! sets a viewport
-void CSoftwareDriver::setViewPort(const core::rect<s32>& area)
+void CSoftwareDriver::setViewPort(const core::rect<s32>& area, bool clipToRenderTarget)
 {
 	ViewPort = area;
 
-	//TODO: the clipping is not correct, because the projection is affected.
-	// to correct this, ViewPortSize and Render2DTranslation will have to be corrected.
-	core::rect<s32> rendert(0,0,RenderTargetSize.Width,RenderTargetSize.Height);
-	ViewPort.clipAgainst(rendert);
+	if ( clipToRenderTarget )
+	{
+		//TODO: the clipping is not correct, because the projection is affected.
+		// to correct this, ViewPortSize and Render2DTranslation will have to be corrected.
+		core::rect<s32> rendert(0,0,RenderTargetSize.Width,RenderTargetSize.Height);
+		ViewPort.clipAgainst(rendert);
+	}
 
 	ViewPortSize = core::dimension2du(ViewPort.getSize());
 	Render2DTranslation.X = (ViewPortSize.Width / 2) + ViewPort.UpperLeftCorner.X;

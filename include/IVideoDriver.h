@@ -594,8 +594,12 @@ namespace video
 		//! Sets a new viewport.
 		/** Every rendering operation is done into this new area.
 		\param area: Rectangle defining the new area of rendering
-		operations. */
-		virtual void setViewPort(const core::rect<s32>& area) =0;
+		operations. 
+		\param clipToRenderTarget When true the function ensures the area won't
+		be outside the current render-target. The only driver that can handle 
+		unclipped areas outside the rt so far is OpenGL. For other drivers you 
+		should keep this set to true. */
+		virtual void setViewPort(const core::rect<s32>& area, bool clipToRenderTarget=true) =0;
 
 		//! Gets the area of the current viewport.
 		/** \return Rectangle of the current viewport. */

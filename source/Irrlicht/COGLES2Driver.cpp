@@ -2149,11 +2149,14 @@ COGLES2Driver::~COGLES2Driver()
 		return 8;
 	}
 
-	void COGLES2Driver::setViewPort(const core::rect<s32>& area)
+	void COGLES2Driver::setViewPort(const core::rect<s32>& area, bool clipToRenderTarget)
 	{
 		core::rect<s32> vp = area;
-		core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
-		vp.clipAgainst(rendert);
+		if ( clipToRenderTarget )
+		{
+			core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
+			vp.clipAgainst(rendert);
+		}
 
 		if (vp.getHeight() > 0 && vp.getWidth() > 0)
 			CacheHandler->setViewport(vp.UpperLeftCorner.X, getCurrentRenderTargetSize().Height - vp.UpperLeftCorner.Y - vp.getHeight(), vp.getWidth(), vp.getHeight());

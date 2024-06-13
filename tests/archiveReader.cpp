@@ -353,6 +353,11 @@ bool testSpecialZip(IFileSystem* fs, const char* archiveName, const char* filena
 	return true;
 }
 
+// It was added, but never enabled, in [r3536] with following log message:
+// "Add a test for proper file loading from archives, despite two files in the archive have the same name."
+// I suspect test was not finished so defining it out for now (to avoid compile warning about unused function)
+// Not sure if we should remove the test or leave it in as motivation for someone to code it for real...
+#if 0
 static bool testMountFile(IFileSystem* fs)
 {
 	bool result = true;
@@ -379,15 +384,21 @@ static bool testMountFile(IFileSystem* fs)
 	for ( u32 f=0; f < fileList->getFileCount(); ++f)
 	{
 		logTestString("File name: %s\n", fileList->getFileName(f).c_str());
-		logTestString("Full path: %s\n", fileList->getFullFileName(f).c_str());
+		logTestString("Full path: %s\n", fileList->getFullFileName(f).c_str());	// no paths as archives created without paths
 		logTestString("ID: %d\n", fileList->getID(f));
 	}
 #endif
 
+	// This test makes no sense to me, first file is the "empty" folder in which seems correct (aka empty/empty which exists)
+	// Maybe was supposed to check for the first non-directory filename?
 	if (list->getFileName(0) != "burnings video 0.39b.png")
 		result = false;
+
+	// TODO: should probably clean up archive again when done
+
 	return result;
 }
+#endif
 
 bool testAddRemove(IFileSystem* fs, const io::path& archiveName)
 {

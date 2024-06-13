@@ -1142,13 +1142,15 @@ void buildNDCToDCMatrix(f32* burning_restrict dc_matrix, const core::rect<s32>& 
 
 
 //! sets a viewport
-void CBurningVideoDriver::setViewPort(const core::rect<s32>& area)
+void CBurningVideoDriver::setViewPort(const core::rect<s32>& area, bool clipToRenderTarget)
 {
-	//const core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
-	const core::rect<s32> rendert(0, 0, RenderTargetSize.Width, RenderTargetSize.Height);
-
 	ViewPort = area;
-	ViewPort.clipAgainst(rendert);
+	if ( clipToRenderTarget )
+	{
+		//const core::rect<s32> rendert(0, 0, getCurrentRenderTargetSize().Width, getCurrentRenderTargetSize().Height);
+		const core::rect<s32> rendert(0, 0, RenderTargetSize.Width, RenderTargetSize.Height);
+		ViewPort.clipAgainst(rendert);
+	}
 	const s32 viewarea = ViewPort.getArea();
 
 	//is this even possible to be pixel-perfect if i have not the same depth range as openGL?

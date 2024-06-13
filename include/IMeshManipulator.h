@@ -391,16 +391,20 @@ namespace scene
 			if (!mesh)
 				return true;
 			bool result = true;
-			core::aabbox3df bufferbox;
+			bool hasBoundingBox = false;
+			core::aabbox3df bufferbox(1,-1);
 			for (u32 i=0; i<mesh->getMeshBufferCount(); ++i)
 			{
 				result &= apply(func, mesh->getMeshBuffer(i), boundingBoxUpdate);
-				if (boundingBoxUpdate)
+				if (boundingBoxUpdate && mesh->getMeshBuffer(i)->getBoundingBox().isValid())
 				{
-					if (0==i)
-						bufferbox.reset(mesh->getMeshBuffer(i)->getBoundingBox());
-					else
+					if ( hasBoundingBox )
 						bufferbox.addInternalBox(mesh->getMeshBuffer(i)->getBoundingBox());
+					else
+					{
+						bufferbox.reset(mesh->getMeshBuffer(i)->getBoundingBox());
+						hasBoundingBox = true;
+					}
 				}
 			}
 			if (boundingBoxUpdate)
@@ -421,7 +425,7 @@ protected:
 			if (!buffer)
 				return true;
 
-			core::aabbox3df bufferbox;
+			core::aabbox3df bufferbox(1,-1);
 			for (u32 i=0; i<buffer->getVertexCount(); ++i)
 			{
 				switch (buffer->getVertexType())

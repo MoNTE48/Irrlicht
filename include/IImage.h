@@ -36,7 +36,7 @@ public:
 
 		// We want the exact pitch even for compressed formats
 		if ( Size.Height > 0 )
-			Pitch = getDataSizeFromFormat(Format, Size.Width, Size.Height) / Size.Height;
+			Pitch = (irr::u32)(getDataSizeFromFormat(Format, Size.Width, Size.Height) / (size_t)Size.Height);
 		else
 			Pitch = 0;
 	}
@@ -406,7 +406,7 @@ public:
 		case ECF_DXT3:
 		case ECF_DXT4:
 		case ECF_DXT5:
-			return 32;
+			return 8;
 		case ECF_PVRTC_RGB2:
 		case ECF_PVRTC_ARGB2:
 		case ECF_PVRTC2_ARGB2:

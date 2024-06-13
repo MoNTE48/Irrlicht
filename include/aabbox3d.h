@@ -30,6 +30,8 @@ class aabbox3d
 		aabbox3d(const vector3d<T>& init): MinEdge(init), MaxEdge(init) {}
 		//! Constructor with min edge and max edge as single values, not vectors.
 		aabbox3d(T minx, T miny, T minz, T maxx, T maxy, T maxz): MinEdge(minx, miny, minz), MaxEdge(maxx, maxy, maxz) {}
+		//! Constructor with min and max edge single values and x/y/z identical
+		aabbox3d(T min, T max) : MinEdge(min, min, min), MaxEdge(max, max, max) {}
 
 		// operators
 		//! Equality operator

@@ -20,7 +20,7 @@ namespace scene
 	public:
 		//! constructor
 		CDynamicMeshBuffer(video::E_VERTEX_TYPE vertexType, video::E_INDEX_TYPE indexType)
-		: PrimitiveType(EPT_TRIANGLES)
+		: BoundingBox(1,-1), PrimitiveType(EPT_TRIANGLES)
 		{
 			VertexBuffer=new CVertexBuffer(vertexType);
 			IndexBuffer=new CIndexBuffer(indexType);
@@ -93,7 +93,7 @@ namespace scene
 		virtual void recalculateBoundingBox() IRR_OVERRIDE
 		{
 			if (!getVertexBuffer().size())
-				BoundingBox.reset(0,0,0);
+				BoundingBox = core::aabbox3df(1,-1);
 			else
 			{
 				BoundingBox.reset(getVertexBuffer()[0].Pos);

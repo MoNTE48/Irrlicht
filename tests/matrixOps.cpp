@@ -247,7 +247,7 @@ bool checkMatrixRotation(irr::core::matrix4& m, const vector3df& vector, const v
 	logTestString("matrix: ");
 	for ( int i=0; i<16; ++i )
 		logTestString("%.2f ", m[i]);
-	logTestString("\n");	
+	logTestString("\n");
 
 	return false;
 }
@@ -256,7 +256,7 @@ bool setRotationAxis()
 {
 	matrix4 m;
 	vector3df v;
-	
+
 	// y up, x right, z depth (as usual)
 
 	// y rotated around x-axis
@@ -270,7 +270,7 @@ bool setRotationAxis()
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
 	}
-	
+
 	// y rotated around negative x-axis
 	m.makeIdentity();
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(-1,0,0)), vector3df(0,1,0), vector3df(0, 0, -1)) )
@@ -278,7 +278,7 @@ bool setRotationAxis()
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
 	}
-	
+
 	// x rotated around x-axis
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(1,0,0)), vector3df(1,0,0), vector3df(1, 0, 0)) )
 	{
@@ -297,14 +297,14 @@ bool setRotationAxis()
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
 	}
-	
+
 	// x rotated around negative y-axis
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(0,-1,0)), vector3df(1,0,0), vector3df(0, 0, 1)) )
 	{
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
-	} 
-	
+	}
+
 	// y rotated around y-axis
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(0,1,0)), vector3df(0,1,0), vector3df(0, 1, 0)) )
 	{
@@ -330,7 +330,7 @@ bool setRotationAxis()
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
 	}
-	
+
 	// y rotated around z-axis
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(0,0,1)), vector3df(0,1,0), vector3df(-1, 0, 0)) )
 	{
@@ -342,7 +342,7 @@ bool setRotationAxis()
 		logTestString("%s:%d", __FILE__, __LINE__);
 		return false;
 	}
-	
+
 	// z rotated around z-axis
 	if ( !checkMatrixRotation( m.setRotationAxisRadians(90.f*DEGTORAD, vector3df(0,0,1)), vector3df(0,0,1), vector3df(0, 0, 1)) )
 	{
@@ -350,7 +350,7 @@ bool setRotationAxis()
 		return false;
 	}
 
-	
+
 	return true;
 }
 
@@ -379,7 +379,7 @@ bool check_getRotationDegreesWithScale2(const core::matrix4& m, const irr::core:
 	//for ( int k=0; k<3; ++k)
 	//	for ( int i=0; i<3; ++i )
 	//		logTestString("%.3f ", m[k*4+i]);
-	//logTestString("\n");	
+	//logTestString("\n");
 	return false;
 }
 
@@ -390,7 +390,7 @@ bool check_getRotationDegreesWithScale(const core::matrix4& m, irr::f32 toleranc
 	return check_getRotationDegreesWithScale2(m, scale, tolerance);
 }
 
-// Lazy macro only to be used inside the loop where it is used 
+// Lazy macro only to be used inside the loop where it is used
 // (can't use lambda yet, still testing on older compilers)
 #define log_check_getRotationDegreesWithScaleIJK \
 do { \
@@ -440,7 +440,7 @@ bool decompose()
 				scale = core::vector3df(2.f, 2.f, 2.f);	// simple uniform scaling
 				log_check_getRotationDegreesWithScaleIJK;
 
-				scale = core::vector3df(-2.f, 2.f, 2.f);	// simple uniform scaling which swaps handedness 
+				scale = core::vector3df(-2.f, 2.f, 2.f);	// simple uniform scaling which swaps handedness
 				log_check_getRotationDegreesWithScaleIJK;	// (TODO: can't decompose this yet)
 
 				scale = core::vector3df(i, i, i);	// flexible uniform scaling
@@ -479,8 +479,8 @@ void calltest()
 	mat = 1.f;
 	const f32 * pf1 = mat.pointer();
 	f32 * pf2 = mat.pointer();
-	bool b = mat == mat2;
-	b = mat != mat2;
+	mat == mat2;
+	mat != mat2;
 	mat = mat + mat2;
 	mat += mat2;
 	mat = mat - mat2;
@@ -492,9 +492,9 @@ void calltest()
 	mat = mat * 10.f;
 	mat *= 10.f;
 	mat.makeIdentity();
-	b = mat.isIdentity();
-	b = mat.isOrthogonal();
-	b = mat.isIdentity_integer_base ();
+	mat.isIdentity();
+	mat.isOrthogonal();
+	mat.isIdentity_integer_base ();
 	mat.setTranslation(vector3df(1.f, 1.f, 1.f) );
 	vector3df v1 = mat.getTranslation();
 	mat.setInverseTranslation(vector3df(1.f, 1.f, 1.f) );
@@ -506,7 +506,7 @@ void calltest()
 	mat.setRotationAxisRadians(1.f, vector3df(1.f, 1.f, 1.f) );
 	mat.setScale(vector3df(1.f, 1.f, 1.f) );
 	mat.setScale(1.f);
-	vector3df v3 = mat.getScale();
+	mat.getScale();
 	mat.inverseTranslateVect(v1);
 	mat.inverseRotateVect(v1);
 	mat.rotateVect(v1);
@@ -523,12 +523,11 @@ void calltest()
 	mat.transformPlane(p1);
 	mat.transformPlane(p1, p1);
 	aabbox3df bb1;
-	mat.transformBox(bb1);
 	mat.transformBoxEx(bb1);
 	mat.multiplyWith1x4Matrix(fv4);
 	mat.makeInverse();
-	b = mat.getInversePrimitive(mat2);
-	b = mat.getInverse(mat2);
+	mat.getInversePrimitive(mat2);
+	mat.getInverse(mat2);
 	mat.buildProjectionMatrixPerspectiveFovRH(1.f, 1.f, 1.f, 1000.f);
 	mat.buildProjectionMatrixPerspectiveFovLH(1.f, 1.f, 1.f, 1000.f);
 	mat.buildProjectionMatrixPerspectiveFovInfinityLH(1.f, 1.f, 1.f);
@@ -556,8 +555,8 @@ void calltest()
 	f32 fv16[16];
 	mat.setM(fv16);
 	mat.setDefinitelyIdentityMatrix(false);
-	b = mat.getDefinitelyIdentityMatrix();
-	b = mat.equals(mat2);
+	mat.getDefinitelyIdentityMatrix();
+	mat.equals(mat2);
 	f1 = f1+f2+f3+f4+*pf1+*pf2; // getting rid of unused variable warnings.
 }
 

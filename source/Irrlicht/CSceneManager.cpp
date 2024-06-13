@@ -1231,7 +1231,7 @@ const core::aabbox3d<f32>& CSceneManager::getBoundingBox() const
 {
 	IRR_DEBUG_BREAK_IF(true) // Bounding Box of Scene Manager should never be used.
 
-	static const core::aabbox3d<f32> dummy;
+	static const core::aabbox3d<f32> dummy(1,-1);
 	return dummy;
 }
 

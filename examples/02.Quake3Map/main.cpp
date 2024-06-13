@@ -80,8 +80,8 @@ int main()
 	device->getFileSystem()->addFileArchive(getExampleMediaPath() + "map-20kdm2.pk3");
 
 	/*
-	Now we can load the mesh by calling	irr::scene::ISceneManager::getMesh(). 
-	We get a pointer returned to an	irr::scene::IAnimatedMesh. Quake 3 maps are 
+	Now we can load the mesh by calling	irr::scene::ISceneManager::getMesh().
+	We get a pointer returned to an	irr::scene::IAnimatedMesh. Quake 3 maps are
 	not	really animated, they are only a chunk of static geometry with
 	some materials attached. Hence the IAnimatedMesh consists of only one
 	frame, so we get the "first frame" of the "animation", which is our
@@ -96,7 +96,7 @@ int main()
 	driver. (There is a irr::video::IVideoDriver::getPrimitiveCountDrawn()
 	method in the irr::video::IVideoDriver class). Note that this
 	optimization with the Octree is only useful when drawing huge meshes
-	consisting of lots of geometry and if users can't see the whole scene at 
+	consisting of lots of geometry and if users can't see the whole scene at
 	once.
 	*/
 	scene::IAnimatedMesh* mesh = smgr->getMesh("20kdm2.bsp");
@@ -143,7 +143,7 @@ int main()
 	window. The test for irr::IrrlichtDevice::isWindowActive() is optional,
 	but prevents the engine to grab the mouse cursor after task switching
 	when other programs are active. The call to	irr::IrrlichtDevice::yield()
-	will avoid the busy loop to eat up all CPU cycles when the window is not 
+	will avoid the busy loop to eat up all CPU cycles when the window is not
 	active.
 	*/
 	int lastFPS = -1;
