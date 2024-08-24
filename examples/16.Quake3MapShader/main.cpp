@@ -364,19 +364,19 @@ int IRRCALLCONV main(int argc, char* argv[])
 		{
 			core::stringw str = L"Q3 [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 #ifdef _IRR_SCENEMANAGER_DEBUG			
 			io::IAttributes * const attr = smgr->getParameters();
-			str += " Cull:";
+			str += L" Cull:";
 			str += attr->getAttributeAsInt("calls");
-			str += "/";
+			str += L"/";
 			str += attr->getAttributeAsInt("culled");
-			str += " Draw: ";
+			str += L" Draw: ";
 			str += attr->getAttributeAsInt("drawn_solid");
-			str += "/";
+			str += L"/";
 			str += attr->getAttributeAsInt("drawn_transparent");
-			str += "/";
+			str += L"/";
 			str += attr->getAttributeAsInt("drawn_transparent_effect");
 #endif
 			device->setWindowCaption(str.c_str());	

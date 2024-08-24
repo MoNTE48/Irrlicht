@@ -163,7 +163,7 @@ int main(int argc, char** argv)
 		{
 			core::stringw str = L"Load Irrlicht File example - Irrlicht Engine [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 
 			device->setWindowCaption(str.c_str());

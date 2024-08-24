@@ -121,7 +121,7 @@ namespace gui
 	protected:
 
 		void closeAllSubMenus();
-		bool hasOpenSubMenu() const;
+		bool hasOpenSubMenu(irr::u32 *indexResult=0) const;
 
 		struct SItem
 		{
@@ -139,7 +139,10 @@ namespace gui
 		virtual void recalculateSize();
 
 		//! returns true, if an element was highlighted
-		virtual bool highlight(const core::position2d<s32>& p, bool canOpenSubMenu);
+		virtual bool highlight(const core::position2d<s32>& p);
+
+		//! Decide if sub menus should be open or closed
+		virtual void updateOpenSubMenus(irr::u32 menuDelayMs);
 
 		//! sends a click Returns:
 		//! 0 if click went outside of the element,

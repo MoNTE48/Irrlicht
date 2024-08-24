@@ -320,7 +320,7 @@ int main()
 		{
 			core::stringw str = L"Irrlicht Engine - SpecialFX example [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 
 			device->setWindowCaption(str.c_str());

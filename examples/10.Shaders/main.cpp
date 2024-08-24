@@ -498,7 +498,7 @@ int main()
 		{
 			core::stringw str = L"Irrlicht Engine - Vertex and pixel shader example [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 
 			device->setWindowCaption(str.c_str());

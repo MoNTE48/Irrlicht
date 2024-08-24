@@ -468,7 +468,7 @@ int main()
 		{
 			core::stringw str = L"Per pixel lighting example - Irrlicht Engine [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 
 			device->setWindowCaption(str.c_str());

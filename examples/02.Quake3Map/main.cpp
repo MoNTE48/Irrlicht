@@ -162,7 +162,7 @@ int main()
 			{
 				core::stringw str = L"Irrlicht Engine - Quake 3 Map example [";
 				str += driver->getName();
-				str += "] FPS:";
+				str += L"] FPS:";
 				str += fps;
 
 				device->setWindowCaption(str.c_str());

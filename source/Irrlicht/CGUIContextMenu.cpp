@@ -337,7 +337,7 @@ bool CGUIContextMenu::OnEvent(const SEvent& event)
 				return true;
 			case EMIE_MOUSE_MOVED:
 				if (Environment->hasFocus(this))
-					highlight(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y), true);
+					highlight(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y));
 				break;
 			default:
 				break;
@@ -355,11 +355,15 @@ bool CGUIContextMenu::OnEvent(const SEvent& event)
 //! Sets the visible state of this element.
 void CGUIContextMenu::setVisible(bool visible)
 {
-	HighLighted = -1;
-	ChangeTime = os::Timer::getTime();
-	for (u32 j=0; j<Items.size(); ++j)
-		if (Items[j].SubMenu)
-			Items[j].SubMenu->setVisible(false);
+	if ( !visible || !isVisible() )
+	{
+		HighLighted = -1;
+		ChangeTime = os::Timer::getRealTime();
+
+		for (u32 j=0; j<Items.size(); ++j)
+			if (Items[j].SubMenu)
+				Items[j].SubMenu->setVisible(false);
+	}
 
 	IGUIElement::setVisible(visible);
 }
@@ -423,59 +427,73 @@ u32 CGUIContextMenu::sendClick(const core::position2d<s32>& p)
 
 
 //! returns true, if an element was highlighted
-bool CGUIContextMenu::highlight(const core::position2d<s32>& p, bool canOpenSubMenu)
+bool CGUIContextMenu::highlight(const core::position2d<s32>& p)
 {
 	if (!isEnabled())
 	{
 		return false;
 	}
 
-	// get number of open submenu
-	s32 openmenu = -1;
-	s32 i;
-	for (i=0; i<(s32)Items.size(); ++i)
-		if (Items[i].Enabled && Items[i].SubMenu && Items[i].SubMenu->isVisible())
-		{
-			openmenu = i;
-			break;
-		}
+	// get index of open submenu
+	u32 openMenuIndex = (u32)-1;
+	const bool hasOpenSub = hasOpenSubMenu(&openMenuIndex);
 
-	// delegate highlight operation to submenu
-	if (openmenu != -1)
+	// open submenu can also change highlight
+	if (hasOpenSub)
 	{
-		if (Items[openmenu].Enabled && Items[openmenu].SubMenu->highlight(p, canOpenSubMenu))
+		if ( Items[openMenuIndex].Enabled && Items[openMenuIndex].SubMenu->highlight(p) )
 		{
-			HighLighted = openmenu;
-			ChangeTime = os::Timer::getTime();
+			if ( openMenuIndex != (u32)HighLighted )
+			{
+				HighLighted = (s32)openMenuIndex;
+				ChangeTime = os::Timer::getRealTime();
+			}
 			return true;
 		}
 	}
 
 	// highlight myself
-	for (i=0; i<(s32)Items.size(); ++i)
+	for (u32 i=0; i<Items.size(); ++i)
 	{
 		if (Items[i].Enabled && getHRect(Items[i], AbsoluteRect).isPointInside(p))
 		{
-			HighLighted = i;
-			ChangeTime = os::Timer::getTime();
-
-			// make submenus visible/invisible
-				for (s32 j=0; j<(s32)Items.size(); ++j)
-					if (Items[j].SubMenu)
-					{
-						if ( j == i && canOpenSubMenu && Items[j].Enabled )
-							Items[j].SubMenu->setVisible(true);
-						else if ( j != i )
-							Items[j].SubMenu->setVisible(false);
-					}
+			if ( i != (u32)HighLighted )
+			{
+				HighLighted = (s32)i;
+				ChangeTime = os::Timer::getRealTime();
+			}
 			return true;
 		}
 	}
 
-	HighLighted = openmenu;
+	if ( HighLighted != -1 && !Items[HighLighted].SubMenu )
+	{
+		HighLighted = -1;
+		ChangeTime = os::Timer::getRealTime();
+	}
+
 	return false;
 }
 
+void CGUIContextMenu::updateOpenSubMenus(irr::u32 menuDelayMs)
+{
+	const irr::u32 timeNow = os::Timer::getRealTime();
+
+	if ( timeNow < (ChangeTime+menuDelayMs) )
+		return;
+
+	// make submenus visible/invisible
+	for (s32 j=0; j<(s32)Items.size(); ++j)
+	{
+		if (Items[j].SubMenu)
+		{
+			if ( j == HighLighted && Items[j].Enabled )
+				Items[j].SubMenu->setVisible(true);
+			else if ( j != HighLighted )
+				Items[j].SubMenu->setVisible(false);
+		}
+	}
+}
 
 //! returns the item highlight-area
 core::rect<s32> CGUIContextMenu::getHRect(const SItem& i, const core::rect<s32>& absolute) const
@@ -497,15 +515,15 @@ core::rect<s32> CGUIContextMenu::getRect(const SItem& i, const core::rect<s32>& 
 	return r;
 }
 
-
 //! draws the element and its children
 void CGUIContextMenu::draw()
 {
 	if (!IsVisible)
 		return;
 
-	IGUISkin* skin = Environment->getSkin();
+	updateOpenSubMenus(Environment->getMenuShowDelay());
 
+	IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
 
@@ -588,7 +606,7 @@ void CGUIContextMenu::draw()
 				sprites->draw2DSprite(skin->getIcon(EGDI_CURSOR_RIGHT),
 					r.getCenter(), clip, skin->getColor(c),
 					(i == HighLighted) ? ChangeTime : 0,
-					(i == HighLighted) ? os::Timer::getTime() : 0,
+					(i == HighLighted) ? os::Timer::getRealTime() : 0,
 					(i == HighLighted), true);
 			}
 
@@ -601,7 +619,7 @@ void CGUIContextMenu::draw()
 				sprites->draw2DSprite(skin->getIcon(EGDI_CHECK_BOX_CHECKED),
 					r.getCenter(), clip, skin->getColor(c),
 					(i == HighLighted) ? ChangeTime : 0,
-					(i == HighLighted) ? os::Timer::getTime() : 0,
+					(i == HighLighted) ? os::Timer::getRealTime() : 0,
 					(i == HighLighted), true);
 			}
 		}
@@ -852,11 +870,15 @@ void CGUIContextMenu::setEventParent(IGUIElement *parent)
 }
 
 
-bool CGUIContextMenu::hasOpenSubMenu() const
+bool CGUIContextMenu::hasOpenSubMenu(irr::u32 *indexResult) const
 {
 	for (u32 i=0; i<Items.size(); ++i)
 		if (Items[i].SubMenu && Items[i].SubMenu->isVisible())
+		{
+			if ( indexResult )
+				*indexResult = i;
 			return true;
+		}
 
 	return false;
 }

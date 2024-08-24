@@ -373,7 +373,7 @@ Add several "zones".  You could use this technique to light individual rooms, fo
 			lastFps = fps;
 			core::stringw str = L"Managed Lights [";
 			str += driver->getName();
-			str += "] FPS:";
+			str += L"] FPS:";
 			str += fps;
 			device->setWindowCaption(str.c_str());
 		}

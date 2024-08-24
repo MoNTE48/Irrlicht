@@ -1108,9 +1108,9 @@ void CGUIEditBox::draw()
 void CGUIEditBox::setText(const wchar_t* text)
 {
 	Text = text;
-	CursorPos = 0;
+	if (u32(CursorPos) > Text.size())
+		CursorPos = Text.size();
 	HScrollPos = 0;
-	setTextMarkers(0, 0);
 	breakText();
 }
 

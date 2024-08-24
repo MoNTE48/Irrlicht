@@ -384,7 +384,7 @@ int main()
 			{
 				core::stringw str = L"Irrlicht Engine - Post processing example [";
 				str += driver->getName();
-				str += "] FPS:";
+				str += L"] FPS:";
 				str += fps;
 
 				device->setWindowCaption(str.c_str());

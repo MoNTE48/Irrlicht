@@ -360,11 +360,11 @@ int main()
 		static core::stringw lastString;
 		core::stringw str = L"Collision detection example - Irrlicht Engine [";
 		str += driver->getName();
-		str += "] FPS:";
+		str += L"] FPS:";
 		str += fps;
 		if ( !hitTextureName.getInternalName().empty() )
 		{
-			str += " ";
+			str += L" ";
 			irr::io::path texName(hitTextureName.getInternalName());
 			str += core::deletePathFromFilename(texName);
 		}

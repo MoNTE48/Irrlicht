@@ -31,7 +31,7 @@ CMeshSceneNode::CMeshSceneNode(IMesh* mesh, ISceneNode* parent, ISceneManager* m
 	setDebugName("CMeshSceneNode");
 	#endif
 
-	setMesh(mesh);
+	setMesh(mesh, true);
 }
 
 
@@ -293,7 +293,7 @@ void CMeshSceneNode::setUsedBufferRenderNodes(irr::u32 num)
 }
 
 //! Sets a new mesh
-void CMeshSceneNode::setMesh(IMesh* mesh)
+void CMeshSceneNode::setMesh(IMesh* mesh, bool copyMeshMaterials)
 {
 	if (mesh)
 	{
@@ -305,9 +305,12 @@ void CMeshSceneNode::setMesh(IMesh* mesh)
 
 		Mesh = mesh;
 
-		// Note: Mesh can change amount of meshbuffers later and we don't handle that so far so that would cause trouble
-		// For now assuming users call setMesh again in that case
-		copyMaterials();
+		if ( copyMeshMaterials )
+		{
+			// Note: Mesh can change amount of meshbuffers later and we don't handle that so far so that would cause trouble
+			// For now assuming users call setMesh again in that case
+			copyMaterials();
+		}
 		setUsedBufferRenderNodes(Mesh ? Mesh->getMeshBufferCount() : 0);
 	}
 }
@@ -390,7 +393,7 @@ void CMeshSceneNode::deserializeAttributes(io::IAttributes* in, io::SAttributeRe
 			newMesh = newAnimatedMesh->getMesh(0);
 
 		if (newMesh)
-			setMesh(newMesh);
+			setMesh(newMesh, true);
 	}
 
 	// optional attribute to assign the hint to the whole mesh

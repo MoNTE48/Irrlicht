@@ -45,7 +45,7 @@ CAnimatedMeshSceneNode::CAnimatedMeshSceneNode(IAnimatedMesh* mesh,
 	setDebugName("CAnimatedMeshSceneNode");
 	#endif
 
-	setMesh(mesh);
+	setMesh(mesh, true);
 }
 
 
@@ -805,7 +805,7 @@ void CAnimatedMeshSceneNode::deserializeAttributes(io::IAttributes* in, io::SAtt
 		IAnimatedMesh* newAnimatedMesh = SceneManager->getMesh(newMeshStr.c_str());
 
 		if (newAnimatedMesh)
-			setMesh(newAnimatedMesh);
+			setMesh(newAnimatedMesh, true);
 	}
 
 	// TODO: read animation names instead of frame begin and ends
@@ -813,7 +813,7 @@ void CAnimatedMeshSceneNode::deserializeAttributes(io::IAttributes* in, io::SAtt
 
 
 //! Sets a new mesh
-void CAnimatedMeshSceneNode::setMesh(IAnimatedMesh* mesh)
+void CAnimatedMeshSceneNode::setMesh(IAnimatedMesh* mesh, bool copyMeshMaterials)
 {
 	if (!mesh)
 		return; // won't set null mesh
@@ -833,7 +833,7 @@ void CAnimatedMeshSceneNode::setMesh(IAnimatedMesh* mesh)
 	Box = Mesh->getBoundingBox();
 
 	IMesh* m = Mesh->getMesh(0,0);
-	if (m)
+	if (m && copyMeshMaterials)
 	{
 		Materials.clear();
 		Materials.reallocate(m->getMeshBufferCount());

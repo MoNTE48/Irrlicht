@@ -1410,7 +1410,11 @@ namespace video
 		virtual scene::IMeshManipulator* getMeshManipulator() =0;
 
 		//! Clear the color, depth and/or stencil buffers.
-		virtual void clearBuffers(u16 flag, SColor color = SColor(255,0,0,0), f32 depth = 1.f, u8 stencil = 0) = 0;
+		/** \param clearFlag A combination of the E_CLEAR_BUFFER_FLAG bit-flags. 
+		\param clearColor The clear color for the color buffer.
+		\param clearDepth The clear value for the depth buffer.
+		\param clearStencil The clear value for the stencil buffer.	*/
+		virtual void clearBuffers(u16 clearFlag, SColor clearColor = SColor(255,0,0,0), f32 clearDepth = 1.f, u8 clearStencil = 0) = 0;
 
 		//! Clear the color, depth and/or stencil buffers.
 		IRR_DEPRECATED void clearBuffers(bool backBuffer, bool depthBuffer, bool stencilBuffer, SColor color)

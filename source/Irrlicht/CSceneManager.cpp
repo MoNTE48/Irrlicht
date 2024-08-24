@@ -738,7 +738,7 @@ IOctreeSceneNode* CSceneManager::addOctreeSceneNode(IMesh* mesh, ISceneNode* par
 
 	if (node)
 	{
-		node->setMesh(mesh);
+		node->setMesh(mesh, true);
 		node->drop();
 	}
 
@@ -1422,12 +1422,12 @@ u32 CSceneManager::registerNodeForRendering(ISceneNode* node, E_SCENE_NODE_RENDE
 
 #ifdef _IRR_SCENEMANAGER_DEBUG
 	s32 index = Parameters->findAttribute("calls");
-	Parameters->setAttribute(index, Parameters->getAttributeAsInt(index)+1);
+	Parameters->setAttribute(index, Parameters->getAttributeAsInt(index, 0)+1);
 
 	if (!taken)
 	{
 		index = Parameters->findAttribute("culled");
-		Parameters->setAttribute(index, Parameters->getAttributeAsInt(index)+1);
+		Parameters->setAttribute(index, Parameters->getAttributeAsInt(index, 0)+1);
 	}
 #endif
 
@@ -1474,7 +1474,7 @@ void CSceneManager::drawAll()
 	for (i=video::ETS_COUNT-1; i>=video::ETS_TEXTURE_0; --i)
 		Driver->setTransform ( (video::E_TRANSFORMATION_STATE)i, core::IdentityMatrix );
 	// TODO: This should not use an attribute here but a real parameter when necessary (too slow!)
-	Driver->setAllowZWriteOnTransparent(Parameters->getAttributeAsBool(ALLOW_ZWRITE_ON_TRANSPARENT));
+	Driver->setAllowZWriteOnTransparent(Parameters->getAttributeAsBool(ALLOW_ZWRITE_ON_TRANSPARENT, false));
 
 	// do animations and other stuff.
 	IRR_PROFILE(getProfiler().start(EPID_SM_ANIMATE));

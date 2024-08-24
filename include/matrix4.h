@@ -264,6 +264,7 @@ namespace core
 			void transformVec3(T *out, const T * in) const;
 
 			//! An alternate transform vector method, reading from and writing to an array of 4 floats
+			/** in and out arrays should not overlap */
 			void transformVec4(T *out, const T * in) const;
 
 			//! Translate a vector by the translation part of this matrix.
@@ -286,8 +287,9 @@ namespace core
 			is slower than transformBox(). */
 			void transformBoxEx(core::aabbox3d<f32>& box) const;
 
-			//! Multiplies this matrix by a 1x4 matrix
-			void multiplyWith1x4Matrix(T* matrix) const;
+			//! Transforms matrix1x4 by this matrix
+			/** Like transformVec4, just with single parameter */
+			void multiplyWith1x4Matrix(T* matrix1x4) const;
 
 			//! Calculates inverse of matrix. Slow.
 			/** \return Returns false if there is no inverse matrix.*/
@@ -1358,28 +1360,17 @@ namespace core
 		box.MaxEdge.Z = Bmax[2];
 	}
 
-
-	//! Multiplies this matrix by a 1x4 matrix
+	//! Transforms matrix1x4 by this matrix
 	template <class T>
-	inline void CMatrix4<T>::multiplyWith1x4Matrix(T* matrix) const
+	inline void CMatrix4<T>::multiplyWith1x4Matrix(T* matrix1x4) const
 	{
-		/*
-		0  1  2  3
-		4  5  6  7
-		8  9  10 11
-		12 13 14 15
-		*/
-
 		T mat[4];
-		mat[0] = matrix[0];
-		mat[1] = matrix[1];
-		mat[2] = matrix[2];
-		mat[3] = matrix[3];
+		mat[0] = matrix1x4[0];
+		mat[1] = matrix1x4[1];
+		mat[2] = matrix1x4[2];
+		mat[3] = matrix1x4[3];
 
-		matrix[0] = M[0]*mat[0] + M[4]*mat[1] + M[8]*mat[2] + M[12]*mat[3];
-		matrix[1] = M[1]*mat[0] + M[5]*mat[1] + M[9]*mat[2] + M[13]*mat[3];
-		matrix[2] = M[2]*mat[0] + M[6]*mat[1] + M[10]*mat[2] + M[14]*mat[3];
-		matrix[3] = M[3]*mat[0] + M[7]*mat[1] + M[11]*mat[2] + M[15]*mat[3];
+		transformVec4(matrix1x4, mat);
 	}
 
 	template <class T>

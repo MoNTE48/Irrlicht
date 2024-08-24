@@ -448,11 +448,13 @@ public:
 	\param parent Parent item of the element, e.g. a window.
 	Set it to 0 to place the spin box directly in the environment.
 	\param id The ID of the element.
+	\param hasButtons When true spin-box has up-down buttons to change values
+	When false the values are controlled only via typing and mouse-scrolling.
 	\return Pointer to the created spin box. Returns 0 if an error occurred.
 	This pointer should not be dropped. See IReferenceCounted::drop() for
 	more information. */
 	virtual IGUISpinBox* addSpinBox(const wchar_t* text, const core::rect<s32>& rectangle,
-		bool border=true,IGUIElement* parent=0, s32 id=-1) = 0;
+		bool border=true,IGUIElement* parent=0, s32 id=-1, bool hasButtons=true) = 0;
 
 	//! Adds an element for fading in or out.
 	/** \param rectangle Rectangle specifying the borders of the fader.
@@ -650,6 +652,12 @@ public:
 	//! Get the way the gui does handle focus changes
 	/** \returns A bitmask which is a combination of ::EFOCUS_FLAG flags.*/
 	virtual u32 getFocusBehavior() const = 0;
+
+	//! Set a delay in milliseconds to show/hide menus
+	virtual void setMenuShowDelay(irr::u32 msDelay) = 0;
+
+	//! Get a delay in milliseconds when to showing/hiding menus
+	virtual irr::u32 getMenuShowDelay() const = 0;
 
 	//! Adds a IGUIElement to deletion queue.
 	/** Queued elements will be removed at the end of each drawAll call.

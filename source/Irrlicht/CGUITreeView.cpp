@@ -541,7 +541,7 @@ CGUITreeView::CGUITreeView(IGUIEnvironment* environment, IGUIElement* parent,
 								RelativeRect.getHeight()  - (scrollBarHorizontal ? ScrollBarSize : 0)
 			), !clip );
 
-		ScrollBarV->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
+		ScrollBarV->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
 		ScrollBarV->setSubElement(true);
 		ScrollBarV->setPos( 0 );
 	}

@@ -11,10 +11,12 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 --------------------------
 Changes in 1.9 (not yet released)
 
+- SpinBoxes can now also be created without buttons
+- Opening/closing sub-menus has now a delay. It can be controlled via IGUIEnvironment::setMenuShowDelay.
+- Add new flag to IMeshSceneNode::setMesh to allow to keeping the original node materials.
 - New ETCF_ALLOW_MEMORY_COPY texture creation flag makes having an extra texture copy for OpenGL textures optional.
   This is now disabled by default. It saves a lot memory, but the cost is that lock() calls get slower.
   So enable it for textures which you need to read a lot on CPU (like for example font textures).
-- CGUIEditBox::setText now resets cursorpos and text markers
 - Add parameter to setViewPort which allows disabling clipping of the area. Will only work in OpenGL.
   Thanks @Andrey01 for mentioning a use-case for this: https://irrlicht.sourceforge.io/forum/viewtopic.php?t=53020
 - Empty meshes and meshbuffers now have invalid bounding-boxes. 
