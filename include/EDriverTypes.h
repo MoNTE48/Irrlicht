@@ -52,9 +52,6 @@ namespace video
 		primitives. */
 		EDT_OPENGL,
 
-        //! OpenGL-ES 1.x driver, for embedded and mobile systems
-		EDT_OGLES1,
-
 		//! OpenGL-ES 2.x driver, for embedded and mobile systems
 		/** Supports shaders etc. */
 		EDT_OGLES2,
@@ -86,7 +83,6 @@ namespace video
 		"Direct3D 8.1",
 		"Direct3D 9.0c",
 		"OpenGL 1.x/2.x/3.x",
-		"OpenGL ES1",
 		"OpenGL ES2",
 		"WebGL 1",
 		"ANGLE",
@@ -103,7 +99,6 @@ namespace video
 		"d3d8",
 		"d3d9",
 		"opengl",
-		"ogles1",
 		"ogles2",
 		"webgl1",
 		"angle",

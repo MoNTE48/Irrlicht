@@ -39,7 +39,7 @@
 #endif
 #endif
 
-#if defined(_IRR_COMPILE_WITH_OGLES1_) || defined(_IRR_COMPILE_WITH_OGLES2_)
+#if defined(_IRR_COMPILE_WITH_OGLES2_)
 #include "CEGLManager.h"
 #endif
 
@@ -57,10 +57,6 @@ namespace irr
 
 #ifdef _IRR_COMPILE_WITH_OPENGL_
 		IVideoDriver* createOpenGLDriver(const irr::SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
-#endif
-
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-        IVideoDriver* createOGLES1Driver(const irr::SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
 #endif
 
 #ifdef _IRR_COMPILE_WITH_OGLES2_
@@ -1032,21 +1028,6 @@ void CIrrDeviceWin32::createDriver()
 			os::Printer::log("Could not create OpenGL driver.", ELL_ERROR);
 #else
 		os::Printer::log("OpenGL driver was not compiled in.", ELL_ERROR);
-#endif
-		break;
-	case video::EDT_OGLES1:
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-		switchToFullScreen();
-
-		ContextManager = new video::CEGLManager();
-		ContextManager->initialize(CreationParams, video::SExposedVideoData(HWnd));
-
-		VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, ContextManager);
-
-		if (!VideoDriver)
-			os::Printer::log("Could not create OpenGL-ES1 driver.", ELL_ERROR);
-#else
-		os::Printer::log("OpenGL-ES1 driver was not compiled in.", ELL_ERROR);
 #endif
 		break;
 	case video::EDT_OGLES2:

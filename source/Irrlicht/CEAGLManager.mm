@@ -12,10 +12,7 @@
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 
-#if defined(_IRR_COMPILE_WITH_OGLES1_)
-#include <OpenGLES/ES1/gl.h>
-#include <OpenGLES/ES1/glext.h>
-#elif defined(_IRR_COMPILE_WITH_OGLES2_)
+#if defined(_IRR_COMPILE_WITH_OGLES2_)
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #endif
@@ -140,9 +137,6 @@ bool CEAGLManager::generateContext()
 
 	switch (Params.DriverType)
 	{
-	case EDT_OGLES1:
-		OpenGLESVersion = kEAGLRenderingAPIOpenGLES1;
-		break;
 	case EDT_OGLES2:
 		OpenGLESVersion = kEAGLRenderingAPIOpenGLES2;
 		break;

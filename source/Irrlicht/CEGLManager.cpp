@@ -200,9 +200,6 @@ EGLConfig CEGLManager::chooseConfig(EConfigStyle confStyle)
 	EGLint eglOpenGLBIT = 0;
 	switch (Params.DriverType)
 	{
-	case EDT_OGLES1:
-		eglOpenGLBIT = EGL_OPENGL_ES_BIT;
-		break;
 	case EDT_OGLES2:
 	case EDT_WEBGL1:
 		eglOpenGLBIT = EGL_OPENGL_ES2_BIT;
@@ -556,9 +553,6 @@ bool CEGLManager::generateContext()
 
 	switch (Params.DriverType)
 	{
-	case EDT_OGLES1:
-		OpenGLESVersion = 1;
-		break;
 	case EDT_OGLES2:
 	case EDT_WEBGL1:
 		OpenGLESVersion = 2;

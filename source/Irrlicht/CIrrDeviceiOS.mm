@@ -308,8 +308,6 @@ namespace irr
 {
 	namespace video
 	{
-		IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
-
 		IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
 	}
 
@@ -764,34 +762,6 @@ namespace irr
 
 		switch (CreationParams.DriverType)
 		{
-			case video::EDT_OGLES1:
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-				{
-					CIrrViewEAGLiOS* view = [[CIrrViewEAGLiOS alloc] initWithFrame:resolution forDevice:this];
-					view.contentScaleFactor = dataStorage->Window.screen.nativeScale;
-					view.Scale = view.contentScaleFactor;
-					CreationParams.WindowSize =
-						{
-							(u32) (view.frame.size.width * view.contentScaleFactor),
-							(u32) (view.frame.size.height * view.contentScaleFactor)
-						};
-
-					dataStorage->View = view;
-					data.OpenGLiOS.View = (__bridge void*)view;
-
-					ContextManager = new video::CEAGLManager();
-					ContextManager->initialize(CreationParams, data);
-
-					VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, ContextManager);
-
-					if (!VideoDriver)
-						os::Printer::log("Could not create OpenGL ES 1.x driver.", ELL_ERROR);
-				}
-#else
-				os::Printer::log("No OpenGL ES 1.x support compiled in.", ELL_ERROR);
-#endif
-				break;
-
 			case video::EDT_OGLES2:
 #ifdef _IRR_COMPILE_WITH_OGLES2_
 				{

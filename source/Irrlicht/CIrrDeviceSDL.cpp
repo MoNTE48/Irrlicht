@@ -56,10 +56,6 @@ namespace irr::video
 			io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
 #endif
 
-#if defined(_IRR_COMPILE_WITH_OGLES1_)
-	IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params,
-			io::IFileSystem* io, CIrrDeviceSDL* device);
-#endif
 }
 
 namespace irr
@@ -255,8 +251,7 @@ static bool isPrimaryModifierPressed(SDL_Keymod mod)
 static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
 {
 	return driverType == video::EDT_OPENGL ||
-		driverType == video::EDT_OGLES2 ||
-		driverType == video::EDT_OGLES1
+		driverType == video::EDT_OGLES2
 #if !defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
 		|| driverType == video::EDT_ANGLE
 #endif
@@ -618,12 +613,6 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 		}
-		else if (CreationParams.DriverType == video::EDT_OGLES1)
-		{
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
-			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-		}
 		else
 		{
 			// As said in WGL cotext manager:
@@ -870,14 +859,6 @@ void CIrrDeviceSDL::createDriver()
 		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this, ContextManager);
 #else
 		os::Printer::log("No ANGLE support compiled in.", ELL_ERROR);
-#endif
-		break;
-
-	case video::EDT_OGLES1:
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-		VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, this);
-#else
-		os::Printer::log("No OpenGL ES1 support compiled in.", ELL_ERROR);
 #endif
 		break;
 

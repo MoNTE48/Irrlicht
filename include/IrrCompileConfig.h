@@ -101,7 +101,6 @@
 #if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 #define _IRR_COMPILE_WITH_OSX_DEVICE_
 #endif
-#define NO_IRR_COMPILE_WITH_OGLES1_
 #define NO_IRR_COMPILE_WITH_WEBGL1_
 #define NO_IRR_COMPILE_WITH_OGLES2_
 #endif
@@ -136,7 +135,6 @@ rather than joining it. The build has to supply ANGLE's headers. */
 #define _IRR_EMSCRIPTEN_PLATFORM_
 #define NO_IRR_COMPILE_WITH_JOYSTICK_EVENTS_
 #define NO_IRR_COMPILE_WITH_OPENGL_
-#define NO_IRR_COMPILE_WITH_OGLES1_
 #define _IRR_COMPILE_WITH_OGLES2_
 #define _IRR_COMPILE_WITH_WEBGL1_
 #define _IRR_COMPILE_WITH_EGL_MANAGER_
@@ -254,45 +252,6 @@ define out. */
 	#elif defined(_IRR_SOLARIS_PLATFORM_)
 		#define _IRR_COMPILE_WITH_GLX_MANAGER_
 	#endif
-#endif
-
-//! Define _IRR_COMPILE_WITH_OGLES1_ to compile the Irrlicht engine with OpenGL ES 1.1.
-/** If you do not wish the engine to be compiled with OpenGL ES 1.1, comment this
-define out.
-Currently only enabled on Android by default.
-Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS_ as well when using it.
-*/
-//! No platform builds OpenGL ES 1.1
-#if 0
-#ifdef _IRR_ANDROID_PLATFORM_
-#define _IRR_COMPILE_WITH_OGLES1_
-#endif
-#endif
-#ifdef NO_IRR_COMPILE_WITH_OGLES1_
-#undef _IRR_COMPILE_WITH_OGLES1_
-#endif
-
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-//! Define _IRR_OGLES1_USE_KHRONOS_API_HEADERS_ to use the OpenGL ES headers from the Debian Khronos-api package
-//#define _IRR_OGLES1_USE_KHRONOS_API_HEADERS_
-#endif
-
-//! Define required options for OpenGL ES 1.1 drivers.
-#if defined(_IRR_COMPILE_WITH_OGLES1_)
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-#if !defined(_IRR_IOS_PLATFORM_)
-#define _IRR_OGLES1_USE_EXTPOINTER_
-#endif
-#elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_)
-#define _IRR_OGLES1_USE_EXTPOINTER_
-#ifndef _IRR_COMPILE_WITH_EGL_MANAGER_
-#define _IRR_COMPILE_WITH_EGL_MANAGER_
-#endif
-#elif defined(_IRR_COMPILE_WITH_IOS_DEVICE_)
-#ifndef _IRR_COMPILE_WITH_EAGL_MANAGER_
-#define _IRR_COMPILE_WITH_EAGL_MANAGER_
-#endif
-#endif
 #endif
 
 //! Define _IRR_COMPILE_WITH_OGLES2_ to compile the Irrlicht engine with OpenGL ES 2.0.
