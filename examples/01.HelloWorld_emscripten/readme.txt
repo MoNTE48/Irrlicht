@@ -22,3 +22,10 @@ Go into examples/01.HelloWord_emscripten folder and call:
 emmake make all_emscripten
 
 Note: The shell_minimal.html is currently not used (as resizing isn't working yet correctly), but can be enabled in the Makefile.
+
+----------------------------
+Testing
+----------------------------
+Unless you put the result in bin/emscripten on a server you will likely get CORS errors in your browser when testing.
+Use emrun instead for local tests, like: emrun 01.HelloEmscripten.html
+Check the browser console output first on problems.

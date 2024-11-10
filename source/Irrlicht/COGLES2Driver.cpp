@@ -2094,7 +2094,7 @@ COGLES2Driver::~COGLES2Driver()
 	}
 
 
-	void COGLES2Driver::chooseMaterial2D()
+	void COGLES2Driver::chooseMaterial2D(bool textureClampToEdge)
 	{
 		if (!OverrideMaterial2DEnabled)
 			Material = InitMaterial2D;
@@ -2107,6 +2107,17 @@ COGLES2Driver::~COGLES2Driver()
 			OverrideMaterial2D.Lighting=false;
 
 			Material = OverrideMaterial2D;
+		}
+
+		if ( textureClampToEdge )	// usually needed for NPOT textures on WebGL
+		{
+			for (u32 i=0; i<video::MATERIAL_MAX_TEXTURES; ++i)
+			{
+				InitMaterial2D.TextureLayer[i].BilinearFilter=false;
+				InitMaterial2D.TextureLayer[i].TextureWrapU=video::ETC_CLAMP_TO_EDGE;
+				InitMaterial2D.TextureLayer[i].TextureWrapV=video::ETC_CLAMP_TO_EDGE;
+				InitMaterial2D.TextureLayer[i].TextureWrapW = video::ETC_CLAMP_TO_EDGE;
+			}
 		}
 	}
 

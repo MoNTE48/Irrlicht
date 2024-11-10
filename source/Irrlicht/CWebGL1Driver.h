@@ -15,6 +15,7 @@
 #include "CWebGLExtensionHandler.h"
 #include "CMeshBuffer.h"
 #include "EHardwareBufferFlags.h"
+#include "irrMath.h"
 
 namespace irr
 {
@@ -126,6 +127,11 @@ namespace video
 
 		virtual bool genericDriverInit(const core::dimension2d<u32>& screenSize, bool stencilBuffer) IRR_OVERRIDE;
 		void initWebGLExtensions();
+
+		inline bool needsClampToEdge(const irr::video::ITexture* texture) const
+		{
+			return core::isPowerOfTwo(texture->getSize().Width) || core::isPowerOfTwo(texture->getSize().Height);
+		}
 
 	private:
 		// CWebGL1Driver is derived from COGLES2Driver so it already got an extension handler from that.

@@ -198,7 +198,7 @@ void CWebGL1Driver::draw2DImage(const video::ITexture* texture,
 
 	const core::rect<s32> poss(targetPos, sourceSize);
 
-	chooseMaterial2D();
+	chooseMaterial2D(needsClampToEdge(texture));
 	if ( !setMaterialTexture(0, texture) )
 		return;
 
@@ -249,7 +249,7 @@ void CWebGL1Driver::draw2DImage(const video::ITexture* texture, const core::rect
 
 	const video::SColor* const useColor = colors ? colors : temp;
 
-	chooseMaterial2D();
+	chooseMaterial2D(needsClampToEdge(texture));
 	if ( !setMaterialTexture(0, texture) )
 		return;
 
@@ -295,7 +295,7 @@ void CWebGL1Driver::draw2DImageQuad(const video::ITexture* texture, u32 layer, b
 	if (!texture )
 		return;
 
-	chooseMaterial2D();
+	chooseMaterial2D(needsClampToEdge(texture));
 	if ( !setMaterialTexture(0, texture) )
 		return;
 
@@ -336,7 +336,7 @@ void CWebGL1Driver::draw2DImageBatch(const video::ITexture* texture,
 	if (!texture)
 		return;
 
-	chooseMaterial2D();
+	chooseMaterial2D(needsClampToEdge(texture));
 	if ( !setMaterialTexture(0, texture) )
 		return;
 
@@ -412,7 +412,7 @@ void CWebGL1Driver::draw2DImageBatch(const video::ITexture* texture,
 	if ( !drawCount )
 		return;
 
-	chooseMaterial2D();
+	chooseMaterial2D(needsClampToEdge(texture));
 	if ( !setMaterialTexture(0, texture) )
 		return;
 
