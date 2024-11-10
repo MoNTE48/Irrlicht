@@ -378,7 +378,7 @@ void CMainMenu::setTransparency()
 	{
 		video::SColor col = SkinColor[i];
 
-		if (false == transparent)
+		if (false == transparent && i != gui::EGDC_GRAY_TEXT)
 			col.setAlpha(255);
 
 		skin->setColor((gui::EGUI_DEFAULT_COLOR)i, col);

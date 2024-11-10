@@ -104,8 +104,8 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
     //
 
     file->write("BRUS", 4);
-    const u32 brushSizeAdress = file->getPos();
-    file->write(&brushSizeAdress, 4); // BRUSH chunk size, updated later
+    const u32 brushSizeAddress = file->getPos();
+    file->write(&brushSizeAddress, 4); // BRUSH chunk size, updated later
 
     const u32 usedtex = MATERIAL_MAX_TEXTURES;
     file->write(&usedtex, 4);
@@ -141,11 +141,11 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
             file->write(&id, 4);
         }
     }
-    writeSizeFrom(file, brushSizeAdress+4, brushSizeAdress); // BRUSH chunk size
+    writeSizeFrom(file, brushSizeAddress+4, brushSizeAddress); // BRUSH chunk size
 
     file->write("NODE", 4);
-    u32 nodeSizeAdress = file->getPos();
-    file->write(&nodeSizeAdress, 4); // NODE chunk size, updated later
+    u32 nodeSizeAddress = file->getPos();
+    file->write(&nodeSizeAddress, 4); // NODE chunk size, updated later
 
     // Node
     file->write("", 1);
@@ -161,8 +161,8 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
 
     // Mesh
     file->write("MESH", 4);
-    const u32 meshSizeAdress = file->getPos();
-    file->write(&meshSizeAdress, 4); // MESH chunk size, updated later
+    const u32 meshSizeAddress = file->getPos();
+    file->write(&meshSizeAddress, 4); // MESH chunk size, updated later
 
 	s32 brushID = -1;
     file->write(&brushID, 4);
@@ -171,8 +171,8 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
 
     // Verts
     file->write("VRTS", 4);
-    const u32 verticesSizeAdress = file->getPos();
-    file->write(&verticesSizeAdress, 4);
+    const u32 verticesSizeAddress = file->getPos();
+    file->write(&verticesSizeAddress, 4);
 
     u32 flagsB3D = 3; // 1=normal values present, 2=rgba values present
     file->write(&flagsB3D, 4);
@@ -239,7 +239,7 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
             }
         }
     }
-    writeSizeFrom(file, verticesSizeAdress+4, verticesSizeAdress); // VERT chunk size
+    writeSizeFrom(file, verticesSizeAddress+4, verticesSizeAddress); // VERT chunk size
 
 
     u32 currentMeshBufferIndex = 0;
@@ -248,8 +248,8 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
     {
         const IMeshBuffer * const mb = mesh->getMeshBuffer(i);
         file->write("TRIS", 4);
-        const u32 trisSizeAdress = file->getPos();
-        file->write(&trisSizeAdress, 4); // TRIS chunk size, updated later
+        const u32 trisSizeAddress = file->getPos();
+        file->write(&trisSizeAddress, 4); // TRIS chunk size, updated later
 
         file->write(&i, 4);
 
@@ -284,11 +284,11 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
 				file->write(&tmp, sizeof(u32));
 			}
 		}
-        writeSizeFrom(file, trisSizeAdress+4, trisSizeAdress);  // TRIS chunk size
+        writeSizeFrom(file, trisSizeAddress+4, trisSizeAddress);  // TRIS chunk size
 
         currentMeshBufferIndex += mb->getVertexCount();
     }
-    writeSizeFrom(file, meshSizeAdress+4, meshSizeAdress); // MESH chunk size
+    writeSizeFrom(file, meshSizeAddress+4, meshSizeAddress); // MESH chunk size
 
 
     if(ISkinnedMesh *skinnedMesh = getSkinned(mesh))
@@ -330,7 +330,7 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
         }
     }
 
-    writeSizeFrom(file, nodeSizeAdress+4, nodeSizeAdress); // Node chunk size
+    writeSizeFrom(file, nodeSizeAddress+4, nodeSizeAddress); // Node chunk size
 	writeSizeFrom(file, 8, 4); // BB3D chunk size
 
     return true;
@@ -342,8 +342,8 @@ void CB3DMeshWriter::writeJointChunk(io::IWriteFile* file, ISkinnedMesh* mesh, I
 {
     // Node
     file->write("NODE", 4);
-    const u32 nodeSizeAdress = file->getPos();
-    file->write(&nodeSizeAdress, 4);
+    const u32 nodeSizeAddress = file->getPos();
+    file->write(&nodeSizeAddress, 4);
 
 
     core::stringc name = joint->Name;
@@ -459,7 +459,7 @@ void CB3DMeshWriter::writeJointChunk(io::IWriteFile* file, ISkinnedMesh* mesh, I
         writeJointChunk(file, mesh, joint->Children[i], animationSpeedMultiplier);
     }
 
-    writeSizeFrom(file, nodeSizeAdress+4, nodeSizeAdress); // NODE chunk size
+    writeSizeFrom(file, nodeSizeAddress+4, nodeSizeAddress); // NODE chunk size
 }
 
 
@@ -538,10 +538,10 @@ void CB3DMeshWriter::writeColor(io::IWriteFile* file, const video::SColorf& colo
 }
 
 // Write the size from a given position to current position at a specific position in the file
-void CB3DMeshWriter::writeSizeFrom(io::IWriteFile* file, const u32 from, const u32 adressToWrite)
+void CB3DMeshWriter::writeSizeFrom(io::IWriteFile* file, const u32 from, const u32 addressToWrite)
 {
     const long back = file->getPos();
-    file->seek(adressToWrite);
+    file->seek(addressToWrite);
     const u32 sizeToWrite = back - from;
     file->write(&sizeToWrite, 4);
     file->seek(back);

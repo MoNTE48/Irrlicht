@@ -29,6 +29,19 @@ namespace scene
 		ESV_SILHOUETTE_BY_POS
 	};
 
+	//! Options for what happens in IShadowVolumeSceneNode::updateShadowVolumes
+	enum ESHADOWVOLUME_FREEZE
+	{
+		//! Default - shadow volumes update on each call
+		ESF_RUN,
+
+		//! Update the shadow volumes once, then switch to freeze
+		ESF_FREEZE_AFTER_UPDATE,
+
+		//! Do no longer update the shadow volumes
+		ESF_FREEZE
+	};
+
 	//! Scene node for rendering a shadow volume into a stencil buffer.
 	class IShadowVolumeSceneNode : public ISceneNode
 	{
@@ -45,6 +58,13 @@ namespace scene
 
 		//! Updates the shadow volumes for current light positions.
 		virtual void updateShadowVolumes() = 0;
+
+		//! Control if updateShadowVolumes really updates the shadow volumes
+		/** Usually Irrlicht nodes will update the shadow every frame when 
+		they are not culled. But this can be expensive and isn't always necessary, 
+		p.E. with static objects and unchanging lights. */
+		virtual void setFreeze(ESHADOWVOLUME_FREEZE behavior) = 0;
+		virtual ESHADOWVOLUME_FREEZE getFreeze() const = 0;
 
 		//! Set optimization used to create shadow volumes
 		/** Default is ESV_SILHOUETTE_BY_POS. If the shadow 

@@ -154,7 +154,7 @@ bool CGUIMenu::OnEvent(const SEvent& event)
 				if (!AbsoluteClippingRect.isPointInside(p))
 				{
 					s32 t = sendClick(p);
-					if ((t==0 || t==1) && Environment->hasFocus(this))
+					if ((t==0 || t==1 || (t==2 && CloseOnCheck)) && Environment->hasFocus(this))
 						Environment->removeFocus(this);
 				}
 

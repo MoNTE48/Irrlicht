@@ -251,7 +251,7 @@ namespace scene
 		\return Cloned mesh. If you no longer need the
 		cloned mesh, you should call SMesh::drop(). See
 		IReferenceCounted::drop() for more information. */
-		virtual SMesh* createMeshCopy(IMesh* mesh) const = 0;
+		virtual SMesh* createMeshCopy(const IMesh* mesh) const = 0;
 
 		//! Creates a copy of the mesh, which will only consist of S3DVertexTangents vertices.
 		/** This is useful if you want to draw tangent space normal
@@ -271,7 +271,7 @@ namespace scene
 		you no longer need the cloned mesh, you should call
 		IMesh::drop(). See IReferenceCounted::drop() for more
 		information. */
-		virtual IMesh* createMeshWithTangents(IMesh* mesh,
+		virtual IMesh* createMeshWithTangents(const IMesh* mesh,
 				bool recalculateNormals=false, bool smooth=false,
 				bool angleWeighted=false, bool recalculateTangents=true) const=0;
 
@@ -282,7 +282,7 @@ namespace scene
 		you no longer need the cloned mesh, you should call
 		IMesh::drop(). See IReferenceCounted::drop() for more
 		information. */
-		virtual IMesh* createMeshWith2TCoords(IMesh* mesh) const = 0;
+		virtual IMesh* createMeshWith2TCoords(const IMesh* mesh) const = 0;
 
 		//! Creates a copy of the mesh, which will only consist of S3DVertex vertices.
 		/** Note: Only 16-bit meshbuffers supported so far
@@ -291,7 +291,7 @@ namespace scene
 		you no longer need the cloned mesh, you should call
 		IMesh::drop(). See IReferenceCounted::drop() for more
 		information. */
-		virtual IMesh* createMeshWith1TCoords(IMesh* mesh) const = 0;
+		virtual IMesh* createMeshWith1TCoords(const IMesh* mesh) const = 0;
 
 		//! Creates a copy of a mesh with all vertices unwelded
 		/** Note: Only 16-bit meshbuffers supported so far
@@ -300,7 +300,7 @@ namespace scene
 		which were previously shared are now duplicated. If you no
 		longer need the cloned mesh, you should call IMesh::drop(). See
 		IReferenceCounted::drop() for more information. */
-		virtual IMesh* createMeshUniquePrimitives(IMesh* mesh) const = 0;
+		virtual IMesh* createMeshUniquePrimitives(const IMesh* mesh) const = 0;
 
 		//! Creates a copy of a mesh with vertices welded 
 		/** Note: Only 16-bit meshbuffers supported so far, 32-bit buffer are cloned
@@ -309,12 +309,12 @@ namespace scene
 		\return Mesh without redundant vertices. If you no longer need
 		the cloned mesh, you should call IMesh::drop(). See
 		IReferenceCounted::drop() for more information. */
-		virtual IMesh* createMeshWelded(IMesh* mesh, f32 tolerance=core::ROUNDING_ERROR_f32) const = 0;
+		virtual IMesh* createMeshWelded(const IMesh* mesh, f32 tolerance=core::ROUNDING_ERROR_f32) const = 0;
 
 		//! Get amount of polygons in mesh.
 		/** \param mesh Input mesh
 		\return Number of polygons in mesh. */
-		virtual s32 getPolyCount(IMesh* mesh) const = 0;
+		virtual s32 getPolyCount(const IMesh* mesh) const = 0;
 
 		//! Get amount of polygons in mesh.
 		/** \param mesh Input mesh

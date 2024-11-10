@@ -178,7 +178,7 @@ bool CD3D9Driver::initDriver(HWND hwnd, bool pureSoftware)
 
 		if (!d3dCreate)
 		{
-			os::Printer::log("Error, could not get proc adress of Direct3DCreate9.", ELL_ERROR);
+			os::Printer::log("Error, could not get proc address of Direct3DCreate9.", ELL_ERROR);
 			return false;
 		}
 

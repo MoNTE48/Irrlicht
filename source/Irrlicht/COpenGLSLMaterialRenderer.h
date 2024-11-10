@@ -93,9 +93,9 @@ protected:
 		const c8* vertexShaderProgram,
 		const c8* pixelShaderProgram,
 		const c8* geometryShaderProgram,
-		scene::E_PRIMITIVE_TYPE inType=scene::EPT_TRIANGLES,
-		scene::E_PRIMITIVE_TYPE outType=scene::EPT_TRIANGLE_STRIP,
-		u32 verticesOut=0);
+		scene::E_PRIMITIVE_TYPE inType,
+		scene::E_PRIMITIVE_TYPE outType,
+		u32 verticesOut);
 
 	bool createProgram();
 	bool createShader(GLenum shaderType, const char* shader);

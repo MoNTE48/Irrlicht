@@ -11,6 +11,14 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 --------------------------
 Changes in 1.9 (not yet released)
 
+- Add freeze options for IShadowVolumeSceneNode
+- OpenGL driver no longer drops normals and texture coordinates for EPT_POINTS
+- Fix drawVertexPrimitiveList in OpenGL driver ignoring index buffer for EPT_POINTS and EPT_POINT_SPRITES. 
+  It did always draw the vertex array, but still using the primitive count (so often going outside array)
+  Now using the index buffer as with other drivers.
+- Add IGUIContextMenu::setCloseOnCheck to control behaviour when a checkable item is clicked
+- IGUIListBox::setItemHeight now resets to automatic height with value 0. Also value is now serialized.
+- Several IMeshManipulator functions allow now using const IMesh* instead of insisting on non-const pointer
 - SpinBoxes can now also be created without buttons
 - Opening/closing sub-menus has now a delay. It can be controlled via IGUIEnvironment::setMenuShowDelay.
 - Add new flag to IMeshSceneNode::setMesh to allow to keeping the original node materials.

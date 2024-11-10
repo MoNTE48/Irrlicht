@@ -75,7 +75,7 @@ COpenGLSLMaterialRenderer::COpenGLSLMaterialRenderer(video::COpenGLDriver* drive
 	if (!Driver->queryFeature(EVDF_ARB_GLSL))
 		return;
 
-	init(outMaterialTypeNr, vertexShaderProgram, pixelShaderProgram, geometryShaderProgram);
+	init(outMaterialTypeNr, vertexShaderProgram, pixelShaderProgram, geometryShaderProgram, inType, outType, verticesOut);
 }
 
 

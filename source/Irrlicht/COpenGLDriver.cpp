@@ -837,10 +837,7 @@ void COpenGLDriver::drawVertexPrimitiveList(const void* vertices, u32 vertexCoun
 	// draw everything
 	setRenderStates3DMode();
 
-	if ((pType!=scene::EPT_POINTS) && (pType!=scene::EPT_POINT_SPRITES))
-		CacheHandler->setClientState(true, true, true, true);
-	else
-		CacheHandler->setClientState(true, false, true, false);
+	CacheHandler->setClientState(true, true, true, true);
 
 //due to missing defines in OSX headers, we have to be more specific with this check
 //#if defined(GL_ARB_vertex_array_bgra) || defined(GL_EXT_vertex_array_bgra)
@@ -1091,7 +1088,7 @@ void COpenGLDriver::renderArray(const void* indexList, u32 primitiveCount,
 				glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE, GL_TRUE);
 			}
 #endif
-			glDrawArrays(GL_POINTS, 0, primitiveCount);
+			glDrawElements(GL_POINTS, primitiveCount, indexSize, indexList);
 #ifdef GL_ARB_point_sprite
 			if (pType==scene::EPT_POINT_SPRITES && FeatureAvailable[IRR_ARB_point_sprite])
 			{

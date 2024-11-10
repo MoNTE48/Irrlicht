@@ -32,7 +32,7 @@ enum
 
 	// I use this flag in ISceneNode IDs to indicate that the
 	// scene node can be highlighted.  In this example, the
-	// homonids can be highlighted, but the level mesh can't.
+	// hominids can be highlighted, but the level mesh can't.
 	IDFlag_IsHighlightable = 1 << 1
 };
 

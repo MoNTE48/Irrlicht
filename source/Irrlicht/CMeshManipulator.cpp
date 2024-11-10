@@ -578,7 +578,7 @@ void CMeshManipulator::makePlanarTextureMapping(scene::IMesh* mesh, f32 resoluti
 
 
 //! Clones a static IMesh into a modifiable SMesh.
-SMesh* CMeshManipulator::createMeshCopy(scene::IMesh* mesh) const
+SMesh* CMeshManipulator::createMeshCopy(const scene::IMesh* mesh) const
 {
 	if (!mesh)
 		return 0;
@@ -601,7 +601,7 @@ SMesh* CMeshManipulator::createMeshCopy(scene::IMesh* mesh) const
 
 //! Creates a copy of the mesh, which will only consist of unique primitives
 // not yet 32bit
-IMesh* CMeshManipulator::createMeshUniquePrimitives(IMesh* mesh) const
+IMesh* CMeshManipulator::createMeshUniquePrimitives(const IMesh* mesh) const
 {
 	if (!mesh)
 		return 0;
@@ -706,7 +706,7 @@ IMesh* CMeshManipulator::createMeshUniquePrimitives(IMesh* mesh) const
 
 //! Creates a copy of a mesh, which will have identical vertices welded together
 // not yet 32bit
-IMesh* CMeshManipulator::createMeshWelded(IMesh *mesh, f32 tolerance) const
+IMesh* CMeshManipulator::createMeshWelded(const IMesh *mesh, f32 tolerance) const
 {
 	SMesh* meshClone = new SMesh();
 	meshClone->BoundingBox = mesh->getBoundingBox();
@@ -892,7 +892,7 @@ IMesh* CMeshManipulator::createMeshWelded(IMesh *mesh, f32 tolerance) const
 
 //! Creates a copy of the mesh, which will only consist of S3DVertexTangents vertices.
 // not yet 32bit
-IMesh* CMeshManipulator::createMeshWithTangents(IMesh* mesh, bool recalculateNormals, bool smooth, bool angleWeighted, bool calculateTangents) const
+IMesh* CMeshManipulator::createMeshWithTangents(const IMesh* mesh, bool recalculateNormals, bool smooth, bool angleWeighted, bool calculateTangents) const
 {
 	using namespace video;
 
@@ -1013,7 +1013,7 @@ void CMeshManipulator::heightmapOptimizeMesh(IMeshBuffer * const mb, const f32 t
 	S3DVertex *vert = (S3DVertex *) mb->getVertices();
 
 	// First an acceleration structure: given this vert, which triangles touch it?
-	// Using this drops two exponents off the algorightm complexity, O(n^4) > O(n^2)
+	// Using this drops two exponents off the algorithm complexity, O(n^4) > O(n^2)
 	// Other optimizations brought it down to O(n).
 	u32 **accel = (u32 **) malloc(verts * sizeof(u32 *));
 	for (u32 i = 0; i < verts; i++)
@@ -1280,7 +1280,7 @@ donehere:
 
 //! Creates a copy of the mesh, which will only consist of S3DVertex2TCoords vertices.
 // not yet 32bit
-IMesh* CMeshManipulator::createMeshWith2TCoords(IMesh* mesh) const
+IMesh* CMeshManipulator::createMeshWith2TCoords(const IMesh* mesh) const
 {
 	using namespace video;
 
@@ -1354,7 +1354,7 @@ IMesh* CMeshManipulator::createMeshWith2TCoords(IMesh* mesh) const
 
 //! Creates a copy of the mesh, which will only consist of S3DVertex vertices.
 // not yet 32bit
-IMesh* CMeshManipulator::createMeshWith1TCoords(IMesh* mesh) const
+IMesh* CMeshManipulator::createMeshWith1TCoords(const IMesh* mesh) const
 {
 	using namespace video;
 
@@ -1427,7 +1427,7 @@ IMesh* CMeshManipulator::createMeshWith1TCoords(IMesh* mesh) const
 
 
 //! Returns amount of polygons in mesh.
-s32 CMeshManipulator::getPolyCount(scene::IMesh* mesh) const
+s32 CMeshManipulator::getPolyCount(const scene::IMesh* mesh) const
 {
 	if (!mesh)
 		return 0;

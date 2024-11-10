@@ -367,9 +367,9 @@ namespace gui
 		s32			TotalItemHeight;
 		s32			TotalItemWidth;
 		s32			ScrollBarSize;
-		IGUIFont*		Font;
-		gui::IGUIFont*	OverrideFont;
-		IGUIFont*		IconFont;
+		IGUIFont*	Font;
+		IGUIFont*	OverrideFont;
+		IGUIFont*	IconFont;
 		IGUIScrollBar*		ScrollBarH;
 		IGUIScrollBar*		ScrollBarV;
 		IGUIImageList*		ImageList;

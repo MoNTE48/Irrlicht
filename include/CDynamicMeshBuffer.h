@@ -179,7 +179,7 @@ namespace scene
 			{
 				case video::EIT_16BIT:
 				{
-					const irr::u16* indices16 = reinterpret_cast<const irr::u16*>(indices);
+					const irr::u16* indices16 = static_cast<const irr::u16*>(indices);
 					for (u32 i=0; i<numIndices; ++i)
 					{
 						// Note: This can overflow, not checked. Will result in broken models, but no crashes.
@@ -189,7 +189,7 @@ namespace scene
 				}
 				case video::EIT_32BIT:
 				{
-					const irr::u32* indices32 = reinterpret_cast<const irr::u32*>(indices);
+					const irr::u32* indices32 = static_cast<const irr::u32*>(indices);
 					for (u32 i=0; i<numIndices; ++i)
 					{
 						IndexBuffer->push_back(indices32[i]+vertexCount);

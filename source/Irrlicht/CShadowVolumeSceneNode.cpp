@@ -27,7 +27,7 @@ CShadowVolumeSceneNode::CShadowVolumeSceneNode(const IMesh* shadowMesh, ISceneNo
 : IShadowVolumeSceneNode(parent, mgr, id),
 	AdjacencyDirtyFlag(true),
 	ShadowMesh(0), IndexCount(0), VertexCount(0), ShadowVolumesUsed(0),
-	Infinity(infinity), UseZFailMethod(zfailmethod), Optimization(ESV_SILHOUETTE_BY_POS)
+	Infinity(infinity), UseZFailMethod(zfailmethod), Optimization(ESV_SILHOUETTE_BY_POS), Freeze(ESF_RUN)
 {
 	#ifdef _DEBUG
 	setDebugName("CShadowVolumeSceneNode");
@@ -274,6 +274,11 @@ void CShadowVolumeSceneNode::setShadowMesh(const IMesh* mesh)
 
 void CShadowVolumeSceneNode::updateShadowVolumes()
 {
+	if ( Freeze == ESF_FREEZE )
+		return;
+	else if ( Freeze == ESF_FREEZE_AFTER_UPDATE )
+		Freeze = ESF_FREEZE;
+
 	const u32 oldIndexCount = IndexCount;
 	const u32 oldVertexCount = VertexCount;
 

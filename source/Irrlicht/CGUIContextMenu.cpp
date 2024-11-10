@@ -23,7 +23,8 @@ CGUIContextMenu::CGUIContextMenu(IGUIEnvironment* environment,
 				IGUIElement* parent, s32 id,
 				core::rect<s32> rectangle, bool getFocus, bool allowFocus)
 	: IGUIContextMenu(environment, parent, id, rectangle), EventParent(0), LastFont(0),
-		CloseHandling(ECMC_REMOVE), HighLighted(-1), ChangeTime(0), AllowFocus(allowFocus)
+	  CloseHandling(ECMC_REMOVE), CloseOnCheck(true),
+	  HighLighted(-1), ChangeTime(0), AllowFocus(allowFocus)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIContextMenu");
@@ -328,7 +329,7 @@ bool CGUIContextMenu::OnEvent(const SEvent& event)
 					// menu might be removed if it loses focus in sendClick, so grab a reference
 					grab();
 					const u32 t = sendClick(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y));
-					if ((t==0 || t==1) && Environment->hasFocus(this))
+					if ((t==0 || t==1 || (t==2 && CloseOnCheck)) && Environment->hasFocus(this))
 						Environment->removeFocus(this);
 					drop();
 				}
@@ -402,11 +403,16 @@ u32 CGUIContextMenu::sendClick(const core::position2d<s32>& p)
 		if (!Items[HighLighted].Enabled ||
 			Items[HighLighted].IsSeparator ||
 			Items[HighLighted].SubMenu)
-			return 2;
+			return 3;
 
 		if ( Items[HighLighted].AutoChecking )
 		{
+			t = 2;
 			Items[HighLighted].Checked = Items[HighLighted].Checked ? false : true;
+		}
+		else
+		{
+			t = 1;
 		}
 
 		SEvent event;
@@ -419,7 +425,7 @@ u32 CGUIContextMenu::sendClick(const core::position2d<s32>& p)
 		else if (Parent)
 			Parent->OnEvent(event);
 
-		return 1;
+		return t;
 	}
 
 	return 0;
@@ -771,6 +777,7 @@ void CGUIContextMenu::serializeAttributes(io::IAttributes* out, io::SAttributeRe
 	}
 
 	out->addInt("CloseHandling", (s32)CloseHandling);
+	out->addBool("CloseOnCheck", CloseOnCheck);
 
 	// write out the item list
 	out->addInt("ItemCount", Items.size());
@@ -811,6 +818,7 @@ void CGUIContextMenu::deserializeAttributes(io::IAttributes* in, io::SAttributeR
 		((CGUIContextMenu*)Parent)->setSubMenu(in->getAttributeAsInt("ParentItem"),this);
 
 	CloseHandling = (ECONTEXT_MENU_CLOSE)in->getAttributeAsInt("CloseHandling");
+	CloseOnCheck = in->getAttributeAsBool("CloseOnCheck", CloseOnCheck);
 
 	removeAllItems();
 
