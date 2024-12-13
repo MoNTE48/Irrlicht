@@ -254,8 +254,8 @@ bool CIrrDeviceSDL::createWindow()
 
 		if (err == 0)
 		{
-			Width = mode.w * NativeScaleX;
-			Height = mode.h * NativeScaleY;
+			Width = roundf((float)mode.w * NativeScaleX);
+			Height = roundf((float)mode.h * NativeScaleY);
 
 		}
 		else
@@ -466,7 +466,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	}
 
 	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-							Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
+							roundf((float)Width / NativeScaleX),
+							roundf((float)Height / NativeScaleY), SDL_Flags);
 
 	if (CreationParams.DriverType == video::EDT_OPENGL ||
 		CreationParams.DriverType == video::EDT_OGLES2 ||
@@ -489,7 +490,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 
 		Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-								Width / NativeScaleX, Height / NativeScaleY, SDL_Flags);
+								roundf((float)Width / NativeScaleX),
+								roundf((float)Height / NativeScaleY), SDL_Flags);
 
 		if (Window)
 		{
@@ -517,8 +519,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		int h = 0;
 		SDL_GetWindowSize(Window, &w, &h);
 
-		Width = w * NativeScaleX;
-		Height = h * NativeScaleX;
+		Width = roundf((float)w * NativeScaleX);
+		Height = roundf((float)h * NativeScaleY);
 	}
 
 	CreationParams.WindowSize.Width = Width;
@@ -1062,8 +1064,8 @@ bool CIrrDeviceSDL::run()
 				{
 					updateNativeScale();
 
-					u32 new_width = SDL_event.window.data1 * NativeScaleX;
-					u32 new_height = SDL_event.window.data2 * NativeScaleY;
+					u32 new_width = roundf((float)SDL_event.window.data1 * NativeScaleX);
+					u32 new_height = roundf((float)SDL_event.window.data2 * NativeScaleY);
 
 					if (new_width != Width || new_height != Height)
 					{
