@@ -231,7 +231,6 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 	if (--SDLDeviceInstances == 0)
 	{
 		SDL_Quit();
-		os::Printer::log("Quit SDL", ELL_INFORMATION);
 	}
 }
 
