@@ -111,11 +111,15 @@ COGLES1Driver::~COGLES1Driver()
 
 bool COGLES1Driver::genericDriverInit(const core::dimension2d<u32>& screenSize, bool stencilBuffer)
 {
-	Name=glGetString(GL_VERSION);
+	const GLubyte* version = glGetString(GL_VERSION);
+	if (version)
+		Name = (const char*)version;
 	printVersion();
 
 	// print renderer information
-	VendorName = glGetString(GL_VENDOR);
+	const GLubyte* vendor = glGetString(GL_VENDOR);
+	if (vendor)
+		VendorName = (const char*)vendor;
 	os::Printer::log(VendorName.c_str(), ELL_INFORMATION);
 
 	// load extensions

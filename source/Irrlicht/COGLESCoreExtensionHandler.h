@@ -700,7 +700,12 @@ namespace video
 			Version = 0;
 			s32 multiplier = 100;
 
-			core::stringc version(glGetString(GL_VERSION));
+			const GLubyte* str = glGetString(GL_VERSION);
+			
+			if (!str)
+				return;
+				
+			core::stringc version((const char*)str);
 
 			for (u32 i = 0; i < version.size(); ++i)
 			{
@@ -721,7 +726,12 @@ namespace video
 
 		void getGLExtensions()
 		{
-			core::stringc extensions = glGetString(GL_EXTENSIONS);
+			const GLubyte* tmp = glGetString(GL_EXTENSIONS);
+			
+			if (!tmp)
+				return;
+				
+			core::stringc extensions = tmp;
 			os::Printer::log(extensions.c_str());
 
 			// typo in the simulator (note the postfixed s)
