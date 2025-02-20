@@ -19,7 +19,8 @@
 	#include "zlib.h"
 
 	#ifdef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
-	#include "aesGladman/fileenc.h"
+	#include "minizip-ng/mz.h"
+	#include "minizip-ng/mz_crypt.h"
 	#endif
 #endif
 
@@ -511,72 +512,105 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 
 	const SZipFileEntry &e = FileInfo[Files[index].ID];
 	wchar_t buf[64];
-	s16 actualCompressionMethod=e.header.CompressionMethod;
-	IReadFile* decrypted=0;
-	u8* decryptedBuf=0;
-	u32 decryptedSize=e.header.DataDescriptor.CompressedSize;
+	s16 actualCompressionMethod = e.header.CompressionMethod;
+	IReadFile* decrypted = 0;
+	u8* decryptedBuf = 0;
+	u32 decryptedSize = e.header.DataDescriptor.CompressedSize;
+
 #ifdef _IRR_COMPILE_WITH_ZIP_ENCRYPTION_
+
 	if ((e.header.GeneralBitFlag & ZIP_FILE_ENCRYPTED) && (e.header.CompressionMethod == 99))
 	{
 		os::Printer::log("Reading encrypted file.");
+		
+		int mode = (e.header.Sig & 0x00ff0000) >> 16;
 		u8 salt[16]={0};
-		const u16 saltSize = (((e.header.Sig & 0x00ff0000) >>16)+1)*4;
+		const u16 saltSize = (mode + 1) * 4;
+		uint16_t iterationCount = 1000;
+		uint8_t key[2 * MZ_AES_KEY_LENGTH_MAX + 2] = {};
+		int keyLength = (8 * (mode & 3) + 8);
 		File->seek(e.Offset);
 		File->read(salt, saltSize);
+		
+		mz_crypt_pbkdf2((uint8_t*)Password.c_str(), Password.size(),
+			(uint8_t*)salt, saltSize, iterationCount, key, 2 * keyLength + 2);
+		
 		char pwVerification[2];
 		char pwVerificationFile[2];
 		File->read(pwVerification, 2);
-		fcrypt_ctx zctx; // the encryption context
-		int rc = fcrypt_init(
-			(e.header.Sig & 0x00ff0000) >>16,
-			(const unsigned char*)Password.c_str(), // the password
-			Password.size(), // number of bytes in password
-			salt, // the salt
-			(unsigned char*)pwVerificationFile, // on return contains password verifier
-			&zctx); // encryption context
+		
+		memcpy(pwVerificationFile, key + (2 * keyLength), 2);
+		
 		if (strncmp(pwVerificationFile, pwVerification, 2))
 		{
 			os::Printer::log("Wrong password");
 			return 0;
 		}
-		decryptedSize= e.header.DataDescriptor.CompressedSize-saltSize-12;
-		decryptedBuf= new u8[decryptedSize];
-		u32 c = 0;
-		while ((c+32768)<=decryptedSize)
-		{
-			File->read(decryptedBuf+c, 32768);
-			fcrypt_decrypt(
-				decryptedBuf+c, // pointer to the data to decrypt
-				32768,   // how many bytes to decrypt
-				&zctx); // decryption context
-			c+=32768;
+		
+		void* aes = mz_crypt_aes_create();
+		mz_crypt_aes_reset(aes); 
+		mz_crypt_aes_set_encrypt_key(aes, key, keyLength, NULL, 0);
+		
+		void* hmac = mz_crypt_hmac_create();
+		mz_crypt_hmac_reset(hmac);
+		mz_crypt_hmac_set_algorithm(hmac, MZ_HASH_SHA1);
+		mz_crypt_hmac_init(hmac, key + keyLength, keyLength);
+		
+		decryptedSize = e.header.DataDescriptor.CompressedSize - saltSize - 12;
+		decryptedBuf = new u8[decryptedSize];
+		File->read(decryptedBuf, decryptedSize);
+		
+		mz_crypt_hmac_update(hmac, decryptedBuf, decryptedSize);
+		
+		uint32_t pos = MZ_AES_BLOCK_SIZE;
+		uint8_t nonce[MZ_AES_BLOCK_SIZE] = {};
+		uint8_t enc_buf[MZ_AES_BLOCK_SIZE] = {};
+		
+		for (uint32_t i = 0; i < (uint32_t)(decryptedSize); i++) {
+			if (pos == MZ_AES_BLOCK_SIZE) {
+				uint32_t j = 0;
+				
+				while (j < 8 && !++nonce[j])
+					j += 1;
+				
+				memcpy(enc_buf, nonce, MZ_AES_BLOCK_SIZE);
+				mz_crypt_aes_encrypt(aes, NULL, 0, enc_buf, sizeof(enc_buf));
+				pos = 0;
+			}
+			
+			decryptedBuf[i] ^= enc_buf[pos++];
 		}
-		File->read(decryptedBuf+c, decryptedSize-c);
-		fcrypt_decrypt(
-			decryptedBuf+c, // pointer to the data to decrypt
-			decryptedSize-c,   // how many bytes to decrypt
-			&zctx); // decryption context
-
-		char fileMAC[10];
-		char resMAC[10];
-		rc = fcrypt_end(
-			(unsigned char*)resMAC, // on return contains the authentication code
-			&zctx); // encryption context
-		if (rc != 10)
+		
+		char fileMAC[10] = {};
+		char resMAC[MZ_HASH_SHA1_SIZE] = {};
+		
+		int result = mz_crypt_hmac_end(hmac, (u8*)resMAC, MZ_HASH_SHA1_SIZE);
+		
+		if (result != MZ_OK)
 		{
 			os::Printer::log("Error on encryption closing");
 			delete [] decryptedBuf;
+			mz_crypt_aes_delete(&aes);	
+			mz_crypt_hmac_delete(&hmac);
 			return 0;
 		}
+		
 		File->read(fileMAC, 10);
 		if (strncmp(fileMAC, resMAC, 10))
 		{
 			os::Printer::log("Error on encryption check");
 			delete [] decryptedBuf;
+			mz_crypt_aes_delete(&aes);	
+			mz_crypt_hmac_delete(&hmac);
 			return 0;
 		}
+		
 		decrypted = FileSystem->createMemoryReadFile(decryptedBuf, decryptedSize, Files[index].FullName, true);
 		actualCompressionMethod = (e.header.Sig & 0xffff);
+		
+		mz_crypt_aes_delete(&aes);	
+		mz_crypt_hmac_delete(&hmac);
+		
 #if 0
 		if ((e.header.Sig & 0xff000000)==0x01000000)
 		{
@@ -591,6 +625,7 @@ IReadFile* CZipReader::createAndOpenFile(u32 index)
 		}
 #endif
 	}
+	
 #endif
 #ifdef _IRR_COMPILE_WITH_ZLIB_
 	if (e.header.GeneralBitFlag & ZIP_FILE_ENCRYPTED && !decrypted)
