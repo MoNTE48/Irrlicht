@@ -354,6 +354,10 @@
 		5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734051C18E2E2003F664E /* COGLES2Renderer2D.cpp */; };
 		5E7908971C10EF3F00DFE7FE /* COpenGLCacheHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908911C10EEC000DFE7FE /* COpenGLCacheHandler.cpp */; };
 		5E79089B1C10FEF900DFE7FE /* CB3DMeshWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E7908981C10FE4A00DFE7FE /* CB3DMeshWriter.cpp */; };
+		84295DEA2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
+		84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
+		84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
+		84295DF02D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
 		8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 		8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 		84F8F0A72AD4B0D500808A33 /* prng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F8F0952AD4B0D500808A33 /* prng.cpp */; };
@@ -941,6 +945,8 @@
 		5E7908991C10FE4A00DFE7FE /* CB3DMeshWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CB3DMeshWriter.h; sourceTree = "<group>"; };
 		5E9573D11C18E70000C27989 /* EVertexAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EVertexAttributes.h; path = ../../include/EVertexAttributes.h; sourceTree = "<group>"; };
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
+		84295DE82D69443D00B6C388 /* mz_crypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt.c; path = "minizip-ng/mz_crypt.c"; sourceTree = "<group>"; };
+		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
@@ -1390,6 +1396,7 @@
 		5E34C7A81B7F506D00F212E8 /* irr */ = {
 			isa = PBXGroup;
 			children = (
+				84295DE72D6943A200B6C388 /* minizip-ng */,
 				84F8F0932AD4B0BF00808A33 /* aesGladman */,
 				5E34C8061B7F51F100F212E8 /* device */,
 				5E34C8921B7F652600F212E8 /* CLogger.cpp */,
@@ -1770,6 +1777,15 @@
 			name = "OpenGL Core";
 			sourceTree = "<group>";
 		};
+		84295DE72D6943A200B6C388 /* minizip-ng */ = {
+			isa = PBXGroup;
+			children = (
+				84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */,
+				84295DE82D69443D00B6C388 /* mz_crypt.c */,
+			);
+			name = "minizip-ng";
+			sourceTree = "<group>";
+		};
 		84F8F0932AD4B0BF00808A33 /* aesGladman */ = {
 			isa = PBXGroup;
 			children = (
@@ -1877,6 +1893,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E34C9F91B7F6EBF00F212E8 /* CDefaultGUIElementFactory.cpp in Sources */,
+				84295DEA2D69443D00B6C388 /* mz_crypt.c in Sources */,
 				5E34C9FB1B7F6EBF00F212E8 /* CGUIButton.cpp in Sources */,
 				5E34C9FD1B7F6EBF00F212E8 /* CGUICheckBox.cpp in Sources */,
 				5E34C9FF1B7F6EBF00F212E8 /* CGUIColorSelectDialog.cpp in Sources */,
@@ -2046,6 +2063,7 @@
 				5E34CBD51B7F6EC600F212E8 /* CColorConverter.cpp in Sources */,
 				5E34CBD71B7F6EC700F212E8 /* CFPSCounter.cpp in Sources */,
 				5E34CBD91B7F6EC700F212E8 /* CImage.cpp in Sources */,
+				84295DF02D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */,
 				5E34CBDB1B7F6EC700F212E8 /* CNullDriver.cpp in Sources */,
 				5E7908971C10EF3F00DFE7FE /* COpenGLCacheHandler.cpp in Sources */,
 				5E34CBDE1B7F6EC700F212E8 /* COpenGLDriver.cpp in Sources */,
@@ -2150,6 +2168,7 @@
 				5E57335B1C18E212003F664E /* CLMTSMeshFileLoader.cpp in Sources */,
 				5E57335C1C18E212003F664E /* CLWOMeshFileLoader.cpp in Sources */,
 				5E57335D1C18E212003F664E /* CMD2MeshFileLoader.cpp in Sources */,
+				84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */,
 				5E57335E1C18E212003F664E /* CMD3MeshFileLoader.cpp in Sources */,
 				5E57335F1C18E212003F664E /* CMeshTextureLoader.cpp in Sources */,
 				5E5733601C18E212003F664E /* CMS3DMeshFileLoader.cpp in Sources */,
@@ -2171,6 +2190,7 @@
 				5E5733701C18E212003F664E /* CParticleFadeOutAffector.cpp in Sources */,
 				5E5733711C18E212003F664E /* CParticleGravityAffector.cpp in Sources */,
 				5E5733721C18E212003F664E /* CParticleMeshEmitter.cpp in Sources */,
+				84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */,
 				5E5733731C18E212003F664E /* CParticlePointEmitter.cpp in Sources */,
 				5E5733741C18E212003F664E /* CParticleRingEmitter.cpp in Sources */,
 				5E5733751C18E212003F664E /* CParticleRotationAffector.cpp in Sources */,
