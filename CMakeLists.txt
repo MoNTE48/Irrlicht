@@ -23,15 +23,8 @@ if(WIN32)
 endif()
 
 set(IRRLICHT_SOURCES
-	source/Irrlicht/aesGladman/aescrypt.cpp
-	source/Irrlicht/aesGladman/aeskey.cpp
-	source/Irrlicht/aesGladman/aestab.cpp
-	source/Irrlicht/aesGladman/fileenc.cpp
-	source/Irrlicht/aesGladman/hmac.cpp
-	source/Irrlicht/aesGladman/prng.cpp
-	source/Irrlicht/aesGladman/pwd2key.cpp
-	source/Irrlicht/aesGladman/sha1.cpp
-	source/Irrlicht/aesGladman/sha2.cpp
+	source/Irrlicht/minizip-ng/mz_crypt.c
+	source/Irrlicht/minizip-ng/mz_crypt_openssl.c
 	source/Irrlicht/burning_shader_color.cpp
 	source/Irrlicht/C3DSMeshFileLoader.cpp
 	source/Irrlicht/CAnimatedMeshHalfLife.cpp

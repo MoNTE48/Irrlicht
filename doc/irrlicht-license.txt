@@ -17,10 +17,10 @@ Copyright (C) 2002-2012 Nikolaus Gebhardt
   3. This notice may not be removed or altered from any source distribution.
 
   Please note that the Irrlicht Engine is based in part on the work of the
-  Independent JPEG Group, the zlib, libPng and aesGladman. This means that if you use
+  Independent JPEG Group, the zlib, libPng and minizip. This means that if you use
   the Irrlicht Engine in your product, you must acknowledge somewhere in your
   documentation that you've used the IJPG code. It would also be nice to mention
-  that you use the Irrlicht Engine, the zlib, libPng and aesGladman. See the 
+  that you use the Irrlicht Engine, the zlib, libPng and minizip. See the
   corresponding license files for further informations. It is also possible to disable
-  usage of those additional libraries by defines in the IrrCompileConfig.h header and 
+  usage of those additional libraries by defines in the IrrCompileConfig.h header and
   recompiling the engine.

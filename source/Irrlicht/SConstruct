@@ -9,10 +9,10 @@ import SCons.Errors
 # creating a resource file for suppress long-line-error
 # @param env environment object
 # @param sources list files (should be absoute path names)
-def ResourceFile(env, list) : 
+def ResourceFile(env, list) :
     (fd, resource) = tempfile.mkstemp(".res", text=True)
     for i in list :
-        os.write (fd, "%s\n" % str(i).replace("\\", "\\\\"))    
+        os.write (fd, "%s\n" % str(i).replace("\\", "\\\\"))
     os.close(fd)
     return env.get("TEMPFILEPREFIX", "") + resource
 
@@ -45,7 +45,7 @@ def createEnvironment() :
     vars.Add(EnumVariable("buildtype", "name of target build type", "release", allowed_values=("debug", "release")))
     vars.Add(EnumVariable("platform", "build platform", "", allowed_values=("", "linux", "osx-library", "osx-framework", "win32-mingw", "win32-msvc", "win64-msvc")))
     vars.Add(BoolVariable("package", "creates of the compiled library a package (header & binary) as a zip file", False))
-    
+
     vars.Add(BoolVariable("opengl", "build with Open GL support", True))
     vars.Add(PathVariable("directxsdk", "directory of the Direct X SDK (joystick support is disabled by default)", directxdir,  PathVariable.PathAccept))
 
@@ -53,23 +53,23 @@ def createEnvironment() :
     env        = Environment(tools = [], variables=vars)
     Help(vars.GenerateHelpText(env))
     env["ResourceFile"] = ResourceFile
-    
+
     if env["package"] :
         zipbetter_bld = Builder(action = zipbetter, target_factory = SCons.Node.FS.default_fs.Entry, source_factory = SCons.Node.FS.default_fs.Entry)
         env.Append(BUILDERS = {'ZipBetter' : zipbetter_bld})
 
     if env["platform"] in ["linux", "osx-library", "osx-framework"] :
         env.Tool("default")
-        
+
     elif env["platform"] in ["win32-msvc", "win64-mvc"] :
         env.Tool("msvc")
         env.Tool("mslink")
         env.Tool("msvs")
         env.Tool("mssdk")
-        
+
     elif env["platform"] in ["win32-mingw", "win64-mingw"] :
         env.Tool("mingw")
-        
+
     else :
         raise SCons.Errors.StopError("platform is not set")
 
@@ -78,7 +78,7 @@ def createEnvironment() :
         raise SCons.Errors.StopError("static library can not be build with the an osx framework")
     if env["buildtype"] == "debug" and env["platform"] == "osx-framework" :
         raise SCons.Errors.StopError("debug library can not be build with the an osx framework")
-            
+
     # set constants and global values (directory names are relative to the SConstruct)
     # read first Irrlicht SDK version from the file include/IrrCompileConfig.h
     irrlichtversion = None
@@ -90,7 +90,7 @@ def createEnvironment() :
 	    pass
     if irrlichtversion == None :
         raise SCons.Errors.StopError("can not find Irrlicht SDK version in the configuration header")
-    
+
     env["irr_libversion"]         = irrlichtversion.group(2).replace("\"", "").strip()
     env["irr_libinstallname"]     = "Irrlicht"
     env["irr_osxframeworkname"]   = env["irr_libinstallname"]
@@ -98,20 +98,20 @@ def createEnvironment() :
     env["irr_srclibrary"]         = os.path.join("source", "Irrlicht")
     if env["buildtype"] == "debug" :
         env["irr_libinstallname"] = env["irr_libinstallname"] + "Debug"
-    
+
     if "CXX" in os.environ :
         env.Replace(CXX  = os.environ["CXX"])
     if "CC" in os.environ :
-        env.Replace(CC  = os.environ["CC"])    
+        env.Replace(CC  = os.environ["CC"])
     if "CPPPATH" in os.environ :
         env.AppendUnique(CPPPATH  = os.environ["CPPPATH"].split(os.pathsep))
     if "CXXFLAGS" in os.environ :
-        env.AppendUnique(CXXFLAGS = os.environ["CXXFLAGS"].split(" "))   
+        env.AppendUnique(CXXFLAGS = os.environ["CXXFLAGS"].split(" "))
     if "LIBRARY_PATH" in os.environ :
         env.AppendUnique(CIBPATH  = os.environ["LIBRARY_PATH"].split(os.pathsep))
     if "LDFLAGS" in os.environ :
-        env.AppendUnique(LINKFLAGS = os.environ["LDFLAGS"].split(" "))    
-    
+        env.AppendUnique(LINKFLAGS = os.environ["LDFLAGS"].split(" "))
+
     return env
 
 
@@ -121,17 +121,17 @@ def createEnvironment() :
 # @return cloned build object with library specific data
 def getLibraryBuildEnvironment(env) :
     envlib = env.Clone()
-    
+
     # define global options
     envlib.AppendUnique(CPPPATH             = ["include", envlib["irr_srclibrary"], os.path.join(envlib["irr_srclibrary"], "zlib"), os.path.join(envlib["irr_srclibrary"], "jpeglib"), os.path.join(envlib["irr_srclibrary"], "libpng")])
     envlib.AppendUnique(CPPDEFINES          = ["IRRLICHT_EXPORTS"])
     if envlib["buildtype"] == "debug" :
         envlib.AppendUnique(CPPDEFINES      = ["_DEBUG"])
-    
+
     # define platform specific options
     if envlib["platform"] in ["osx-library", "osx-framework"] :
         libname = envlib["LIBPREFIX"] + envlib["irr_libinstallname"] + "." + envlib["irr_libversion"] + envlib["SHLIBSUFFIX"]
-        
+
         envlib.AppendUnique(CPPPATH         = [os.path.join(envlib["irr_srclibrary"], "MacOSX")])
         envlib.AppendUnique(LINKFLAGS       = ["-Wl,-framework,Cocoa", "-Wl,-framework,IOKit", "-Wl,-install_name,"+libname])
 
@@ -142,10 +142,10 @@ def getLibraryBuildEnvironment(env) :
         configOpenGL(envlib)
         envlib.AppendUnique(CFLAGS          = envlib["CXXFLAGS"])
 
-    
-    elif envlib["platform"] == "linux" :    
+
+    elif envlib["platform"] == "linux" :
         libname = envlib["LIBPREFIX"] + envlib["irr_libinstallname"] + envlib["SHLIBSUFFIX"] + "." + envlib["irr_libversion"]
-           
+
         envlib.AppendUnique(LIBS            = ["Xxf86vm"])
         envlib.AppendUnique(LINKFLAGS       = ["-Wl,--soname="+libname])
         if envlib["buildtype"] == "debug" :
@@ -154,8 +154,8 @@ def getLibraryBuildEnvironment(env) :
             envlib.AppendUnique(CXXFLAGS    = ["-O3", "-fexpensive-optimizations"])
         configOpenGL(envlib)
         envlib.AppendUnique(CFLAGS          = envlib["CXXFLAGS"])
-        
-    
+
+
     elif envlib["platform"] in ["win32-mingw", "win64-mingw"] :
         # for suppress the too-long-line error, we use a temporary file on the linker source list
         envlib["SHLINKCOM"]                 = "$SHLINK -o $TARGET $SHLINKFLAGS ${ResourceFile(__env__, SOURCES.abspath)} $_LIBDIRFLAGS $_LIBFLAGS"
@@ -163,7 +163,7 @@ def getLibraryBuildEnvironment(env) :
 
         # on MinGW we create a DLL, which can be used by other toolchains (we need the std-alias, the kill-flag and the out-implib option)
         envlib.AppendUnique(LINKFLAGS       = ["-Wl,--add-stdcall-alias", "-Wl,--kill-at", "-Wl,--out-implib,"+envlib["LIBPREFIX"]+env["irr_libinstallname"]+envlib["LIBSUFFIX"]])
-        envlib.AppendUnique(LIBS            = ["winmm", "gdi32"])      
+        envlib.AppendUnique(LIBS            = ["winmm", "gdi32"])
 
         if envlib["buildtype"] == "debug" :
             envlib.AppendUnique(CXXFLAGS    = ["-Wall", "-g"])
@@ -172,13 +172,13 @@ def getLibraryBuildEnvironment(env) :
         configOpenGL(envlib)
         configDirectX(envlib)
         envlib.AppendUnique(CFLAGS          = envlib["CXXFLAGS"])
-        
+
 
     elif envlib["platform"] in ["win32-msvc", "win64-msvc"] :
         envlib.AppendUnique(CXXFLAGS        = ["/analyze", "/Gd", "/GF", "/GR-", "/GS", "/Gy", "/Zl"])
         envlib.AppendUnique(LINKFLAGS       = ["/VERSION:\""+envlib["irr_libversion"]+"\"", "/nologo"])
         envlib.AppendUnique(LIBS            = ["gdi32.lib", "user32.lib", "advapi32.lib"])
-        
+
         if envlib["buildtype"] == "debug" :
             envlib.AppendUnique(CXXFLAGS    = ["-Wall", "/MTd", "/RTC1", "/Zi"])
         elif envlib["buildtype"] == "release" :
@@ -186,11 +186,11 @@ def getLibraryBuildEnvironment(env) :
             envlib.AppendUnique(LINKFLAGS   = ["/SUBSYSTEM:WINDOWS", "/OPT:REF", "/LTCG"])
         configOpenGL(envlib)
         configDirectX(envlib)
-            
-    
+
+
     return envlib
 
-    
+
 # define Open GL support (OSX needs always the OpenGL framework)
 # @param library environment
 def configOpenGL(envlib) :
@@ -205,7 +205,7 @@ def configOpenGL(envlib) :
 
     elif envlib["opengl"] and  envlib["platform"] in ["win32-mingw", "win64-mingw", "win32-msvc", "win64-msvc"] :
         envlib.AppendUnique(LIBS         = ["opengl32"])
-       
+
 
 
 # define Direct X 9 support ( Direct X 8 is disabled by the SDK )
@@ -223,7 +223,7 @@ def configDirectX(envlib) :
             envlib.AppendUnique(LIBPATH     = [os.path.join(envlib["directxsdk"], "Lib", "x84")])
     else :
         envlib.AppendUnique(CPPDEFINES      = ["NO_IRR_COMPILE_WITH_DIRECT3D_9_"])
-    
+
 
 # creates a build object for the examples,
 # and sets the platform specific build data
@@ -234,14 +234,14 @@ def getExampleBuildEnvironment(env) :
 
     if envexamples["buildtype"] == "debug" :
         envexamples.AppendUnique(CPPDEFINES      = ["_DEBUG"])
-    
+
     # define platform specific data
     if envexamples["platform"] in ["osx-library", "osx-framework"] :
         if envexamples["buildtype"] == "debug" :
             envexamples.AppendUnique(CXXFLAGS    = ["-Wall", "-g"])
         elif envexamples["buildtype"] == "release" :
             envexamples.AppendUnique(CXXFLAGS    = ["-O3"])
-    
+
         if envexamples["platform"] == "osx-framework" :
             envexamples.AppendUnique(CPPPATH     = [os.path.join(env["installdir"], "Irrlicht.framework", "Headers")])
             envexamples.AppendUnique(LINKFLAGS   = ["-Wl,-framework,Irrlicht", "-Wl,-F"+env["installdir"]])
@@ -263,8 +263,8 @@ def getExampleBuildEnvironment(env) :
         elif envexamples["buildtype"] == "release" :
             envexamples.AppendUnique(CXXFLAGS    = ["-O3"])
             envexamples.AppendUnique(LIBS        = ["Irrlicht"])
-    
-    
+
+
     elif envexamples["platform"] in ["win32-mingw", "win64-mingw"] :
         envexamples.AppendUnique(CPPPATH         = [os.path.join(env["installdir"], "include")])
         envexamples.AppendUnique(LIBPATH         = [os.path.join(env["installdir"], "lib")])
@@ -275,8 +275,8 @@ def getExampleBuildEnvironment(env) :
         elif envexamples["buildtype"] == "release" :
             envexamples.AppendUnique(CXXFLAGS    = ["-O3"])
             envexamples.AppendUnique(LIBS        = ["Irrlicht"])
-        
-    
+
+
     elif envexamples["platform"] in ["win32-msvc", "win64-msvc"] :
         envexamples.AppendUnique(CPPPATH         = [os.path.join(env["installdir"], "include")])
         envexamples.AppendUnique(LIBPATH         = [os.path.join(env["installdir"], "lib")])
@@ -290,7 +290,7 @@ def getExampleBuildEnvironment(env) :
             envexamples.AppendUnique(CXXFLAGS    = ["/GL", "/MT", "/Ox"])
             envexamples.AppendUnique(LINKFLAGS   = ["/SUBSYSTEM:CONSOLE", "/OPT:REF", "/LTCG"])
             envexamples.AppendUnique(LIBS        = ["Irrlicht"])
-    
+
     return envexamples
 
 
@@ -303,19 +303,19 @@ def installLibrary(env, lib, header) :
     if lib and type(lib) == type([]) :
         lib = lib[0]
     libname = str(lib).replace("']", "").replace("['", "")
-    
-    
+
+
     if env["platform"] in ["linux", "osx-library"] :
         if env["platform"] == "osx-library" :
             versionname = libname.replace(env["SHLIBSUFFIX"], "") + "." + env["irr_libversion"] + env["SHLIBSUFFIX"]
         elif env["platform"] == "linux" :
             versionname = libname + "." + env["irr_libversion"]
-        
+
         install.append(env.Install( os.path.join(env["installdir"], "lib"), lib ))
         for i in header :
             install.append(env.Command( os.path.join(env["installdir"], "include", os.path.basename(str(i))), i, Copy("$TARGET", "$SOURCE")))
         if env["buildtarget"] == "shared" :
-            install.append( env.Command(os.path.join(env["installdir"], "lib", versionname), os.path.basename(libname), "ln -s $SOURCE $TARGET") ) 
+            install.append( env.Command(os.path.join(env["installdir"], "lib", versionname), os.path.basename(libname), "ln -s $SOURCE $TARGET") )
 
 
     elif env["platform"] == "osx-framework" :
@@ -339,14 +339,14 @@ def installLibrary(env, lib, header) :
             install.append(env.Command( os.path.join(env["installdir"], "include", os.path.basename(str(i))), i, Copy("$TARGET", "$SOURCE")))
 
 
-    # create a package 
-    if env["package"] : 
+    # create a package
+    if env["package"] :
         nameparts = [env["platform"], env["buildtarget"], env["irr_libversion"], env["buildtype"]]
         install = env.ZipBetter( os.path.join("bin", "irrlicht-"+"-".join(nameparts)+env['ZIPSUFFIX']), install, ZIPROOT=env["installdir"])
-        
+
     NoClean(install)
     Default(install)
-    
+
 # ===================================================================================================================
 
 
@@ -363,13 +363,13 @@ envexamples = getExampleBuildEnvironment(env)
 
 # === set the sources (we use similar structure of the Makefile) ====================================================
 # get all header files (for later installation)
-headers = Glob(os.path.join("include", "*.h")) 
+headers = Glob(os.path.join("include", "*.h"))
 
 # library sources (libjpeg & bzip2 added manually, because not all files are needed)
 libjpeg  = [ os.path.join(env["irr_srclibrary"], "jpeglib", i) for i in ["jcapimin.c", "jcapistd.c", "jccoefct.c", "jccolor.c", "jcdctmgr.c", "jchuff.c", "jcinit.c", "jcmainct.c", "jcmarker.c", "jcmaster.c", "jcomapi.c", "jcparam.c", "jcprepct.c", "jcsample.c", "jctrans.c", "jdapimin.c", "jdapistd.c", "jdatadst.c", "jdatasrc.c", "jdcoefct.c", "jdcolor.c", "jddctmgr.c", "jdhuff.c", "jdinput.c", "jdmainct.c", "jdmarker.c", "jdmaster.c", "jdmerge.c", "jdpostct.c", "jdsample.c", "jdtrans.c", "jerror.c", "jfdctflt.c", "jfdctfst.c", "jfdctint.c", "jidctflt.c", "jidctfst.c", "jidctint.c", "jmemmgr.c", "jmemnobs.c", "jquant1.c", "jquant2.c", "jutils.c", "jcarith.c", "jdarith.c", "jaricom.c"] ]
 libbzip2 = [ os.path.join(env["irr_srclibrary"], "bzip2", i) for i in ["blocksort.c", "huffman.c", "crctable.c", "randtable.c", "bzcompress.c", "decompress.c", "bzlib.c"] ]
 
-srclibrary = Glob(os.path.join(env["irr_srclibrary"], "*.cpp")) + Glob(os.path.join(env["irr_srclibrary"], "libpng", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "lzma", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "zlib", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "aesGladman", "*.cpp")) + libjpeg + libbzip2
+srclibrary = Glob(os.path.join(env["irr_srclibrary"], "*.cpp")) + Glob(os.path.join(env["irr_srclibrary"], "libpng", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "lzma", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "zlib", "*.c")) + Glob(os.path.join(env["irr_srclibrary"], "minizip-ng", "*.c")) + libjpeg + libbzip2
 
 if "osx" in env["platform"] :
     srclibrary.extend(Glob(os.path.join(envlib["irr_srclibrary"], "MacOSX", "*.mm")))
@@ -389,7 +389,7 @@ if env["buildtarget"] == "shared" :
 elif env["buildtarget"] == "static" :
     lib = envlib.StaticLibrary(env["irr_libinstallname"], srclibrary)
 
-    
+
 
 # build examples
 examples = []
