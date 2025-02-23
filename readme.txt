@@ -54,9 +54,9 @@ The Irrlicht Engine SDK version 1.9
   easily comprehensible.
 
   The Irrlicht Engine is a static lib under linux. A precompiled version can be
-  generated from the sources using the Makefile in source/Irrlicht. Run 'make' in 
+  generated from the sources using the Makefile in source/Irrlicht. Run 'make' in
   that subfolder. After this you should be able to 'make' all
-  example applications in /examples by calling the buildAllExamples script. You 
+  example applications in /examples by calling the buildAllExamples script. You
   can run the examples then from the bin folder.
 
   It is also possible to use Irrlicht as shared object
@@ -77,7 +77,7 @@ The Irrlicht Engine SDK version 1.9
   * gcc 4.x
   * Visual Studio 2010(10.0)-2013(12.0)
   * Code::Blocks (& gcc or visual studio toolkit)
-  
+
   If you ever want to (re)compile the engine yourself (which means you don't
   want to use the precompiled version) you need the following:
 
@@ -170,13 +170,13 @@ The Irrlicht Engine SDK version 1.9
   See http://irrlicht.sourceforge.net/author.html for more information)
 
   Michael Zeilfelder (cutealien) Developer/Maintainer
-  Thomas Alten (burningwater)  Wrote the burningsvideo software rasterizer  
+  Thomas Alten (burningwater)  Wrote the burningsvideo software rasterizer
   Yoran Bosman (Yoran)        Webserver administrator
-  
+
   Former developers:
   Nikolaus Gebhardt (niko)    Founder
   Christian Stehno (hybrid)   Developer
-  Patryk Nadrowski (Nadro)    Developer  
+  Patryk Nadrowski (Nadro)    Developer
   Gareth Davidson (bitplane)  Developer/ Forum admin
   Luke P. Hoschke (luke)      Wrote the b3d loader, the new animation system, VBOs and other things
   Colin MacDonald (rogerborg) All hands person
@@ -234,5 +234,4 @@ The Irrlicht Engine SDK version 1.9
   Jean-loup Gailly, Mark Adler	Created the zlib and libpng
   Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson and others	Created libpng
   The Independent JPEG Group	Created JPEG lib
-  Dr Brian Gladman AES Created aesGladman
-  
+  Nathan Moinvaziri minizip-ng project  Created minizip-ng
