@@ -52,13 +52,13 @@ IRRVIDEOOBJ = CVideoModeList.o CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
 IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CXMLWriter.o CWADReader.o CZipReader.o CPakReader.o CNPKReader.o CTarReader.o CMountPointReader.o irrXML.o CAttributes.o
 IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o
 IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIContextMenu.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIInOutFader.o CGUIListBox.o CGUIMenu.o CGUIMeshViewer.o CGUIMessageBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISpinBox.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CGUITable.o CGUIToolBar.o CGUIWindow.o CGUIColorSelectDialog.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o CGUITreeView.o CGUIProfiler.o
-LIBAESGM = aesGladman/aescrypt.o aesGladman/aeskey.o aesGladman/aestab.o aesGladman/fileenc.o aesGladman/hmac.o aesGladman/prng.o aesGladman/pwd2key.o aesGladman/sha1.o aesGladman/sha2.o
+MINIZIPOBJ = minizip-ng/mz_crypt_openssl.o minizip-ng/mz_crypt.o
 
 # Next variable is for additional scene nodes etc. of customized Irrlicht versions
 EXTRAOBJ =
 LINKOBJ = $(IRRMESHOBJ) $(IRROBJ) $(IRRPARTICLEOBJ) $(IRRANIMOBJ) \
 	$(IRRVIDEOOBJ) $(IRRIOOBJ) $(IRROTHEROBJ) \
-	$(IRRGUIOBJ) $(LIBAESGM) $(EXTRAOBJ)
+	$(IRRGUIOBJ) $(MINIZIPOBJ) $(EXTRAOBJ)
 
 emscripten: EMSCRIPTEN=1
 

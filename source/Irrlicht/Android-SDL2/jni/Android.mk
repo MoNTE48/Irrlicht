@@ -26,15 +26,8 @@ SDL2_PATH ?= $(error SDL2_PATH variable is not set)
 LOCAL_C_INCLUDES += $(SDL2_PATH)/include
 
 LOCAL_SRC_FILES := \
-					aesGladman/aescrypt.cpp \
-					aesGladman/aeskey.cpp \
-					aesGladman/aestab.cpp \
-					aesGladman/fileenc.cpp \
-					aesGladman/hmac.cpp \
-					aesGladman/prng.cpp \
-					aesGladman/pwd2key.cpp \
-					aesGladman/sha1.cpp \
-					aesGladman/sha2.cpp \
+					minizip-ng/mz_crypt.c \
+					minizip-ng/mz_crypt_openssl.c \
 					C3DSMeshFileLoader.cpp \
 					CAnimatedMeshHalfLife.cpp \
 					CAnimatedMeshMD2.cpp \
