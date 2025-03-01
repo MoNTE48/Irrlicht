@@ -29,10 +29,9 @@ static inline core::vector3df getAngleWeight(const core::vector3df& v1,
 	const f32 csqrt = sqrtf(c);
 
 	// use them to find the angle at each vertex
-	return core::vector3df(
-		acosf((b + c - a) / (2.f * bsqrt * csqrt)),
-		acosf((-b + c + a) / (2.f * asqrt * csqrt)),
-		acosf((b - c + a) / (2.f * bsqrt * asqrt)));
+	return core::vector3df(acosf( core::clamp((b + c - a) / (2.f * bsqrt * csqrt), -1.f, 1.f) ),
+	                       acosf( core::clamp((-b + c + a) / (2.f * asqrt * csqrt), -1.f, 1.f) ),
+	                       acosf( core::clamp((b - c + a) / (2.f * bsqrt * asqrt), -1.f, 1.f) ));
 }
 
 

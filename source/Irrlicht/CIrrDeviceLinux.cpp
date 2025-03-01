@@ -745,10 +745,9 @@ bool CIrrDeviceLinux::createInputContext()
 
 	if ( !bestStyle )
 	{
-		XDestroyIC(XInputContext);
-		XInputContext = 0;
-
 		os::Printer::log("XInputMethod has no input style we can use. Falling back to non-i18n input.", ELL_WARNING);
+		XCloseIM(XInputMethod);
+		XInputMethod = 0;
 		setlocale(LC_CTYPE, oldLocale.c_str());
 		return false;
 	}
@@ -760,6 +759,8 @@ bool CIrrDeviceLinux::createInputContext()
 	if (!XInputContext )
 	{
 		os::Printer::log("XInputContext failed to create an input context. Falling back to non-i18n input.", ELL_WARNING);
+		XCloseIM(XInputMethod);
+		XInputMethod = 0;
 		setlocale(LC_CTYPE, oldLocale.c_str());
 		return false;
 	}

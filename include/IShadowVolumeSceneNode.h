@@ -76,6 +76,15 @@ namespace scene
 
 		//! Get currently active optimization used to create shadow volumes
 		virtual ESHADOWVOLUME_OPTIMIZATION getOptimization() const = 0;
+
+		//! Get number of shadow volumes the node currently has.
+		//! Note that this usually gets updated with updateShadowVolumes, 
+		//! so the returned number doesn't mean much before that call.
+		virtual u32 getNumShadowVolumes() const= 0;
+
+		//! Get the number of shadow volumes which got drawn in the last render() call
+		//! Number is already reset in OnRegisterSceneNode
+		virtual u32 getNumRenderedShadowVolumes() const = 0;
 	};
 
 } // end namespace scene

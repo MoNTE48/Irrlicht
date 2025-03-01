@@ -1152,6 +1152,11 @@ namespace scene
 		//! Get the current color of shadows.
 		virtual video::SColor getShadowColor() const = 0;
 
+		//! Shadow nodes drawing into the stencil buffer need that shadow to be drawn afterwards
+		//* This is usually used internally by CShadowVolumeSceneNodes. 
+		// Nothing to do for users unless they implement their own shadow nodes */
+		virtual void requestDrawShadowPassStencilShadow() = 0;
+
 		//! Create a shadow volume scene node to be used with custom nodes
 		/** Use this if you implement your own SceneNodes and need shadow volumes in them.
 		Otherwise you should generally use addShadowVolumeSceneNode functions from IMeshSceneNode or IAnimatedMeshSceneNode.*/
@@ -1652,7 +1657,7 @@ namespace scene
 		using ISceneManager::saveScene().
 		\param filename Name of the file to load from.
 		\param userDataSerializer If you want to load user data
-		possibily saved in that file for some scene nodes in the file,
+		saved in that file for some scene nodes in the file,
 		implement the ISceneUserDataSerializer interface and provide it
 		as parameter here. Otherwise, simply specify 0 as this
 		parameter.

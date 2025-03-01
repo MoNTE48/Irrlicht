@@ -347,7 +347,6 @@ void COpenGLDriver::setTransform(E_TRANSFORMATION_STATE state, const core::matri
 	switch (state)
 	{
 	case ETS_VIEW:
-	case ETS_WORLD:
 		{
 			// OpenGL only has a model matrix, view and world is not existent. so lets fake these two.
 			CacheHandler->setMatrixMode(GL_MODELVIEW);
@@ -355,10 +354,26 @@ void COpenGLDriver::setTransform(E_TRANSFORMATION_STATE state, const core::matri
 			// first load the viewing transformation for user clip planes
 			glLoadMatrixf((Matrices[ETS_VIEW]).pointer());
 
-			// we have to update the clip planes to the latest view matrix
+			// We have to update the clip planes to the latest view matrix.
+			// Reason is that opengl transforms the world-coordinates of the clip planes with the inverse modelview matrix 
+			// and saves them like that.
+			// Note that for shaders this call isn't needed at all and could be removed.
+			// Thought the call seems to be very cheap, so it hardly matters.
 			for (u32 i=0; i<MaxUserClipPlanes; ++i)
 				if (UserClipPlanes[i].Enabled)
 					uploadClipPlane(i);
+
+			// now the real model-view matrix
+			glMultMatrixf(Matrices[ETS_WORLD].pointer());
+		}
+		break;
+	case ETS_WORLD:
+		{
+			// OpenGL only has a model matrix, view and world is not existent. so lets fake these two.
+			CacheHandler->setMatrixMode(GL_MODELVIEW);
+
+			// first load the viewing transformation
+			glLoadMatrixf((Matrices[ETS_VIEW]).pointer());
 
 			// now the real model-view matrix
 			glMultMatrixf(Matrices[ETS_WORLD].pointer());

@@ -151,6 +151,13 @@ class plane3d
 			D = - MPoint.dotProduct(Normal);
 		}
 
+		//! Flip plane direction to opposide side
+		void flip()
+		{
+			Normal = -Normal;
+			D = -D;
+		}
+
 		//! Gets a member point of the plane.
 		vector3d<T> getMemberPoint() const
 		{

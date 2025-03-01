@@ -218,7 +218,7 @@ CSceneManager::CSceneManager(video::IVideoDriver* driver, io::IFileSystem* fs,
 		gui::IGUIEnvironment* gui)
 : ISceneNode(0, 0), Driver(driver), FileSystem(fs), GUIEnvironment(gui),
 	CursorControl(cursorControl), CollisionManager(0),
-	ActiveCamera(0), ShadowColor(150,0,0,0), AmbientLight(0,0,0,0), Parameters(0),
+	ActiveCamera(0), ShadowPassStencilShadowRequested(false), ShadowColor(150,0,0,0), AmbientLight(0,0,0,0), Parameters(0),
 	MeshCache(cache), CurrentRenderPass(ESNRP_NONE), LightManager(0),
 	IRR_XML_FORMAT_SCENE(L"irr_scene"), IRR_XML_FORMAT_NODE(L"node"), IRR_XML_FORMAT_NODE_ATTR_TYPE(L"type")
 {
@@ -1475,6 +1475,7 @@ void CSceneManager::drawAll()
 		Driver->setTransform ( (video::E_TRANSFORMATION_STATE)i, core::IdentityMatrix );
 	// TODO: This should not use an attribute here but a real parameter when necessary (too slow!)
 	Driver->setAllowZWriteOnTransparent(Parameters->getAttributeAsBool(ALLOW_ZWRITE_ON_TRANSPARENT, false));
+	ShadowPassStencilShadowRequested = false;
 
 	// do animations and other stuff.
 	IRR_PROFILE(getProfiler().start(EPID_SM_ANIMATE));
@@ -1656,9 +1657,11 @@ void CSceneManager::drawAll()
 				ShadowNodeList[i]->render();
 		}
 
-		if (!ShadowNodeList.empty())
+		if (ShadowPassStencilShadowRequested)
+		{
 			Driver->drawStencilShadow(true,ShadowColor, ShadowColor,
 				ShadowColor, ShadowColor);
+		}
 
 		ShadowNodeList.set_used(0);
 
@@ -1731,6 +1734,9 @@ void CSceneManager::drawAll()
 		Parameters->setAttribute("drawn_transparent_effect", (s32) TransparentEffectNodeList.size());
 #endif
 		TransparentEffectNodeList.set_used(0);
+
+		if (LightManager)
+			LightManager->OnRenderPassPostRender(CurrentRenderPass);
 	}
 
 	// render custom gui nodes
@@ -1760,6 +1766,9 @@ void CSceneManager::drawAll()
 		Parameters->setAttribute("drawn_gui_nodes", (s32) GuiNodeList.size());
 #endif
 		GuiNodeList.set_used(0);
+
+		if (LightManager)
+			LightManager->OnRenderPassPostRender(CurrentRenderPass);
 	}
 	
 

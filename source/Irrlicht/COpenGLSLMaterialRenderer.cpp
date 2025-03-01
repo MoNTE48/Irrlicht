@@ -198,6 +198,8 @@ void COpenGLSLMaterialRenderer::init(s32& outMaterialTypeNr,
 	}
 #endif
 
+	Driver->testGLError(__LINE__);	// Note: Often will be the outType, as EPT_TRIANGLE_STRIP instead of EPT_TRIANGLES is required there
+
 	if (!linkProgram())
 		return;
 

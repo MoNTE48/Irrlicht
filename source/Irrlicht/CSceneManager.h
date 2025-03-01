@@ -411,6 +411,12 @@ namespace scene
 		//! Returns the current color of shadows.
 		virtual video::SColor getShadowColor() const IRR_OVERRIDE;
 
+		//! Shadow nodes drawing into the stencil buffer need that shadow to be drawn afterwards
+		virtual void requestDrawShadowPassStencilShadow() IRR_OVERRIDE
+		{
+			ShadowPassStencilShadowRequested = true;
+		}
+
 		//! Create a shadow volume scene node to be used with custom nodes
 		virtual IShadowVolumeSceneNode* createShadowVolumeSceneNode(const IMesh* shadowMesh, ISceneNode* parent, s32 id, bool zfailmethod, f32 infinity) IRR_OVERRIDE;
 
@@ -657,6 +663,7 @@ namespace scene
 		core::vector3df CamWorldPos;	// Position of camera for transparent nodes.
 		core::vector3df CamWorldViewNormalized; // Normalized view direction of camera for transparent nodes.
 
+		bool ShadowPassStencilShadowRequested;
 		video::SColor ShadowColor;
 		video::SColorf AmbientLight;
 
