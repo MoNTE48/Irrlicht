@@ -543,7 +543,7 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_B3D_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_MS3D_LOADER_ if you want to Milkshape files
-#define _IRR_COMPILE_WITH_MS3D_LOADER_
+//#define _IRR_COMPILE_WITH_MS3D_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_MS3D_LOADER_
 #undef _IRR_COMPILE_WITH_MS3D_LOADER_
 #endif
@@ -553,7 +553,7 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_X_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_OGRE_LOADER_ if you want to load Ogre 3D files
-#define _IRR_COMPILE_WITH_OGRE_LOADER_
+//#define _IRR_COMPILE_WITH_OGRE_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_OGRE_LOADER_
 #undef _IRR_COMPILE_WITH_OGRE_LOADER_
 #endif
@@ -565,53 +565,53 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_IRR_MESH_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_HALFLIFE_LOADER_ if you want to load Halflife animated files
-#define _IRR_COMPILE_WITH_HALFLIFE_LOADER_
+//#define _IRR_COMPILE_WITH_HALFLIFE_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_HALFLIFE_LOADER_
 #undef _IRR_COMPILE_WITH_HALFLIFE_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_MD2_LOADER_ if you want to load Quake 2 animated files
-#define _IRR_COMPILE_WITH_MD2_LOADER_
+//#define _IRR_COMPILE_WITH_MD2_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_MD2_LOADER_
 #undef _IRR_COMPILE_WITH_MD2_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_MD3_LOADER_ if you want to load Quake 3 animated files
-#define _IRR_COMPILE_WITH_MD3_LOADER_
+//#define _IRR_COMPILE_WITH_MD3_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_MD3_LOADER_
 #undef _IRR_COMPILE_WITH_MD3_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_3DS_LOADER_ if you want to load 3D Studio Max files
-#define _IRR_COMPILE_WITH_3DS_LOADER_
+//#define _IRR_COMPILE_WITH_3DS_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_3DS_LOADER_
 #undef _IRR_COMPILE_WITH_3DS_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_COLLADA_LOADER_ if you want to load Collada files
-#define _IRR_COMPILE_WITH_COLLADA_LOADER_
+//#define _IRR_COMPILE_WITH_COLLADA_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_COLLADA_LOADER_
 #undef _IRR_COMPILE_WITH_COLLADA_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_CSM_LOADER_ if you want to load Cartography Shop files
-#define _IRR_COMPILE_WITH_CSM_LOADER_
+//#define _IRR_COMPILE_WITH_CSM_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_CSM_LOADER_
 #undef _IRR_COMPILE_WITH_CSM_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_BSP_LOADER_ if you want to load Quake 3 BSP files
-#define _IRR_COMPILE_WITH_BSP_LOADER_
+//#define _IRR_COMPILE_WITH_BSP_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_BSP_LOADER_
 #undef _IRR_COMPILE_WITH_BSP_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_DMF_LOADER_ if you want to load DeleD files
-#define _IRR_COMPILE_WITH_DMF_LOADER_
+//#define _IRR_COMPILE_WITH_DMF_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_DMF_LOADER_
 #undef _IRR_COMPILE_WITH_DMF_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_LMTS_LOADER_ if you want to load LMTools files
-#define _IRR_COMPILE_WITH_LMTS_LOADER_
+//#define _IRR_COMPILE_WITH_LMTS_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_LMTS_LOADER_
 #undef _IRR_COMPILE_WITH_LMTS_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_MY3D_LOADER_ if you want to load MY3D files
-//! Note: As My3DTools can't be found on the web anymore and there hasn't been 
-//! any update about it since around 2005 the loader is deprecated with 
+//! Note: As My3DTools can't be found on the web anymore and there hasn't been
+//! any update about it since around 2005 the loader is deprecated with
 //! Irrlicht 1.9 and will be removed in Irrlicht 1.10 unless there are any
 //! news about the tool.
 //#define _IRR_COMPILE_WITH_MY3D_LOADER_
@@ -624,27 +624,27 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_OBJ_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_OCT_LOADER_ if you want to load FSRad OCT files
-#define _IRR_COMPILE_WITH_OCT_LOADER_
+//#define _IRR_COMPILE_WITH_OCT_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_OCT_LOADER_
 #undef _IRR_COMPILE_WITH_OCT_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_LWO_LOADER_ if you want to load Lightwave3D files
-#define _IRR_COMPILE_WITH_LWO_LOADER_
+//#define _IRR_COMPILE_WITH_LWO_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_LWO_LOADER_
 #undef _IRR_COMPILE_WITH_LWO_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_STL_LOADER_ if you want to load stereolithography files
-#define _IRR_COMPILE_WITH_STL_LOADER_
+//#define _IRR_COMPILE_WITH_STL_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_STL_LOADER_
 #undef _IRR_COMPILE_WITH_STL_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_PLY_LOADER_ if you want to load Polygon (Stanford Triangle) files
-#define _IRR_COMPILE_WITH_PLY_LOADER_
+//#define _IRR_COMPILE_WITH_PLY_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_PLY_LOADER_
 #undef _IRR_COMPILE_WITH_PLY_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_SMF_LOADER_ if you want to load 3D World Studio mesh files
-#define _IRR_COMPILE_WITH_SMF_LOADER_
+//#define _IRR_COMPILE_WITH_SMF_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_SMF_LOADER_
 #undef _IRR_COMPILE_WITH_SMF_LOADER_
 #endif
@@ -692,7 +692,7 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_JPG_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_PCX_LOADER_ if you want to load .pcx files
-#define _IRR_COMPILE_WITH_PCX_LOADER_
+//#define _IRR_COMPILE_WITH_PCX_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_PCX_LOADER_
 #undef _IRR_COMPILE_WITH_PCX_LOADER_
 #endif
@@ -702,23 +702,23 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_PNG_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_PPM_LOADER_ if you want to load .ppm/.pgm/.pbm files
-#define _IRR_COMPILE_WITH_PPM_LOADER_
+//#define _IRR_COMPILE_WITH_PPM_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_PPM_LOADER_
 #undef _IRR_COMPILE_WITH_PPM_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_PSD_LOADER_ if you want to load .psd files
-#define _IRR_COMPILE_WITH_PSD_LOADER_
+//#define _IRR_COMPILE_WITH_PSD_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_PSD_LOADER_
 #undef _IRR_COMPILE_WITH_PSD_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_PVR_LOADER_ if you want to load .pvr files
-#define _IRR_COMPILE_WITH_PVR_LOADER_
+//#define _IRR_COMPILE_WITH_PVR_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_PVR_LOADER_
 #undef _IRR_COMPILE_WITH_PVR_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_DDS_LOADER_ if you want to load compressed .dds files
 // Patent problem isn't related to this loader.
-#define _IRR_COMPILE_WITH_DDS_LOADER_
+//#define _IRR_COMPILE_WITH_DDS_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_DDS_LOADER_
 #undef _IRR_COMPILE_WITH_DDS_LOADER_
 #endif
@@ -742,17 +742,17 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_TGA_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_WAL_LOADER_ if you want to load .wal files
-#define _IRR_COMPILE_WITH_WAL_LOADER_
+//#define _IRR_COMPILE_WITH_WAL_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_WAL_LOADER_
 #undef _IRR_COMPILE_WITH_WAL_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_LMP_LOADER_ if you want to load .lmp files
-#define _IRR_COMPILE_WITH_LMP_LOADER_
+//#define _IRR_COMPILE_WITH_LMP_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_LMP_LOADER_
 #undef _IRR_COMPILE_WITH_LMP_LOADER_
 #endif
 //! Define _IRR_COMPILE_WITH_RGB_LOADER_ if you want to load Silicon Graphics .rgb/.rgba/.sgi/.int/.inta/.bw files
-#define _IRR_COMPILE_WITH_RGB_LOADER_
+//#define _IRR_COMPILE_WITH_RGB_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_RGB_LOADER_
 #undef _IRR_COMPILE_WITH_RGB_LOADER_
 #endif
@@ -763,7 +763,7 @@ B3D, MS3D or X meshes */
 #undef _IRR_COMPILE_WITH_BMP_WRITER_
 #endif
 //! Define _IRR_COMPILE_WITH_JPG_WRITER_ if you want to write .jpg files
-//#define _IRR_COMPILE_WITH_JPG_WRITER_
+#define _IRR_COMPILE_WITH_JPG_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_JPG_WRITER_
 #undef _IRR_COMPILE_WITH_JPG_WRITER_
 #endif
