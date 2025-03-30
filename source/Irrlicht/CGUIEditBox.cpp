@@ -88,7 +88,7 @@ CGUIEditBox::~CGUIEditBox()
 	{
 		if (StartedTextInput)
 		{
-			if (SDL_IsTextInputActive())
+			if (SDL_TextInputActive())
 				SDL_StopTextInput();
 		}
 	}
@@ -269,7 +269,7 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 				if (IsSDLDevice)
 				{
 					StartedTextInput = false;
-					if (SDL_IsTextInputActive())
+					if (SDL_TextInputActive())
 						SDL_StopTextInput();
 				}
 #endif
@@ -373,7 +373,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 	if (IsSDLDevice)
 	{
 		SDL_Keymod keymod = SDL_GetModState();
-		altPressed = keymod & KMOD_ALT;
+		altPressed = keymod & SDL_KMOD_ALT;
 	}
 #endif
 

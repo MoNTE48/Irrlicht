@@ -18,7 +18,6 @@
 #include "ICursorControl.h"
 
 #include <SDL.h>
-#include <SDL_syswm.h>
 #include <SDL_video.h>
 
 #include <set>
@@ -291,10 +290,10 @@ namespace irr
 		bool WindowMinimized;
 		bool Resizable;
 
-		s32 AccelerometerIndex;
-		s32 AccelerometerInstance;
-		s32 GyroscopeIndex;
-		s32 GyroscopeInstance;
+		SDL_SensorID AccelerometerIndex;
+		SDL_SensorID AccelerometerInstance;
+		SDL_SensorID GyroscopeIndex;
+		SDL_SensorID GyroscopeInstance;
 
 		f32 NativeScaleX, NativeScaleY;
 

@@ -30,7 +30,7 @@
 #endif
 
 #ifdef _MSC_VER
-#pragma comment(lib, "SDL2.lib")
+#pragma comment(lib, "SDL3.lib")
 #endif // _MSC_VER
 
 static int SDLDeviceInstances = 0;
@@ -69,8 +69,8 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
 	WindowHasFocus(false), WindowMinimized(false),
 	Resizable(param.WindowResizable == 1),
-	AccelerometerIndex(-1), AccelerometerInstance(-1),
-	GyroscopeIndex(-1), GyroscopeInstance(-1),
+	AccelerometerIndex(0), AccelerometerInstance(0),
+	GyroscopeIndex(0), GyroscopeInstance(0),
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
 	IgnoreWarpMouseEvent(false), ShouldUseRelativeMouse(false),
 	LongTouchTimer(0), LongTouchX(0), LongTouchY(0), LongTouchHandled(true)
@@ -86,7 +86,6 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	if ( ++SDLDeviceInstances == 1 )
 	{
 		SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-		SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
 
 		// Disable simulated mouse events
 		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
@@ -99,26 +98,26 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
 #endif
 
-		u32 flags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
+		u32 flags = SDL_INIT_VIDEO;
 
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
-		flags |= SDL_INIT_GAMECONTROLLER;
+		flags |= SDL_INIT_GAMEPAD;
 #elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
 		flags |= SDL_INIT_JOYSTICK;
 #endif
 
 		// Initialize SDL... Timer for sleep, video for the obvious
-		if (SDL_Init(flags) < 0)
+		if (SDL_Init(flags))
+		{
+			os::Printer::log("SDL initialized", ELL_INFORMATION);
+		}
+		else
 		{
 			os::Printer::log("Unable to initialize SDL!", SDL_GetError());
 			Close = true;
 		}
-		else
-		{
-			os::Printer::log("SDL initialized", ELL_INFORMATION);
-		}
 
-		if (SDL_InitSubSystem(SDL_INIT_SENSOR) < 0)
+		if (!SDL_InitSubSystem(SDL_INIT_SENSOR))
 		{
 			os::Printer::log("Failed to init SDL sensor!", SDL_GetError());
 		}
@@ -130,16 +129,13 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 #endif
 	}
 
-	SDL_version version;
-	SDL_VERSION(&version);
-
-	SDL_GetVersion(&version);
+	const int version = SDL_GetVersion();
 	core::stringc sdlversion = "SDL Version ";
-	sdlversion += version.major;
+	sdlversion += SDL_VERSIONNUM_MAJOR(version);
 	sdlversion += ".";
-	sdlversion += version.minor;
+	sdlversion += SDL_VERSIONNUM_MINOR(version);
 	sdlversion += ".";
-	sdlversion += version.patch;
+	sdlversion += SDL_VERSIONNUM_MICRO(version);	
 
 	Operator = new COSOperator(sdlversion, this);
 	if ( SDLDeviceInstances == 1 )
@@ -152,17 +148,22 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 	if (CreationParams.DriverType != video::EDT_NULL)
 	{
-		for (int i = 0; i < SDL_NumSensors(); i++)
+		int num_sensors = 0;
+		SDL_SensorID* sensors = SDL_GetSensors(&num_sensors);
+		
+		for (int i = 0; i < num_sensors; i++)
 		{
-			if (SDL_SensorGetDeviceType(i) == SDL_SENSOR_ACCEL)
+			if (SDL_GetSensorTypeForID(sensors[i]) == SDL_SENSOR_ACCEL)
 			{
-				AccelerometerIndex = i;
+				AccelerometerIndex = sensors[i];
 			}
-			else if (SDL_SensorGetDeviceType(i) == SDL_SENSOR_GYRO)
+			else if (SDL_GetSensorTypeForID(sensors[i]) == SDL_SENSOR_GYRO)
 			{
-				GyroscopeIndex = i;
+				GyroscopeIndex = sensors[i];
 			}
 		}
+		
+		SDL_free(sensors);
 
 		// create the window, only if we do not use the null device
 		bool success = createWindow();
@@ -208,17 +209,17 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
-		SDL_GameController* gameController = SDL_GameControllerFromInstanceID(Joysticks[i]);
-		SDL_GameControllerClose(gameController);
+		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
+		SDL_CloseGamepad(gameController);
 #elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
-		SDL_JoystickClose(joystick);
+		SDL_Joystick* joystick = SDL_GetJoystickFromID(Joysticks[i]);
+		SDL_CloseJoystick(joystick);
 #endif
 	}
 
 	if (Context)
 	{
-		SDL_GL_DeleteContext(Context);
+		SDL_GL_DestroyContext(Context);
 		Context = NULL;
 	}
 
@@ -249,22 +250,26 @@ bool CIrrDeviceSDL::createWindow()
 	// window. Use desktop size in windowed mode.
 	if (!CreationParams.Fullscreen && (Width == 0 || Height == 0))
 	{
-		SDL_DisplayMode mode = {};
-		int err = SDL_GetDesktopDisplayMode(0, &mode);
-
-		if (err == 0)
+		// Set windth and height to some non-zero values just in case that
+		// get display mode fails
+		Width = 640;
+		Height = 480;
+		
+		int display_count = 0;
+		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
+		
+		if (display_count > 0)
 		{
-			Width = roundf((float)mode.w * NativeScaleX);
-			Height = roundf((float)mode.h * NativeScaleY);
+			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
 
+			if (mode)
+			{
+				Width = roundf((float)mode->w * NativeScaleX);
+				Height = roundf((float)mode->h * NativeScaleY);
+			}
 		}
-		else
-		{
-			// Shouldn't happen, just in case
-			Width = 640;
-			Height = 480;
-
-		}
+		
+		SDL_free(displays);
 	}
 
 	bool success = createWindowWithContext();
@@ -407,7 +412,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		CreationParams.DriverType == video::EDT_OGLES1)
 	{
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-		SDL_Flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		SDL_Flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
 #endif
 
 		SDL_Flags |= SDL_WINDOW_OPENGL;
@@ -465,7 +470,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		}
 	}
 
-	Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	Window = SDL_CreateWindow("",
 							roundf((float)Width / NativeScaleX),
 							roundf((float)Height / NativeScaleY), SDL_Flags);
 
@@ -489,7 +494,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 
-		Window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		Window = SDL_CreateWindow("",
 								roundf((float)Width / NativeScaleX),
 								roundf((float)Height / NativeScaleY), SDL_Flags);
 
@@ -556,7 +561,7 @@ void CIrrDeviceSDL::updateNativeScale()
 		CreationParams.DriverType == video::EDT_OGLES2 ||
 		CreationParams.DriverType == video::EDT_OGLES1)
 	{
-		SDL_GL_GetDrawableSize(Window, &real_width, &real_height);
+		SDL_GetWindowSizeInPixels(Window, &real_width, &real_height);
 	}
 
 	NativeScaleX = (f32)real_width / (f32)width;
@@ -576,21 +581,21 @@ void CIrrDeviceSDL::setCursorVisible(bool visible)
 	if (ShouldUseRelativeMouse)
 	{
 		if (visible)
-			SDL_SetRelativeMouseMode(SDL_FALSE);
+			SDL_SetWindowRelativeMouseMode(Window, false);
 		else
-			SDL_SetRelativeMouseMode(SDL_TRUE);
+			SDL_SetWindowRelativeMouseMode(Window, true);
 	}
 #else
 	if (visible)
 	{
-		SDL_ShowCursor(SDL_ENABLE);
+		SDL_ShowCursor();
 //#if defined(_IRR_OSX_PLATFORM_)
 //		NSApp.presentationOptions &= ~NSApplicationPresentationDisableCursorLocationAssistance;
 //#endif
 	}
 	else
 	{
-		SDL_ShowCursor(SDL_DISABLE);
+		SDL_HideCursor();
 //#if defined(_IRR_OSX_PLATFORM_)
 //		NSApp.presentationOptions |= NSApplicationPresentationDisableCursorLocationAssistance;
 //#endif
@@ -661,37 +666,37 @@ bool CIrrDeviceSDL::run()
 
 		switch (SDL_event.type)
 		{
-		case SDL_APP_WILLENTERBACKGROUND:
+		case SDL_EVENT_WILL_ENTER_BACKGROUND:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_PAUSE;
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_APP_DIDENTERBACKGROUND:
+		case SDL_EVENT_DID_ENTER_BACKGROUND:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_DID_PAUSE;
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_APP_WILLENTERFOREGROUND:
+		case SDL_EVENT_WILL_ENTER_FOREGROUND:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_RESUME;
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_APP_DIDENTERFOREGROUND:
+		case SDL_EVENT_DID_ENTER_FOREGROUND:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_DID_RESUME;
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_APP_LOWMEMORY:
+		case SDL_EVENT_LOW_MEMORY:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_MEMORY_WARNING;
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_APP_TERMINATING:
+		case SDL_EVENT_TERMINATING:
 			irrevent.EventType = irr::EET_APPLICATION_EVENT;
 			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_TERMINATE;
 			postEventFromUser(irrevent);
@@ -700,16 +705,16 @@ bool CIrrDeviceSDL::run()
 		// From https://github.com/libsdl-org/SDL/blob/main/docs/README-android.md
 		// However, there's a chance (on older hardware, or on systems under heavy load),
 		// where the GL context can not be restored. In that case you have to
-		// listen for a specific message (SDL_RENDER_DEVICE_RESET) and restore
+		// listen for a specific message (SDL_EVENT_RENDER_DEVICE_RESET) and restore
 		// your textures manually or quit the app.
-		case SDL_RENDER_DEVICE_RESET:
+		case SDL_EVENT_RENDER_DEVICE_RESET:
 			Close = true;
 			return false;
 
-		case SDL_SENSORUPDATE:
+		case SDL_EVENT_SENSOR_UPDATE:
 			if (SDL_event.sensor.which == AccelerometerInstance)
 			{
-				SDL_DisplayOrientation orientation = SDL_GetDisplayOrientation(0);
+				SDL_DisplayOrientation orientation = SDL_GetCurrentDisplayOrientation(0);
 				irrevent.EventType = irr::EET_ACCELEROMETER_EVENT;
 
 				if (orientation == SDL_ORIENTATION_LANDSCAPE ||
@@ -750,7 +755,7 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
-		case SDL_FINGERMOTION:
+		case SDL_EVENT_FINGER_MOTION:
 			if (TouchIDs.size() == 1)
 			{
 				if (fabsf(LongTouchX - SDL_event.tfinger.x * Width) > Width * 0.05f ||
@@ -762,14 +767,14 @@ bool CIrrDeviceSDL::run()
 
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_MOVED;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerId;
+			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
 			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
 			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
 			irrevent.TouchInput.touchedCount = TouchIDs.size();
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_FINGERDOWN:
+		case SDL_EVENT_FINGER_DOWN:
 			// Long touch only for first finger
 			if (TouchIDs.size() == 0)
 			{
@@ -783,17 +788,17 @@ bool CIrrDeviceSDL::run()
 				LongTouchHandled = true;
 			}
 
-			TouchIDs.insert(SDL_event.tfinger.fingerId);
+			TouchIDs.insert(SDL_event.tfinger.fingerID);
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_PRESSED_DOWN;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerId;
+			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
 			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
 			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
 			irrevent.TouchInput.touchedCount = TouchIDs.size();
 			postEventFromUser(irrevent);
 			break;
 
-		case SDL_FINGERUP:
+		case SDL_EVENT_FINGER_UP:
 			if (TouchIDs.size() == 1)
 			{
 				LongTouchHandled = true;
@@ -801,22 +806,22 @@ bool CIrrDeviceSDL::run()
 
 			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
 			irrevent.TouchInput.Event = irr::ETIE_LEFT_UP;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerId;
+			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
 			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
 			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
 			irrevent.TouchInput.touchedCount = TouchIDs.size();
 			postEventFromUser(irrevent);
-			TouchIDs.erase(SDL_event.tfinger.fingerId);
+			TouchIDs.erase(SDL_event.tfinger.fingerID);
 			break;
 
-		case SDL_MOUSEWHEEL:
+		case SDL_EVENT_MOUSE_WHEEL:
 			{
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
 				irrevent.MouseInput.X = MouseX;
 				irrevent.MouseInput.Y = MouseY;
 
-				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
@@ -829,16 +834,12 @@ bool CIrrDeviceSDL::run()
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-#if SDL_VERSION_ATLEAST(2, 0, 18)
-				irrevent.MouseInput.Wheel = SDL_event.wheel.preciseX + SDL_event.wheel.preciseY;
-#else
 				irrevent.MouseInput.Wheel = SDL_event.wheel.x + SDL_event.wheel.y;
-#endif
 
 				postEventFromUser(irrevent);
 			}
 			break;
-		case SDL_MOUSEMOTION:
+		case SDL_EVENT_MOUSE_MOTION:
 			{
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
 				if (!ShouldUseRelativeMouse)
@@ -854,7 +855,7 @@ bool CIrrDeviceSDL::run()
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
 
-				if (ShouldUseRelativeMouse && SDL_GetRelativeMouseMode())
+				if (ShouldUseRelativeMouse && SDL_GetWindowRelativeMouseMode(Window))
 				{
 					MouseX = irrevent.MouseInput.X = MouseX + SDL_event.motion.xrel * NativeScaleX;
 					MouseY = irrevent.MouseInput.Y = MouseY + SDL_event.motion.yrel * NativeScaleY;
@@ -865,7 +866,7 @@ bool CIrrDeviceSDL::run()
 					MouseY = irrevent.MouseInput.Y = SDL_event.motion.y * NativeScaleY;
 				}
 
-				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
@@ -882,8 +883,8 @@ bool CIrrDeviceSDL::run()
 				postEventFromUser(irrevent);
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
+		case SDL_EVENT_MOUSE_BUTTON_DOWN:
+		case SDL_EVENT_MOUSE_BUTTON_UP:
 			{
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
 				if (!ShouldUseRelativeMouse)
@@ -894,7 +895,7 @@ bool CIrrDeviceSDL::run()
 				irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
 				irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
 
-				const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
@@ -911,7 +912,7 @@ bool CIrrDeviceSDL::run()
 				switch(SDL_event.button.button)
 				{
 				case SDL_BUTTON_LEFT:
-					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
 					{
 						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_PRESSED_DOWN;
 						MouseButtonStates |= irr::EMBSM_LEFT;
@@ -924,7 +925,7 @@ bool CIrrDeviceSDL::run()
 					break;
 
 				case SDL_BUTTON_RIGHT:
-					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
 					{
 						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_PRESSED_DOWN;
 						MouseButtonStates |= irr::EMBSM_RIGHT;
@@ -937,7 +938,7 @@ bool CIrrDeviceSDL::run()
 					break;
 
 				case SDL_BUTTON_MIDDLE:
-					if (SDL_event.type == SDL_MOUSEBUTTONDOWN)
+					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
 					{
 						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_PRESSED_DOWN;
 						MouseButtonStates |= irr::EMBSM_MIDDLE;
@@ -974,10 +975,10 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
+		case SDL_EVENT_KEY_DOWN:
+		case SDL_EVENT_KEY_UP:
 			{
-				SDL_Scancode scancode = SDL_GetScancodeFromKey(SDL_event.key.keysym.sym);
+				SDL_Scancode scancode = SDL_GetScancodeFromKey(SDL_event.key.key, nullptr);
 
 				SKeyMap mp;
 				mp.Scancode = scancode;
@@ -985,7 +986,7 @@ bool CIrrDeviceSDL::run()
 
 				if (idx == -1)
 				{
-					mp.Scancode = SDL_event.key.keysym.scancode;
+					mp.Scancode = SDL_event.key.scancode;
 					idx = KeyMap.binary_search(mp);
 				}
 
@@ -998,45 +999,45 @@ bool CIrrDeviceSDL::run()
 				irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
 				irrevent.KeyInput.Char = 0;
 				irrevent.KeyInput.Key = key;
-				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_KEYDOWN);
-				irrevent.KeyInput.Shift = (SDL_event.key.keysym.mod & KMOD_SHIFT) != 0;
+				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_EVENT_KEY_DOWN);
+				irrevent.KeyInput.Shift = (SDL_event.key.mod & SDL_KMOD_SHIFT) != 0;
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_GUI) != 0;
+				irrevent.KeyInput.Control = (SDL_event.key.mod & SDL_KMOD_GUI) != 0;
 #else
-				irrevent.KeyInput.Control = (SDL_event.key.keysym.mod & KMOD_CTRL) != 0;
+				irrevent.KeyInput.Control = (SDL_event.key.mod & SDL_KMOD_CTRL) != 0;
 #endif
 				postEventFromUser(irrevent);
 			}
 			break;
 
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
-		case SDL_CONTROLLERBUTTONDOWN:
-		case SDL_CONTROLLERBUTTONUP:
+		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+		case SDL_EVENT_GAMEPAD_BUTTON_UP:
 			{
 				irrevent.EventType = irr::EET_SDL_CONTROLLER_BUTTON_EVENT;
-				irrevent.SDLControllerButtonEvent.Joystick = SDL_event.cbutton.which;
-				irrevent.SDLControllerButtonEvent.Button = SDL_event.cbutton.button;
-				irrevent.SDLControllerButtonEvent.Pressed = SDL_event.cbutton.state;
+				irrevent.SDLControllerButtonEvent.Joystick = SDL_event.gbutton.which;
+				irrevent.SDLControllerButtonEvent.Button = SDL_event.gbutton.button;
+				irrevent.SDLControllerButtonEvent.Pressed = SDL_event.gbutton.down;
 				postEventFromUser(irrevent);
 			}
 			break;
 
-		case SDL_CONTROLLERDEVICEADDED:
+		case SDL_EVENT_GAMEPAD_ADDED:
 			{
 				int index = SDL_event.cdevice.which;
 
-				SDL_GameController* gameController = SDL_GameControllerOpen(index);
+				SDL_Gamepad* gameController = SDL_OpenGamepad(index);
 
 				if (gameController)
 				{
-					SDL_Joystick* joystick = SDL_GameControllerGetJoystick(gameController);
-					SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+					SDL_Joystick* joystick = SDL_GetGamepadJoystick(gameController);
+					SDL_JoystickID instanceId = SDL_GetJoystickID(joystick);
 					Joysticks.push_back(instanceId);
 				}
 			}
 			break;
 
-		case SDL_CONTROLLERDEVICEREMOVED:
+		case SDL_EVENT_GAMEPAD_REMOVED:
 			{
 				SDL_JoystickID instanceId = SDL_event.cdevice.which;
 
@@ -1045,8 +1046,8 @@ bool CIrrDeviceSDL::run()
 					if (instanceId != Joysticks[i])
 						continue;
 
-					SDL_GameController* gameController = SDL_GameControllerFromInstanceID(instanceId);
-					SDL_GameControllerClose(gameController);
+					SDL_Gamepad* gameController = SDL_GetGamepadFromID(instanceId);
+					SDL_CloseGamepad(gameController);
 					Joysticks.erase(i);
 					break;
 				}
@@ -1054,55 +1055,46 @@ bool CIrrDeviceSDL::run()
 			break;
 #endif
 
-		case SDL_QUIT:
+		case SDL_EVENT_QUIT:
 			Close = true;
 			return false;
 
-		case SDL_WINDOWEVENT:
+		case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
 			{
-				if (SDL_event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+				updateNativeScale();
+	
+				u32 new_width = roundf((float)SDL_event.window.data1 * NativeScaleX);
+				u32 new_height = roundf((float)SDL_event.window.data2 * NativeScaleY);
+	
+				if (new_width != Width || new_height != Height)
 				{
-					updateNativeScale();
-
-					u32 new_width = roundf((float)SDL_event.window.data1 * NativeScaleX);
-					u32 new_height = roundf((float)SDL_event.window.data2 * NativeScaleY);
-
-					if (new_width != Width || new_height != Height)
-					{
-						Width = new_width;
-						Height = new_height;
-
-						if (VideoDriver)
-							VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
-					}
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_MINIMIZED)
-				{
-					WindowMinimized = true;
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
-				{
-					WindowMinimized = false;
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_RESTORED)
-				{
-					WindowMinimized = false;
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-				{
-					WindowHasFocus = true;
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-				{
-					WindowHasFocus = false;
-				}
-				else if (SDL_event.window.event == SDL_WINDOWEVENT_MOVED)
-				{
+					Width = new_width;
+					Height = new_height;
+	
+					if (VideoDriver)
+						VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
 				}
 			}
 			break;
+		case SDL_EVENT_WINDOW_MINIMIZED:
+			WindowMinimized = true;
+			break;
+		case SDL_EVENT_WINDOW_MAXIMIZED:
+			WindowMinimized = false;
+			break;
+		case SDL_EVENT_WINDOW_RESTORED:
+			WindowMinimized = false;
+			break;
+		case SDL_EVENT_WINDOW_FOCUS_GAINED:
+			WindowHasFocus = true;
+			break;
+		case SDL_EVENT_WINDOW_FOCUS_LOST:
+			WindowHasFocus = false;
+			break;
+		case SDL_EVENT_WINDOW_MOVED:
+			break;
 
-		case SDL_TEXTEDITING:
+		case SDL_EVENT_TEXT_EDITING:
 			{
 				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
 				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTEDITING;
@@ -1116,7 +1108,7 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
-		case SDL_TEXTINPUT:
+		case SDL_EVENT_TEXT_INPUT:
 			{
 				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
 				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTINPUT;
@@ -1130,7 +1122,7 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
-		case SDL_USEREVENT:
+		case SDL_EVENT_USER:
 			irrevent.EventType = irr::EET_USER_EVENT;
 			irrevent.UserEvent.UserData1 = reinterpret_cast<uintptr_t>(SDL_event.user.data1);
 			irrevent.UserEvent.UserData2 = reinterpret_cast<uintptr_t>(SDL_event.user.data2);
@@ -1147,7 +1139,7 @@ bool CIrrDeviceSDL::run()
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-		SDL_GameController* gameController = SDL_GameControllerFromInstanceID(Joysticks[i]);
+		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
 
 		if (gameController)
 		{
@@ -1158,7 +1150,7 @@ bool CIrrDeviceSDL::run()
 			for (s32 j = 0; j < 6; j++)
 			{
 				irrevent.SDLControllerAxisEvent.Axis[j] = j;
-				irrevent.SDLControllerAxisEvent.Value[j] = SDL_GameControllerGetAxis(gameController, (SDL_GameControllerAxis)j);
+				irrevent.SDLControllerAxisEvent.Value[j] = SDL_GetGamepadAxis(gameController, (SDL_GamepadAxis)j);
 			}
 
 			postEventFromUser(irrevent);
@@ -1170,24 +1162,24 @@ bool CIrrDeviceSDL::run()
 	// open/close in the constructor/destructor instead
 
 	// update joystick states manually
-	SDL_JoystickUpdate();
+	SDL_UpdateJoysticks();
 	// we'll always send joystick input events...
 	SEvent joyevent;
 	joyevent.EventType = EET_JOYSTICK_INPUT_EVENT;
 	for (u32 i=0; i<Joysticks.size(); ++i)
 	{
-		SDL_Joystick* joystick = SDL_JoystickFromInstanceID(Joysticks[i]);
+		SDL_Joystick* joystick = SDL_GetJoystickFromID(Joysticks[i]);
 		if (joystick)
 		{
 			int j;
 			// query all buttons
-			const int numButtons = core::min_(SDL_JoystickNumButtons(joystick), 32);
+			const int numButtons = core::min_(SDL_GetNumJoystickButtons(joystick), 32);
 			joyevent.JoystickEvent.ButtonStates=0;
 			for (j=0; j<numButtons; ++j)
-				joyevent.JoystickEvent.ButtonStates |= (SDL_JoystickGetButton(joystick, j)<<j);
+				joyevent.JoystickEvent.ButtonStates |= (SDL_GetJoystickButton(joystick, j)<<j);
 
 			// query all axes, already in correct range
-			const int numAxes = core::min_(SDL_JoystickNumAxes(joystick), (int)SEvent::SJoystickEvent::NUMBER_OF_AXES);
+			const int numAxes = core::min_(SDL_GetNumJoystickAxes(joystick), (int)SEvent::SJoystickEvent::NUMBER_OF_AXES);
 			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_X]=0;
 			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Y]=0;
 			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z]=0;
@@ -1195,12 +1187,12 @@ bool CIrrDeviceSDL::run()
 			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_U]=0;
 			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_V]=0;
 			for (j=0; j<numAxes; ++j)
-				joyevent.JoystickEvent.Axis[j] = SDL_JoystickGetAxis(joystick, j);
+				joyevent.JoystickEvent.Axis[j] = SDL_GetJoystickAxis(joystick, j);
 
 			// we can only query one hat, SDL only supports 8 directions
-			if (SDL_JoystickNumHats(joystick)>0)
+			if (SDL_GetNumJoystickHats(joystick)>0)
 			{
-				switch (SDL_JoystickGetHat(joystick, 0))
+				switch (SDL_GetJoystickHat(joystick, 0))
 				{
 					case SDL_HAT_UP:
 						joyevent.JoystickEvent.POV=0;
@@ -1279,17 +1271,17 @@ bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 
 	for (int i = 0; i < numJoysticks; i++)
 	{
-		SDL_Joystick* joystick = SDL_JoystickOpen(i);
-		SDL_JoystickID instanceId = SDL_JoystickInstanceID(joystick);
+		SDL_Joystick* joystick = SDL_OpenJoystick(i);
+		SDL_JoystickID instanceId = SDL_GetJoystickID(joystick);
 		Joysticks.push_back(instanceId);
 
 		SJoystickInfo info;
 		info.Joystick = i;
-		info.Axes = SDL_JoystickNumAxes(joystick);
-		info.Buttons = SDL_JoystickNumButtons(joystick);
+		info.Axes = SDL_GetNumJoystickAxes(joystick);
+		info.Buttons = SDL_GetNumJoystickButtons(joystick);
 		info.Name = SDL_JoystickNameForIndex(i);
 
-		if (SDL_JoystickNumHats(joystick) > 0)
+		if (SDL_GetNumJoystickHats(joystick) > 0)
 			info.PovHat = SJoystickInfo::POV_HAT_PRESENT;
 		else
 			info.PovHat = SJoystickInfo::POV_HAT_ABSENT;
@@ -1352,77 +1344,7 @@ void CIrrDeviceSDL::setWindowCaption(const wchar_t* text)
 //! presents a surface in the client area
 bool CIrrDeviceSDL::present(video::IImage* surface, void* windowId, core::rect<s32>* srcClip)
 {
-	SDL_Surface *sdlSurface = SDL_CreateRGBSurfaceFrom(
-			surface->getData(), surface->getDimension().Width, surface->getDimension().Height,
-			surface->getBitsPerPixel(), surface->getPitch(),
-			surface->getRedMask(), surface->getGreenMask(), surface->getBlueMask(), surface->getAlphaMask());
-	if (!sdlSurface)
-		return false;
-	SDL_SetSurfaceAlphaMod(sdlSurface, 0);
-	SDL_SetColorKey(sdlSurface, 0, 0);
-	sdlSurface->format->BitsPerPixel=surface->getBitsPerPixel();
-	sdlSurface->format->BytesPerPixel=surface->getBytesPerPixel();
-	if ((surface->getColorFormat()==video::ECF_R8G8B8) ||
-			(surface->getColorFormat()==video::ECF_A8R8G8B8))
-	{
-		sdlSurface->format->Rloss=0;
-		sdlSurface->format->Gloss=0;
-		sdlSurface->format->Bloss=0;
-		sdlSurface->format->Rshift=16;
-		sdlSurface->format->Gshift=8;
-		sdlSurface->format->Bshift=0;
-		if (surface->getColorFormat()==video::ECF_R8G8B8)
-		{
-			sdlSurface->format->Aloss=8;
-			sdlSurface->format->Ashift=32;
-		}
-		else
-		{
-			sdlSurface->format->Aloss=0;
-			sdlSurface->format->Ashift=24;
-		}
-	}
-	else if (surface->getColorFormat()==video::ECF_R5G6B5)
-	{
-		sdlSurface->format->Rloss=3;
-		sdlSurface->format->Gloss=2;
-		sdlSurface->format->Bloss=3;
-		sdlSurface->format->Aloss=8;
-		sdlSurface->format->Rshift=11;
-		sdlSurface->format->Gshift=5;
-		sdlSurface->format->Bshift=0;
-		sdlSurface->format->Ashift=16;
-	}
-	else if (surface->getColorFormat()==video::ECF_A1R5G5B5)
-	{
-		sdlSurface->format->Rloss=3;
-		sdlSurface->format->Gloss=3;
-		sdlSurface->format->Bloss=3;
-		sdlSurface->format->Aloss=7;
-		sdlSurface->format->Rshift=10;
-		sdlSurface->format->Gshift=5;
-		sdlSurface->format->Bshift=0;
-		sdlSurface->format->Ashift=15;
-	}
-
-	SDL_Surface* scr = (SDL_Surface*)windowId;
-	if (scr)
-	{
-		if (srcClip)
-		{
-			SDL_Rect sdlsrcClip;
-			sdlsrcClip.x = srcClip->UpperLeftCorner.X;
-			sdlsrcClip.y = srcClip->UpperLeftCorner.Y;
-			sdlsrcClip.w = srcClip->getWidth();
-			sdlsrcClip.h = srcClip->getHeight();
-			SDL_BlitSurface(sdlSurface, &sdlsrcClip, scr, NULL);
-		}
-		else
-			SDL_BlitSurface(sdlSurface, NULL, scr, NULL);
-	}
-
-	SDL_FreeSurface(sdlSurface);
-	return (scr != 0);
+	return false;
 }
 
 
@@ -1440,34 +1362,44 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 	{
 		// enumerate video modes.
 		int display_count = 0;
-		if ((display_count = SDL_GetNumVideoDisplays()) < 1)
+		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
+		
+		if (display_count < 1)
 		{
 			os::Printer::log("No display created: ", SDL_GetError(), ELL_ERROR);
 			return VideoModeList;
 		}
 
 		int mode_count = 0;
-		if ((mode_count = SDL_GetNumDisplayModes(0)) < 1)
+		SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(displays[0], &mode_count);
+		
+		if (mode_count < 1)
 		{
 			os::Printer::log("No display modes available: ", SDL_GetError(), ELL_ERROR);
 			return VideoModeList;
 		}
 
-		SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-		if (SDL_GetDesktopDisplayMode(0, &mode) == 0)
+		const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
+		
+		if (mode)
 		{
-			VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode.format),
-				core::dimension2d<u32>(mode.w, mode.h));
+			VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
+				core::dimension2d<u32>(mode->w, mode->h));
 		}
 
 		for (int i = 0; i < mode_count; i++)
 		{
-			if (SDL_GetDisplayMode(0, i, &mode) == 0)
+			const SDL_DisplayMode* mode = modes[i];
+			
+			if (mode)
 			{
-				VideoModeList->addMode(core::dimension2d<u32>(mode.w, mode.h),
-					SDL_BITSPERPIXEL(mode.format));
+				VideoModeList->addMode(core::dimension2d<u32>(mode->w, mode->h),
+					SDL_BITSPERPIXEL(mode->format));
 			}
 		}
+
+		SDL_free(modes);
+		SDL_free(displays);
 	}
 
 	return VideoModeList;
@@ -1479,7 +1411,7 @@ void CIrrDeviceSDL::setResizable(bool resize)
 	if (CreationParams.Fullscreen)
 		return;
 
-	SDL_SetWindowResizable(Window, resize ? SDL_TRUE : SDL_FALSE);
+	SDL_SetWindowResizable(Window, resize ? true : false);
 	Resizable = resize;
 }
 
@@ -1731,105 +1663,104 @@ void CIrrDeviceSDL::createKeyMap()
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_APOSTROPHE, KEY_OEM_7));
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_CRSEL, KEY_CRSEL));
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_EXSEL, KEY_EXSEL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AUDIONEXT, KEY_MEDIA_NEXT_TRACK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AUDIOPREV, KEY_MEDIA_PREV_TRACK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AUDIOSTOP, KEY_MEDIA_STOP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AUDIOPLAY, KEY_MEDIA_PLAY_PAUSE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AUDIOMUTE, KEY_VOLUME_MUTE));
+	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_NEXT_TRACK, KEY_MEDIA_NEXT_TRACK));
+	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_PREVIOUS_TRACK, KEY_MEDIA_PREV_TRACK));
+	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_STOP, KEY_MEDIA_STOP));
+	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_PLAY, KEY_MEDIA_PLAY_PAUSE));
+	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MUTE, KEY_VOLUME_MUTE));
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_VOLUMEDOWN, KEY_VOLUME_DOWN));
 	KeyMap.push_back(SKeyMap(SDL_SCANCODE_VOLUMEUP, KEY_VOLUME_UP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_WWW, KEY_BROWSER_HOME));
 
 	KeyMap.sort();
 }
 
 bool CIrrDeviceSDL::activateAccelerometer(float updateInterval)
 {
-	if (AccelerometerInstance == -1 && AccelerometerIndex != -1)
+	if (AccelerometerInstance == 0 && AccelerometerIndex != 0)
 	{
-		SDL_Sensor* accel = SDL_SensorOpen(AccelerometerIndex);
+		SDL_Sensor* accel = SDL_OpenSensor(AccelerometerIndex);
 
 		if (accel)
-			AccelerometerInstance = SDL_SensorGetInstanceID(accel);
+			AccelerometerInstance = SDL_GetSensorID(accel);
 	}
 
-	return AccelerometerInstance != -1;
+	return AccelerometerInstance != 0;
 }
 
 bool CIrrDeviceSDL::deactivateAccelerometer()
 {
-	if (AccelerometerInstance == -1)
+	if (AccelerometerInstance == 0)
 		return false;
 
-	SDL_Sensor* accel = SDL_SensorFromInstanceID(AccelerometerInstance);
+	SDL_Sensor* accel = SDL_GetSensorFromID(AccelerometerInstance);
 
 	if (!accel)
 		return false;
 
-	SDL_SensorClose(accel);
-	AccelerometerInstance = -1;
+	SDL_CloseSensor(accel);
+	AccelerometerInstance = 0;
 
 	return true;
 }
 
 bool CIrrDeviceSDL::isAccelerometerActive()
 {
-	return AccelerometerInstance != -1;
+	return AccelerometerInstance != 0;
 }
 
 bool CIrrDeviceSDL::isAccelerometerAvailable()
 {
-	return AccelerometerIndex != -1;
+	return AccelerometerIndex != 0;
 }
 
 bool CIrrDeviceSDL::activateGyroscope(float updateInterval)
 {
-	if (GyroscopeInstance == -1 && GyroscopeIndex != -1)
+	if (GyroscopeInstance == 0 && GyroscopeIndex != 0)
 	{
-		SDL_Sensor* gyro = SDL_SensorOpen(GyroscopeIndex);
+		SDL_Sensor* gyro = SDL_OpenSensor(GyroscopeIndex);
 
 		if (gyro)
-			GyroscopeInstance = SDL_SensorGetInstanceID(gyro);
+			GyroscopeInstance = SDL_GetSensorID(gyro);
 	}
 
-	return GyroscopeInstance != -1;
+	return GyroscopeInstance != 0;
 }
 
 bool CIrrDeviceSDL::deactivateGyroscope()
 {
-	if (GyroscopeInstance == -1)
+	if (GyroscopeInstance == 0)
 		return false;
 
-	SDL_Sensor* gyro = SDL_SensorFromInstanceID(GyroscopeInstance);
+	SDL_Sensor* gyro = SDL_GetSensorFromID(GyroscopeInstance);
 
 	if (!gyro)
 		return false;
 
-	SDL_SensorClose(gyro);
-	GyroscopeInstance = -1;
+	SDL_CloseSensor(gyro);
+	GyroscopeInstance = 0;
 
 	return true;
 }
 
 bool CIrrDeviceSDL::isGyroscopeActive()
 {
-	return GyroscopeInstance != -1;
+	return GyroscopeInstance != 0;
 }
 
 bool CIrrDeviceSDL::isGyroscopeAvailable()
 {
-	return GyroscopeIndex != -1;
+	return GyroscopeIndex != 0;
 }
 
 bool CIrrDeviceSDL::supportsRelativeMouse()
 {
 #if defined(_IRR_ANDROID_PLATFORM_)
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
 	if (!env)
 		return false;
 
-	jobject activity = (jobject)SDL_AndroidGetActivity();
+	jobject activity = (jobject)SDL_GetAndroidActivity();
 
 	if (!activity)
 		return false;
@@ -1861,18 +1792,18 @@ void CIrrDeviceSDL::CCursorControl::initCursors()
 {
 	Cursors.reallocate(gui::ECI_COUNT);
 
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));     // ECI_NORMAL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_DEFAULT));     // ECI_NORMAL
 	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR)); // ECI_CROSS
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));      // ECI_HAND
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_POINTER));      // ECI_HAND
 	Cursors.push_back(nullptr);                                             // ECI_HELP
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_IBEAM));     // ECI_IBEAM
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NO));        // ECI_NO
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_TEXT));     // ECI_IBEAM
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NOT_ALLOWED));        // ECI_NO
 	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT));      // ECI_WAIT
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));   // ECI_SIZEALL
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENESW));  // ECI_SIZENESW
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENWSE));  // ECI_SIZENWSE
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS));    // ECI_SIZENS
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));    // ECI_SIZEWE
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_MOVE));   // ECI_SIZEALL
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NESW_RESIZE));  // ECI_SIZENESW
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NWSE_RESIZE));  // ECI_SIZENWSE
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NS_RESIZE));    // ECI_SIZENS
+	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_EW_RESIZE));    // ECI_SIZEWE
 	Cursors.push_back(nullptr);                                             // ECI_UP
 }
 
@@ -1880,7 +1811,7 @@ CIrrDeviceSDL::CCursorControl::~CCursorControl()
 {
 	const u32 count = Cursors.size();
 	for (u32 i = 0; i < count; i++)
-		SDL_FreeCursor(Cursors[i]);
+		SDL_DestroyCursor(Cursors[i]);
 }
 
 void CIrrDeviceSDL::CCursorControl::setActiveIcon(gui::ECURSOR_ICON iconId)
