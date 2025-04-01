@@ -2237,7 +2237,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-I${SRCROOT}/../../../SDL2/include",
+					"-I${SRCROOT}/../../../SDL3/include",
 				);
 			};
 			name = Debug;
@@ -2285,7 +2285,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
-					"-I${SRCROOT}/../../../SDL2/include",
+					"-I${SRCROOT}/../../../SDL3/include",
 				);
 			};
 			name = Release;
