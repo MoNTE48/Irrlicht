@@ -198,12 +198,11 @@ void CMeshSceneNode::render()
 		for (u32 i=0; i<BufferRenderNodes.size(); ++i)
 		{
 			CBufferRenderNode* bufRenderNode = BufferRenderNodes[i];
-			if ( bufRenderNode->getDoesParentRender())
+			if ( bufRenderNode->getDoesParentRender()) // this node handling rendering
 			{
 				E_SCENE_NODE_RENDER_PASS bufferRenderPass = bufRenderNode->getRenderPass();
 
 				// render() called without OnRegisterSceneNode, but still wants to render in a specific render stage
-				// Note: Not checking transparency every time, as check got slightly expensive (I think it's prone to cache-misses)
 				if ( bufferRenderPass == ESNRP_NONE && renderPass > ESNRP_NONE )	
 				{
 					if ( driver->needsTransparentRenderPass(getMaterial(i)) )
@@ -216,7 +215,7 @@ void CMeshSceneNode::render()
 					}
 				}
 
-				if ( bufRenderNode->getRenderPass() == renderPass || renderPass == ESNRP_NONE)
+				if ( bufferRenderPass == renderPass || renderPass == ESNRP_NONE)
 					bufRenderNode->renderBuffer(driver);
 			}
 		}

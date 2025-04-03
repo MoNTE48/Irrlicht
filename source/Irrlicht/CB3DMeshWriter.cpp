@@ -302,7 +302,6 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
             const u32 animsize = 12;
             file->write(&animsize, 4);
 
-            const u32 flags = 0;
             f32 fps = skinnedMesh->getAnimationSpeed();
 
             /* B3D file format use integer as keyframe, so there is some potential issues if the model use float as keyframe (Irrlicht use float) with a low animation FPS value
@@ -316,7 +315,8 @@ bool CB3DMeshWriter::writeMesh(io::IWriteFile* file, IMesh* const mesh, s32 flag
             }
             const u32 frames = static_cast<u32>(skinnedMesh->getFrameCount() * animationSpeedMultiplier);
 
-            file->write(&flags, 4);
+            const u32 animFlags = 0;	// unused in the format it seems
+            file->write(&animFlags, 4);
             file->write(&frames, 4);
             file->write(&fps, 4);
         }
@@ -405,8 +405,8 @@ void CB3DMeshWriter::writeJointChunk(io::IWriteFile* file, ISkinnedMesh* mesh, I
             const s32 frame = static_cast<s32>(joint->PositionKeys[i].frame * animationSpeedMultiplier);
             file->write(&frame, 4);
 
-            const core::vector3df pos = joint->PositionKeys[i].position;
-            pos.getAs3Values(floatBuffer);
+            const core::vector3df framePos = joint->PositionKeys[i].position;
+            framePos.getAs3Values(floatBuffer);
             file->write(floatBuffer, 12);
         }
     }
@@ -448,8 +448,8 @@ void CB3DMeshWriter::writeJointChunk(io::IWriteFile* file, ISkinnedMesh* mesh, I
             const s32 frame = static_cast<s32>(joint->ScaleKeys[i].frame * animationSpeedMultiplier);
             file->write(&frame, 4);
 
-            const core::vector3df scale = joint->ScaleKeys[i].scale;
-            scale.getAs3Values(floatBuffer);
+            const core::vector3df frameScale = joint->ScaleKeys[i].scale;
+            frameScale.getAs3Values(floatBuffer);
             file->write(floatBuffer, 12);
         }
     }

@@ -979,7 +979,7 @@ namespace core
 
 		// We assume the matrix uses rotations instead of negative scaling 2 axes.
 		// Otherwise it fails even for some simple cases, like rotating around
-		// 2 axes by 180° which getScale thinks is a negative scaling.
+		// 2 axes by 180 degree which getScale thinks is a negative scaling.
 		if (scale.Y<0 && scale.Z<0)
 		{
 			scale.Y =-scale.Y;

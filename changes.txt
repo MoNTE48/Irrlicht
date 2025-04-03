@@ -11,6 +11,8 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 --------------------------
 Changes in 1.9 (not yet released)
 
+- Can now compile with /utf-8 option in VS. Fixes bug #463. Thanks @Tony Chen for the report.
+- Can now compile with unicode option in VS without having to set _IRR_WCHAR_FILESYSTEM
 - Fix crash in CIrrDeviceLinux::createInputContext when Irrlicht doesn't like any available input styles. Thanks @Ryan C. Gordon for report: https://sourceforge.net/p/irrlicht/bugs/476
 - OpenGL no longer updates enabled clipping planes every time ETS_WORLD is set (only on ETS_VIEW now)
 - Bugfix: IMeshManipulater functions recalculateNormals and recalculateTangents no longer create nan's (was caused by getAngleWeight function)

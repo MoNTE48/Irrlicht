@@ -1338,7 +1338,7 @@ u32 clipToHyperPlane(
 	*/
 
 	// polygon scan conversion edge sharing opposite side?
-	//Sutherland–Hodgman
+	//Sutherland-Hodgman
 	for (u32 i = 0; i < inCount; ++i)
 	{
 		a = source + (i == inCount - 1 ? 0 : s4DVertex_ofs(i + 1));

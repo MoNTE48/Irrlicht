@@ -94,13 +94,13 @@ namespace scene
 
 		CIndexBuffer(video::E_INDEX_TYPE IndexType) :Indices(0), MappingHint(EHM_NEVER), ChangedID(1)
 		{
-			setType(IndexType);
+			CIndexBuffer::setType(IndexType);
 		}
 
 		CIndexBuffer(const IIndexBuffer &IndexBufferCopy) :Indices(0), MappingHint(EHM_NEVER), ChangedID(1)
 		{
-			setType(IndexBufferCopy.getType());
-			reallocate(IndexBufferCopy.size());
+			CIndexBuffer::setType(IndexBufferCopy.getType());
+			CIndexBuffer::reallocate(IndexBufferCopy.size());
 
 			for (u32 n=0;n<IndexBufferCopy.size();++n)
 				push_back(IndexBufferCopy[n]);

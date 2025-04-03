@@ -38,7 +38,7 @@ bool CWGLManager::initialize(const SIrrlichtCreationParameters& params, const SE
 	Params=params;
 
 	// Create a window to test antialiasing support
-	const fschar_t* ClassName = __TEXT("CWGLManager");
+	const TCHAR* ClassName = __TEXT("CWGLManager");
 	HINSTANCE lhInstance = GetModuleHandle(0);
 
 	// Register Class

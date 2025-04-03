@@ -61,7 +61,7 @@ public:
 	\param type One of ECUBE_MESH_TYPE. So you can chose between cubes with single material or independent materials per side.
 	\return Generated mesh.
 	Note: UV's go always from 0 to 1. Which can produce wrong colors at edges with texture filtering.
-	      Fixing UV's depends on texture-size (have to be moved half a pixel towards the inside, so 0.5f/texure_size as then the pixel center is exactly on the border)
+	      Fixing UV's depends on texture-size (have to be moved half a pixel towards the inside, so 0.5f/texture_size as then the pixel center is exactly on the border)
 		  Easier solution is usually to set TextureWrapU and TextureWrapV to ETC_CLAMP_TO_EDGE in the Material.
 	*/
 	virtual IMesh* createCubeMesh(const core::vector3df& size=core::vector3df(5.f,5.f,5.f), ECUBE_MESH_TYPE type = ECMT_1BUF_12VTX_NA) const =0;
@@ -211,8 +211,8 @@ public:
 	\param minorRadius Starting from a circle at majorRadius distance around center
 	\param majorSegments Segments for major circle. Will use at least 3 segments. 
 	\param minorSegments Segments for minor circle. Will use at least 3 segments.
-	\param angleStart Start major circle between 0 and 360° and < angleEnd
-	\param angleEnd End major circle between 0 and 360° and > angleStart
+	\param angleStart Start major circle between 0 and 360 degree and < angleEnd
+	\param angleEnd End major circle between 0 and 360 degree and > angleStart
 	\param capEnds When you don't create a full major circle you might want caps
 	               0 = no caps (default)
 				   Bit 1: add cap at angleStart
