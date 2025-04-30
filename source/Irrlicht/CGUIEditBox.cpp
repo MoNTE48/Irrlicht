@@ -1052,18 +1052,12 @@ void CGUIEditBox::draw()
 					startPos = ml ? BrokenTextPositions[i] : 0;
 				}
 
-
-				// draw normal text
-				font->draw(*txtLine, CurrentTextRect,
-					OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-					false, true, &localClipRect);
-
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-
 					s32 mbegin = 0, mend = 0;
-					s32 lineStartPos = 0, lineEndPos = txtLine->size();
+					s32 markStartPos = 0;
+					s32 markEndPos = txtLine->size();
 
 					if (i == hlineStart)
 					{
@@ -1076,32 +1070,57 @@ void CGUIEditBox::draw()
 							&((*txtLine)[realmbgn - startPos]),
 							realmbgn - startPos > 0 ? &((*txtLine)[realmbgn - startPos - 1]) : 0);
 
-						lineStartPos = realmbgn - startPos;
+						markStartPos = realmbgn - startPos;
 					}
 					if (i == hlineStart + hlineCount - 1)
 					{
 						// highlight end is on this line
 						s2 = txtLine->subString(0, realmend - startPos);
 						mend = font->getDimension(s2.c_str()).Width;
-						lineEndPos = (s32)s2.size();
+						markEndPos = (s32)s2.size();
 					}
 					else
 						mend = font->getDimension(txtLine->c_str()).Width;
 
-					CurrentTextRect.UpperLeftCorner.X += mbegin;
-					CurrentTextRect.LowerRightCorner.X = CurrentTextRect.UpperLeftCorner.X + mend - mbegin;
+					core::rect<s32> markRect = CurrentTextRect;
+					markRect.UpperLeftCorner.X += mbegin;
+					markRect.LowerRightCorner.X = markRect.UpperLeftCorner.X + mend - mbegin;
 
 					// draw mark
-					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), CurrentTextRect, &localClipRect);
+					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), markRect, &localClipRect);
 
-					// draw marked text
-					s = txtLine->subString(lineStartPos, lineEndPos - lineStartPos);
+					// draw text before marked
+					core::rect<s32> before_rect = CurrentTextRect;
+					before_rect.LowerRightCorner.X = markRect.UpperLeftCorner.X;
+					s = txtLine->subString(0, markStartPos);
 
 					if (s.size())
-						font->draw(s, CurrentTextRect,
+						font->draw(s, before_rect,
+							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
+							false, true, &localClipRect);
+
+					// draw marked text
+					s = txtLine->subString(markStartPos, markEndPos - markStartPos);
+
+					if (s.size())
+						font->draw(s, markRect,
 							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_HIGH_LIGHT_TEXT),
 							false, true, &localClipRect);
 
+					// draw text after marked
+					core::rect<s32> after_rect = CurrentTextRect;
+					after_rect.UpperLeftCorner.X = markRect.LowerRightCorner.X;
+					s = txtLine->subString(markEndPos, txtLine->size() - markEndPos);
+
+					if (s.size())
+						font->draw(s, after_rect,
+							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
+							false, true, &localClipRect);
+				} else {
+					// draw normal text
+					font->draw(*txtLine, CurrentTextRect,
+						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
+						false, true, &localClipRect);
 				}
 			}
 
