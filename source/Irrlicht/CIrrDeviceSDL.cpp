@@ -206,6 +206,9 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 //! destructor
 CIrrDeviceSDL::~CIrrDeviceSDL()
 {
+	if (VideoDriver)
+		VideoDriver->resetExposedData();
+
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)

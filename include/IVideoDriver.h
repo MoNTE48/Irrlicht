@@ -231,6 +231,9 @@ namespace video
 		*/
 		virtual bool checkDriverReset() =0;
 
+		//! Reset exposed data when it's not valid anymore
+		virtual void resetExposedData() =0;
+
 		//! Sets transformation matrices.
 		/** \param state Transformation type to be set, e.g. view,
 		world, or projection.

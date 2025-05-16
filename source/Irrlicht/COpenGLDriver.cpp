@@ -89,6 +89,9 @@ bool COpenGLDriver::initDriver()
 //! destructor
 COpenGLDriver::~COpenGLDriver()
 {
+	ExposedData.OpenGLSDL.Window = nullptr;
+	ExposedData.OpenGLSDL.Context = 0;
+
 	RequestedLights.clear();
 
 	deleteMaterialRenders();

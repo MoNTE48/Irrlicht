@@ -189,9 +189,8 @@ CNullDriver::CNullDriver(io::IFileSystem* io, const core::dimension2d<u32>& scre
 	SurfaceWriter.push_back(video::createImageWriterBMP());
 #endif
 
+	resetExposedData();
 
-	// set ExposedData to 0
-	memset((void*)&ExposedData, 0, sizeof(ExposedData));
 	for (u32 i=0; i<video::EVDF_COUNT; ++i)
 		FeatureEnabled[i]=true;
 
@@ -2786,6 +2785,11 @@ void CNullDriver::convertColor(const void* sP, ECOLOR_FORMAT sF, s32 sN,
 	video::CColorConverter::convert_viaFormat(sP, sF, sN, dP, dF);
 }
 
+void CNullDriver::resetExposedData()
+{
+	// set ExposedData to 0
+	memset((void*)&ExposedData, 0, sizeof(ExposedData));
+}
 
 } // end namespace
 } // end namespace
