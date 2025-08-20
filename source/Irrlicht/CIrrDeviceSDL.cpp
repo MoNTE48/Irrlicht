@@ -1066,8 +1066,8 @@ bool CIrrDeviceSDL::run()
 			{
 				updateNativeScale();
 	
-				u32 new_width = roundf((float)SDL_event.window.data1 * NativeScaleX);
-				u32 new_height = roundf((float)SDL_event.window.data2 * NativeScaleY);
+				u32 new_width = SDL_event.window.data1;
+				u32 new_height = SDL_event.window.data2;
 	
 				if (new_width != Width || new_height != Height)
 				{
