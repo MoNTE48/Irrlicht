@@ -802,6 +802,7 @@ bool CIrrDeviceSDL::run()
 			break;
 
 		case SDL_EVENT_FINGER_UP:
+		case SDL_EVENT_FINGER_CANCELED:
 			if (TouchIDs.size() == 1)
 			{
 				LongTouchHandled = true;
