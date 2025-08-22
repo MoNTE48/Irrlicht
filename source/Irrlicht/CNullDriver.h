@@ -691,6 +691,9 @@ namespace video
 				const c8* name=0);
 
 		virtual bool checkDriverReset() IRR_OVERRIDE {return false;}
+
+		//! Reset exposed data when it's not valid anymore
+		virtual void resetExposedData() IRR_OVERRIDE;
 	protected:
 
 		//! deletes all textures

@@ -110,6 +110,9 @@ COGLES2Driver::COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFil
 
 COGLES2Driver::~COGLES2Driver()
 {
+	ExposedData.OpenGLSDL.Window = nullptr;
+	ExposedData.OpenGLSDL.Context = 0;
+
 	RequestedLights.clear();
 
 	deleteMaterialRenders();

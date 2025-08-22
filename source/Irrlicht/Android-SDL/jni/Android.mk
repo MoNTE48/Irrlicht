@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)/../..
 
 include $(CLEAR_VARS)
 
-IRRLICHT_LIB_PATH := $(LOCAL_PATH)/../../lib/Android-SDL2
+IRRLICHT_LIB_PATH := $(LOCAL_PATH)/../../lib/Android-SDL
 
 include $(CLEAR_VARS)
 
@@ -21,9 +21,9 @@ endif
 
 LOCAL_C_INCLUDES := ../../../include
 
-SDL2_PATH ?= $(error SDL2_PATH variable is not set)
+SDL_PATH ?= $(error SDL_PATH variable is not set)
 
-LOCAL_C_INCLUDES += $(SDL2_PATH)/include
+LOCAL_C_INCLUDES += $(SDL_PATH)/include
 
 LOCAL_SRC_FILES := \
 					minizip-ng/mz_crypt.c \

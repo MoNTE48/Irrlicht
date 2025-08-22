@@ -200,7 +200,6 @@ namespace gui
 
 	private:
 		bool IsSDLDevice;
-		bool StartedTextInput;
 	};
 
 

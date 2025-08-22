@@ -235,10 +235,10 @@ namespace irr
 	//! Enumeration for SDL text input events
 	enum ESDL_EVENT_TYPE
 	{
-		//! SDL_TEXTEDITING
+		//! SDL_EVENT_TEXT_EDITING
 		ESDLET_TEXTEDITING,
 
-		//! SDL_TEXTINPUT
+		//! SDL_EVENT_TEXT_INPUT
 		ESDLET_TEXTINPUT
 	};
 
@@ -601,8 +601,8 @@ struct SEvent
 	{
 		ESDL_EVENT_TYPE Type;
 		c8 Text[32];
-		s32 Start; // SDL_TEXTEDITING usage
-		s32 Length; // SDL_TEXTEDITING usage
+		s32 Start; // SDL_EVENT_TEXT_EDITING usage
+		s32 Length; // SDL_EVENT_TEXT_EDITING usage
 	};
 
 	struct SSDLControllerButtonEvent

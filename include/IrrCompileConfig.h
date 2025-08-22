@@ -48,14 +48,8 @@
 #undef _IRR_COMPILE_WITH_SDL_DEVICE_
 #endif
 
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-//! Comment this line to compile without SDL textinput support
-//#define _IRR_COMPILE_WITH_SDL_TEXTINPUT_
-#ifdef NO_IRR_COMPILE_WITH_SDL_TEXTINPUT_
-#undef _IRR_COMPILE_WITH_SDL_TEXTINPUT_
-#endif
-
 //! Comment this line to disable SDL gamecontroller and use irrlicht joystick instead
+#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 #define _IRR_COMPILE_WITH_SDL_GAMECONTROLLER
 #ifdef NO_IRR_COMPILE_WITH_SDL_GAMECONTROLLER
 #undef _IRR_COMPILE_WITH_SDL_GAMECONTROLLER

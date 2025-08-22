@@ -41,8 +41,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
-	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false),
-	StartedTextInput(false)
+	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIEditBox");
@@ -82,17 +81,6 @@ CGUIEditBox::~CGUIEditBox()
 
 	if (Operator)
 		Operator->drop();
-
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
-	if (IsSDLDevice)
-	{
-		if (StartedTextInput)
-		{
-			if (SDL_IsTextInputActive())
-				SDL_StopTextInput();
-		}
-	}
-#endif
 }
 
 
@@ -265,24 +253,6 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 					MouseMarking = false;
 					setTextMarkers(0,0);
 				}
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
-				if (IsSDLDevice)
-				{
-					StartedTextInput = false;
-					if (SDL_IsTextInputActive())
-						SDL_StopTextInput();
-				}
-#endif
-			}
-			else if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUSED)
-			{
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_COMPILE_WITH_SDL_TEXTINPUT_)
-				if (IsSDLDevice)
-				{
-					StartedTextInput = true;
-					SDL_StartTextInput();
-				}
-#endif
 			}
 			break;
 		case EET_SDL_TEXT_EVENT:
@@ -373,7 +343,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 	if (IsSDLDevice)
 	{
 		SDL_Keymod keymod = SDL_GetModState();
-		altPressed = keymod & KMOD_ALT;
+		altPressed = keymod & SDL_KMOD_ALT;
 	}
 #endif
 
@@ -402,23 +372,14 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				const s32 realmbgn = MarkBegin < MarkEnd ? MarkBegin : MarkEnd;
 				const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
 
-				core::stringc s;
+				core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
+				size_t length = selectedText.size();
+				char* text = new char[length * sizeof(wchar_t) + 1]();
+				irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
+				core::stringc sc = text;
+				delete[] text;
 
-				if (IsSDLDevice)
-				{
-					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
-					size_t length = selectedText.size();
-					char* text = new char[length * sizeof(wchar_t) + 1]();
-					irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
-					s = text;
-					delete[] text;
-				}
-				else
-				{
-					s = Text.subString(realmbgn, realmend - realmbgn).c_str();
-				}
-
-				Operator->copyToClipboard(s.c_str());
+				Operator->copyToClipboard(sc.c_str());
 			}
 			break;
 		case KEY_KEY_X:
@@ -428,22 +389,12 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				const s32 realmbgn = MarkBegin < MarkEnd ? MarkBegin : MarkEnd;
 				const s32 realmend = MarkBegin < MarkEnd ? MarkEnd : MarkBegin;
 
-				// copy
-				core::stringc sc;
-
-				if (IsSDLDevice)
-				{
-					core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
-					size_t length = selectedText.size();
-					char* text = new char[length * sizeof(wchar_t) + 1]();
-					irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
-					sc = text;
-					delete[] text;
-				}
-				else
-				{
-					sc = Text.subString(realmbgn, realmend - realmbgn).c_str();
-				}
+				core::stringw selectedText = Text.subString(realmbgn, realmend - realmbgn);
+				size_t length = selectedText.size();
+				char* text = new char[length * sizeof(wchar_t) + 1]();
+				irr::core::wcharToUtf8(selectedText.c_str(), text, length * sizeof(wchar_t) + 1);
+				core::stringc sc = text;
+				delete[] text;
 
 				Operator->copyToClipboard(sc.c_str());
 
@@ -477,19 +428,11 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				if (p)
 				{
 					irr::core::stringw widep;
-
-					if (IsSDLDevice)
-					{
-						size_t length = strlen(p);
-						wchar_t* text = new wchar_t[length + 1]();
-						irr::core::utf8ToWchar(p, text, (length + 1) * sizeof(wchar_t));
-						widep.append(text);
-						delete[] text;
-					}
-					else
-					{
-						core::multibyteToWString(widep, p);
-					}
+					size_t length = strlen(p);
+					wchar_t* text = new wchar_t[length + 1]();
+					irr::core::utf8ToWchar(p, text, (length + 1) * sizeof(wchar_t));
+					widep.append(text);
+					delete[] text;
 
 					if (MarkBegin == MarkEnd)
 					{

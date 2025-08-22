@@ -100,7 +100,7 @@ endif
 staticlib sharedlib install: SYSTEM = Linux
 sharedlib install: SHARED_LIB = libIrrlicht.so
 sharedlib: LDFLAGS += -L/usr/X11R6/lib$(LIBSELECT) -lGL -lXxf86vm
-staticlib sharedlib: CXXINCS += -I/usr/X11R6/include -I/usr/include/SDL2
+staticlib sharedlib: CXXINCS += -I/usr/X11R6/include
 
 #OSX specific options
 staticlib_osx sharedlib_osx install_osx: SYSTEM = MacOSX
