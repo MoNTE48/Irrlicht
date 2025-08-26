@@ -1795,7 +1795,7 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 	return env->CallStaticBooleanMethod(activityClass, supportsRelativeMouse);
 
 #elif defined(_IRR_IOS_PLATFORM_)
-	if (@available(iOS 14.1, *))
+	if (@available(iOS 14, *))
 		return true;
 	else
 		return false;
