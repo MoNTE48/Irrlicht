@@ -180,11 +180,16 @@ namespace irr
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
 #if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
-				SDL_WarpMouseInWindow(Device->Window,
-					x / Device->getNativeScaleX(),
-					y / Device->getNativeScaleY());
+				if (!SDL_GetWindowRelativeMouseMode(Device->Window))
+				{
+					SDL_WarpMouseInWindow(Device->Window,
+						(float)x / Device->getNativeScaleX(),
+						(float)y / Device->getNativeScaleY());
 
-				Device->IgnoreWarpMouseEvent = true;
+#if defined(_IRR_OSX_PLATFORM_)
+					Device->IgnoreWarpMouseEvent = true;
+#endif
+				}
 #endif
 
 				Device->MouseX = x;
@@ -298,7 +303,7 @@ namespace irr
 		f32 NativeScaleX, NativeScaleY;
 
 		bool IgnoreWarpMouseEvent;
-		bool ShouldUseRelativeMouse;
+		bool SimulateTouchEvents;
 
 		u32 LongTouchTimer;
 		s32 LongTouchX;
