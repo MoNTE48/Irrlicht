@@ -133,12 +133,12 @@ bool COGLES1Driver::genericDriverInit(const core::dimension2d<u32>& screenSize, 
 	CacheHandler = new COGLES1CacheHandler(this);
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
-	if ( DeviceType == EIDT_SDL )
+	if (DeviceType == EIDT_SDL)
 	{
-		SDL_SysWMinfo info;
-		SDL_VERSION(&info.version);
-		SDL_GetWindowWMInfo(SDLDevice->getWindow(), &info);
-		CacheHandler->setFBO(info.info.uikit.framebuffer);
+		GLuint framebuffer = (GLuint)SDL_GetNumberProperty(
+				SDL_GetWindowProperties(SDLDevice->getWindow()), 
+				SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER, 0);
+		CacheHandler->setFBO(framebuffer);
 	}
 #endif
 
@@ -277,13 +277,14 @@ bool COGLES1Driver::endScene()
 		status = ContextManager->swapBuffers();
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-	if ( DeviceType == EIDT_SDL )
+	if (DeviceType == EIDT_SDL)
 	{
 #ifdef _IRR_IOS_PLATFORM_
-		SDL_SysWMinfo info;
-		SDL_VERSION(&info.version);
-		SDL_GetWindowWMInfo(SDLDevice->getWindow(), &info);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, info.info.uikit.colorbuffer);
+		GLuint renderbuffer = (GLuint)SDL_GetNumberProperty(
+				SDL_GetWindowProperties(SDLDevice->getWindow()), 
+				SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER, 0);
+				
+		glBindRenderbufferOES(GL_RENDERBUFFER_OES, renderbuffer);
 #endif
 
 		SDL_GL_SwapWindow(SDLDevice->getWindow());
@@ -2858,12 +2859,11 @@ bool COGLES1Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SCol
 			GLuint frameBufferID = 0;
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
-			if ( DeviceType == EIDT_SDL )
+			if (DeviceType == EIDT_SDL)
 			{
-				SDL_SysWMinfo info;
-				SDL_VERSION(&info.version);
-				SDL_GetWindowWMInfo(SDLDevice->getWindow(), &info);
-				frameBufferID = info.info.uikit.framebuffer;
+				frameBufferID = (GLuint)SDL_GetNumberProperty(
+						SDL_GetWindowProperties(SDLDevice->getWindow()), 
+						SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER, 0);
 			}
 #endif
 
