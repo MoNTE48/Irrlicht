@@ -80,7 +80,7 @@ core::stringw CProfiler::getAsString(const SProfileData& data) const
 		// Can't use swprintf as it fails on some platforms (especially mobile platforms)
 		// Can't use Irrlicht functions because we have no string formatting.
 		char dummy[1023];
-		sprintf(dummy, "%-15.15s%-12u%-12u%-12u%-12u",
+		snprintf(dummy, sizeof(dummy), "%-15.15s%-12u%-12u%-12u%-12u",
 			core::stringc(data.getName()).c_str(), data.getCallsCounter(), data.getTimeSum(),
 			data.getTimeSum() / data.getCallsCounter(), data.getLongestTime());
 		dummy[1022] = 0;

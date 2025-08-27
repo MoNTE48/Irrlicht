@@ -1416,7 +1416,7 @@ bool CNullDriver::checkPrimitiveCount(u32 prmCount) const
 	if (prmCount > m)
 	{
 		char tmp[1024];
-		sprintf(tmp,"Could not draw triangles, too many primitives(%u), maximum is %u.", prmCount, m);
+		snprintf(tmp, sizeof(tmp), "Could not draw triangles, too many primitives(%u), maximum is %u.", prmCount, m);
 		os::Printer::log(tmp, ELL_ERROR);
 		return false;
 	}

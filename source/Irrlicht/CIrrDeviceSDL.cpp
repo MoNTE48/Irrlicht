@@ -1296,7 +1296,7 @@ bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 	for(u32 i = 0; i < joystickInfo.size(); i++)
 	{
 		char logString[256];
-		sprintf(logString, "Found joystick %d, %d axes, %d buttons '%s'",
+		snprintf(logString, sizeof(logString), "Found joystick %d, %d axes, %d buttons '%s'",
 				i, joystickInfo[i].Axes, joystickInfo[i].Buttons,
 				joystickInfo[i].Name.c_str());
 		os::Printer::log(logString, ELL_INFORMATION);
