@@ -161,7 +161,7 @@ COGLES2Driver::~COGLES2Driver()
 		if (DeviceType == EIDT_SDL)
 		{
 			GLuint framebuffer = (GLuint)SDL_GetNumberProperty(
-					SDL_GetWindowProperties(SDLDevice->getWindow()), 
+					SDL_GetWindowProperties(SDLDevice->getWindow()),
 					SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER, 0);
 			CacheHandler->setFBO(framebuffer);
 		}
@@ -504,9 +504,9 @@ COGLES2Driver::~COGLES2Driver()
 		{
 #ifdef _IRR_IOS_PLATFORM_
 			GLuint renderbuffer = (GLuint)SDL_GetNumberProperty(
-					SDL_GetWindowProperties(SDLDevice->getWindow()), 
+					SDL_GetWindowProperties(SDLDevice->getWindow()),
 					SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER, 0);
-					
+
 			glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
 #endif
 
@@ -2551,7 +2551,7 @@ COGLES2Driver::~COGLES2Driver()
 			if (DeviceType == EIDT_SDL)
 			{
 				frameBufferID = (GLuint)SDL_GetNumberProperty(
-						SDL_GetWindowProperties(SDLDevice->getWindow()), 
+						SDL_GetWindowProperties(SDLDevice->getWindow()),
 						SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER, 0);
 			}
 #endif

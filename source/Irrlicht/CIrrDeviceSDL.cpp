@@ -86,14 +86,14 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		// Disable simulated touch and mouse events
 		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
 		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
-		
+
 		// Enable simulated touch events on Android versions
 		// that don't support relative mouse mode.
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
 		if (!supportsRelativeMouse())
-		{	
+		{
 			SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
-			SimulateTouchEvents = true;	
+			SimulateTouchEvents = true;
 		}
 #endif
 
@@ -134,7 +134,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	sdlversion += ".";
 	sdlversion += SDL_VERSIONNUM_MINOR(version);
 	sdlversion += ".";
-	sdlversion += SDL_VERSIONNUM_MICRO(version);	
+	sdlversion += SDL_VERSIONNUM_MICRO(version);
 
 	Operator = new COSOperator(sdlversion, this);
 	if ( SDLDeviceInstances == 1 )
@@ -149,7 +149,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	{
 		int num_sensors = 0;
 		SDL_SensorID* sensors = SDL_GetSensors(&num_sensors);
-		
+
 		for (int i = 0; i < num_sensors; i++)
 		{
 			if (SDL_GetSensorTypeForID(sensors[i]) == SDL_SENSOR_ACCEL)
@@ -161,7 +161,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 				GyroscopeIndex = sensors[i];
 			}
 		}
-		
+
 		SDL_free(sensors);
 
 		// create the window, only if we do not use the null device
@@ -256,10 +256,10 @@ bool CIrrDeviceSDL::createWindow()
 		// get display mode fails
 		Width = 640;
 		Height = 480;
-		
+
 		int display_count = 0;
 		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
-		
+
 		if (display_count > 0)
 		{
 			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
@@ -270,7 +270,7 @@ bool CIrrDeviceSDL::createWindow()
 				Height = roundf((float)mode->h * NativeScaleY);
 			}
 		}
-		
+
 		SDL_free(displays);
 	}
 
@@ -597,7 +597,7 @@ void CIrrDeviceSDL::setCursorVisible(bool visible)
 			CGDisplayShowCursor(CGMainDisplayID());
 		else
 			CGDisplayHideCursor(CGMainDisplayID());
-			
+
 #elif !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
 		if (visible)
 			SDL_ShowCursor();
@@ -862,17 +862,17 @@ bool CIrrDeviceSDL::run()
 				{
 					float x = SDL_event.motion.xrel * NativeScaleX;
 					float y = SDL_event.motion.yrel * NativeScaleY;
-					
+
 					if (x > 0.0f && x < 1.0f)
 						x = 1.0f;
 					else if (x < 0.0f && x > -1.0f)
 						x = -1.0f;
-					
+
 					if (y > 0.0f && y < 1.0f)
 						y = 1.0f;
 					else if (y < 0.0f && y > -1.0f)
 						y = -1.0f;
-					
+
 					MouseX += roundf(x);
 					MouseY += roundf(y);
 				}
@@ -884,7 +884,7 @@ bool CIrrDeviceSDL::run()
 
 				irrevent.MouseInput.X = MouseX;
 				irrevent.MouseInput.Y = MouseY;
-				
+
 				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
@@ -1079,15 +1079,15 @@ bool CIrrDeviceSDL::run()
 		case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
 			{
 				updateNativeScale();
-	
+
 				u32 new_width = SDL_event.window.data1;
 				u32 new_height = SDL_event.window.data2;
-	
+
 				if (new_width != Width || new_height != Height)
 				{
 					Width = new_width;
 					Height = new_height;
-	
+
 					if (VideoDriver)
 						VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
 				}
@@ -1380,7 +1380,7 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 		// enumerate video modes.
 		int display_count = 0;
 		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
-		
+
 		if (display_count < 1)
 		{
 			os::Printer::log("No display created: ", SDL_GetError(), ELL_ERROR);
@@ -1389,7 +1389,7 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 
 		int mode_count = 0;
 		SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(displays[0], &mode_count);
-		
+
 		if (mode_count < 1)
 		{
 			os::Printer::log("No display modes available: ", SDL_GetError(), ELL_ERROR);
@@ -1397,7 +1397,7 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 		}
 
 		const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
-		
+
 		if (mode)
 		{
 			VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
@@ -1407,7 +1407,7 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 		for (int i = 0; i < mode_count; i++)
 		{
 			const SDL_DisplayMode* mode = modes[i];
-			
+
 			if (mode)
 			{
 				VideoModeList->addMode(core::dimension2d<u32>(mode->w, mode->h),
