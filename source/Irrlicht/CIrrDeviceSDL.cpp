@@ -575,13 +575,7 @@ void CIrrDeviceSDL::setCursorVisible(bool visible)
 	}
 	else
 	{
-#if defined(_IRR_OSX_PLATFORM_)
-		if (visible)
-			CGDisplayShowCursor(CGMainDisplayID());
-		else
-			CGDisplayHideCursor(CGMainDisplayID());
-
-#elif !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
+#if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
 		if (visible)
 			SDL_ShowCursor();
 		else
