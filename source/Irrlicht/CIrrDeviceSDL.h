@@ -272,6 +272,8 @@ namespace irr
 
 		void createKeyMap();
 
+		void updateNativeScaleFromSystem();
+
 		void updateNativeScale();
 
 		void setCursorVisible(bool visible);

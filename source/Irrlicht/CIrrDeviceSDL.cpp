@@ -23,6 +23,12 @@
 #include <jni.h>
 #endif
 
+#if defined(_IRR_IOS_PLATFORM_)
+#import <UIKit/UIKit.h>
+#elif defined(_IRR_OSX_PLATFORM_)
+#import <AppKit/AppKit.h>
+#endif
+
 #ifdef _MSC_VER
 #pragma comment(lib, "SDL3.lib")
 #endif // _MSC_VER
@@ -238,6 +244,9 @@ bool CIrrDeviceSDL::createWindow()
 
 	// Get native scale before window creation on platforms that support
 	// high dpi.
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+	updateNativeScaleFromSystem();
+#endif
 
 	// SDL accepts window dimensions equal to 0 only for fullscreen
 	// window. Use desktop size in windowed mode.
@@ -253,12 +262,6 @@ bool CIrrDeviceSDL::createWindow()
 
 		if (display_count > 0)
 		{
-#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-			float scaleFactor = SDL_GetDisplayContentScale(displays[0]);
-			NativeScaleX = scaleFactor;
-			NativeScaleY = scaleFactor;
-#endif
-
 			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
 
 			if (mode)
@@ -531,6 +534,20 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	CreationParams.WindowSize.Height = Height;
 
 	return true;
+}
+
+void CIrrDeviceSDL::updateNativeScaleFromSystem()
+{
+	float scaleFactor = 1.0f;
+
+#if defined(_IRR_IOS_PLATFORM_)
+	scaleFactor = UIScreen.mainScreen.scale;
+#elif defined(_IRR_OSX_PLATFORM_)
+	scaleFactor = [[NSScreen mainScreen] backingScaleFactor];
+#endif
+
+	NativeScaleX = scaleFactor;
+	NativeScaleY = scaleFactor;
 }
 
 void CIrrDeviceSDL::updateNativeScale()
