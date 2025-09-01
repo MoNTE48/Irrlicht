@@ -79,24 +79,24 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	setDebugName("CIrrDeviceSDL");
 #endif
 
-	if ( ++SDLDeviceInstances == 1 )
-	{
-		SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 
-		// Disable simulated touch and mouse events
-		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
-		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
+	// Disable simulated touch and mouse events
+	SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
+	SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
 
-		// Enable simulated touch events on Android versions
-		// that don't support relative mouse mode.
+	// Enable simulated touch events on Android versions
+	// that don't support relative mouse mode.
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
-		if (!supportsRelativeMouse())
-		{
-			SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
-			SimulateTouchEvents = true;
-		}
+	if (!supportsRelativeMouse())
+	{
+		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
+		SimulateTouchEvents = true;
+	}
 #endif
 
+	if (++SDLDeviceInstances == 1)
+	{
 		u32 flags = SDL_INIT_VIDEO;
 
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
@@ -590,15 +590,15 @@ void CIrrDeviceSDL::setCursorVisible(bool visible)
 			SDL_SetWindowRelativeMouseMode(Window, true);
 		}
 	}
-	else
-	{
 #if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
+	else if (!SimulateTouchEvents)
+	{
 		if (visible)
 			SDL_ShowCursor();
 		else
 			SDL_HideCursor();
-#endif
 	}
+#endif
 }
 
 //! create the driver

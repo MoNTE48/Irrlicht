@@ -180,7 +180,8 @@ namespace irr
 			virtual void setPosition(s32 x, s32 y) IRR_OVERRIDE
 			{
 #if !defined(_IRR_ANDROID_PLATFORM_) && !defined(_IRR_IOS_PLATFORM_)
-				if (!SDL_GetWindowRelativeMouseMode(Device->Window))
+				if (!SDL_GetWindowRelativeMouseMode(Device->Window) &&
+						!Device->SimulateTouchEvents)
 				{
 					SDL_WarpMouseInWindow(Device->Window,
 						(float)x / Device->getNativeScaleX(),
