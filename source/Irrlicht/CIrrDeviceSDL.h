@@ -305,6 +305,7 @@ namespace irr
 
 		bool IgnoreWarpMouseEvent;
 		bool SimulateTouchEvents;
+		bool RelativeMouseAvailable;
 
 		u32 LongTouchTimer;
 		s32 LongTouchX;
