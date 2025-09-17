@@ -73,11 +73,14 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	GyroscopeIndex(0), GyroscopeInstance(0),
 	NativeScaleX(1.0f), NativeScaleY(1.0f),
 	IgnoreWarpMouseEvent(false), SimulateTouchEvents(false),
-	LongTouchTimer(0), LongTouchX(0), LongTouchY(0), LongTouchHandled(true)
+	RelativeMouseAvailable(false), LongTouchTimer(0), LongTouchX(0),
+	LongTouchY(0), LongTouchHandled(true)
 {
 #ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL");
 #endif
+
+	RelativeMouseAvailable = supportsRelativeMouse();
 
 	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 
@@ -88,7 +91,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	// Enable simulated touch events on Android versions
 	// that don't support relative mouse mode.
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
-	if (!supportsRelativeMouse())
+	if (!RelativeMouseAvailable)
 	{
 		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
 		SimulateTouchEvents = true;
@@ -572,7 +575,7 @@ void CIrrDeviceSDL::updateNativeScale()
 
 void CIrrDeviceSDL::setCursorVisible(bool visible)
 {
-	if (supportsRelativeMouse())
+	if (RelativeMouseAvailable)
 	{
 		if (visible)
 		{
