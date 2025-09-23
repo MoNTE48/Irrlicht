@@ -1112,10 +1112,7 @@ bool CIrrDeviceSDL::run()
 			{
 				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
 				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTEDITING;
-				const size_t size = sizeof(irrevent.SDLTextEvent.Text);
-				const size_t other_size = sizeof(SDL_event.edit.text);
-				static_assert(sizeof(size) == sizeof(other_size), "Wrong size");
-				memcpy(irrevent.SDLTextEvent.Text, SDL_event.edit.text, size);
+				irrevent.SDLTextEvent.Text = SDL_event.edit.text;
 				irrevent.SDLTextEvent.Start = SDL_event.edit.start;
 				irrevent.SDLTextEvent.Length = SDL_event.edit.length;
 				postEventFromUser(irrevent);
@@ -1126,10 +1123,7 @@ bool CIrrDeviceSDL::run()
 			{
 				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
 				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTINPUT;
-				const size_t size = sizeof(irrevent.SDLTextEvent.Text);
-				const size_t other_size = sizeof(SDL_event.text.text);
-				static_assert(sizeof(size) == sizeof(other_size), "Wrong size");
-				memcpy(irrevent.SDLTextEvent.Text, SDL_event.text.text, size);
+				irrevent.SDLTextEvent.Text = SDL_event.text.text;
 				irrevent.SDLTextEvent.Start = 0;
 				irrevent.SDLTextEvent.Length = 0;
 				postEventFromUser(irrevent);

@@ -258,16 +258,20 @@ bool CGUIEditBox::OnEvent(const SEvent& event)
 		case EET_SDL_TEXT_EVENT:
 			if (event.SDLTextEvent.Type == irr::ESDLET_TEXTINPUT)
 			{
-				wchar_t* text = new wchar_t[32]();
-				irr::core::utf8ToWchar(event.SDLTextEvent.Text, text, 32 * sizeof(wchar_t));
-				size_t textLength = wcslen(text);
-
-				for (size_t i = 0; i < textLength; i++)
+				if (event.SDLTextEvent.Text)
 				{
-					inputChar(text[i]);
-				}
+					size_t len = strlen(event.SDLTextEvent.Text) + 1;
+					wchar_t* text = new wchar_t[len]();
+					irr::core::utf8ToWchar(event.SDLTextEvent.Text, text, len * sizeof(wchar_t));
+					size_t textLength = wcslen(text);
 
-				delete[] text;
+					for (size_t i = 0; i < textLength; i++)
+					{
+						inputChar(text[i]);
+					}
+
+					delete[] text;
+				}
 
 				return true;
 			}

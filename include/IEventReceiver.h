@@ -600,7 +600,7 @@ struct SEvent
 	struct SSDLTextEvent
 	{
 		ESDL_EVENT_TYPE Type;
-		c8 Text[32];
+		const char* Text;
 		s32 Start; // SDL_EVENT_TEXT_EDITING usage
 		s32 Length; // SDL_EVENT_TEXT_EDITING usage
 	};
