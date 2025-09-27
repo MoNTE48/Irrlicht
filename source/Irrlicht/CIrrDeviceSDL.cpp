@@ -667,42 +667,6 @@ bool CIrrDeviceSDL::run()
 
 		switch (SDL_event.type)
 		{
-		case SDL_EVENT_WILL_ENTER_BACKGROUND:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_PAUSE;
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_EVENT_DID_ENTER_BACKGROUND:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_DID_PAUSE;
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_EVENT_WILL_ENTER_FOREGROUND:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_RESUME;
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_EVENT_DID_ENTER_FOREGROUND:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_DID_RESUME;
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_EVENT_LOW_MEMORY:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_MEMORY_WARNING;
-			postEventFromUser(irrevent);
-			break;
-
-		case SDL_EVENT_TERMINATING:
-			irrevent.EventType = irr::EET_APPLICATION_EVENT;
-			irrevent.ApplicationEvent.EventType = irr::EAET_WILL_TERMINATE;
-			postEventFromUser(irrevent);
-			break;
-
 		// From https://github.com/libsdl-org/SDL/blob/main/docs/README-android.md
 		// However, there's a chance (on older hardware, or on systems under heavy load),
 		// where the GL context can not be restored. In that case you have to
