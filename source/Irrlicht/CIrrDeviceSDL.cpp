@@ -956,17 +956,9 @@ bool CIrrDeviceSDL::run()
 		case SDL_EVENT_KEY_DOWN:
 		case SDL_EVENT_KEY_UP:
 			{
-				SDL_Scancode scancode = SDL_GetScancodeFromKey(SDL_event.key.key, nullptr);
-
 				SKeyMap mp;
-				mp.Scancode = scancode;
+				mp.Scancode = SDL_event.key.scancode;
 				s32 idx = KeyMap.binary_search(mp);
-
-				if (idx == -1)
-				{
-					mp.Scancode = SDL_event.key.scancode;
-					idx = KeyMap.binary_search(mp);
-				}
 
 				EKEY_CODE key;
 				if (idx == -1)
