@@ -673,6 +673,7 @@ bool CIrrDeviceSDL::run()
 		// listen for a specific message (SDL_EVENT_RENDER_DEVICE_RESET) and restore
 		// your textures manually or quit the app.
 		case SDL_EVENT_RENDER_DEVICE_RESET:
+		case SDL_EVENT_RENDER_DEVICE_LOST:
 			Close = true;
 			return false;
 
