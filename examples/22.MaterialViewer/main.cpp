@@ -50,15 +50,6 @@ namespace
 	const video::SColor SCOL_WHITE     = video::SColor(255, 255, 255, 255);
 };	// namespace
 
-/*
-	Returns a new unique number on each call.
-*/
-s32 makeUniqueId()
-{
-	static int unique = GUI_ID_MAX;
-	++unique;
-	return unique;
-}
 
 /*
 	Find out which vertex-type is needed for the given material type.
@@ -139,7 +130,6 @@ CColorControl::CColorControl(gui::IGUIEnvironment* guiEnv, const core::position2
 	, EditBlue(0)
 {
 	using namespace gui;
-	ButtonSetId = makeUniqueId();
 
 	const core::rect< s32 > rectControls(0,0,AbsoluteRect.getWidth(),AbsoluteRect.getHeight() );
 	IGUIStaticText * groupElement =	guiEnv->addStaticText (L"", rectControls, true, false, this, -1, false);
@@ -155,19 +145,31 @@ CColorControl::CColorControl(gui::IGUIEnvironment* guiEnv, const core::position2
 
 	ColorStatic = guiEnv->addStaticText (L"", core::rect<s32>(60,15,80,75), true, false, groupElement, -1, true);
 
-	guiEnv->addButton (core::rect<s32>(60,35,80,50), groupElement, ButtonSetId, L"set");
 	setEditsFromColor(Color);
 }
 
 // event receiver
 bool CColorControl::OnEvent(const SEvent &event)
 {
-	if ( event.EventType == EET_GUI_EVENT 
-		&& event.GUIEvent.Caller->getID() == ButtonSetId 
-		&& event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED )
+	if ( event.EventType == EET_GUI_EVENT )
 	{
-		Color = getColorFromEdits();
-		setEditsFromColor(Color);
+		if (	event.GUIEvent.EventType == gui::EGET_EDITBOX_ENTER 
+			||	event.GUIEvent.EventType == gui::EGET_ELEMENT_FOCUS_LOST
+			)
+		{
+			if (   event.GUIEvent.Caller == EditAlpha 
+				|| event.GUIEvent.Caller == EditRed
+				|| event.GUIEvent.Caller == EditGreen
+				|| event.GUIEvent.Caller == EditBlue )
+			{
+				Color = getColorFromEdits();
+				setEditsFromColor(Color);
+				if ( event.GUIEvent.EventType == gui::EGET_EDITBOX_ENTER )
+				{
+					return true;
+				}
+			}
+		}
 	}
 
 	return false;
@@ -428,21 +430,21 @@ void CMaterialControl::init(IrrlichtDevice * device, const core::position2d<s32>
 	top += 15;
 
 	// Control for material type
-	core::rect<s32> rectCombo(pos.X, top, pos.X+150, top+15);
+	core::recti rectCombo(pos.X, top, pos.X+150, top+15);
 	top += 15;
-	ComboMaterial = guiEnv->addComboBox (rectCombo);
+	ComboMaterialType = guiEnv->addComboBox (rectCombo);
 	for ( int i=0; i <= (int)video::EMT_ONETEXTURE_BLEND; ++i )
 	{
-		ComboMaterial->addItem( core::stringw(video::sBuiltInMaterialTypeNames[i]).c_str() );
+		ComboMaterialType->addItem( core::stringw(video::sBuiltInMaterialTypeNames[i]).c_str() );
 	}
-	ComboMaterial->setSelected(0);
+	ComboMaterialType->setSelected(0);
 
 	// Control to enable/disabling material lighting
-	core::rect<s32> rectBtn(core::position2d<s32>(pos.X, top), core::dimension2d<s32>(100, 15));
+	core::recti rectBtn(core::position2d<s32>(pos.X, top), core::dimension2d<s32>(100, 15));
 	top += 15;
 	ButtonLighting = guiEnv->addButton (rectBtn, 0, -1, L"Lighting");
 	ButtonLighting->setIsPushButton(true);
-	core::rect<s32> rectInfo( rectBtn.LowerRightCorner.X, rectBtn.UpperLeftCorner.Y, rectBtn.LowerRightCorner.X+50, rectBtn.UpperLeftCorner.Y+15 );
+	core::recti rectInfo( rectBtn.LowerRightCorner.X, rectBtn.UpperLeftCorner.Y, rectBtn.LowerRightCorner.X+50, rectBtn.UpperLeftCorner.Y+15 );
 	InfoLighting = guiEnv->addStaticText(L"", rectInfo, true, false );
 	InfoLighting->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_CENTER );
 
@@ -450,13 +452,25 @@ void CMaterialControl::init(IrrlichtDevice * device, const core::position2d<s32>
 	TypicalColorsControl = new CTypicalColorsControl(guiEnv, core::position2d<s32>(pos.X, top), true, guiEnv->getRootGUIElement());
 	top += 300;
 
-	guiEnv->addStaticText(L"Shininess", core::rect<s32>(pos.X, top, pos.X + 150, top + 15), true, false, 0, -1, true);
+	guiEnv->addStaticText(L"Shininess", core::rect<s32>(pos.X, top, pos.X + 80, top + 15), true, false, 0, -1, true);
+	ShininessControl = guiEnv->addSpinBox(L"", core::rect<s32>(pos.X+80, top, pos.X + 150, top + 15));
+	ShininessControl->setStepSize(0.5f);
+	ShininessControl->setRange(0.f, 128.f);
+	ShininessControl->setDecimalPlaces(1);
 	top += 15;
-	ShininessControl = guiEnv->addScrollBar(true, core::rect<s32>(pos.X, top, pos.X + 150, top + 15));
-	ShininessControl->setMax(10000);
-	top += 20;
+
+	rectCombo = core::recti(pos.X, top, pos.X+150, top+15);
+	ComboColorMaterial = guiEnv->addComboBox (rectCombo);
+	ComboColorMaterial->addItem(L"No vertex color", video::ECM_NONE);
+	ComboColorMaterial->addItem(L"V.Col diffuse", video::ECM_DIFFUSE);
+	ComboColorMaterial->addItem(L"V.Col ambient", video::ECM_AMBIENT);
+	ComboColorMaterial->addItem(L"V.Col emissive", video::ECM_EMISSIVE);
+	ComboColorMaterial->addItem(L"V.Col specular", video::ECM_SPECULAR);
+	ComboColorMaterial->addItem(L"V.Col diffuse and ambient", video::ECM_DIFFUSE_AND_AMBIENT);
+	top += 15;
 
 	// Controls for selecting the material textures
+	top += 5;
 	guiEnv->addStaticText(L"Textures", core::rect<s32>(pos.X, top, pos.X+150, top+15), true, false, 0, -1, true);
 	top += 15;
 
@@ -473,8 +487,8 @@ void CMaterialControl::init(IrrlichtDevice * device, const core::position2d<s32>
 
 void CMaterialControl::setMaterial(const irr::video::SMaterial & material)
 {
-	if (ComboMaterial)
-		ComboMaterial->setSelected( (s32)material.MaterialType );
+	if (ComboMaterialType)
+		ComboMaterialType->setSelected( (s32)material.MaterialType );
 	if (ButtonLighting)
 		ButtonLighting->setPressed(material.Lighting);
 	if (TypicalColorsControl) 
@@ -483,7 +497,19 @@ void CMaterialControl::setMaterial(const irr::video::SMaterial & material)
 		TextureControls[i]->setDirty();
 
 	if (ShininessControl)
-		ShininessControl->setPos((int)(material.Shininess*100.f));
+		ShininessControl->setValue(material.Shininess);
+	if (ComboColorMaterial)
+	{
+		ComboColorMaterial->setSelected(-1);
+		for ( irr::u32 i=0; i < ComboColorMaterial->getItemCount(); ++i )
+		{
+			if ( ComboColorMaterial->getItemData(i) == material.ColorMaterial )
+			{
+				ComboColorMaterial->setSelected((s32)i);
+				break;
+			}
+		}
+	}
 }
 
 void CMaterialControl::update(scene::IMeshSceneNode* sceneNode, scene::IMeshSceneNode* sceneNode2T, scene::IMeshSceneNode* sceneNodeTangents)
@@ -495,7 +521,7 @@ void CMaterialControl::update(scene::IMeshSceneNode* sceneNode, scene::IMeshScen
 	video::SMaterial & material2T = sceneNode2T->getMaterial(0);
 	video::SMaterial & materialTangents = sceneNodeTangents->getMaterial(0);
 
-	s32 selectedMaterial = ComboMaterial->getSelected();
+	s32 selectedMaterial = ComboMaterialType->getSelected();
 	if ( selectedMaterial >= (s32)video::EMT_SOLID && selectedMaterial <= (s32)video::EMT_ONETEXTURE_BLEND)
 	{
 		// Show the node which has a mesh to work with the currently selected material
@@ -528,10 +554,15 @@ void CMaterialControl::update(scene::IMeshSceneNode* sceneNode, scene::IMeshScen
 	updateMaterial(material2T);
 	updateMaterial(materialTangents);
 
-	if ( ButtonLighting->isPressed() )
-		InfoLighting->setText(L"is on");
-	else
-		InfoLighting->setText(L"is off");
+	if ( ButtonLighting )
+	{
+		if ( ButtonLighting->isPressed() )
+			InfoLighting->setText(L"is on");
+		else
+			InfoLighting->setText(L"is off");
+		if ( ComboColorMaterial )
+			ComboColorMaterial->setEnabled(ButtonLighting->isPressed());
+	}
 
 	TypicalColorsControl->resetDirty();
 
@@ -567,7 +598,10 @@ void CMaterialControl::updateMaterial(video::SMaterial & material)
 			material.TextureLayer[i].Texture = Driver->findTexture( io::path(TextureControls[i]->getSelectedTextureName()) );
 		}
 	}
-	material.Shininess = ShininessControl->getPos() * 0.01f;
+	if ( ShininessControl )
+		material.Shininess = ShininessControl->getValue();
+	if ( ComboColorMaterial && ComboColorMaterial->getSelected() >= 0 )
+		material.ColorMaterial = (u8)ComboColorMaterial->getItemData((u32)ComboColorMaterial->getSelected());
 }
 
 /*

@@ -372,7 +372,7 @@ public:
 			return *this;
 		}
 
-		if ((void*)c == (void*)array)
+		if ((const void*)c == (const void*)array)
 			return *this;
 
 		u32 len = 0;

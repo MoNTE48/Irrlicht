@@ -48,7 +48,6 @@ private:
 
 	bool DirtyFlag;
 	irr::video::SColor Color;
-	irr::s32 ButtonSetId;
 	irr::gui::IGUIStaticText * ColorStatic;
 	irr::gui::IGUIEditBox * EditAlpha;
 	irr::gui::IGUIEditBox * EditRed;
@@ -145,8 +144,8 @@ public:
 	// constructor
 	CMaterialControl()
 	: Initialized(false), Driver(0)
-	, TypicalColorsControl(0), ButtonLighting(0), InfoLighting(0), ComboMaterial(0)
-	, ShininessControl(0)
+	, TypicalColorsControl(0), ButtonLighting(0), InfoLighting(0), ComboMaterialType(0)
+	, ShininessControl(0), ComboColorMaterial(0)
 	{}
 
 	// Destructor
@@ -178,14 +177,14 @@ protected:
 	void updateMaterial(irr::video::SMaterial & material);
 
 	bool Initialized;
-	irr::video::IVideoDriver * 	Driver;
+	irr::video::IVideoDriver* 	Driver;
 	CTypicalColorsControl* 		TypicalColorsControl;
-	irr::gui::IGUIButton * 		ButtonLighting;
+	irr::gui::IGUIButton* 		ButtonLighting;
 	irr::gui::IGUIStaticText* 	InfoLighting;
-	irr::gui::IGUIComboBox * 	ComboMaterial;
+	irr::gui::IGUIComboBox* 	ComboMaterialType;
+	irr::gui::IGUISpinBox*		ShininessControl;
+	irr::gui::IGUIComboBox* 	ComboColorMaterial;
 	irr::core::array<CTextureControl*> TextureControls;
-
-	irr::gui::IGUIScrollBar*	ShininessControl;
 };
 
 /*

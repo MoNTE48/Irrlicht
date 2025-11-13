@@ -787,7 +787,7 @@ namespace video
 
 		struct SDummyTexture : public ITexture
 		{
-			SDummyTexture(const io::path& name, E_TEXTURE_TYPE type) : ITexture(name, type) {};
+			SDummyTexture(const io::path& name, E_TEXTURE_TYPE type) : ITexture(name, type) {}
 
 			virtual void* lock(E_TEXTURE_LOCK_MODE mode = ETLM_READ_WRITE, u32 mipmapLevel=0, u32 layer = 0, E_TEXTURE_LOCK_FLAGS lockFlags = ETLF_FLIP_Y_UP_RTT) IRR_OVERRIDE { return 0; }
 			virtual void unlock()IRR_OVERRIDE {}

@@ -174,7 +174,7 @@ bool CGUIPanel::OnEvent(const SEvent &event)
 			VScrollBar->OnEvent(event);
 			return true;
 		}
-		else if (VScrollBar->isVisible())
+		else if (HScrollBar->isVisible())
 		{
 			Environment->setFocus(HScrollBar);
 			HScrollBar->OnEvent(event);

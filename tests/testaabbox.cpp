@@ -191,6 +191,41 @@ static bool checkPoints()
 	return true;
 }
 
+template<class T>
+static bool checkPlanes()
+{
+	const aabbox3d<T> box(vector3d<T>(5, -10, -30), vector3d<T>(30, 20, -20));
+	const vector3d<T> center = box.getCenter();
+	plane3d<T> boxPlanes[6];
+	box.getPlanes(boxPlanes);
+	int inCenter = 0;
+	int planarMin = 0;
+	int planarMax = 0;
+	for ( int i=0; i < 6; ++i )
+	{
+		if ( boxPlanes[i].classifyPointRelation(center) == irr::core::ISREL3D_BACK )
+			++ inCenter;
+		if ( boxPlanes[i].classifyPointRelation(box.MinEdge) == ISREL3D_PLANAR )
+			++ planarMin;
+		if ( boxPlanes[i].classifyPointRelation(box.MaxEdge) == ISREL3D_PLANAR )
+			++ planarMax;
+	}
+
+	if ( inCenter != 6 )
+	{
+		logTestString("aabbox3d<T>::getPlanes() returns planes where the center isn't inside\n");
+		return false;
+	}
+
+	if ( planarMin != 3 && planarMax != 3 )
+	{
+		logTestString("aabbox3d<T>::getPlanes() returns planes where box min/max points are not on 3 planes\n");
+		return false;
+	}
+
+	return true;
+}
+
 template <class T>
 static bool doTests()
 {
@@ -373,6 +408,8 @@ static bool doTests()
 		return false;
 	}
 	if (!checkPoints<T>())
+		return false;
+	if (!checkPlanes<T>() )
 		return false;
 	return true;
 }

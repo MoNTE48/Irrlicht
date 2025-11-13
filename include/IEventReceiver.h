@@ -433,6 +433,15 @@ struct SEvent
 
 		//! True if ctrl was also pressed
 		bool Control:1;
+
+		//! Info that key event is from auto repeating a key
+		//! Only set when PressedDown is true, otherwise undefined
+		//! So far only supported on Windows
+		bool AutoRepeat:1;
+
+		//! Indicates extended keys (right ctlr, right alt, etc)
+		//! So far only supported on Windows
+		bool Extended:1;
 	};
 
     //! Any kind of touch event.
