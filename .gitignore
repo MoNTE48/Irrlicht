@@ -53,6 +53,7 @@ locale/
 *.layout
 *.o
 *.a
+*.d
 *.ninja
 .ninja*
 *.gch
@@ -60,6 +61,7 @@ locale/
 test_config.h
 cmake-build-debug/
 cmake-build-release/
+bin/
 
 xcuserdata
 project.xcworkspace
