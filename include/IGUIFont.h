@@ -50,7 +50,7 @@ public:
 	If the pointer is null, no clipping will be done. */
 	virtual void draw(const core::stringw& text, const core::rect<s32>& position,
 		video::SColor color, bool hcenter=false, bool vcenter=false,
-		const core::rect<s32>* clip=0) = 0;
+		const core::rect<s32>* clip=0, bool use_rtl = true) = 0;
 
 	//! Calculates the width and height of a given string of text.
 	/** \return Returns width and height of the area covered by the text if
