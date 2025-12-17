@@ -41,7 +41,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	Border(border), Background(true), OverrideColorEnabled(false), MarkBegin(0), MarkEnd(0),
 	OverrideColor(video::SColor(101,255,255,255)), OverrideFont(0), LastBreakFont(0),
 	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
-	WordWrap(false), MultiLine(true), AutoScroll(true), PasswordBox(false),
+	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
 	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false)
 {
@@ -1002,81 +1002,78 @@ void CGUIEditBox::draw()
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-					s32 mbegin = 0, mend = 0;
-					s32 markStartPos = 0;
-					s32 markEndPos = txtLineBidi.size();
-					s32 visualMarkBegin = 0;
-					s32 visualMarkEnd = txtLineBidi.size();
+					s32 logicalStartInLine = 0;
+					s32 logicalEndInLine = txtLineBidi.size();
+					
+					if (i == hlineStart) {
+						logicalStartInLine = realmbgn - startPos;
+					}
 				
-					if (i == hlineStart)
-					{
-						// highlight start is on this line
-						s32 logicalPosInLine = realmbgn - startPos;
-						visualMarkBegin = textBidi.visualCursorPos(logicalPosInLine);
-						
-						s = txtLineBidi.subString(0, visualMarkBegin);
-						mbegin = font->getDimension(s.c_str()).Width;
-				
-						// deal with kerning
-						const wchar_t* thisLetter = visualMarkBegin < (s32)txtLineBidi.size() ? &(txtLineBidi[visualMarkBegin]) : 0;
-						const wchar_t* previousLetter = visualMarkBegin > 0 ? &(txtLineBidi[visualMarkBegin - 1]) : 0;
-						mbegin += font->getKerningWidth(thisLetter, previousLetter);
-				
-						markStartPos = visualMarkBegin;
+					if (i == hlineStart + hlineCount - 1) {
+						logicalEndInLine = realmend - startPos;
 					}
 					
-					if (i == hlineStart + hlineCount - 1)
-					{
-						// highlight end is on this line
-						s32 logicalPosInLine = realmend - startPos;
-						visualMarkEnd = textBidi.visualCursorPos(logicalPosInLine);
+					logicalStartInLine = core::max_(logicalStartInLine, 0);
+					logicalEndInLine = core::min_(logicalEndInLine, (s32)txtLineBidi.size());
+					
+					std::vector<core::SelectionBidiRange> visualRanges = 
+							textBidi.getSelectionRanges(logicalStartInLine, logicalEndInLine);
+					
+					for (const auto& range : visualRanges) {
+						if (!range.Selected)
+							continue;
+
+						s32 visualStart = range.Start;
+						s32 visualEnd = range.End;
 						
-						s2 = txtLineBidi.subString(0, visualMarkEnd);
-						mend = font->getDimension(s2.c_str()).Width;
-						markEndPos = visualMarkEnd;
+						s = txtLineBidi.subString(0, visualStart);
+						s32 mbegin = font->getDimension(s.c_str()).Width;
+						
+						// deal with kerning
+						const wchar_t* thisLetter = visualStart < (s32)txtLineBidi.size() ? &(txtLineBidi[visualStart]) : 0;
+						const wchar_t* previousLetter = visualStart > 0 ? &(txtLineBidi[visualStart - 1]) : 0;
+						mbegin += font->getKerningWidth(thisLetter, previousLetter);
+						
+						s2 = txtLineBidi.subString(0, visualEnd);
+						s32 mend = font->getDimension(s2.c_str()).Width;
+						
+						core::rect<s32> mark_rect = CurrentTextRect;
+						mark_rect.UpperLeftCorner.X += mbegin;
+						mark_rect.LowerRightCorner.X = mark_rect.UpperLeftCorner.X + mend - mbegin;
+						
+						// draw mark
+						skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), mark_rect, &localClipRect);
 					}
-					else
-						mend = font->getDimension(txtLineBidi.c_str()).Width;
-				
-					if (markStartPos > markEndPos) {
-						core::swap(markStartPos, markEndPos);
-						core::swap(mbegin, mend);
+					
+					// draw text
+					for (const auto& range : visualRanges) {
+						s32 visualStart = range.Start;
+						s32 visualEnd = range.End;
+						
+						s32 mbegin = 0;
+						if (visualStart > 0) {
+							s = txtLineBidi.subString(0, visualStart);
+							mbegin = font->getDimension(s.c_str()).Width;
+						}
+						
+						s = txtLineBidi.subString(visualStart, visualEnd - visualStart);
+						
+						core::rect<s32> textRect = CurrentTextRect;
+						textRect.UpperLeftCorner.X += mbegin;
+						
+						video::SColor color;
+						if (OverrideColorEnabled)
+							color = OverrideColor;
+						else if (range.Selected)
+							color = skin->getColor(EGDC_HIGH_LIGHT_TEXT);
+						else
+							color = skin->getColor(EGDC_BUTTON_TEXT);
+							
+						if (s.size()) {
+							font->draw(s.c_str(), textRect, color,
+								false, true, &localClipRect, false);
+						}
 					}
-				
-					core::rect<s32> markRect = CurrentTextRect;
-					markRect.UpperLeftCorner.X += mbegin;
-					markRect.LowerRightCorner.X = markRect.UpperLeftCorner.X + mend - mbegin;
-
-					// draw mark
-					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), markRect, &localClipRect);
-
-					// draw text before marked
-					core::rect<s32> before_rect = CurrentTextRect;
-					before_rect.LowerRightCorner.X = markRect.UpperLeftCorner.X;
-					s = txtLineBidi.subString(0, markStartPos);
-
-					if (s.size())
-						font->draw(s, before_rect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-							false, true, &localClipRect, false);
-
-					// draw marked text
-					s = txtLineBidi.subString(markStartPos, markEndPos - markStartPos);
-
-					if (s.size())
-						font->draw(s, markRect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_HIGH_LIGHT_TEXT),
-							false, true, &localClipRect, false);
-
-					// draw text after marked
-					core::rect<s32> after_rect = CurrentTextRect;
-					after_rect.UpperLeftCorner.X = markRect.LowerRightCorner.X;
-					s = txtLineBidi.subString(markEndPos, txtLineBidi.size() - markEndPos);
-
-					if (s.size())
-						font->draw(s, after_rect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-							false, true, &localClipRect, false);
 				} else {
 					// draw normal text
 					font->draw(txtLineBidi, CurrentTextRect,
