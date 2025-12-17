@@ -66,39 +66,46 @@ s32 TextBidiData::logicalCursorPos(s32 pos)
 	return pos;
 }
 
-std::vector<std::pair<s32, s32>> TextBidiData::getSelectionRanges(
+std::vector<SelectionBidiRange> TextBidiData::getSelectionRanges(
 		s32 logical_start, 
 		s32 logical_end)
 {
-	std::vector<std::pair<s32, s32>> visual_ranges;
+	std::vector<SelectionBidiRange> visual_ranges;
 	
 	if (logical_start > logical_end)
 		core::swap(logical_start, logical_end);
 	
 	logical_start = core::max_(logical_start, 0);
-	logical_end = core::min_(logical_end, (s32)(RtlCharPos.size()));
+	logical_end = core::min_(logical_end, (s32)RtlCharPos.size());
 	
-	for (s32 i = logical_start; i < logical_end; i++) {
+	for (s32 i = 0; i < (s32)RtlCharPos.size(); i++) {
 		s32 visual_pos = RtlCharPos[i];
-		
+		bool selected = (i >= logical_start && i < logical_end);
+	
 		bool added = false;
 		for (auto& range : visual_ranges) {
-			if (visual_pos == range.second) {
-				range.second = visual_pos + 1;
-				added = true;
+			if (range.Selected == selected) {
+				if (visual_pos == range.End) {
+					range.End = visual_pos + 1;
+					added = true;
 				break;
-			} else if (visual_pos + 1 == range.first) {
-				range.first = visual_pos;
-				added = true;
-				break;
+				} else if (visual_pos + 1 == range.Start) {
+					range.Start = visual_pos;
+					added = true;
+					break;
+				}
 			}
 		}
-		
+	
 		if (!added) {
-			visual_ranges.push_back({visual_pos, visual_pos + 1});
+			SelectionBidiRange visual_range;
+			visual_range.Start = visual_pos;
+			visual_range.End = visual_pos + 1;
+			visual_range.Selected = selected;
+			visual_ranges.push_back(visual_range);
 		}
 	}
-	
+
 	return visual_ranges;
 }
 
