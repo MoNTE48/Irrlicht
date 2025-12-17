@@ -37,6 +37,9 @@ struct TextBidiData
 
 	s32 visualCursorPos(s32 pos);
 	s32 logicalCursorPos(s32 pos);
+	std::vector<std::pair<s32, s32>> getSelectionRanges(
+			s32 logical_start, 
+			s32 logical_end);
 };
 
 TextBidiData applyBidiReordering(const core::stringw& text);

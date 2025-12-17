@@ -66,6 +66,42 @@ s32 TextBidiData::logicalCursorPos(s32 pos)
 	return pos;
 }
 
+std::vector<std::pair<s32, s32>> TextBidiData::getSelectionRanges(
+		s32 logical_start, 
+		s32 logical_end)
+{
+	std::vector<std::pair<s32, s32>> visual_ranges;
+	
+	if (logical_start > logical_end)
+		core::swap(logical_start, logical_end);
+	
+	logical_start = core::max_(logical_start, 0);
+	logical_end = core::min_(logical_end, (s32)(RtlCharPos.size()));
+	
+	for (s32 i = logical_start; i < logical_end; i++) {
+		s32 visual_pos = RtlCharPos[i];
+		
+		bool added = false;
+		for (auto& range : visual_ranges) {
+			if (visual_pos == range.second) {
+				range.second = visual_pos + 1;
+				added = true;
+				break;
+			} else if (visual_pos + 1 == range.first) {
+				range.first = visual_pos;
+				added = true;
+				break;
+			}
+		}
+		
+		if (!added) {
+			visual_ranges.push_back({visual_pos, visual_pos + 1});
+		}
+	}
+	
+	return visual_ranges;
+}
+
 core::ustring applyBidiReorderingMultiline(const core::ustring& text)
 {
     if (text.empty())
