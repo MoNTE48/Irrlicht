@@ -16,7 +16,7 @@
 #include "CIrrDeviceSDL.h"
 #endif
 
-#include <bidi.h>
+#include "bidi.h"
 
 
 /*

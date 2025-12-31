@@ -362,7 +362,6 @@
 		84451F8F2EF0AAC300ADC0EE /* SheenBidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 84451F662EF0AAC300ADC0EE /* SheenBidi.c */; };
 		84451FBC2EF0AAF000ADC0EE /* bidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84451FBB2EF0AAF000ADC0EE /* bidi.cpp */; };
 		84451FBD2EF0AAF000ADC0EE /* bidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84451FBB2EF0AAF000ADC0EE /* bidi.cpp */; };
-		84451FBF2EF0AB6F00ADC0EE /* bidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 84451FBE2EF0AB6F00ADC0EE /* bidi.h */; };
 		8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 		8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 /* End PBXBuildFile section */
@@ -936,7 +935,7 @@
 		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
 		84451F662EF0AAC300ADC0EE /* SheenBidi.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SheenBidi.c; sourceTree = "<group>"; };
 		84451FBB2EF0AAF000ADC0EE /* bidi.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bidi.cpp; sourceTree = "<group>"; };
-		84451FBE2EF0AB6F00ADC0EE /* bidi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bidi.h; path = "/Users/admin/MultiCraft-deve/Apple/deps/irrlicht-src/include/bidi.h"; sourceTree = "<absolute>"; };
+		84451FBE2EF0AB6F00ADC0EE /* bidi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bidi.h; path = ../../include/bidi.h; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
@@ -1014,8 +1013,8 @@
 		5E34C79F1B7F4B9400F212E8 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				84451FBE2EF0AB6F00ADC0EE /* bidi.h */,
 				5E34C6E21B7F4AFB00F212E8 /* aabbox3d.h */,
+				84451FBE2EF0AB6F00ADC0EE /* bidi.h */,
 				5E34C6E61B7F4AFB00F212E8 /* coreutil.h */,
 				5E34C6E81B7F4AFB00F212E8 /* dimension2d.h */,
 				5E34C6FE1B7F4AFC00F212E8 /* fast_atof.h */,
@@ -1779,17 +1778,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		5E34C9F11B7F6E3400F212E8 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				84451FBF2EF0AB6F00ADC0EE /* bidi.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		5E34C9F21B7F6E3400F212E8 /* Irrlicht_OSX */ = {
 			isa = PBXNativeTarget;
@@ -1797,7 +1785,6 @@
 			buildPhases = (
 				5E34C9EF1B7F6E3400F212E8 /* Sources */,
 				5E34C9F01B7F6E3400F212E8 /* Frameworks */,
-				5E34C9F11B7F6E3400F212E8 /* Headers */,
 			);
 			buildRules = (
 			);
