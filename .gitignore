@@ -64,5 +64,6 @@ cmake-build-release/
 bin/
 
 xcuserdata
-project.xcworkspace
+xcshareddata
+*.xcworkspace
 .idea/
