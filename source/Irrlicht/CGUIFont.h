@@ -78,6 +78,9 @@ public:
 	virtual u32 getSpriteNoFromChar(const wchar_t *c) const IRR_OVERRIDE;
 
 	virtual void setInvisibleCharacters( const wchar_t *s ) IRR_OVERRIDE;
+	
+	virtual s32 getPrevClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos - 1; }
+	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos + 1; }
 
 private:
 
