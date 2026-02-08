@@ -95,6 +95,9 @@ public:
 	\param s String of symbols which are not send down to the videodriver
 	*/
 	virtual void setInvisibleCharacters( const wchar_t *s ) = 0;
+	
+	virtual s32 getPrevClusterPos(const core::stringw& text, s32 pos) = 0;
+	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) = 0;
 };
 
 } // end namespace gui

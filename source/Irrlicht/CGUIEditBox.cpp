@@ -315,17 +315,20 @@ void CGUIEditBox::handleBackspace()
 	else
 	{
 		// delete text behind cursor
-		if (CursorPos>0)
-			s = Text.subString(0, CursorPos-1);
-		else
-			s = L"";
-		s.append( Text.subString(CursorPos, Text.size()-CursorPos) );
-		Text = s;
-		--CursorPos;
+		if (CursorPos > 0) {
+			IGUIFont* font = getActiveFont();
+			s32 prevPos = font->getPrevClusterPos(Text, CursorPos);
+			
+			s = Text.subString(0, prevPos);
+			s.append(Text.subString(CursorPos, Text.size() - CursorPos));
+			CursorPos = prevPos;
+			Text = s;
+		}
 	}
 
 	if (CursorPos < 0)
 		CursorPos = 0;
+
 	BlinkStartTime = os::Timer::getTime();
 }
 
@@ -566,46 +569,56 @@ bool CGUIEditBox::processKey(const SEvent& event)
 			}
 			break;
 		case KEY_LEFT:
-
-			if (event.KeyInput.Shift)
 			{
+				IGUIFont* font = getActiveFont();
+				s32 prevPos = font->getPrevClusterPos(Text, CursorPos);
+	
+				if (event.KeyInput.Shift)
+				{
+					if (CursorPos > 0)
+					{
+						if (MarkBegin == MarkEnd)
+							newMarkBegin = CursorPos;
+	
+						newMarkEnd = prevPos;
+					}
+				}
+				else
+				{
+					newMarkBegin = 0;
+					newMarkEnd = 0;
+				}
+	
 				if (CursorPos > 0)
-				{
-					if (MarkBegin == MarkEnd)
-						newMarkBegin = CursorPos;
-
-					newMarkEnd = CursorPos-1;
-				}
+					CursorPos = prevPos;
+				BlinkStartTime = os::Timer::getTime();
 			}
-			else
-			{
-				newMarkBegin = 0;
-				newMarkEnd = 0;
-			}
-
-			if (CursorPos > 0) CursorPos--;
-			BlinkStartTime = os::Timer::getTime();
 			break;
-
 		case KEY_RIGHT:
-			if (event.KeyInput.Shift)
 			{
-				if (Text.size() > (u32)CursorPos)
+				IGUIFont* font = getActiveFont();
+				s32 nextPos = font->getNextClusterPos(Text, CursorPos);
+	
+				if (event.KeyInput.Shift)
 				{
-					if (MarkBegin == MarkEnd)
-						newMarkBegin = CursorPos;
-
-					newMarkEnd = CursorPos+1;
+					if (Text.size() > (u32)CursorPos)
+					{
+						if (MarkBegin == MarkEnd)
+							newMarkBegin = CursorPos;
+	
+						newMarkEnd = nextPos;
+					}
 				}
+				else
+				{
+					newMarkBegin = 0;
+					newMarkEnd = 0;
+				}
+	
+				if (Text.size() > (u32)CursorPos)
+					CursorPos = nextPos;
+				BlinkStartTime = os::Timer::getTime();
 			}
-			else
-			{
-				newMarkBegin = 0;
-				newMarkEnd = 0;
-			}
-
-			if (Text.size() > (u32)CursorPos) CursorPos++;
-			BlinkStartTime = os::Timer::getTime();
 			break;
 		case KEY_UP:
 			if (MultiLine || (WordWrap && BrokenText.size() > 1) )
@@ -875,9 +888,14 @@ bool CGUIEditBox::keyDelete()
 		}
 		else
 		{
+			IGUIFont* font = getActiveFont();
+			s32 nextPos = font->getNextClusterPos(Text, CursorPos);
+			s32 charsToDelete = nextPos - CursorPos;
+
 			// delete text before cursor
 			s = Text.subString(0, CursorPos);
-			s.append( Text.subString(CursorPos+1, Text.size()-CursorPos-1) );
+			s.append(Text.subString(CursorPos + charsToDelete,
+					Text.size() - CursorPos - charsToDelete));
 			Text = s;
 		}
 
