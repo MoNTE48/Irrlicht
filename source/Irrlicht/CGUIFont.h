@@ -52,7 +52,8 @@ public:
 	//! draws an text and clips it to the specified rectangle if wanted
 	virtual void draw(const core::stringw& text, const core::rect<s32>& position,
 			video::SColor color, bool hcenter=false,
-			bool vcenter=false, const core::rect<s32>* clip=0) IRR_OVERRIDE;
+			bool vcenter=false, const core::rect<s32>* clip=0,
+			bool use_rtl = true) IRR_OVERRIDE;
 
 	//! returns the dimension of a text
 	virtual core::dimension2d<u32> getDimension(const wchar_t* text) const IRR_OVERRIDE;

@@ -12,6 +12,8 @@
 #include "irrArray.h"
 #include "IOSOperator.h"
 
+#include <vector>
+
 namespace irr
 {
 namespace gui
@@ -200,6 +202,7 @@ namespace gui
 
 	private:
 		bool IsSDLDevice;
+
 	};
 
 

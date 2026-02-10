@@ -358,6 +358,11 @@
 		84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
 		84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
 		84295DF02D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
+		84451F7B2EF0AAC300ADC0EE /* SheenBidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 84451F662EF0AAC300ADC0EE /* SheenBidi.c */; };
+		84451F8F2EF0AAC300ADC0EE /* SheenBidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 84451F662EF0AAC300ADC0EE /* SheenBidi.c */; };
+		84451FBC2EF0AAF000ADC0EE /* bidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84451FBB2EF0AAF000ADC0EE /* bidi.cpp */; };
+		84451FBD2EF0AAF000ADC0EE /* bidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84451FBB2EF0AAF000ADC0EE /* bidi.cpp */; };
+		84451FBF2EF0AB6F00ADC0EE /* bidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 84451FBE2EF0AB6F00ADC0EE /* bidi.h */; };
 		8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 		8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */; };
 /* End PBXBuildFile section */
@@ -929,6 +934,9 @@
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
 		84295DE82D69443D00B6C388 /* mz_crypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt.c; path = "minizip-ng/mz_crypt.c"; sourceTree = "<group>"; };
 		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
+		84451F662EF0AAC300ADC0EE /* SheenBidi.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SheenBidi.c; sourceTree = "<group>"; };
+		84451FBB2EF0AAF000ADC0EE /* bidi.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bidi.cpp; sourceTree = "<group>"; };
+		84451FBE2EF0AB6F00ADC0EE /* bidi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bidi.h; path = "/Users/admin/MultiCraft-deve/Apple/deps/irrlicht-src/include/bidi.h"; sourceTree = "<absolute>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
@@ -1006,6 +1014,7 @@
 		5E34C79F1B7F4B9400F212E8 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				84451FBE2EF0AB6F00ADC0EE /* bidi.h */,
 				5E34C6E21B7F4AFB00F212E8 /* aabbox3d.h */,
 				5E34C6E61B7F4AFB00F212E8 /* coreutil.h */,
 				5E34C6E81B7F4AFB00F212E8 /* dimension2d.h */,
@@ -1361,8 +1370,10 @@
 		5E34C7A81B7F506D00F212E8 /* irr */ = {
 			isa = PBXGroup;
 			children = (
+				84451F6D2EF0AAC300ADC0EE /* sheenbidi */,
 				84295DE72D6943A200B6C388 /* minizip-ng */,
 				5E34C8061B7F51F100F212E8 /* device */,
+				84451FBB2EF0AAF000ADC0EE /* bidi.cpp */,
 				5E34C8921B7F652600F212E8 /* CLogger.cpp */,
 				5E34C8931B7F652600F212E8 /* CLogger.h */,
 				5E34C8941B7F652600F212E8 /* COSOperator.cpp */,
@@ -1750,6 +1761,22 @@
 			name = "minizip-ng";
 			sourceTree = "<group>";
 		};
+		84451F692EF0AAC300ADC0EE /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				84451F662EF0AAC300ADC0EE /* SheenBidi.c */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		84451F6D2EF0AAC300ADC0EE /* sheenbidi */ = {
+			isa = PBXGroup;
+			children = (
+				84451F692EF0AAC300ADC0EE /* Source */,
+			);
+			path = sheenbidi;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1757,6 +1784,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84451FBF2EF0AB6F00ADC0EE /* bidi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1966,9 +1994,11 @@
 				5E34CB7A1B7F6EC400F212E8 /* CIrrMeshWriter.cpp in Sources */,
 				5E34CB7C1B7F6EC400F212E8 /* COBJMeshWriter.cpp in Sources */,
 				5E34CB7E1B7F6EC400F212E8 /* CPLYMeshWriter.cpp in Sources */,
+				84451FBD2EF0AAF000ADC0EE /* bidi.cpp in Sources */,
 				5E34CB801B7F6EC400F212E8 /* CSTLMeshWriter.cpp in Sources */,
 				5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */,
+				84451F8F2EF0AAC300ADC0EE /* SheenBidi.c in Sources */,
 				5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */,
 				5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */,
 				5E34CB8A1B7F6EC400F212E8 /* CMeshManipulator.cpp in Sources */,
@@ -2134,6 +2164,7 @@
 				5E5734101C18E2E2003F664E /* COGLES2NormalMapRenderer.cpp in Sources */,
 				5E57337E1C18E212003F664E /* CDummyTransformationSceneNode.cpp in Sources */,
 				5E57337F1C18E212003F664E /* CEmptySceneNode.cpp in Sources */,
+				84451FBC2EF0AAF000ADC0EE /* bidi.cpp in Sources */,
 				5E5733801C18E212003F664E /* CLightSceneNode.cpp in Sources */,
 				5E5733811C18E212003F664E /* CMeshSceneNode.cpp in Sources */,
 				5E5733821C18E212003F664E /* COctreeSceneNode.cpp in Sources */,
@@ -2182,6 +2213,7 @@
 				5E5733C21C18E212003F664E /* CImageWriterTGA.cpp in Sources */,
 				5E5733C31C18E212003F664E /* CColorConverter.cpp in Sources */,
 				5E5733C41C18E212003F664E /* CFPSCounter.cpp in Sources */,
+				84451F7B2EF0AAC300ADC0EE /* SheenBidi.c in Sources */,
 				5E5733C51C18E212003F664E /* CImage.cpp in Sources */,
 				5E5733C61C18E212003F664E /* CNullDriver.cpp in Sources */,
 				5E5733C71C18E212003F664E /* COpenGLCacheHandler.cpp in Sources */,
@@ -2234,6 +2266,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-I$(SRCROOT)/sheenbidi/Headers",
+					"-DSB_CONFIG_UNITY",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
@@ -2283,6 +2320,11 @@
 				INSTALL_PATH = /;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-I$(SRCROOT)/sheenbidi/Headers",
+					"-DSB_CONFIG_UNITY",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",

@@ -11,7 +11,7 @@ IRRLICHT_LIB_NAME := lib$(LOCAL_MODULE).a
 
 LOCAL_CFLAGS := -Wall -pipe -fno-exceptions -fno-rtti -fstrict-aliasing
 
-LOCAL_CFLAGS += -DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_
+LOCAL_CFLAGS += -DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_ -DSB_CONFIG_UNITY
 
 ifndef NDEBUG
 LOCAL_CFLAGS += -g -D_DEBUG
@@ -19,7 +19,8 @@ else
 LOCAL_CFLAGS += -fexpensive-optimizations -O3
 endif
 
-LOCAL_C_INCLUDES := ../../../include
+LOCAL_C_INCLUDES := ../../../include \
+		../sheenbidi/Headers
 
 SDL_PATH ?= $(error SDL_PATH variable is not set)
 
@@ -28,6 +29,8 @@ LOCAL_C_INCLUDES += $(SDL_PATH)/include
 LOCAL_SRC_FILES := \
 					minizip-ng/mz_crypt.c \
 					minizip-ng/mz_crypt_openssl.c \
+					sheenbidi/Source/SheenBidi.c \
+					bidi.cpp \
 					C3DSMeshFileLoader.cpp \
 					CAnimatedMeshHalfLife.cpp \
 					CAnimatedMeshMD2.cpp \
