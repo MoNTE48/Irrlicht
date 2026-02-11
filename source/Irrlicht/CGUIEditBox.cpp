@@ -1045,7 +1045,7 @@ void CGUIEditBox::draw()
 						s32 visualEnd = range.End;
 						
 						s = txtLineBidi.subString(0, visualStart);
-						s32 mbegin = font->getDimension(s.c_str()).Width;
+						s32 mbegin = font->getDimension(s.c_str(), false).Width;
 						
 						// deal with kerning
 						const wchar_t* thisLetter = visualStart < (s32)txtLineBidi.size() ? &(txtLineBidi[visualStart]) : 0;
@@ -1053,7 +1053,7 @@ void CGUIEditBox::draw()
 						mbegin += font->getKerningWidth(thisLetter, previousLetter);
 						
 						s2 = txtLineBidi.subString(0, visualEnd);
-						s32 mend = font->getDimension(s2.c_str()).Width;
+						s32 mend = font->getDimension(s2.c_str(), false).Width;
 						
 						core::rect<s32> mark_rect = CurrentTextRect;
 						mark_rect.UpperLeftCorner.X += mbegin;
@@ -1062,42 +1062,12 @@ void CGUIEditBox::draw()
 						// draw mark
 						skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), mark_rect, &localClipRect);
 					}
-					
-					// draw text
-					for (const auto& range : visualRanges) {
-						s32 visualStart = range.Start;
-						s32 visualEnd = range.End;
-						
-						s32 mbegin = 0;
-						if (visualStart > 0) {
-							s = txtLineBidi.subString(0, visualStart);
-							mbegin = font->getDimension(s.c_str()).Width;
-						}
-						
-						s = txtLineBidi.subString(visualStart, visualEnd - visualStart);
-						
-						core::rect<s32> textRect = CurrentTextRect;
-						textRect.UpperLeftCorner.X += mbegin;
-						
-						video::SColor color;
-						if (OverrideColorEnabled)
-							color = OverrideColor;
-						else if (range.Selected)
-							color = skin->getColor(EGDC_HIGH_LIGHT_TEXT);
-						else
-							color = skin->getColor(EGDC_BUTTON_TEXT);
-							
-						if (s.size()) {
-							font->draw(s.c_str(), textRect, color,
-								false, true, &localClipRect, false);
-						}
-					}
-				} else {
-					// draw normal text
-					font->draw(txtLineBidi, CurrentTextRect,
-						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-						false, true, &localClipRect, false);
 				}
+
+				// draw normal text
+				font->draw(txtLineBidi, CurrentTextRect,
+					OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
+					false, true, &localClipRect, false);
 			}
 
 			// Return the override color information to its previous settings.
@@ -1127,7 +1097,7 @@ void CGUIEditBox::draw()
 			
 			s = textBidi.TextBidi.subString(0, rtlCursorPos);
 			
-			charcursorpos = font->getDimension(s.c_str()).Width +
+			charcursorpos = font->getDimension(s.c_str(), false).Width +
 				font->getKerningWidth(CursorChar.c_str(), 
 					rtlCursorPos > 0 ? &(textBidi.TextBidi[rtlCursorPos-1]) : 0);
 			
@@ -1139,7 +1109,7 @@ void CGUIEditBox::draw()
 				if ( OverwriteMode )
 				{
 					core::stringw character = textBidi.TextBidi.subString(rtlCursorPos, 1);
-					s32 mend = font->getDimension(character.c_str()).Width;
+					s32 mend = font->getDimension(character.c_str(), false).Width;
 					//Make sure the cursor box has at least some width to it
 					if ( mend <= 0 )
 						mend = font->getDimension(CursorChar.c_str()).Width;

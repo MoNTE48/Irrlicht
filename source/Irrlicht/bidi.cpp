@@ -109,6 +109,27 @@ std::vector<SelectionBidiRange> TextBidiData::getSelectionRanges(
 	return visual_ranges;
 }
 
+wchar_t mirrorChar(wchar_t c)
+{
+    switch (c) {
+        case L'(': return L')';
+        case L')': return L'(';
+        case L'[': return L']';
+        case L']': return L'[';
+        case L'{': return L'}';
+        case L'}': return L'{';
+        case L'<': return L'>';
+        case L'>': return L'<';
+        case L'«': return L'»';
+        case L'»': return L'«';
+        case 0x2039: return 0x203A; // ‹ ›
+        case 0x203A: return 0x2039; // › ‹
+        case 0x2045: return 0x2046; // ⁅ ⁆
+        case 0x2046: return 0x2045; // ⁆ ⁅
+        default: return c;
+    }
+}
+
 core::ustring applyBidiReorderingMultiline(const core::ustring& text)
 {
     if (text.empty())
@@ -190,7 +211,9 @@ TextBidiData applyBidiReordering(const core::stringw& text)
 		if (isRTL) {
 			for (SBInteger j = run->length - 1; j >= 0; j--) {
 				SBUInteger index = run->offset + j;
-				data.TextBidi += text[index];
+				wchar_t c = text[index];
+				wchar_t mirrored = mirrorChar(c);
+				data.TextBidi += mirrored;
 				data.RtlCharPos[index] = visualPos;
 				data.CharIsRtl[index] = true;
 				visualPos++;
@@ -257,7 +280,9 @@ core::ustring applyBidiReordering(const core::ustring& text)
 		if (isRTL) {
 			for (SBInteger j = run->length - 1; j >= 0; j--) {
 				SBUInteger index = run->offset + j;
-				result += text[index];
+				uchar32_t c = text[index];
+				uchar32_t mirrored = mirrorChar(c);
+				result += mirrored;
 			}
 		} else {
 			for (SBUInteger j = 0; j < run->length; j++) {

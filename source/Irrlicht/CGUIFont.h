@@ -56,7 +56,7 @@ public:
 			bool use_rtl = true) IRR_OVERRIDE;
 
 	//! returns the dimension of a text
-	virtual core::dimension2d<u32> getDimension(const wchar_t* text) const IRR_OVERRIDE;
+	virtual core::dimension2d<u32> getDimension(const wchar_t* text, bool use_rtl = true) const IRR_OVERRIDE;
 
 	//! Calculates the index of the character in the text which is on a specific position.
 	virtual s32 getCharacterFromPos(const wchar_t* text, s32 pixel_x) const IRR_OVERRIDE;

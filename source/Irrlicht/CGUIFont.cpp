@@ -448,7 +448,7 @@ void CGUIFont::setInvisibleCharacters( const wchar_t *s )
 
 
 //! returns the dimension of text
-core::dimension2d<u32> CGUIFont::getDimension(const wchar_t* text) const
+core::dimension2d<u32> CGUIFont::getDimension(const wchar_t* text, bool use_rtl) const
 {
 	core::dimension2d<u32> dim(0, 0);
 	core::dimension2d<u32> thisLine(0, MaxHeight);
