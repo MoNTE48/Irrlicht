@@ -16,8 +16,6 @@
 #include "CIrrDeviceSDL.h"
 #endif
 
-#include <bidi.h>
-
 
 /*
 	todo:
@@ -946,6 +944,9 @@ void CGUIEditBox::draw()
 
 	IGUIFont* font = getActiveFont();
 
+	s32 cursorLine = 0;
+	s32 charcursorpos = 0;
+
 	if (font)
 	{
 		if (LastBreakFont != font)
@@ -953,7 +954,9 @@ void CGUIEditBox::draw()
 			breakText();
 		}
 
-		const core::stringw *txtLine = &Text;
+		// calculate cursor pos
+
+		core::stringw *txtLine = &Text;
 		s32 startPos = 0;
 
 		core::stringw s, s2;
@@ -1014,60 +1017,44 @@ void CGUIEditBox::draw()
 					startPos = ml ? BrokenTextPositions[i] : 0;
 				}
 
-				core::TextBidiData textBidi = core::applyBidiReordering(*txtLine);
-				core::stringw txtLineBidi = textBidi.TextBidi;
-
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-					s32 logicalStartInLine = 0;
-					s32 logicalEndInLine = txtLineBidi.size();
-					
-					if (i == hlineStart) {
-						logicalStartInLine = realmbgn - startPos;
-					}
-				
-					if (i == hlineStart + hlineCount - 1) {
-						logicalEndInLine = realmend - startPos;
-					}
-					
-					logicalStartInLine = core::max_(logicalStartInLine, 0);
-					logicalEndInLine = core::min_(logicalEndInLine, (s32)txtLineBidi.size());
-					
-					std::vector<core::SelectionBidiRange> visualRanges = 
-							textBidi.getSelectionRanges(logicalStartInLine, logicalEndInLine);
-					
-					for (const auto& range : visualRanges) {
-						if (!range.Selected)
-							continue;
+					s32 mbegin = 0, mend = 0;
 
-						s32 visualStart = range.Start;
-						s32 visualEnd = range.End;
-						
-						s = txtLineBidi.subString(0, visualStart);
-						s32 mbegin = font->getDimension(s.c_str(), false).Width;
-						
+					if (i == hlineStart)
+					{
+						// highlight start is on this line
+						s = txtLine->subString(0, realmbgn - startPos);
+						mbegin = font->getDimension(s.c_str()).Width;
+
 						// deal with kerning
-						const wchar_t* thisLetter = visualStart < (s32)txtLineBidi.size() ? &(txtLineBidi[visualStart]) : 0;
-						const wchar_t* previousLetter = visualStart > 0 ? &(txtLineBidi[visualStart - 1]) : 0;
-						mbegin += font->getKerningWidth(thisLetter, previousLetter);
-						
-						s2 = txtLineBidi.subString(0, visualEnd);
-						s32 mend = font->getDimension(s2.c_str(), false).Width;
-						
-						core::rect<s32> mark_rect = CurrentTextRect;
-						mark_rect.UpperLeftCorner.X += mbegin;
-						mark_rect.LowerRightCorner.X = mark_rect.UpperLeftCorner.X + mend - mbegin;
-						
-						// draw mark
-						skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), mark_rect, &localClipRect);
-					}
-				}
+						mbegin += font->getKerningWidth(
+							&((*txtLine)[realmbgn - startPos]),
+							realmbgn - startPos > 0 ? &((*txtLine)[realmbgn - startPos - 1]) : 0);
 
+					}
+					if (i == hlineStart + hlineCount - 1)
+					{
+						// highlight end is on this line
+						s2 = txtLine->subString(0, realmend - startPos);
+						mend = font->getDimension(s2.c_str()).Width;
+					}
+					else
+						mend = font->getDimension(txtLine->c_str()).Width;
+
+					core::rect<s32> markRect = CurrentTextRect;
+					markRect.UpperLeftCorner.X += mbegin;
+					markRect.LowerRightCorner.X = markRect.UpperLeftCorner.X + mend - mbegin;
+
+					// draw mark
+					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), markRect, &localClipRect);
+				}
+				
 				// draw normal text
-				font->draw(txtLineBidi, CurrentTextRect,
+				font->draw(*txtLine, CurrentTextRect,
 					OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-					false, true, &localClipRect, false);
+					false, true, &localClipRect);
 			}
 
 			// Return the override color information to its previous settings.
@@ -1078,38 +1065,23 @@ void CGUIEditBox::draw()
 		// draw cursor
 		if ( isEnabled() )
 		{
-			
-			s32 cursorLine = 0;
-			s32 charcursorpos = 0;
-			
 			if (WordWrap || MultiLine)
 			{
 				cursorLine = getLineFromPos(CursorPos);
 				txtLine = &BrokenText[cursorLine];
 				startPos = BrokenTextPositions[cursorLine];
 			}
-			
-			core::TextBidiData textBidi = core::applyBidiReordering(*txtLine);
-			s32 rtlCursorPos = textBidi.visualCursorPos(CursorPos - startPos);
-			
-			if (textBidi.CharIsRtl.size() > 0 && textBidi.CharIsRtl[0] && rtlCursorPos > 0)
-				rtlCursorPos--;
-			
-			s = textBidi.TextBidi.subString(0, rtlCursorPos);
-			
-			charcursorpos = font->getDimension(s.c_str(), false).Width +
-				font->getKerningWidth(CursorChar.c_str(), 
-					rtlCursorPos > 0 ? &(textBidi.TextBidi[rtlCursorPos-1]) : 0);
-			
+			charcursorpos = font->getCursorPosition(*txtLine, CursorPos-startPos);
+
 			if (focus && (CursorBlinkTime == 0 || (os::Timer::getTime() - BlinkStartTime) % (2*CursorBlinkTime) < CursorBlinkTime))
 			{
 				setTextRect(cursorLine);
 				CurrentTextRect.UpperLeftCorner.X += charcursorpos;
-				
+
 				if ( OverwriteMode )
 				{
-					core::stringw character = textBidi.TextBidi.subString(rtlCursorPos, 1);
-					s32 mend = font->getDimension(character.c_str(), false).Width;
+					core::stringw character = Text.subString(CursorPos,1);
+					s32 mend = font->getDimension(character.c_str()).Width;
 					//Make sure the cursor box has at least some width to it
 					if ( mend <= 0 )
 						mend = font->getDimension(CursorChar.c_str()).Width;
@@ -1117,13 +1089,13 @@ void CGUIEditBox::draw()
 					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), CurrentTextRect, &localClipRect);
 					font->draw(character, CurrentTextRect,
 								OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_HIGH_LIGHT_TEXT),
-								false, true, &localClipRect, false);
+								false, true, &localClipRect);
 				}
 				else
 				{
 					font->draw(CursorChar, CurrentTextRect,
 						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-						false, true, &localClipRect, false);
+						false, true, &localClipRect);
 				}
 			}
 		}
@@ -1325,17 +1297,15 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 
 	if ( !txtLine )
 		return 0;
-	
-	core::TextBidiData textBidi = core::applyBidiReordering(*txtLine);
-	s32 visualPos = font->getCharacterFromPos(textBidi.TextBidi.c_str(), x - CurrentTextRect.UpperLeftCorner.X);
-	
-	s32 logicalPos = textBidi.logicalCursorPos(visualPos);
-	if (logicalPos < 0)
-		logicalPos = 0;
-	if (logicalPos > (s32)txtLine->size())
-		logicalPos = txtLine->size();
-	
-	return logicalPos + startPos;
+
+	s32 idx = font->getCharacterFromPos(txtLine->c_str(), x - CurrentTextRect.UpperLeftCorner.X);
+
+	// click was on or left of the line
+	//if (idx != -1)
+		return idx + startPos;
+
+	// click was off the right edge of the line, go to end.
+	return txtLine->size() + startPos;
 }
 
 
@@ -1633,7 +1603,6 @@ void CGUIEditBox::calculateScrollPos()
 	s32 cursLine = getLineFromPos(CursorPos);
 	if ( cursLine < 0 )
 		return;
-
 	setTextRect(cursLine);
 	const bool hasBrokenText = MultiLine || WordWrap;
 
@@ -1644,18 +1613,11 @@ void CGUIEditBox::calculateScrollPos()
 		// get cursor area
 		irr::u32 cursorWidth = font->getDimension(CursorChar.c_str()).Width;
 		core::stringw *txtLine = hasBrokenText ? &BrokenText[cursLine] : &Text;
-		s32 logicalCPos = hasBrokenText ? CursorPos - BrokenTextPositions[cursLine] : CursorPos;
-		
-		core::TextBidiData textBidi = core::applyBidiReordering(*txtLine);
-		s32 rtlCursorPos = textBidi.visualCursorPos(logicalCPos);
-		
-		if (textBidi.CharIsRtl.size() > 0 && textBidi.CharIsRtl[0] && rtlCursorPos > 0)
-			rtlCursorPos--;
-		
-		s32 cStart = font->getDimension(textBidi.TextBidi.subString(0, rtlCursorPos).c_str()).Width;
+		s32 cPos = hasBrokenText ? CursorPos - BrokenTextPositions[cursLine] : CursorPos;	// column
+		s32 cStart = font->getDimension(txtLine->subString(0, cPos).c_str()).Width;		// pixels from text-start
 		s32 cEnd = cStart + cursorWidth;
-		s32 txtWidth = font->getDimension(textBidi.TextBidi.c_str()).Width;
-		
+		s32 txtWidth = font->getDimension(txtLine->c_str()).Width;
+
 		if ( txtWidth < FrameRect.getWidth() )
 		{
 			// TODO: Needs a clean left and right gap removal depending on HAlign, similar to vertical scrolling tests for top/bottom.

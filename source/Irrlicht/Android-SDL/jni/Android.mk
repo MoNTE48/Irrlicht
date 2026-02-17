@@ -19,8 +19,7 @@ else
 LOCAL_CFLAGS += -fexpensive-optimizations -O3
 endif
 
-LOCAL_C_INCLUDES := ../../../include \
-		../sheenbidi/Headers
+LOCAL_C_INCLUDES := ../../../include
 
 SDL_PATH ?= $(error SDL_PATH variable is not set)
 
@@ -29,8 +28,6 @@ LOCAL_C_INCLUDES += $(SDL_PATH)/include
 LOCAL_SRC_FILES := \
 					minizip-ng/mz_crypt.c \
 					minizip-ng/mz_crypt_openssl.c \
-					sheenbidi/Source/SheenBidi.c \
-					bidi.cpp \
 					C3DSMeshFileLoader.cpp \
 					CAnimatedMeshHalfLife.cpp \
 					CAnimatedMeshMD2.cpp \

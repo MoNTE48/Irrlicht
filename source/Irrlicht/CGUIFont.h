@@ -82,6 +82,8 @@ public:
 	
 	virtual s32 getPrevClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos - 1; }
 	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos + 1; }
+	
+	virtual s32 getCursorPosition(const core::stringw& text, u32 logical_pos) const { return logical_pos; }
 
 private:
 

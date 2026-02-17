@@ -50,23 +50,22 @@ IRRIMAGEOBJ = CColorConverter.o CImage.o CImageLoaderBMP.o CImageLoaderDDS.o CIm
 	CImageWriterBMP.o CImageWriterJPG.o CImageWriterPCX.o CImageWriterPNG.o CImageWriterPPM.o CImageWriterPSD.o CImageWriterTGA.o
 IRRVIDEOOBJ = CVideoModeList.o CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
 IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CXMLWriter.o CWADReader.o CZipReader.o CPakReader.o CNPKReader.o CTarReader.o CMountPointReader.o irrXML.o CAttributes.o
-IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o bidi.o
+IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o
 IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIContextMenu.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIInOutFader.o CGUIListBox.o CGUIMenu.o CGUIMeshViewer.o CGUIMessageBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISpinBox.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CGUITable.o CGUIToolBar.o CGUIWindow.o CGUIColorSelectDialog.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o CGUITreeView.o CGUIProfiler.o
 MINIZIPOBJ = minizip-ng/mz_crypt_openssl.o minizip-ng/mz_crypt.o
-SHEENBIDIOBJ = sheenbidi/Source/SheenBidi.o
 
 # Next variable is for additional scene nodes etc. of customized Irrlicht versions
 EXTRAOBJ =
 LINKOBJ = $(IRRMESHOBJ) $(IRROBJ) $(IRRPARTICLEOBJ) $(IRRANIMOBJ) \
 	$(IRRVIDEOOBJ) $(IRRIOOBJ) $(IRROTHEROBJ) \
-	$(IRRGUIOBJ) $(MINIZIPOBJ) $(EXTRAOBJ) $(SHEENBIDIOBJ)
+	$(IRRGUIOBJ) $(MINIZIPOBJ) $(EXTRAOBJ)
 
 emscripten: EMSCRIPTEN=1
 
 ###############
 #Compiler flags
 
-CXXINCS = -I../../include -Isheenbidi/Headers
+CXXINCS = -I../../include
 CPPFLAGS += $(CXXINCS) -DIRRLICHT_EXPORTS=1 -DSB_CONFIG_UNITY
 CXXFLAGS += -Wall -pipe -fno-exceptions -fno-rtti
 #CXXFLAGS += -std=gnu++11 -U__STRICT_ANSI__
