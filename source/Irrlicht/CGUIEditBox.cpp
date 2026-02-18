@@ -1020,35 +1020,16 @@ void CGUIEditBox::draw()
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-					s32 mbegin = 0, mend = 0;
+					std::vector<core::recti> markRects = font->getSelectionRects(*txtLine,
+							realmbgn - startPos, realmend - startPos);
+							
+					for (auto& markRect : markRects) {
+						core::rect<s32> current_rect = CurrentTextRect;
+						current_rect.UpperLeftCorner.X += markRect.UpperLeftCorner.X;
+						current_rect.LowerRightCorner.X = current_rect.UpperLeftCorner.X + markRect.getWidth();
 
-					if (i == hlineStart)
-					{
-						// highlight start is on this line
-						s = txtLine->subString(0, realmbgn - startPos);
-						mbegin = font->getDimension(s.c_str()).Width;
-
-						// deal with kerning
-						mbegin += font->getKerningWidth(
-							&((*txtLine)[realmbgn - startPos]),
-							realmbgn - startPos > 0 ? &((*txtLine)[realmbgn - startPos - 1]) : 0);
-
-					}
-					if (i == hlineStart + hlineCount - 1)
-					{
-						// highlight end is on this line
-						s2 = txtLine->subString(0, realmend - startPos);
-						mend = font->getDimension(s2.c_str()).Width;
-					}
-					else
-						mend = font->getDimension(txtLine->c_str()).Width;
-
-					core::rect<s32> markRect = CurrentTextRect;
-					markRect.UpperLeftCorner.X += mbegin;
-					markRect.LowerRightCorner.X = markRect.UpperLeftCorner.X + mend - mbegin;
-
-					// draw mark
-					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), markRect, &localClipRect);
+						skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), current_rect, &localClipRect);
+					}	
 				}
 				
 				// draw normal text

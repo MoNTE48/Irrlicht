@@ -84,6 +84,9 @@ public:
 	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos + 1; }
 	
 	virtual s32 getCursorPosition(const core::stringw& text, u32 logical_pos) const { return logical_pos; }
+	
+	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
+		u32 start_pos, u32 end_pos) const { return std::vector<core::recti>(); }
 
 private:
 

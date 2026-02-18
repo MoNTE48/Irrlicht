@@ -102,6 +102,9 @@ public:
 	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) = 0;
 	
 	virtual s32 getCursorPosition(const core::stringw& text, u32 logical_pos) const = 0;
+
+	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
+		u32 start_pos, u32 end_pos) const = 0;
 };
 
 } // end namespace gui
