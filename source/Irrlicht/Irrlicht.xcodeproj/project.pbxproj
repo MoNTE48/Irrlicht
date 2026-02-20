@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -929,7 +929,6 @@
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
 		84295DE82D69443D00B6C388 /* mz_crypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt.c; path = "minizip-ng/mz_crypt.c"; sourceTree = "<group>"; };
 		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
-sourceTree = "<absolute>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
 		8493BC01249DEBB20092813E /* IOctreeSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOctreeSceneNode.h; path = ../../include/IOctreeSceneNode.h; sourceTree = "<group>"; };
 		8493BC03249DED3F0092813E /* IMemoryReadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMemoryReadFile.h; path = ../../include/IMemoryReadFile.h; sourceTree = "<group>"; };
@@ -937,16 +936,6 @@ sourceTree = "<absolute>"; };
 		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		5E34C9F01B7F6E3400F212E8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		5E34C6D81B7F4A0C00F212E8 = {
@@ -1759,8 +1748,6 @@ sourceTree = "<absolute>"; };
 			buildConfigurationList = 5E34C9F51B7F6E3400F212E8 /* Build configuration list for PBXNativeTarget "Irrlicht_OSX" */;
 			buildPhases = (
 				5E34C9EF1B7F6E3400F212E8 /* Sources */,
-				5E34C9F01B7F6E3400F212E8 /* Frameworks */,
-				5E34C9F11B7F6E3400F212E8 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -1793,7 +1780,7 @@ sourceTree = "<absolute>"; };
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					5E34C9F21B7F6E3400F212E8 = {
 						CreatedOnToolsVersion = 6.1;
@@ -1801,7 +1788,7 @@ sourceTree = "<absolute>"; };
 				};
 			};
 			buildConfigurationList = 5E34C6DC1B7F4A0C00F212E8 /* Build configuration list for PBXProject "Irrlicht" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2194,23 +2181,29 @@ sourceTree = "<absolute>"; };
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_LOCATION = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_C_LANGUAGE_STANDARD = c17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2222,12 +2215,10 @@ sourceTree = "<absolute>"; };
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LLVM_LTO = YES_THIN;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
@@ -2241,16 +2232,22 @@ sourceTree = "<absolute>"; };
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2258,7 +2255,7 @@ sourceTree = "<absolute>"; };
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_C_LANGUAGE_STANDARD = c17;
 				GCC_FAST_MATH = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -2275,11 +2272,9 @@ sourceTree = "<absolute>"; };
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-U__STRICT_ANSI__",
@@ -2313,7 +2308,6 @@ sourceTree = "<absolute>"; };
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Irrlicht;
@@ -2347,7 +2341,6 @@ sourceTree = "<absolute>"; };
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Irrlicht;
 				SDKROOT = macosx;
@@ -2366,16 +2359,13 @@ sourceTree = "<absolute>"; };
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = "$(SRCROOT)/../../lib/iOS";
-				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_FAST_MATH = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/../../include";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = (
 					"-fvisibility=hidden",
@@ -2402,17 +2392,14 @@ sourceTree = "<absolute>"; };
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DSTROOT = "$(SRCROOT)/../../lib/iOS";
-				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_FAST_MATH = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/../../include";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"-fvisibility=hidden",
