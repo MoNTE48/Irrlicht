@@ -66,7 +66,7 @@ emscripten: EMSCRIPTEN=1
 #Compiler flags
 
 CXXINCS = -I../../include
-CPPFLAGS += $(CXXINCS) -DIRRLICHT_EXPORTS=1 -DSB_CONFIG_UNITY
+CPPFLAGS += $(CXXINCS) -DIRRLICHT_EXPORTS=1
 CXXFLAGS += -Wall -pipe -fno-exceptions -fno-rtti
 #CXXFLAGS += -std=gnu++11 -U__STRICT_ANSI__
 ifndef NDEBUG

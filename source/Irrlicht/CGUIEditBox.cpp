@@ -1290,7 +1290,7 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 	s32 idx = font->getCharacterFromPos(txtLine->c_str(), x - CurrentTextRect.UpperLeftCorner.X);
 
 	// click was on or left of the line
-	//if (idx != -1)
+	if (idx != -1)
 		return idx + startPos;
 
 	// click was off the right edge of the line, go to end.
