@@ -1020,16 +1020,24 @@ void CGUIEditBox::draw()
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-					std::vector<core::recti> markRects = font->getSelectionRects(*txtLine,
-							realmbgn - startPos, realmend - startPos);
+					s32 lineEnd = startPos + (s32)txtLine->size();
+					s32 localStart = core::clamp(realmbgn - startPos, 0, (s32)txtLine->size());
+					s32 localEnd   = core::clamp(realmend - startPos, 0, (s32)txtLine->size());
+					
+					if (localStart < localEnd) {
+						std::vector<core::recti> markRects = font->getSelectionRects(
+						*txtLine, (u32)localStart, (u32)localEnd);
+						
+						for (auto& markRect : markRects) {
+							core::rect<s32> current_rect = CurrentTextRect;
+							current_rect.UpperLeftCorner.X += markRect.UpperLeftCorner.X;
+							current_rect.LowerRightCorner.X = current_rect.UpperLeftCorner.X
+							+ markRect.getWidth();
 							
-					for (auto& markRect : markRects) {
-						core::rect<s32> current_rect = CurrentTextRect;
-						current_rect.UpperLeftCorner.X += markRect.UpperLeftCorner.X;
-						current_rect.LowerRightCorner.X = current_rect.UpperLeftCorner.X + markRect.getWidth();
-
-						skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), current_rect, &localClipRect);
-					}	
+							skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT),
+							current_rect, &localClipRect);
+						}
+					}
 				}
 				
 				// draw normal text
