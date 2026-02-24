@@ -105,6 +105,8 @@ public:
 
 	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
 		u32 start_pos, u32 end_pos) const = 0;
+		
+	virtual bool isRTL(const core::stringw& text) const = 0;
 };
 
 } // end namespace gui

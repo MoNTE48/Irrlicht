@@ -87,6 +87,8 @@ public:
 	
 	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
 		u32 start_pos, u32 end_pos) const IRR_OVERRIDE { return std::vector<core::recti>(); }
+		
+	virtual bool isRTL(const core::stringw& text) const IRR_OVERRIDE { return false; }
 
 private:
 
