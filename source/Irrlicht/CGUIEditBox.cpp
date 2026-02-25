@@ -1631,6 +1631,13 @@ void CGUIEditBox::calculateScrollPos()
 			HScrollPos += (CurrentTextRect.UpperLeftCorner.X+cEnd)-FrameRect.LowerRightCorner.X;
 			setTextRect(cursLine);
 		}
+		
+		if (font->isRTL(*txtLine))
+		{
+			s32 rtl_offset = core::min_((int)font->getDimension(L"X").Width * 10, FrameRect.getWidth() / 4);
+			if (cStart > FrameRect.LowerRightCorner.X - CurrentTextRect.UpperLeftCorner.X - rtl_offset)
+				HScrollPos = cStart - FrameRect.getWidth() + rtl_offset;
+		}
 	}
 
 	// calculate vertical scrolling
