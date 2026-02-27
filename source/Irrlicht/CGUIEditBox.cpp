@@ -38,7 +38,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	: IGUIEditBox(environment, parent, id, rectangle), OverwriteMode(false), MouseMarking(false),
 	Border(border), Background(true), OverrideColorEnabled(false), MarkBegin(0), MarkEnd(0),
 	OverrideColor(video::SColor(101,255,255,255)), OverrideFont(0), LastBreakFont(0),
-	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
+	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"|"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
 	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false)
@@ -686,7 +686,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 			if ( !isEnabled() )
 				break;
 
-			OverwriteMode = !OverwriteMode;
+			//OverwriteMode = !OverwriteMode;
 			break;
 		case KEY_RETURN:
 			if (MultiLine)
@@ -1065,7 +1065,7 @@ void CGUIEditBox::draw()
 			if (focus && (CursorBlinkTime == 0 || (os::Timer::getTime() - BlinkStartTime) % (2*CursorBlinkTime) < CursorBlinkTime))
 			{
 				setTextRect(cursorLine);
-				CurrentTextRect.UpperLeftCorner.X += charcursorpos;
+				CurrentTextRect.UpperLeftCorner.X += charcursorpos - font->getDimension(CursorChar.c_str()).Width / 2;
 
 				if ( OverwriteMode )
 				{
@@ -1261,7 +1261,6 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 
 	core::stringw *txtLine=0;
 	s32 startPos=0;
-	x+=3;
 
 	for (u32 i=0; i < lineCount; ++i)
 	{
