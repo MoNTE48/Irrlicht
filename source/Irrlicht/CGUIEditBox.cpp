@@ -1065,7 +1065,7 @@ void CGUIEditBox::draw()
 			if (focus && (CursorBlinkTime == 0 || (os::Timer::getTime() - BlinkStartTime) % (2*CursorBlinkTime) < CursorBlinkTime))
 			{
 				setTextRect(cursorLine);
-				CurrentTextRect.UpperLeftCorner.X += charcursorpos - font->getDimension(CursorChar.c_str()).Width / 2;
+				CurrentTextRect.UpperLeftCorner.X += charcursorpos;
 
 				if ( OverwriteMode )
 				{
@@ -1082,9 +1082,18 @@ void CGUIEditBox::draw()
 				}
 				else
 				{
-					font->draw(CursorChar, CurrentTextRect,
-						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-						false, true, &localClipRect);
+					const s32 cursorWidth = 1;
+					const s32 cursorHeight = font->getDimension(L"|").Height;
+					const s32 centerY = CurrentTextRect.getCenter().Y;
+
+					core::rect<s32> cursorRect(
+						CurrentTextRect.UpperLeftCorner.X,
+						centerY - cursorHeight / 2,
+						CurrentTextRect.UpperLeftCorner.X + cursorWidth,
+						centerY + cursorHeight / 2);
+					
+					video::SColor cursorColor = OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT);
+					skin->draw2DRectangle(this, cursorColor, cursorRect, &localClipRect);
 				}
 			}
 		}
