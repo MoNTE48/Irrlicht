@@ -38,7 +38,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	: IGUIEditBox(environment, parent, id, rectangle), OverwriteMode(false), MouseMarking(false),
 	Border(border), Background(true), OverrideColorEnabled(false), MarkBegin(0), MarkEnd(0),
 	OverrideColor(video::SColor(101,255,255,255)), OverrideFont(0), LastBreakFont(0),
-	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"_"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
+	Operator(0), BlinkStartTime(0), CursorBlinkTime(350), CursorChar(L"|"), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
 	PasswordChar(L'*'), HAlign(EGUIA_UPPERLEFT), VAlign(EGUIA_CENTER),
 	CurrentTextRect(0,0,1,1), FrameRect(rectangle), IsSDLDevice(false)
@@ -686,7 +686,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 			if ( !isEnabled() )
 				break;
 
-			OverwriteMode = !OverwriteMode;
+			//OverwriteMode = !OverwriteMode;
 			break;
 		case KEY_RETURN:
 			if (MultiLine)
@@ -1020,73 +1020,30 @@ void CGUIEditBox::draw()
 				// draw mark and marked text
 				if (focus && MarkBegin != MarkEnd && i >= hlineStart && i < hlineStart + hlineCount)
 				{
-					s32 mbegin = 0, mend = 0;
-					s32 markStartPos = 0;
-					s32 markEndPos = txtLine->size();
-
-					if (i == hlineStart)
-					{
-						// highlight start is on this line
-						s = txtLine->subString(0, realmbgn - startPos);
-						mbegin = font->getDimension(s.c_str()).Width;
-
-						// deal with kerning
-						mbegin += font->getKerningWidth(
-							&((*txtLine)[realmbgn - startPos]),
-							realmbgn - startPos > 0 ? &((*txtLine)[realmbgn - startPos - 1]) : 0);
-
-						markStartPos = realmbgn - startPos;
+					s32 lineEnd = startPos + (s32)txtLine->size();
+					s32 localStart = core::clamp(realmbgn - startPos, 0, (s32)txtLine->size());
+					s32 localEnd   = core::clamp(realmend - startPos, 0, (s32)txtLine->size());
+					
+					if (localStart < localEnd) {
+						std::vector<core::recti> markRects = font->getSelectionRects(
+						*txtLine, (u32)localStart, (u32)localEnd);
+						
+						for (auto& markRect : markRects) {
+							core::rect<s32> current_rect = CurrentTextRect;
+							current_rect.UpperLeftCorner.X += markRect.UpperLeftCorner.X;
+							current_rect.LowerRightCorner.X = current_rect.UpperLeftCorner.X
+							+ markRect.getWidth();
+							
+							skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT),
+							current_rect, &localClipRect);
+						}
 					}
-					if (i == hlineStart + hlineCount - 1)
-					{
-						// highlight end is on this line
-						s2 = txtLine->subString(0, realmend - startPos);
-						mend = font->getDimension(s2.c_str()).Width;
-						markEndPos = (s32)s2.size();
-					}
-					else
-						mend = font->getDimension(txtLine->c_str()).Width;
-
-					core::rect<s32> markRect = CurrentTextRect;
-					markRect.UpperLeftCorner.X += mbegin;
-					markRect.LowerRightCorner.X = markRect.UpperLeftCorner.X + mend - mbegin;
-
-					// draw mark
-					skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), markRect, &localClipRect);
-
-					// draw text before marked
-					core::rect<s32> before_rect = CurrentTextRect;
-					before_rect.LowerRightCorner.X = markRect.UpperLeftCorner.X;
-					s = txtLine->subString(0, markStartPos);
-
-					if (s.size())
-						font->draw(s, before_rect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-							false, true, &localClipRect);
-
-					// draw marked text
-					s = txtLine->subString(markStartPos, markEndPos - markStartPos);
-
-					if (s.size())
-						font->draw(s, markRect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_HIGH_LIGHT_TEXT),
-							false, true, &localClipRect);
-
-					// draw text after marked
-					core::rect<s32> after_rect = CurrentTextRect;
-					after_rect.UpperLeftCorner.X = markRect.LowerRightCorner.X;
-					s = txtLine->subString(markEndPos, txtLine->size() - markEndPos);
-
-					if (s.size())
-						font->draw(s, after_rect,
-							OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-							false, true, &localClipRect);
-				} else {
-					// draw normal text
-					font->draw(*txtLine, CurrentTextRect,
-						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-						false, true, &localClipRect);
 				}
+				
+				// draw normal text
+				font->draw(*txtLine, CurrentTextRect,
+					OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
+					false, true, &localClipRect);
 			}
 
 			// Return the override color information to its previous settings.
@@ -1103,9 +1060,7 @@ void CGUIEditBox::draw()
 				txtLine = &BrokenText[cursorLine];
 				startPos = BrokenTextPositions[cursorLine];
 			}
-			s = txtLine->subString(0,CursorPos-startPos);
-			charcursorpos = font->getDimension(s.c_str()).Width +
-				font->getKerningWidth(CursorChar.c_str(), CursorPos-startPos > 0 ? &((*txtLine)[CursorPos-startPos-1]) : 0);
+			charcursorpos = font->getCursorPosition(*txtLine, CursorPos-startPos);
 
 			if (focus && (CursorBlinkTime == 0 || (os::Timer::getTime() - BlinkStartTime) % (2*CursorBlinkTime) < CursorBlinkTime))
 			{
@@ -1127,9 +1082,18 @@ void CGUIEditBox::draw()
 				}
 				else
 				{
-					font->draw(CursorChar, CurrentTextRect,
-						OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT),
-						false, true, &localClipRect);
+					const s32 cursorWidth = 1;
+					const s32 cursorHeight = font->getDimension(L"|").Height;
+					const s32 centerY = CurrentTextRect.getCenter().Y;
+
+					core::rect<s32> cursorRect(
+						CurrentTextRect.UpperLeftCorner.X,
+						centerY - cursorHeight / 2,
+						CurrentTextRect.UpperLeftCorner.X + cursorWidth,
+						centerY + cursorHeight / 2);
+					
+					video::SColor cursorColor = OverrideColorEnabled ? OverrideColor : skin->getColor(EGDC_BUTTON_TEXT);
+					skin->draw2DRectangle(this, cursorColor, cursorRect, &localClipRect);
 				}
 			}
 		}
@@ -1306,7 +1270,6 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 
 	core::stringw *txtLine=0;
 	s32 startPos=0;
-	x+=3;
 
 	for (u32 i=0; i < lineCount; ++i)
 	{
@@ -1648,7 +1611,7 @@ void CGUIEditBox::calculateScrollPos()
 		irr::u32 cursorWidth = font->getDimension(CursorChar.c_str()).Width;
 		core::stringw *txtLine = hasBrokenText ? &BrokenText[cursLine] : &Text;
 		s32 cPos = hasBrokenText ? CursorPos - BrokenTextPositions[cursLine] : CursorPos;	// column
-		s32 cStart = font->getDimension(txtLine->subString(0, cPos).c_str()).Width;		// pixels from text-start
+		s32 cStart = font->getCursorPosition(*txtLine, cPos);
 		s32 cEnd = cStart + cursorWidth;
 		s32 txtWidth = font->getDimension(txtLine->c_str()).Width;
 
@@ -1675,6 +1638,13 @@ void CGUIEditBox::calculateScrollPos()
 			// cursor to the right of the clipping area
 			HScrollPos += (CurrentTextRect.UpperLeftCorner.X+cEnd)-FrameRect.LowerRightCorner.X;
 			setTextRect(cursLine);
+		}
+		
+		if (font->isRTL(*txtLine))
+		{
+			s32 rtl_offset = core::min_((int)font->getDimension(L"X").Width * 10, FrameRect.getWidth() / 4);
+			if (cStart > FrameRect.LowerRightCorner.X - CurrentTextRect.UpperLeftCorner.X - rtl_offset)
+				HScrollPos = cStart - FrameRect.getWidth() + rtl_offset;
 		}
 	}
 

@@ -52,10 +52,11 @@ public:
 	//! draws an text and clips it to the specified rectangle if wanted
 	virtual void draw(const core::stringw& text, const core::rect<s32>& position,
 			video::SColor color, bool hcenter=false,
-			bool vcenter=false, const core::rect<s32>* clip=0) IRR_OVERRIDE;
+			bool vcenter=false, const core::rect<s32>* clip=0,
+			bool use_rtl = true) IRR_OVERRIDE;
 
 	//! returns the dimension of a text
-	virtual core::dimension2d<u32> getDimension(const wchar_t* text) const IRR_OVERRIDE;
+	virtual core::dimension2d<u32> getDimension(const wchar_t* text, bool use_rtl = true) const IRR_OVERRIDE;
 
 	//! Calculates the index of the character in the text which is on a specific position.
 	virtual s32 getCharacterFromPos(const wchar_t* text, s32 pixel_x) const IRR_OVERRIDE;
@@ -81,6 +82,13 @@ public:
 	
 	virtual s32 getPrevClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos - 1; }
 	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) IRR_OVERRIDE { return pos + 1; }
+
+	virtual s32 getCursorPosition(const core::stringw& text, u32 logical_pos) const IRR_OVERRIDE { return logical_pos; }
+	
+	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
+		u32 start_pos, u32 end_pos) const IRR_OVERRIDE { return std::vector<core::recti>(); }
+		
+	virtual bool isRTL(const core::stringw& text) const IRR_OVERRIDE { return false; }
 
 private:
 

@@ -448,7 +448,7 @@ void CGUIFont::setInvisibleCharacters( const wchar_t *s )
 
 
 //! returns the dimension of text
-core::dimension2d<u32> CGUIFont::getDimension(const wchar_t* text) const
+core::dimension2d<u32> CGUIFont::getDimension(const wchar_t* text, bool use_rtl) const
 {
 	core::dimension2d<u32> dim(0, 0);
 	core::dimension2d<u32> thisLine(0, MaxHeight);
@@ -491,7 +491,8 @@ core::dimension2d<u32> CGUIFont::getDimension(const wchar_t* text) const
 //! draws some text and clips it to the specified rectangle if wanted
 void CGUIFont::draw(const core::stringw& text, const core::rect<s32>& position,
 					video::SColor color,
-					bool hcenter, bool vcenter, const core::rect<s32>* clip
+					bool hcenter, bool vcenter, const core::rect<s32>* clip,
+					bool use_rtl
 				)
 {
 	if (!Driver || !SpriteBank || text.empty())

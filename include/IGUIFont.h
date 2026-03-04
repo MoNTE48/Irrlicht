@@ -10,6 +10,8 @@
 #include "rect.h"
 #include "irrString.h"
 
+#include <vector>
+
 namespace irr
 {
 namespace gui
@@ -50,12 +52,12 @@ public:
 	If the pointer is null, no clipping will be done. */
 	virtual void draw(const core::stringw& text, const core::rect<s32>& position,
 		video::SColor color, bool hcenter=false, bool vcenter=false,
-		const core::rect<s32>* clip=0) = 0;
+		const core::rect<s32>* clip=0, bool use_rtl = true) = 0;
 
 	//! Calculates the width and height of a given string of text.
 	/** \return Returns width and height of the area covered by the text if
 	it would be drawn. */
-	virtual core::dimension2d<u32> getDimension(const wchar_t* text) const = 0;
+	virtual core::dimension2d<u32> getDimension(const wchar_t* text, bool use_rtl = true) const = 0;
 
 	//! Calculates the index of the character in the text which is on a specific position.
 	/** \param text: Text string.
@@ -98,6 +100,13 @@ public:
 	
 	virtual s32 getPrevClusterPos(const core::stringw& text, s32 pos) = 0;
 	virtual s32 getNextClusterPos(const core::stringw& text, s32 pos) = 0;
+
+	virtual s32 getCursorPosition(const core::stringw& text, u32 logical_pos) const = 0;
+
+	virtual std::vector<core::recti> getSelectionRects(const core::stringw& text,
+		u32 start_pos, u32 end_pos) const = 0;
+		
+	virtual bool isRTL(const core::stringw& text) const = 0;
 };
 
 } // end namespace gui
