@@ -20,7 +20,6 @@ Start with the usual includes.
 
 using namespace irr;
 
-
 /*
 	A callback class for our cubemap shader.
 	We need a shader material which maps the cubemap texture to
@@ -311,6 +310,46 @@ private:
 	bool NeedCubemapUpdate;
 };
 
+/* Tool class which we use get simple 2-colored cubes
+   Vertex manipulator to set 2 fixed color in a mesh
+   Needs to be reset before every usage */
+class SVertexTwoColorsManipulator : public irr::scene::IVertexManipulator
+{
+public:
+	SVertexTwoColorsManipulator() : CountCol1(0) {}
+
+	// Apply 2 colors to half of vertices of given meshbuffer
+	void applyHalfHalf(irr::scene::IMeshManipulator* meshManip, irr::scene::IMeshBuffer* meshBuf, irr::video::SColor col1, irr::video::SColor col2)
+	{
+		reset(col1, col2, meshBuf->getVertexCount() / 2);
+		meshManip->apply(*this, meshBuf);
+	}
+
+	// After a reset the manipulator will set limitCol1 vertices to col1 and the rest to col2
+	void reset(irr::video::SColor col1, irr::video::SColor col2, irr::u32 limitCol1)
+	{
+		Color1 = col1;
+		Color2 = col2;
+		LimitCol1 = limitCol1;
+		CountCol1 = 0;
+	}
+
+	void operator()(video::S3DVertex& vertex) const
+	{
+		if ( CountCol1 < LimitCol1 )
+			vertex.Color=Color1;
+		else
+			vertex.Color=Color2;
+		++CountCol1;
+	}
+
+private:
+	video::SColor Color1, Color2;
+	irr::u32 LimitCol1;
+	mutable irr::u32 CountCol1; // Ugly hack with mutable, but currently Irrlicht only allows const IVertexManipulators
+};
+
+
 /* Workaround for OpenGL's upside-down images.
  Texture origins (0,0) in OpenGL are usually at the left-bottom instead of the more common left-top image formats.
  Irrlicht internally uses textures with left-top origin and then corrects the texture-matrices in the fixed-function pipeline.
@@ -443,6 +482,7 @@ int main()
 	const io::path mediaPath = getExampleMediaPath();
 	video::IVideoDriver* driver = device->getVideoDriver();
 	scene::ISceneManager* smgr = device->getSceneManager();
+	scene::IMeshManipulator* meshManipulator = smgr->getMeshManipulator();
 	gui::IGUIEnvironment* env = device->getGUIEnvironment();
 	eventReceiver.Driver = driver;
 
@@ -476,6 +516,7 @@ int main()
 				break;
 
 			case video::EDT_OPENGL:
+			case video::EDT_BURNINGSVIDEO:
 				vsFileName = mediaPath + "cubeMapReflection.vert";
 				psFileName = mediaPath + "cubeMapReflection.frag";
 				break;
@@ -607,15 +648,16 @@ int main()
 	/* Another background for comparison and to make it more obvious
 	when the spheres reflect the environment and when they use static cubemaps. */
 	scene::IMesh * cubeMesh = smgr->getGeometryCreator()->createCubeMesh( core::vector3df(10.f, 10.f, 10.f), scene::ECMT_6BUF_4VTX_NP);
-	smgr->getMeshManipulator()->scale(cubeMesh, core::vector3df(-1, 1, 1));
+	meshManipulator->scale(cubeMesh, core::vector3df(-1, 1, 1));
 	if( cubeMesh )
 	{
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(0), video::SColor(255, 240, 10, 10) );
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(1), video::SColor(255, 240, 130, 10) );
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(2), video::SColor(255, 50, 250, 10)  );
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(3), video::SColor(255, 70, 10, 250) );
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(4), video::SColor(255, 240, 250, 10) );
-		smgr->getMeshManipulator()->setVertexColors( cubeMesh->getMeshBuffer(5), video::SColor(255, 85, 250, 250)  );
+		SVertexTwoColorsManipulator col2Manip;	// using 2 colors to have a bit of a direction so we can see if upside-down is currect
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(0), video::SColor(255, 20, 20, 20),   video::SColor(255, 250, 20, 20));
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(1), video::SColor(255, 20, 20, 20),   video::SColor(255, 250, 20, 250));
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(2), video::SColor(255, 20, 20, 20),   video::SColor(255, 20, 250, 10));
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(3), video::SColor(255, 20, 20, 20),   video::SColor(255, 20, 20, 250));
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(4), video::SColor(255, 20, 20, 20),   video::SColor(255, 250, 250, 20));
+		col2Manip.applyHalfHalf(meshManipulator, cubeMesh->getMeshBuffer(5), video::SColor(255, 20, 250, 250), video::SColor(255, 20, 20, 20) );
 
 		eventReceiver.BackgroundCube = smgr->addMeshSceneNode( cubeMesh );
 		cubeMesh->drop();
@@ -740,8 +782,8 @@ int main()
 							memcpy(tData, rtData, dynamicCubeMapTex->getPitch()*dynamicCubeMapTex->getSize().Width);
 							dynamicCubeMapRTT_intermediate->unlock();
 							dynamicCubeMapTex->unlock();
-							dynamicCubeMapTex->regenerateMipMapLevels();
 						}
+						dynamicCubeMapTex->regenerateMipMapLevels();
 					}
 					sphereNode3->setVisible(true);
 				}

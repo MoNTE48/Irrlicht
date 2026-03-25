@@ -109,7 +109,7 @@ bool writeImageToFile(void)
 
 	referenceFilename = "media/Burning's Video-drawPixel.png";
 
-	if (  fuzzyCompareImages(driver,writtenFilename, referenceFilename)   < 99.9)
+	if (  fuzzyCompareImages(driver,writtenFilename, referenceFilename)   < 99.8f)
 	{
 		logTestString("File written from memory is not the same as the reference file. %s:%d\n" ,  __FILE__, __LINE__);
 //		assert_log(false);

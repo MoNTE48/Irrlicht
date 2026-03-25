@@ -189,7 +189,7 @@ int main(int argumentCount, char * arguments[])
 				{
 					closeTestLog();
 					char runNextTest[256];
-					(void)sprintf(runNextTest, "\"%s\" -%d 1", arguments[0], i+1);
+					(void)snprintf_irr(runNextTest, sizeof(runNextTest), "\"%s\" -%d 1", arguments[0], i+1);
 					// Spawn the next test in a new process.
 					if (system(runNextTest))
 					{

@@ -10,7 +10,13 @@ Changes in ogl-es (not yet released - will be merged with trunk at some point)
 
 --------------------------
 Changes in 1.9 (not yet released)
-
+- Fix creating NSMenu with a null bundle name (macOS). Thanks @Mercury233 for patch (#331 - 4)
+- Use snprintf_irr instead of sprintf. Thanks @Mercury233 for patch (#331 - 3)
+- irr::core::rect::isPointInside no longer considers right-bottom point as inside. See https://irrlicht.sourceforge.io/forum//viewtopic.php?t=43914 
+  This also changes IGUIElement::isPointInside the same way.
+  It fixes some related bugs (like for example combobox often resetting position accidentally).
+  It might cause some trouble if people don't expect the changed behaviour, but it seemed old behaviour caused more bugs as the old implementation 
+  was simply not fitting the behaviour of the other functions in this class (they already excluded right-bottom elements)
 - ComboBox now marks all mouse-wheel events as handled and not just when selection changes as before
 - string::insert now expects template type instead of always char. Breaks compiling code when it was previously used with stringw's. Use wchar_t's now to insert into those.
 - Add flag irr::gui::EFF_HOVERED_HANDLES_UNFOCUSED_MOUSE_EVENTS. Keeping old behavior, but it can be disabled now.
@@ -463,9 +469,26 @@ Changes in 1.9 (not yet released)
 - added x64 to vs2008 project ( buildAllExamples_v9 ) [paths: obj64, win64-visualstudio]
 - burningvideo: getMaxTextureSize adjusted [ changed meaning of SOFTWARE_DRIVER_2_TEXTURE_MAXSIZE
 - burningvideo: mipmaplevel adjusted ( not that bad bokeh...(sometimes) )
+- BurningVideo: 0.55 (03/2026)
+  -Environmental Cube Mapping ( Example 28.Cubemapping)
+  -Render Target Update
+  -SuperTuxKart Shader Update
+  -CBlit.h Removed dependencies from BurningsVideo
+  -Files Deleted: CBurningShader_Raster_Reference.cpp,CDepthBuffer.cpp,CDepthBuffer.h,CTRGouraud2.cpp,CTRGouraudAlphaNoZ2.cpp,CTRGouraudNoZ2.cpp,IDepthBuffer.h
+  -Files Added: burning_shader_glsl_emu_define.h,burning_shader_glsl_emu_undefine.h
+  -Visual Studio Project Files, makefile updated
+
 
 --------------------------
 Changes in 1.8.6
+- Fix forced chdir behavior in CIrrDeviceMacOSX, the working directory should not be forcibly changed when the program is not running inside an app bundle.
+  Thanks @Mercury233 for the patch (#330 - 4)
+- Avoid potential troubles with _IRR_WCHAR_FILESYSTEM in CZipReader error logging
+  Thanks @Mercury233 for the patch (#330 - 18)
+- Set Activation Policy to Regular on macOS to ensure the application appears in the Dock and has a menu bar
+  Thanks @Mercury233 for the patch (#330 - 15)
+- Fix MacOS 10.15 only rendering to quarter of window. 
+  Thanks @bridgeco for the patch: https://irrlicht.sourceforge.io/forum/viewtopic.php?f=7&t=52644
 - Update libpng to 1.6.54 (from 1.6.37)
 - Avoid compile warnings with newer compilers like gcc 14
 - Fix CGUIPanel (in Gui Editor) so horizontal scrollbar can get focus (Feature request #163). Thanks @yybbwc for reporting.

@@ -481,10 +481,10 @@ namespace video
 		this color key can be found when using for example draw2DImage
 		with useAlphachannel==true.  The alpha of other texels is not modified.
 		\param texture Texture whose alpha channel is modified.
-		\param color Color key color. Every texel with this color will
-		become fully transparent as described above. Please note that the
-		colors of a texture may be converted when loading it, so the
-		color values may not be exactly the same in the engine and for
+		\param color Color key rgb-color (alpha in key is ignored).
+		Every texel with this color will become fully transparent as described above.
+		Please note that the colors of a texture may be converted when loading it, 
+		so the color values may not be exactly the same in the engine and for
 		example in picture edit programs. To avoid this problem, you
 		could use the makeColorKeyTexture method, which takes the
 		position of a pixel instead a color value.

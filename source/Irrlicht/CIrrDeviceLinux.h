@@ -319,7 +319,7 @@ namespace irr
 			}
 
 			virtual bool getReferenceRect(core::rect<s32>& rect) IRR_OVERRIDE
-			{ 
+			{
 				if ( UseReferenceRect )
 				{
 					rect = ReferenceRect;

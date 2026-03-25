@@ -568,12 +568,15 @@ CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 		if (!CreationParams.WindowId)
 		{
 			[[NSAutoreleasePool alloc] init];
+			[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
 			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 			[NSApp setDelegate:(id<NSApplicationDelegate>)[[[CIrrDelegateOSX alloc] initWithDevice:this] autorelease]];
 
 			// Create menu
 
 			NSString* bundleName = [[NSBundle mainBundle] infoDictionary][@"CFBundleName"];
+			if (!bundleName)
+				bundleName = @"Irrlicht";
 
 			NSMenu* mainMenu = [[[NSMenu alloc] initWithTitle:@"MainMenu"] autorelease];
 			NSMenu* menu = [[[NSMenu alloc] initWithTitle:bundleName] autorelease];
@@ -587,9 +590,12 @@ CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 			[NSApp finishLaunching];
 		}
 
-		NSString *path = [[NSBundle mainBundle] bundlePath];
-		path = [path stringByAppendingString:@"/Contents/Resources"];
-		chdir([path fileSystemRepresentation]);
+		NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
+		if ([[bundlePath lowercaseString] hasSuffix:@".app"])
+		{
+			NSString* path = [bundlePath stringByAppendingString:@"/Contents/Resources"];
+			chdir([path fileSystemRepresentation]);
+		}
 	}
 
 	uname(&name);
