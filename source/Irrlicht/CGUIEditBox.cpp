@@ -1082,7 +1082,7 @@ void CGUIEditBox::draw()
 				}
 				else
 				{
-					const s32 cursorWidth = 1;
+					const s32 cursorWidth = 1 * font->getDisplayDensity();
 					const s32 cursorHeight = font->getDimension(L"|").Height;
 					const s32 centerY = CurrentTextRect.getCenter().Y;
 

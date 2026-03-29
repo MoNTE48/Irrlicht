@@ -90,6 +90,8 @@ public:
 		
 	virtual bool isRTL(const core::stringw& text) const IRR_OVERRIDE { return false; }
 
+	virtual f32 getDisplayDensity() const IRR_OVERRIDE { return 1.0f; }
+
 private:
 
 	struct SFontArea
