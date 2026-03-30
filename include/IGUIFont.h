@@ -107,6 +107,8 @@ public:
 		u32 start_pos, u32 end_pos) const = 0;
 		
 	virtual bool isRTL(const core::stringw& text) const = 0;
+
+	virtual f32 getDisplayDensity() const = 0;
 };
 
 } // end namespace gui
