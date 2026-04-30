@@ -439,7 +439,7 @@ struct SEvent
 	struct STouchInput
 	{
 		// Touch ID.
-		size_t ID;
+		u64 ID;
 
 		// X position of simple touch.
 		f64 X;
