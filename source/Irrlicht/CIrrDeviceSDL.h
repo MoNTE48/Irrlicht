@@ -263,8 +263,6 @@ namespace irr
 		};
 
 	private:
-
-		//! create the driver
 		void createDriver();
 
 		bool createWindow();
@@ -289,6 +287,7 @@ namespace irr
 
 		s32 MouseX, MouseY;
 		u32 MouseButtonStates;
+		bool IgnoreWarpMouseEvent;
 
 		u32 Width, Height;
 
@@ -302,10 +301,6 @@ namespace irr
 		SDL_SensorID GyroscopeInstance;
 
 		f32 NativeScaleX, NativeScaleY;
-
-		bool IgnoreWarpMouseEvent;
-		bool SimulateTouchEvents;
-		bool RelativeMouseAvailable;
 
 		u32 LongTouchTimer;
 		s32 LongTouchX;
@@ -331,7 +326,10 @@ namespace irr
 			}
 		};
 
-		core::array<SKeyMap> KeyMap;
+		static core::array<SKeyMap> KeyMap;
+		static int SDLDeviceInstances;
+		static bool SimulateTouchEvents;
+		static bool RelativeMouseAvailable;
 	};
 
 } // end namespace irr

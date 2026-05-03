@@ -33,8 +33,6 @@
 #pragma comment(lib, "SDL3.lib")
 #endif // _MSC_VER
 
-static int SDLDeviceInstances = 0;
-
 namespace irr
 {
 	namespace video
@@ -61,45 +59,33 @@ namespace irr
 namespace irr
 {
 
+core::array<CIrrDeviceSDL::SKeyMap> CIrrDeviceSDL::KeyMap;
+int CIrrDeviceSDL::SDLDeviceInstances = 0;
+bool CIrrDeviceSDL::SimulateTouchEvents = false;
+bool CIrrDeviceSDL::RelativeMouseAvailable = false;
+
 //! constructor
 CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param),
 	Window(0), Context(0),
-	MouseX(0), MouseY(0), MouseButtonStates(0),
+	MouseX(0), MouseY(0), MouseButtonStates(0), IgnoreWarpMouseEvent(false),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
 	WindowHasFocus(false), WindowMinimized(false),
-	Resizable(param.WindowResizable == 1),
-	AccelerometerIndex(0), AccelerometerInstance(0),
-	GyroscopeIndex(0), GyroscopeInstance(0),
-	NativeScaleX(1.0f), NativeScaleY(1.0f),
-	IgnoreWarpMouseEvent(false), SimulateTouchEvents(false),
-	RelativeMouseAvailable(false), LongTouchTimer(0), LongTouchX(0),
+	Resizable(param.WindowResizable == 1), AccelerometerIndex(0),
+	AccelerometerInstance(0), GyroscopeIndex(0), GyroscopeInstance(0),
+	NativeScaleX(1.0f), NativeScaleY(1.0f), LongTouchTimer(0), LongTouchX(0),
 	LongTouchY(0), LongTouchHandled(true)
 {
 #ifdef _DEBUG
 	setDebugName("CIrrDeviceSDL");
 #endif
 
-	RelativeMouseAvailable = supportsRelativeMouse();
-
-	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-
-	// Disable simulated touch and mouse events
-	SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
-	SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
-
-	// Enable simulated touch events on Android versions
-	// that don't support relative mouse mode.
-#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
-	if (!RelativeMouseAvailable)
+	SDLDeviceInstances++;
+	
+	if (SDLDeviceInstances == 1)
 	{
-		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
-		SimulateTouchEvents = true;
-	}
-#endif
+		SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
 
-	if (++SDLDeviceInstances == 1)
-	{
 		u32 flags = SDL_INIT_VIDEO;
 
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
@@ -108,7 +94,6 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		flags |= SDL_INIT_JOYSTICK;
 #endif
 
-		// Initialize SDL... Timer for sleep, video for the obvious
 		if (SDL_Init(flags))
 		{
 			os::Printer::log("SDL initialized", ELL_INFORMATION);
@@ -129,6 +114,25 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		[[NSUserDefaults standardUserDefaults] setBool: YES
 							   forKey: @"AppleMomentumScrollSupported"];
 #endif
+
+		RelativeMouseAvailable = supportsRelativeMouse();
+
+		// Disable simulated touch and mouse events
+		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
+		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
+	
+		// Enable simulated touch events on Android versions
+		// that don't support relative mouse mode.
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+		if (!RelativeMouseAvailable)
+		{
+			SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
+			SimulateTouchEvents = true;
+		}
+#endif
+
+		if (KeyMap.empty())
+			createKeyMap();
 	}
 
 	const int version = SDL_GetVersion();
@@ -140,13 +144,11 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	sdlversion += SDL_VERSIONNUM_MICRO(version);
 
 	Operator = new COSOperator(sdlversion, this);
-	if ( SDLDeviceInstances == 1 )
+	if (SDLDeviceInstances == 1)
 	{
 		os::Printer::log(sdlversion.c_str(), ELL_INFORMATION);
 	}
 
-	// create keymap
-	createKeyMap();
 
 	if (CreationParams.DriverType != video::EDT_NULL)
 	{
@@ -234,7 +236,9 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 		Window = NULL;
 	}
 
-	if (--SDLDeviceInstances == 0)
+	SDLDeviceInstances--;
+	
+	if (SDLDeviceInstances == 0)
 	{
 		SDL_Quit();
 	}
