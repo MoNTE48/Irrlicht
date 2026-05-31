@@ -1752,10 +1752,8 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 	else
 		return false;
 
-#elif defined(_IRR_OSX_PLATFORM_)
-	return true; // macOS >= 10.0
 #else
-	return false;
+	return true;
 #endif
 }
 
