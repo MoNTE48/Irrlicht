@@ -80,12 +80,12 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	setDebugName("CIrrDeviceSDL");
 #endif
 
+	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+
 	SDLDeviceInstances++;
-	
+
 	if (SDLDeviceInstances == 1)
 	{
-		SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-
 		u32 flags = SDL_INIT_VIDEO;
 
 #if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
@@ -120,7 +120,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		// Disable simulated touch and mouse events
 		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
 		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
-	
+
 		// Enable simulated touch events on Android versions
 		// that don't support relative mouse mode.
 #if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
@@ -237,7 +237,7 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 	}
 
 	SDLDeviceInstances--;
-	
+
 	if (SDLDeviceInstances == 0)
 	{
 		SDL_Quit();
