@@ -214,6 +214,33 @@ static u32 utf8codepoint(const char **_str)
 	return UNICODE_BOGUS_CHAR_VALUE;
 } /* utf8codepoint */
 
+static u32 utf16codepoint(const u16 **_str)
+{
+	const u16 *src = *_str;
+	u32 cp = (u32) *(src++);
+
+	if (cp == 0)  /* null terminator, end of string. */
+		return 0;
+	/* Orphaned second half of surrogate pair? */
+	else if ((cp >= 0xDC00) && (cp <= 0xDFFF))
+		cp = UNICODE_BOGUS_CHAR_CODEPOINT;
+	else if ((cp >= 0xD800) && (cp <= 0xDBFF))  /* start surrogate pair! */
+	{
+		const u32 pair = (u32) *src;
+		if (pair == 0)
+			cp = UNICODE_BOGUS_CHAR_CODEPOINT;
+		else if ((pair < 0xDC00) || (pair > 0xDFFF))
+			cp = UNICODE_BOGUS_CHAR_CODEPOINT;
+		else
+		{
+			src++;  /* eat the other surrogate. */
+			cp = (((cp - 0xD800) << 10) | (pair - 0xDC00));
+		} /* else */
+	} /* else if */
+
+	*_str = src;
+	return cp;
+} /* utf16codepoint */
 
 static void PHYSFS_utf8ToUcs4(const char *src, u32 *dst, u64 len)
 {
@@ -254,6 +281,38 @@ static void PHYSFS_utf8ToUcs2(const char *src, u16 *dst, u64 len)
 
 	*dst = 0;
 } /* PHYSFS_utf8ToUcs2 */
+
+
+static void PHYSFS_utf8ToUtf16(const char *src, u16 *dst, u64 len)
+{
+	len -= sizeof (u16);   /* save room for null char. */
+	while (len >= sizeof (u16))
+	{
+		u32 cp = utf8codepoint(&src);
+		if (cp == 0)
+			break;
+		else if (cp == UNICODE_BOGUS_CHAR_VALUE)
+			cp = UNICODE_BOGUS_CHAR_CODEPOINT;
+
+		if (cp > 0xFFFF)  /* encode as surrogate pair */
+		{
+			if (len < (sizeof (u16) * 2))
+				break;  /* not enough room for the pair, stop now. */
+
+			cp -= 0x10000;  /* Make this a 20-bit value */
+
+			*(dst++) = 0xD800 + ((cp >> 10) & 0x3FF);
+			len -= sizeof (u16);
+
+			cp = 0xDC00 + (cp & 0x3FF);
+		} /* if */
+
+		*(dst++) = cp;
+		len -= sizeof (u16);
+	} /* while */
+
+	*dst = 0;
+} /* PHYSFS_utf8ToUtf16 */
 
 static void utf8fromcodepoint(u32 cp, char **_dst, u64 *_len)
 {
@@ -356,11 +415,28 @@ static void PHYSFS_utf8FromUcs2(const u16 *src, char *dst, u64 len)
 
 #undef UTF8FROMTYPE
 
+static void PHYSFS_utf8FromUtf16(const u16 *src, char *dst, u64 len)
+{
+	if (len == 0)
+		return;
+
+	len--;
+	while (len)
+	{
+		const u32 cp = utf16codepoint(&src);
+		if (!cp)
+			break;
+		utf8fromcodepoint(cp, &dst, &len);
+	} /* while */
+
+	*dst = '\0';
+} /* PHYSFS_utf8FromUtf16 */
+
 void utf8ToWchar(const char *in, wchar_t *out, const u64 len)
 {
 	switch ( sizeof(wchar_t) )
 	{
-		case 2:	PHYSFS_utf8ToUcs2(in, (u16 *) out, len); break;
+		case 2:	PHYSFS_utf8ToUtf16(in, (u16 *) out, len); break;
 		case 4: PHYSFS_utf8ToUcs4(in, (u32 *) out, len); break;
 	}
 }
@@ -369,7 +445,7 @@ void wcharToUtf8(const wchar_t *in, char *out, const u64 len)
 {
 	switch ( sizeof(wchar_t) )
 	{
-		case 2:	PHYSFS_utf8FromUcs2((const u16 *) in, out, len); break;
+		case 2:	PHYSFS_utf8FromUtf16((const u16 *) in, out, len); break;
 		case 4: PHYSFS_utf8FromUcs4((const u32 *) in, out, len); break;
 	}
 }
