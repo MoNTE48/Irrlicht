@@ -234,7 +234,7 @@ static u32 utf16codepoint(const u16 **_str)
 		else
 		{
 			src++;  /* eat the other surrogate. */
-			cp = (((cp - 0xD800) << 10) | (pair - 0xDC00));
+			cp = 0x10000 + (((cp - 0xD800) << 10) | (pair - 0xDC00));
 		} /* else */
 	} /* else if */
 
