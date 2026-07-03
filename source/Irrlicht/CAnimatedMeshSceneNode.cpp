@@ -830,9 +830,9 @@ void CAnimatedMeshSceneNode::setMesh(IAnimatedMesh* mesh)
 	}
 
 	// get materials and bounding box
+	IMesh* m = Mesh->getMesh(0,0);
 	Box = Mesh->getBoundingBox();
 
-	IMesh* m = Mesh->getMesh(0,0);
 	if (m)
 	{
 		Materials.clear();
