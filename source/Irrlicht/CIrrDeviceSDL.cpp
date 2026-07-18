@@ -81,6 +81,10 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 #endif
 
 	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+#if defined(_IRR_IOS_PLATFORM_)
+	// Landscape-only; prevents a UIScene view-rotation bug on iOS.
+	SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+#endif
 
 	SDLDeviceInstances++;
 
