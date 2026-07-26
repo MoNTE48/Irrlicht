@@ -64,6 +64,24 @@ int CIrrDeviceSDL::SDLDeviceInstances = 0;
 bool CIrrDeviceSDL::SimulateTouchEvents = false;
 bool CIrrDeviceSDL::RelativeMouseAvailable = false;
 
+static bool isPrimaryModifierPressed(const bool* keyboardState)
+{
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+	return keyboardState[SDL_SCANCODE_LGUI] || keyboardState[SDL_SCANCODE_RGUI];
+#else
+	return keyboardState[SDL_SCANCODE_LCTRL] || keyboardState[SDL_SCANCODE_RCTRL];
+#endif
+}
+
+static bool isPrimaryModifierPressed(SDL_Keymod mod)
+{
+#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
+	return (mod & SDL_KMOD_GUI) != 0;
+#else
+	return (mod & SDL_KMOD_CTRL) != 0;
+#endif
+}
+
 //! constructor
 CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param),
@@ -798,13 +816,7 @@ bool CIrrDeviceSDL::run()
 
 				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
-#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
-					keyboardState[SDL_SCANCODE_RGUI];
-#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
-					keyboardState[SDL_SCANCODE_RCTRL];
-#endif
+				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -857,13 +869,7 @@ bool CIrrDeviceSDL::run()
 
 				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
-#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
-					keyboardState[SDL_SCANCODE_RGUI];
-#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
-					keyboardState[SDL_SCANCODE_RCTRL];
-#endif
+				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -884,13 +890,7 @@ bool CIrrDeviceSDL::run()
 
 				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 
-#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LGUI] ||
-					keyboardState[SDL_SCANCODE_RGUI];
-#else
-				irrevent.MouseInput.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
-					keyboardState[SDL_SCANCODE_RCTRL];
-#endif
+				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
 				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
@@ -980,11 +980,7 @@ bool CIrrDeviceSDL::run()
 				irrevent.KeyInput.Key = key;
 				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_EVENT_KEY_DOWN);
 				irrevent.KeyInput.Shift = (SDL_event.key.mod & SDL_KMOD_SHIFT) != 0;
-#if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-				irrevent.KeyInput.Control = (SDL_event.key.mod & SDL_KMOD_GUI) != 0;
-#else
-				irrevent.KeyInput.Control = (SDL_event.key.mod & SDL_KMOD_CTRL) != 0;
-#endif
+				irrevent.KeyInput.Control = isPrimaryModifierPressed(SDL_event.key.mod);
 				postEventFromUser(irrevent);
 			}
 			break;
