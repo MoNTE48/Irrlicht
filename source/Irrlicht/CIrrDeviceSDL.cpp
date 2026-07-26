@@ -23,12 +23,6 @@
 #include <jni.h>
 #endif
 
-#if defined(_IRR_IOS_PLATFORM_)
-#import <UIKit/UIKit.h>
-#elif defined(_IRR_OSX_PLATFORM_)
-#import <AppKit/AppKit.h>
-#endif
-
 #ifdef _MSC_VER
 #pragma comment(lib, "SDL3.lib")
 #endif // _MSC_VER
@@ -102,6 +96,9 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 #if defined(_IRR_IOS_PLATFORM_)
 	// Landscape-only; prevents a UIScene view-rotation bug on iOS.
 	SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+#elif defined(_IRR_OSX_PLATFORM_)
+	// Enable AppleMomentumScrollSupported on macOS
+	SDL_SetHint(SDL_HINT_MAC_SCROLL_MOMENTUM, "1");
 #endif
 
 	SDLDeviceInstances++;
@@ -130,12 +127,6 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		{
 			os::Printer::log("Failed to init SDL sensor!", SDL_GetError());
 		}
-
-#if defined(_IRR_OSX_PLATFORM_)
-		// Enable AppleMomentumScrollSupported on macOS
-		[[NSUserDefaults standardUserDefaults] setBool: YES
-							   forKey: @"AppleMomentumScrollSupported"];
-#endif
 
 		RelativeMouseAvailable = supportsRelativeMouse();
 
@@ -569,11 +560,11 @@ void CIrrDeviceSDL::updateNativeScaleFromSystem()
 {
 	float scaleFactor = 1.0f;
 
-#if defined(_IRR_IOS_PLATFORM_)
-	scaleFactor = UIScreen.mainScreen.scale;
-#elif defined(_IRR_OSX_PLATFORM_)
-	scaleFactor = [[NSScreen mainScreen] backingScaleFactor];
-#endif
+	// Not SDL_GetDisplayContentScale, which is always 1.0 on Apple platforms
+	const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(SDL_GetPrimaryDisplay());
+
+	if (mode && mode->pixel_density > 0.0f)
+		scaleFactor = mode->pixel_density;
 
 	NativeScaleX = scaleFactor;
 	NativeScaleY = scaleFactor;
@@ -1747,7 +1738,7 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 	return env->CallStaticBooleanMethod(activityClass, supportsRelativeMouse);
 
 #elif defined(_IRR_IOS_PLATFORM_)
-	if (@available(iOS 14, *))
+	if (__builtin_available(iOS 14, *))
 		return true;
 	else
 		return false;
