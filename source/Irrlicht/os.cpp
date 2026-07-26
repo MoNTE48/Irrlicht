@@ -9,6 +9,7 @@
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 	#include <SDL3/SDL_endian.h>
+	#include <SDL3/SDL_timer.h>
 	#define bswap_16(X) SDL_Swap16(X)
 	#define bswap_32(X) SDL_Swap32(X)
 	#define bswap_64(X) SDL_Swap64(X)
@@ -87,6 +88,7 @@ namespace os
 #endif
 	}
 
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 	static LARGE_INTEGER HighPerformanceFreq;
 	static BOOL HighPerformanceTimerSupport = FALSE;
 	static BOOL MultiCore = FALSE;
@@ -132,6 +134,7 @@ namespace os
 
 		return GetTickCount();
 	}
+#endif // !_IRR_COMPILE_WITH_SDL_DEVICE_
 
 } // end namespace os
 
@@ -186,6 +189,7 @@ namespace os
 		__android_log_print(LogLevel, "Irrlicht", "%s\n", &message[start]);
 	}
 
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 	void Timer::initTimer(bool usePerformanceTimer)
 	{
 		initVirtualTimer();
@@ -197,6 +201,7 @@ namespace os
 		gettimeofday(&tv, 0);
 		return (u32)(tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	}
+#endif // !_IRR_COMPILE_WITH_SDL_DEVICE_
 } // end namespace os
 
 #elif defined(_IRR_EMSCRIPTEN_PLATFORM_)
@@ -239,6 +244,7 @@ namespace os
         emscripten_log(log_level, "%s", message);	// Note: not adding \n as emscripten_log seems to do that already.
 	}
 
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 	void Timer::initTimer(bool usePerformanceTimer)
 	{
 		initVirtualTimer();
@@ -249,6 +255,7 @@ namespace os
         double time = emscripten_get_now();
         return (u32)(time);
 	}
+#endif // !_IRR_COMPILE_WITH_SDL_DEVICE_
 } // end namespace os
 
 #else
@@ -272,6 +279,7 @@ namespace os
 		printf("%s\n", message);
 	}
 
+#if !defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
 	void Timer::initTimer(bool usePerformanceTimer)
 	{
 		initVirtualTimer();
@@ -283,12 +291,27 @@ namespace os
 		gettimeofday(&tv, 0);
 		return (u32)(tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	}
+#endif // !_IRR_COMPILE_WITH_SDL_DEVICE_
 } // end namespace os
 
 #endif // end linux / emscripten / android / windows
 
 namespace os
 {
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
+
+	void Timer::initTimer(bool usePerformanceTimer)
+	{
+		initVirtualTimer();
+	}
+
+	u32 Timer::getRealTime()
+	{
+		return (u32)SDL_GetTicks();
+	}
+
+#endif // _IRR_COMPILE_WITH_SDL_DEVICE_
+
 	// The platform independent implementation of the printer
 	ILogger* Printer::Logger = 0;
 
