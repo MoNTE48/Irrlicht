@@ -110,8 +110,25 @@
 #define _IRR_COMPILE_WITH_OSX_DEVICE_
 #endif
 #define NO_IRR_COMPILE_WITH_OGLES1_
-#define NO_IRR_COMPILE_WITH_OGLES2_
 #define NO_IRR_COMPILE_WITH_WEBGL1_
+#endif
+
+//! Apple platforms render the OpenGL ES 2.x path through ANGLE, which targets Metal.
+/** ANGLE and the system GL export the same symbols, and a two-level namespace binds
+each name to one library at link time, so EDT_METAL replaces the native driver
+rather than joining it. The build has to supply ANGLE's headers. */
+#define _IRR_COMPILE_WITH_ANGLE_
+#ifdef NO_IRR_COMPILE_WITH_ANGLE_
+#undef _IRR_COMPILE_WITH_ANGLE_
+#endif
+
+#if defined(_IRR_OSX_PLATFORM_)
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+#define NO_IRR_COMPILE_WITH_OPENGL_
+#else
+// macOS has no system OpenGL ES, so the ES driver needs ANGLE to be buildable.
+#define NO_IRR_COMPILE_WITH_OGLES2_
+#endif
 #endif
 #endif
 
@@ -302,8 +319,14 @@ define out. */
 //! Define required options for OpenGL ES 2.0 drivers.
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-#if !defined(_IRR_IOS_PLATFORM_)
+// ANGLE ships its own libGLESv2, so it needs the ext pointer path even on iOS.
+#if !defined(_IRR_IOS_PLATFORM_) || defined(_IRR_COMPILE_WITH_ANGLE_)
 #define _IRR_OGLES2_USE_EXTPOINTER_
+#endif
+// ANGLE's context is created through EGL against a CAMetalLayer rather than
+// through SDL, so the EGL manager is needed here too.
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && !defined(_IRR_COMPILE_WITH_EGL_MANAGER_)
+#define _IRR_COMPILE_WITH_EGL_MANAGER_
 #endif
 #elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_) || defined(_IRR_COMPILE_WITH_X11_DEVICE_) || defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_) || defined(__EMSCRIPTEN__)
 #define _IRR_OGLES2_USE_EXTPOINTER_

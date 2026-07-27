@@ -90,18 +90,30 @@ COGLES2Driver::COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFil
 }
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-COGLES2Driver::COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device)
+COGLES2Driver::COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager)
 	: CNullDriver(io, params.WindowSize), COGLES2ExtensionHandler(), CacheHandler(0),
 	Params(params), ResetRenderStates(true), LockRenderStateMode(false), AntiAlias(params.AntiAlias),
 	MaterialRenderer2DActive(0), MaterialRenderer2DTexture(0), MaterialRenderer2DNoTexture(0),
 	CurrentRenderMode(ERM_NONE), Transformation3DChanged(true),
 	OGLES2ShaderPath(params.OGLES2ShaderPath),
-	ColorFormat(ECF_R8G8B8), SDLDevice(device), ContextManager(0), DeviceType(EIDT_SDL)
+	ColorFormat(ECF_R8G8B8), SDLDevice(device), ContextManager(contextManager), DeviceType(EIDT_SDL)
 {
 #ifdef _DEBUG
 	setDebugName("COGLES2Driver");
 #endif
 
+	if (ContextManager)
+	{
+		// ANGLE path: the device already initialized the manager against the
+		// window's layer, so only the surface and context are left to create.
+		ContextManager->grab();
+		ContextManager->generateSurface();
+		ContextManager->generateContext();
+		ContextManager->activateContext(ContextManager->getContext(), false);
+	}
+
+	// Exposed even under ANGLE: nothing here reads the EGL data back, while
+	// callers need the window to drive text input.
 	ExposedData.OpenGLSDL.Window = device->getWindow();
 	ExposedData.OpenGLSDL.Context = device->getContext();
 }
@@ -150,6 +162,19 @@ COGLES2Driver::~COGLES2Driver()
 			VendorName = (const char*)vendor;
 		os::Printer::log(VendorName.c_str(), ELL_INFORMATION);
 
+		const GLubyte* renderer = glGetString(GL_RENDERER);
+		core::stringc rendererName = renderer ? (const char*)renderer : "";
+		os::Printer::log(rendererName.c_str(), ELL_INFORMATION);
+
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+		// Catch a silent fallback to the system GL driver.
+		if (Params.DriverType == EDT_METAL && rendererName.find("ANGLE") < 0)
+		{
+			os::Printer::log("EDT_METAL was requested but the context is not backed "
+				"by ANGLE - rendering is NOT going through Metal.", ELL_WARNING);
+		}
+#endif
+
 		// load extensions
 		initExtensions();
 
@@ -158,7 +183,9 @@ COGLES2Driver::~COGLES2Driver()
 		CacheHandler = new COGLES2CacheHandler(this);
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
-		if (DeviceType == EIDT_SDL)
+		// SDL's UIKit GL path renders into its own FBO; the ANGLE path draws
+		// into the EGL surface's default framebuffer instead.
+		if (!ContextManager && DeviceType == EIDT_SDL)
 		{
 			GLuint framebuffer = (GLuint)SDL_GetNumberProperty(
 					SDL_GetWindowProperties(SDLDevice->getWindow()),
@@ -492,7 +519,11 @@ COGLES2Driver::~COGLES2Driver()
 
 		CNullDriver::endScene();
 
+#if !defined(_IRR_COMPILE_WITH_ANGLE_)
+		// The swap below flushes implicitly, but keep this on native drivers.
+		// On ANGLE it costs an extra command buffer commit per frame.
 		glFlush();
+#endif
 
 		bool status = false;
 
@@ -500,7 +531,7 @@ COGLES2Driver::~COGLES2Driver()
 			status = ContextManager->swapBuffers();
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-		if (DeviceType == EIDT_SDL)
+		if (!ContextManager && DeviceType == EIDT_SDL)
 		{
 #ifdef _IRR_IOS_PLATFORM_
 			GLuint renderbuffer = (GLuint)SDL_GetNumberProperty(
@@ -1071,12 +1102,13 @@ COGLES2Driver::~COGLES2Driver()
 		f32 down = 2.f - (f32)poss.LowerRightCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 		f32 top = 2.f - (f32)poss.UpperLeftCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 
-		u16 indices[] = {0, 1, 2, 3};
+		// Strip order (TL, TR, BL, BR): Metal has no triangle fan, ANGLE emulates
+		// it by rebuilding indices on the CPU per draw call.
 		S3DVertex vertices[4];
-		vertices[0] = S3DVertex(left, top, 0, 0, 0, 1, color, tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
-		vertices[1] = S3DVertex(right, top, 0, 0, 0, 1, color, tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
+		vertices[0] = S3DVertex(left, down, 0, 0, 0, 1, color, tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+		vertices[1] = S3DVertex(left, top, 0, 0, 0, 1, color, tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
 		vertices[2] = S3DVertex(right, down, 0, 0, 0, 1, color, tcoords.LowerRightCorner.X, tcoords.LowerRightCorner.Y);
-		vertices[3] = S3DVertex(left, down, 0, 0, 0, 1, color, tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+		vertices[3] = S3DVertex(right, top, 0, 0, 0, 1, color, tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
@@ -1084,7 +1116,7 @@ COGLES2Driver::~COGLES2Driver()
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
 		glVertexAttribPointer(EVA_TCOORD0, 2, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].TCoords);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_TCOORD0);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
@@ -1146,12 +1178,11 @@ COGLES2Driver::~COGLES2Driver()
 		f32 down = 2.f - (f32)destRect.LowerRightCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 		f32 top = 2.f - (f32)destRect.UpperLeftCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 
-		u16 indices[] = { 0, 1, 2, 3 };
 		S3DVertex vertices[4];
-		vertices[0] = S3DVertex(left, top, 0, 0, 0, 1, useColor[0], tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
-		vertices[1] = S3DVertex(right, top, 0, 0, 0, 1, useColor[3], tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
+		vertices[0] = S3DVertex(left, down, 0, 0, 0, 1, useColor[1], tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+		vertices[1] = S3DVertex(left, top, 0, 0, 0, 1, useColor[0], tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
 		vertices[2] = S3DVertex(right, down, 0, 0, 0, 1, useColor[2], tcoords.LowerRightCorner.X, tcoords.LowerRightCorner.Y);
-		vertices[3] = S3DVertex(left, down, 0, 0, 0, 1, useColor[1], tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+		vertices[3] = S3DVertex(right, top, 0, 0, 0, 1, useColor[3], tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
@@ -1159,7 +1190,7 @@ COGLES2Driver::~COGLES2Driver()
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
 		glVertexAttribPointer(EVA_TCOORD0, 2, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].TCoords);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_TCOORD0);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
@@ -1181,20 +1212,19 @@ COGLES2Driver::~COGLES2Driver()
 
 		setRenderStates2DMode(false, true, true);
 
-		u16 quad2DIndices[] = { 0, 1, 2, 3 };
 		S3DVertex quad2DVertices[4];
 
-		quad2DVertices[0].Pos = core::vector3df(-1.f, 1.f, 0.f);
-		quad2DVertices[1].Pos = core::vector3df(1.f, 1.f, 0.f);
+		quad2DVertices[0].Pos = core::vector3df(-1.f, -1.f, 0.f);
+		quad2DVertices[1].Pos = core::vector3df(-1.f, 1.f, 0.f);
 		quad2DVertices[2].Pos = core::vector3df(1.f, -1.f, 0.f);
-		quad2DVertices[3].Pos = core::vector3df(-1.f, -1.f, 0.f);
+		quad2DVertices[3].Pos = core::vector3df(1.f, 1.f, 0.f);
 
 		f32 modificator = (flip) ? 1.f : 0.f;
 
-		quad2DVertices[0].TCoords = core::vector2df(0.f, 0.f + modificator);
-		quad2DVertices[1].TCoords = core::vector2df(1.f, 0.f + modificator);
+		quad2DVertices[0].TCoords = core::vector2df(0.f, 1.f - modificator);
+		quad2DVertices[1].TCoords = core::vector2df(0.f, 0.f + modificator);
 		quad2DVertices[2].TCoords = core::vector2df(1.f, 1.f - modificator);
-		quad2DVertices[3].TCoords = core::vector2df(0.f, 1.f - modificator);
+		quad2DVertices[3].TCoords = core::vector2df(1.f, 0.f + modificator);
 
 		quad2DVertices[0].Color = SColor(0xFFFFFFFF);
 		quad2DVertices[1].Color = SColor(0xFFFFFFFF);
@@ -1207,7 +1237,7 @@ COGLES2Driver::~COGLES2Driver()
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(quad2DVertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(quad2DVertices))[0].Color);
 		glVertexAttribPointer(EVA_TCOORD0, 2, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(quad2DVertices))[0].TCoords);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, quad2DIndices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_TCOORD0);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
@@ -1498,18 +1528,17 @@ COGLES2Driver::~COGLES2Driver()
 		f32 down = 2.f - (f32)pos.LowerRightCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 		f32 top = 2.f - (f32)pos.UpperLeftCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 
-		u16 indices[] = {0, 1, 2, 3};
 		S3DVertex vertices[4];
-		vertices[0] = S3DVertex(left, top, 0, 0, 0, 1, color, 0, 0);
-		vertices[1] = S3DVertex(right, top, 0, 0, 0, 1, color, 0, 0);
+		vertices[0] = S3DVertex(left, down, 0, 0, 0, 1, color, 0, 0);
+		vertices[1] = S3DVertex(left, top, 0, 0, 0, 1, color, 0, 0);
 		vertices[2] = S3DVertex(right, down, 0, 0, 0, 1, color, 0, 0);
-		vertices[3] = S3DVertex(left, down, 0, 0, 0, 1, color, 0, 0);
+		vertices[3] = S3DVertex(right, top, 0, 0, 0, 1, color, 0, 0);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
 	}
@@ -1546,18 +1575,17 @@ COGLES2Driver::~COGLES2Driver()
 		f32 down = 2.f - (f32)pos.LowerRightCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 		f32 top = 2.f - (f32)pos.UpperLeftCorner.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 
-		u16 indices[] = {0, 1, 2, 3};
 		S3DVertex vertices[4];
-		vertices[0] = S3DVertex(left, top, 0, 0, 0, 1, colorLeftUp, 0, 0);
-		vertices[1] = S3DVertex(right, top, 0, 0, 0, 1, colorRightUp, 0, 0);
+		vertices[0] = S3DVertex(left, down, 0, 0, 0, 1, colorLeftDown, 0, 0);
+		vertices[1] = S3DVertex(left, top, 0, 0, 0, 1, colorLeftUp, 0, 0);
 		vertices[2] = S3DVertex(right, down, 0, 0, 0, 1, colorRightDown, 0, 0);
-		vertices[3] = S3DVertex(left, down, 0, 0, 0, 1, colorLeftDown, 0, 0);
+		vertices[3] = S3DVertex(right, top, 0, 0, 0, 1, colorRightUp, 0, 0);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
 	}
@@ -1585,7 +1613,6 @@ COGLES2Driver::~COGLES2Driver()
 			f32 startY = 2.f - (f32)start.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 			f32 endY = 2.f - (f32)end.Y / (f32)renderTargetSize.Height * 2.f - 1.f;
 
-			u16 indices[] = {0, 1};
 			S3DVertex vertices[2];
 			vertices[0] = S3DVertex(startX, startY, 0, 0, 0, 1, color, 0, 0);
 			vertices[1] = S3DVertex(endX, endY, 0, 0, 0, 1, color, 1, 1);
@@ -1594,7 +1621,7 @@ COGLES2Driver::~COGLES2Driver()
 			glEnableVertexAttribArray(EVA_COLOR);
 			glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 			glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-			glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, indices);
+			glDrawArrays(GL_LINES, 0, 2);
 			glDisableVertexAttribArray(EVA_COLOR);
 			glDisableVertexAttribArray(EVA_POSITION);
 		}
@@ -2287,18 +2314,17 @@ COGLES2Driver::~COGLES2Driver()
 		glStencilFunc(GL_NOTEQUAL, 0, ~0);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-		u16 indices[] = {0, 1, 2, 3};
 		S3DVertex vertices[4];
-		vertices[0] = S3DVertex(-1.f, 1.f, 0.9f, 0, 0, 1, leftDownEdge, 0, 0);
-		vertices[1] = S3DVertex(1.f, 1.f, 0.9f, 0, 0, 1, leftUpEdge, 0, 0);
+		vertices[0] = S3DVertex(-1.f, -1.f, 0.9f, 0, 0, 1, rightDownEdge, 0, 0);
+		vertices[1] = S3DVertex(-1.f, 1.f, 0.9f, 0, 0, 1, leftDownEdge, 0, 0);
 		vertices[2] = S3DVertex(1.f, -1.f, 0.9f, 0, 0, 1, rightUpEdge, 0, 0);
-		vertices[3] = S3DVertex(-1.f, -1.f, 0.9f, 0, 0, 1, rightDownEdge, 0, 0);
+		vertices[3] = S3DVertex(1.f, 1.f, 0.9f, 0, 0, 1, leftUpEdge, 0, 0);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
 
@@ -2317,7 +2343,6 @@ COGLES2Driver::~COGLES2Driver()
 
 		setRenderStates3DMode();
 
-		u16 indices[] = {0, 1};
 		S3DVertex vertices[2];
 		vertices[0] = S3DVertex(start.X, start.Y, start.Z, 0, 0, 1, color, 0, 0);
 		vertices[1] = S3DVertex(end.X, end.Y, end.Z, 0, 0, 1, color, 0, 0);
@@ -2326,7 +2351,7 @@ COGLES2Driver::~COGLES2Driver()
 		glEnableVertexAttribArray(EVA_COLOR);
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-		glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, indices);
+		glDrawArrays(GL_LINES, 0, 2);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
 	}
@@ -2559,7 +2584,7 @@ COGLES2Driver::~COGLES2Driver()
 			GLuint frameBufferID = 0;
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_IOS_PLATFORM_)
-			if (DeviceType == EIDT_SDL)
+			if (!ContextManager && DeviceType == EIDT_SDL)
 			{
 				frameBufferID = (GLuint)SDL_GetNumberProperty(
 						SDL_GetWindowProperties(SDLDevice->getWindow()),
@@ -3071,7 +3096,9 @@ COGLES2Driver::~COGLES2Driver()
 		// it means they have to be equal. Note that this was different in OpenGL.
 		internalFormat = pixelFormat;
 
-#ifdef _IRR_IOS_PLATFORM_
+// Apple's GLES wants GL_RGBA here, but ANGLE exposes EXT_texture_format_BGRA8888,
+// where internalformat has to equal format.
+#if defined(_IRR_IOS_PLATFORM_) && !defined(_IRR_COMPILE_WITH_ANGLE_)
 		if (internalFormat == GL_BGRA)
 			internalFormat = GL_RGBA;
 #endif
@@ -3135,10 +3162,10 @@ IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::
 // -----------------------------------
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
-		io::IFileSystem* io, CIrrDeviceSDL* device)
+		io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager)
 {
 #ifdef _IRR_COMPILE_WITH_OGLES2_
-	COGLES2Driver* driver = new COGLES2Driver(params, io, device);
+	COGLES2Driver* driver = new COGLES2Driver(params, io, device, contextManager);
 	driver->genericDriverInit(params.WindowSize, params.Stencilbuffer);	// don't call in constructor, it uses virtual function calls of driver
 	return driver;
 #else

@@ -62,6 +62,10 @@ namespace video
 		//! WebGL1 friendly subset of OpenGL-ES 2.x driver for Emscripten
 		EDT_WEBGL1,
 
+		//! Metal device for iOS and macOS: the OpenGL-ES 2.x path over ANGLE.
+		/** Requires _IRR_COMPILE_WITH_ANGLE_ and linking against ANGLE. */
+		EDT_METAL,
+
 		//! No driver, just for counting the elements
 		EDT_COUNT
 	};
@@ -77,6 +81,7 @@ namespace video
 		"OpenGL ES1",
 		"OpenGL ES2",
 		"WebGL 1",
+		"Metal (ANGLE)",
 		0
 	};
 
@@ -91,6 +96,7 @@ namespace video
 		"ogles1",
 		"ogles2",
 		"webgl1",
+		"metal",
 		0
 	};
 

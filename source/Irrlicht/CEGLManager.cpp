@@ -14,6 +14,10 @@
 #include <android/native_activity.h>
 #endif
 
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+#include <EGL/eglext.h>
+#endif
+
 namespace irr
 {
 namespace video
@@ -44,7 +48,27 @@ bool CEGLManager::initialize(const SIrrlichtCreationParameters& params, const SE
         return true;
 
 	// Window is depend on platform.
-#if defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_)
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	// ANGLE draws into a CAMetalLayer. The Metal backend has to be requested
+	// explicitly, otherwise ANGLE is free to pick another one.
+	EglWindow = (NativeWindowType)Data.OpenGLOSX.Layer;
+	{
+		const EGLint displayAttribs[] =
+		{
+			EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_METAL_ANGLE,
+			EGL_NONE
+		};
+		// The EXT entry point takes 32-bit attributes; the EGL 1.5 one takes
+		// EGLAttrib, and mixing them makes ANGLE misparse the pairs.
+		PFNEGLGETPLATFORMDISPLAYEXTPROC getPlatformDisplay =
+			(PFNEGLGETPLATFORMDISPLAYEXTPROC)eglGetProcAddress("eglGetPlatformDisplayEXT");
+		if (getPlatformDisplay)
+			EglDisplay = getPlatformDisplay(EGL_PLATFORM_ANGLE_ANGLE,
+					(void*)EGL_DEFAULT_DISPLAY, displayAttribs);
+		else
+			os::Printer::log("eglGetPlatformDisplayEXT is missing.", ELL_ERROR);
+	}
+#elif defined(_IRR_COMPILE_WITH_WINDOWS_DEVICE_)
 	EglWindow = (NativeWindowType)Data.OpenGLWin32.HWnd;
 	Data.OpenGLWin32.HDc = GetDC((HWND)EglWindow);
 	EglDisplay = eglGetDisplay((NativeDisplayType)Data.OpenGLWin32.HDc);
@@ -183,6 +207,12 @@ EGLConfig CEGLManager::chooseConfig(EConfigStyle confStyle)
 	case EDT_WEBGL1:
 		eglOpenGLBIT = EGL_OPENGL_ES2_BIT;
 		break;
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	case EDT_METAL:
+		// ANGLE on Metal provides ES 3.0.
+		eglOpenGLBIT = EGL_OPENGL_ES3_BIT;
+		break;
+#endif
 	default:
 		break;
 	}
@@ -535,6 +565,11 @@ bool CEGLManager::generateContext()
 	case EDT_WEBGL1:
 		OpenGLESVersion = 2;
 		break;
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	case EDT_METAL:
+		OpenGLESVersion = 3;
+		break;
+#endif
 	default:
 		break;
 	}

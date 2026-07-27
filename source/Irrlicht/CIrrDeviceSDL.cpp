@@ -18,6 +18,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SIrrCreationParameters.h"
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+#include <SDL3/SDL_metal.h>
+#include "CEGLManager.h"
+#endif
 
 #if defined(_IRR_ANDROID_PLATFORM_)
 #include <jni.h>
@@ -38,7 +42,7 @@ namespace irr
 
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
 		IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
-				io::IFileSystem* io, CIrrDeviceSDL* device);
+				io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
 #endif
 
 #if defined(_IRR_COMPILE_WITH_OGLES1_)
@@ -76,10 +80,27 @@ static bool isPrimaryModifierPressed(SDL_Keymod mod)
 #endif
 }
 
+//! Driver types rendering into an SDL OpenGL context (ANGLE included).
+static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
+{
+	return driverType == video::EDT_OPENGL ||
+		driverType == video::EDT_OGLES2 ||
+		driverType == video::EDT_OGLES1;
+}
+
+//! Driver types that render into a window backed by a CAMetalLayer.
+static bool usesMetalLayer(video::E_DRIVER_TYPE driverType)
+{
+	return driverType == video::EDT_METAL;
+}
+
 //! constructor
 CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param),
 	Window(0), Context(0),
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	MetalView(0), ContextManager(0),
+#endif
 	MouseX(0), MouseY(0), MouseButtonStates(0), IgnoreWarpMouseEvent(false),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
 	WindowHasFocus(false), WindowMinimized(false),
@@ -188,9 +209,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		if (!success)
 			return;
 
-		if (CreationParams.DriverType == video::EDT_OPENGL ||
-			CreationParams.DriverType == video::EDT_OGLES2 ||
-			CreationParams.DriverType == video::EDT_OGLES1)
+		if (usesOpenGLContext(CreationParams.DriverType))
 		{
 			if (param.Vsync)
 			{
@@ -242,6 +261,20 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 		SDL_GL_DestroyContext(Context);
 		Context = NULL;
 	}
+
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	if (ContextManager)
+	{
+		ContextManager->drop();
+		ContextManager = NULL;
+	}
+
+	if (MetalView)
+	{
+		SDL_Metal_DestroyView(MetalView);
+		MetalView = NULL;
+	}
+#endif
 
 	if (Window)
 	{
@@ -429,9 +462,12 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		SDL_Flags |= SDL_WINDOW_RESIZABLE;
 	}
 
-	if (CreationParams.DriverType == video::EDT_OPENGL ||
-		CreationParams.DriverType == video::EDT_OGLES2 ||
-		CreationParams.DriverType == video::EDT_OGLES1)
+	if (usesMetalLayer(CreationParams.DriverType))
+	{
+		SDL_Flags |= SDL_WINDOW_METAL | SDL_WINDOW_HIGH_PIXEL_DENSITY;
+	}
+
+	if (usesOpenGLContext(CreationParams.DriverType))
 	{
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
 		SDL_Flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
@@ -496,9 +532,10 @@ bool CIrrDeviceSDL::createWindowWithContext()
 							roundf((float)Width / NativeScaleX),
 							roundf((float)Height / NativeScaleY), SDL_Flags);
 
-	if (CreationParams.DriverType == video::EDT_OPENGL ||
-		CreationParams.DriverType == video::EDT_OGLES2 ||
-		CreationParams.DriverType == video::EDT_OGLES1)
+	if (!Window)
+		os::Printer::log("SDL_CreateWindow failed", SDL_GetError(), ELL_ERROR);
+
+	if (usesOpenGLContext(CreationParams.DriverType))
 	{
 		if (Window)
 		{
@@ -526,9 +563,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		}
 	}
 
-	if (CreationParams.DriverType == video::EDT_OPENGL ||
-		CreationParams.DriverType == video::EDT_OGLES2 ||
-		CreationParams.DriverType == video::EDT_OGLES1)
+	if (usesOpenGLContext(CreationParams.DriverType))
 	{
 		if (!Context)
 		{
@@ -537,6 +572,36 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			return false;
 		}
 	}
+
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+	if (usesMetalLayer(CreationParams.DriverType))
+	{
+		if (!Window)
+			return false;
+
+		MetalView = SDL_Metal_CreateView(Window);
+		if (!MetalView)
+		{
+			os::Printer::log("Could not create Metal view!", SDL_GetError(), ELL_ERROR);
+			SDL_DestroyWindow(Window);
+			Window = NULL;
+			return false;
+		}
+
+		video::SExposedVideoData data;
+		data.OpenGLOSX.Layer = SDL_Metal_GetLayer(MetalView);
+		data.OpenGLOSX.Window = Window;
+
+		ContextManager = new video::CEGLManager();
+		if (!ContextManager->initialize(CreationParams, data))
+		{
+			os::Printer::log("Could not initialize ANGLE EGL context!", ELL_ERROR);
+			SDL_DestroyWindow(Window);
+			Window = NULL;
+			return false;
+		}
+	}
+#endif
 
 	updateNativeScale();
 
@@ -579,9 +644,8 @@ void CIrrDeviceSDL::updateNativeScale()
 	int real_width = width;
 	int real_height = height;
 
-	if (CreationParams.DriverType == video::EDT_OPENGL ||
-		CreationParams.DriverType == video::EDT_OGLES2 ||
-		CreationParams.DriverType == video::EDT_OGLES1)
+	if (usesOpenGLContext(CreationParams.DriverType) ||
+		usesMetalLayer(CreationParams.DriverType))
 	{
 		SDL_GetWindowSizeInPixels(Window, &real_width, &real_height);
 	}
@@ -643,9 +707,18 @@ void CIrrDeviceSDL::createDriver()
 
 	case video::EDT_OGLES2:
 #ifdef _IRR_COMPILE_WITH_OGLES2_
-		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this);
+		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this, 0);
 #else
 		os::Printer::log("No OpenGL ES2 support compiled in.", ELL_ERROR);
+#endif
+		break;
+
+	case video::EDT_METAL:
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(_IRR_COMPILE_WITH_OGLES2_)
+		// ANGLE hands out a plain GLES2 context, so the ES2 driver is reused as is.
+		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this, ContextManager);
+#else
+		os::Printer::log("No Metal (ANGLE) support compiled in.", ELL_ERROR);
 #endif
 		break;
 

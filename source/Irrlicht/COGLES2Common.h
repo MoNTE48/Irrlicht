@@ -9,7 +9,13 @@
 
 #ifdef _IRR_COMPILE_WITH_OGLES2_
 
-#if defined(_IRR_IOS_PLATFORM_)
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+// ANGLE's own headers; the platform's would resolve to the system driver.
+#define GL_GLEXT_PROTOTYPES 1
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <EGL/eglplatform.h>
+#elif defined(_IRR_IOS_PLATFORM_)
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #elif defined(_IRR_COMPILE_WITH_ANDROID_DEVICE_)

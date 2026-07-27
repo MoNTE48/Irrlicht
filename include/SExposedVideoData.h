@@ -75,6 +75,9 @@ struct SExposedVideoData
 
         //! The NSWindow object.
         void* Window;
+
+        //! The CAMetalLayer used as the native window when rendering via ANGLE.
+        void* Layer;
     };
 	
 	struct SOpenGLFB

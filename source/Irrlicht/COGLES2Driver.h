@@ -53,7 +53,7 @@ namespace video
 	{
 		friend class COpenGLCoreTexture<COGLES2Driver>;
 		friend IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, IContextManager* contextManager);
-		friend IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device);
+		friend IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
 
 	protected:
 		//! constructor (use createOGLES2Driver instead)
@@ -62,7 +62,7 @@ namespace video
 	public:
 
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-		COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device);
+		COGLES2Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
 #endif
 
 		//! destructor

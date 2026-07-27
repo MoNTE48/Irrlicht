@@ -388,6 +388,12 @@ namespace irr
 #else
 					return false;
 #endif
+				case video::EDT_METAL:
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(_IRR_COMPILE_WITH_OGLES2_)
+					return true;
+#else
+					return false;
+#endif
 				default:
 					return false;
 			}
