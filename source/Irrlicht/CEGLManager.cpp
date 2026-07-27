@@ -163,8 +163,7 @@ bool CEGLManager::generateSurface()
 		eglBindAPI(EGL_OPENGL_ES_API);
 #endif
 
-    if (Params.Vsync)
-		eglSwapInterval(EglDisplay, 1);
+	eglSwapInterval(EglDisplay, Params.Vsync ? 1 : 0);
 
     return true;
 }
