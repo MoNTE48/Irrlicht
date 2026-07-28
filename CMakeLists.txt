@@ -76,24 +76,11 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CGUITreeView.cpp
 	source/Irrlicht/CGUIWindow.cpp
 	source/Irrlicht/CImage.cpp
-	source/Irrlicht/CImageLoaderBMP.cpp
-	source/Irrlicht/CImageLoaderDDS.cpp
 	source/Irrlicht/CImageLoaderJPG.cpp
-	source/Irrlicht/CImageLoaderPCX.cpp
 	source/Irrlicht/CImageLoaderPNG.cpp
-	source/Irrlicht/CImageLoaderPPM.cpp
-	source/Irrlicht/CImageLoaderPSD.cpp
-	source/Irrlicht/CImageLoaderPVR.cpp
-	source/Irrlicht/CImageLoaderRGB.cpp
 	source/Irrlicht/CImageLoaderTGA.cpp
-	source/Irrlicht/CImageLoaderWAL.cpp
-	source/Irrlicht/CImageWriterBMP.cpp
 	source/Irrlicht/CImageWriterJPG.cpp
-	source/Irrlicht/CImageWriterPCX.cpp
 	source/Irrlicht/CImageWriterPNG.cpp
-	source/Irrlicht/CImageWriterPPM.cpp
-	source/Irrlicht/CImageWriterPSD.cpp
-	source/Irrlicht/CImageWriterTGA.cpp
 	source/Irrlicht/CIrrDeviceConsole.cpp
 	source/Irrlicht/CIrrDeviceFB.cpp
 	source/Irrlicht/CIrrDeviceLinux.cpp

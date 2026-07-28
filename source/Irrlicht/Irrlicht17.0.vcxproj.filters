@@ -792,58 +792,19 @@
     <ClInclude Include="IImagePresenter.h">
       <Filter>Irrlicht\video\Null</Filter>
     </ClInclude>
-    <ClInclude Include="CImageWriterBMP.h">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClInclude>
     <ClInclude Include="CImageWriterJPG.h">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageWriterPCX.h">
       <Filter>Irrlicht\video\Null\Writer</Filter>
     </ClInclude>
     <ClInclude Include="CImageWriterPNG.h">
       <Filter>Irrlicht\video\Null\Writer</Filter>
     </ClInclude>
-    <ClInclude Include="CImageWriterPPM.h">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageWriterPSD.h">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageWriterTGA.h">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderBMP.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderDDS.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
     <ClInclude Include="CImageLoaderJPG.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderPCX.h">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClInclude>
     <ClInclude Include="CImageLoaderPNG.h">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="CImageLoaderPPM.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderPSD.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderPVR.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderRGB.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
     <ClInclude Include="CImageLoaderTGA.h">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="CImageLoaderWAL.h">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClInclude>
     <ClInclude Include="CSoftwareTexture2.h">
@@ -1394,58 +1355,19 @@
     <ClCompile Include="CNullDriver.cpp">
       <Filter>Irrlicht\video\Null</Filter>
     </ClCompile>
-    <ClCompile Include="CImageWriterBMP.cpp">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClCompile>
     <ClCompile Include="CImageWriterJPG.cpp">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageWriterPCX.cpp">
       <Filter>Irrlicht\video\Null\Writer</Filter>
     </ClCompile>
     <ClCompile Include="CImageWriterPNG.cpp">
       <Filter>Irrlicht\video\Null\Writer</Filter>
     </ClCompile>
-    <ClCompile Include="CImageWriterPPM.cpp">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageWriterPSD.cpp">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageWriterTGA.cpp">
-      <Filter>Irrlicht\video\Null\Writer</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderBMP.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderDDS.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
     <ClCompile Include="CImageLoaderJPG.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderPCX.cpp">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClCompile>
     <ClCompile Include="CImageLoaderPNG.cpp">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="CImageLoaderPPM.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderPSD.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderPVR.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderRGB.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
     <ClCompile Include="CImageLoaderTGA.cpp">
-      <Filter>Irrlicht\video\Null\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CImageLoaderWAL.cpp">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClCompile>
     <ClCompile Include="CLogger.cpp">

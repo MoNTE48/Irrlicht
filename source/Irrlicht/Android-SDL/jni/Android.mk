@@ -83,7 +83,6 @@ LOCAL_SRC_FILES := \
 					CImageLoaderTGA.cpp \
 					CImageWriterJPG.cpp \
 					CImageWriterPNG.cpp \
-					CImageWriterTGA.cpp \
 					CIrrDeviceSDL.cpp \
 					CIrrDeviceStub.cpp \
 					CLightSceneNode.cpp \
