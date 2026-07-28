@@ -25,7 +25,6 @@ endif()
 set(IRRLICHT_SOURCES
 	source/Irrlicht/minizip-ng/mz_crypt.c
 	source/Irrlicht/minizip-ng/mz_crypt_openssl.c
-	source/Irrlicht/burning_shader_color.cpp
 	source/Irrlicht/C3DSMeshFileLoader.cpp
 	source/Irrlicht/CAnimatedMeshHalfLife.cpp
 	source/Irrlicht/CAnimatedMeshMD2.cpp
@@ -37,7 +36,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CBillboardSceneNode.cpp
 	source/Irrlicht/CBoneSceneNode.cpp
 	source/Irrlicht/CBSPMeshFileLoader.cpp
-	source/Irrlicht/CBurningShader_Raster_Reference.cpp
 	source/Irrlicht/CCameraSceneNode.cpp
 	source/Irrlicht/CColladaFileLoader.cpp
 	source/Irrlicht/CColladaMeshWriter.cpp
@@ -54,7 +52,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CDefaultGUIElementFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeAnimatorFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeFactory.cpp
-	source/Irrlicht/CDepthBuffer.cpp
 	source/Irrlicht/CDMFLoader.cpp
 	source/Irrlicht/CDummyTransformationSceneNode.cpp
 	source/Irrlicht/CEGLManager.cpp
@@ -197,10 +194,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CSkyBoxSceneNode.cpp
 	source/Irrlicht/CSkyDomeSceneNode.cpp
 	source/Irrlicht/CSMFMeshFileLoader.cpp
-	source/Irrlicht/CSoftwareDriver2.cpp
-	source/Irrlicht/CSoftwareDriver.cpp
-	source/Irrlicht/CSoftwareTexture2.cpp
-	source/Irrlicht/CSoftwareTexture.cpp
 	source/Irrlicht/CSphereSceneNode.cpp
 	source/Irrlicht/CSTLMeshFileLoader.cpp
 	source/Irrlicht/CSTLMeshWriter.cpp
@@ -208,40 +201,8 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CTerrainSceneNode.cpp
 	source/Irrlicht/CTerrainTriangleSelector.cpp
 	source/Irrlicht/CTextSceneNode.cpp
-	source/Irrlicht/CTRFlat.cpp
-	source/Irrlicht/CTRFlatWire.cpp
-	source/Irrlicht/CTRGouraud2.cpp
-	source/Irrlicht/CTRGouraudAlphaNoZ2.cpp
-	source/Irrlicht/CTRGouraud.cpp
-	source/Irrlicht/CTRGouraudNoZ2.cpp
-	source/Irrlicht/CTRGouraudWire.cpp
 	source/Irrlicht/CTriangleBBSelector.cpp
 	source/Irrlicht/CTriangleSelector.cpp
-	source/Irrlicht/CTRNormalMap.cpp
-	source/Irrlicht/CTRParallaxMap.cpp
-	source/Irrlicht/CTRStencilShadow.cpp
-	source/Irrlicht/CTRTextureBlend.cpp
-	source/Irrlicht/CTRTextureDetailMap2.cpp
-	source/Irrlicht/CTRTextureFlat.cpp
-	source/Irrlicht/CTRTextureFlatWire.cpp
-	source/Irrlicht/CTRTextureGouraud2.cpp
-	source/Irrlicht/CTRTextureGouraudAdd2.cpp
-	source/Irrlicht/CTRTextureGouraudAdd.cpp
-	source/Irrlicht/CTRTextureGouraudAddNoZ2.cpp
-	source/Irrlicht/CTRTextureGouraudAlpha.cpp
-	source/Irrlicht/CTRTextureGouraudAlphaNoZ.cpp
-	source/Irrlicht/CTRTextureGouraud.cpp
-	source/Irrlicht/CTRTextureGouraudNoZ2.cpp
-	source/Irrlicht/CTRTextureGouraudNoZ.cpp
-	source/Irrlicht/CTRTextureGouraudVertexAlpha2.cpp
-	source/Irrlicht/CTRTextureGouraudWire.cpp
-	source/Irrlicht/CTRTextureLightMap2_Add.cpp
-	source/Irrlicht/CTRTextureLightMap2_M1.cpp
-	source/Irrlicht/CTRTextureLightMap2_M2.cpp
-	source/Irrlicht/CTRTextureLightMap2_M4.cpp
-	source/Irrlicht/CTRTextureLightMapGouraud2_M4.cpp
-	source/Irrlicht/CTRTextureWire2.cpp
-	source/Irrlicht/CTR_transparent_reflection_2_layer.cpp
 	source/Irrlicht/CVideoModeList.cpp
 	source/Irrlicht/CVolumeLightSceneNode.cpp
 	source/Irrlicht/CWADReader.cpp
@@ -252,9 +213,7 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CXMeshFileLoader.cpp
 	source/Irrlicht/CXMLReader.cpp
 	source/Irrlicht/CXMLWriter.cpp
-	source/Irrlicht/CZBuffer.cpp
 	source/Irrlicht/CZipReader.cpp
-	source/Irrlicht/IBurningShader.cpp
 	source/Irrlicht/Irrlicht.cpp
 	source/Irrlicht/irrXML.cpp
 	source/Irrlicht/leakHunter.cpp
