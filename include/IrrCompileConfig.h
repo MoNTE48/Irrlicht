@@ -229,12 +229,6 @@ If not defined, Windows Multimedia library is used, which offers also broad supp
 #undef _IRR_COMPILE_WITH_DIRECTINPUT_JOYSTICK_
 #endif
 
-//! enabled Direct3D 9
-//#define _IRR_COMPILE_WITH_DIRECT3D_9_
-#ifdef NO_IRR_COMPILE_WITH_DIRECT3D_9_
-#undef _IRR_COMPILE_WITH_DIRECT3D_9_
-#endif
-
 #endif
 
 //! Define _IRR_COMPILE_WITH_OPENGL_ to compile the Irrlicht engine with OpenGL.

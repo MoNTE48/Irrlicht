@@ -42,13 +42,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CColorConverter.cpp
 	source/Irrlicht/CCSMLoader.cpp
 	source/Irrlicht/CCubeSceneNode.cpp
-	source/Irrlicht/CD3D9Driver.cpp
-	source/Irrlicht/CD3D9HLSLMaterialRenderer.cpp
-	source/Irrlicht/CD3D9NormalMapRenderer.cpp
-	source/Irrlicht/CD3D9ParallaxMapRenderer.cpp
-	source/Irrlicht/CD3D9RenderTarget.cpp
-	source/Irrlicht/CD3D9ShaderMaterialRenderer.cpp
-	source/Irrlicht/CD3D9Texture.cpp
 	source/Irrlicht/CDefaultGUIElementFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeAnimatorFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeFactory.cpp

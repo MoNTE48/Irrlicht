@@ -915,27 +915,6 @@
     <ClInclude Include="CImageLoaderWAL.h">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D9Driver.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9HLSLMaterialRenderer.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9MaterialRenderer.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9NormalMapRenderer.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9ParallaxMapRenderer.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9ShaderMaterialRenderer.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9Texture.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClInclude>
     <ClInclude Include="CSoftwareTexture2.h">
       <Filter>Irrlicht\video\Burning Video</Filter>
     </ClInclude>
@@ -1152,9 +1131,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\IRenderTarget.h">
       <Filter>include\video</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9RenderTarget.h">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
     </ClInclude>
     <ClInclude Include="CB3DMeshWriter.h">
       <Filter>Irrlicht\scene\writers</Filter>
@@ -1616,24 +1592,6 @@
     <ClCompile Include="CImageLoaderWAL.cpp">
       <Filter>Irrlicht\video\Null\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D9Driver.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9HLSLMaterialRenderer.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9NormalMapRenderer.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9ParallaxMapRenderer.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9ShaderMaterialRenderer.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9Texture.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
-    </ClCompile>
     <ClCompile Include="CLogger.cpp">
       <Filter>Irrlicht\irr</Filter>
     </ClCompile>
@@ -1813,9 +1771,6 @@
     </ClCompile>
     <ClCompile Include="CSMFMeshFileLoader.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9RenderTarget.cpp">
-      <Filter>Irrlicht\video\Direct3D9</Filter>
     </ClCompile>
     <ClCompile Include="CB3DMeshWriter.cpp">
       <Filter>Irrlicht\scene\writers</Filter>

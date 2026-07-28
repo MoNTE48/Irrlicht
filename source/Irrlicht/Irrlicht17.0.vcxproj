@@ -793,7 +793,6 @@
     <ClInclude Include="CB3DMeshWriter.h" />
     <ClInclude Include="CBlit.h" />
     <ClInclude Include="CBufferRenderNode.h" />
-    <ClInclude Include="CD3D9RenderTarget.h" />
     <ClInclude Include="CDefaultSceneNodeAnimatorFactory.h" />
     <ClInclude Include="CDefaultSceneNodeFactory.h" />
     <ClInclude Include="CGeometryCreator.h" />
@@ -925,13 +924,6 @@
     <ClInclude Include="CImageLoaderRGB.h" />
     <ClInclude Include="CImageLoaderTGA.h" />
     <ClInclude Include="CImageLoaderWAL.h" />
-    <ClInclude Include="CD3D9Driver.h" />
-    <ClInclude Include="CD3D9HLSLMaterialRenderer.h" />
-    <ClInclude Include="CD3D9MaterialRenderer.h" />
-    <ClInclude Include="CD3D9NormalMapRenderer.h" />
-    <ClInclude Include="CD3D9ParallaxMapRenderer.h" />
-    <ClInclude Include="CD3D9ShaderMaterialRenderer.h" />
-    <ClInclude Include="CD3D9Texture.h" />
     <ClInclude Include="CSoftwareTexture2.h" />
     <ClInclude Include="SoftwareDriver2_compile_config.h" />
     <ClInclude Include="SoftwareDriver2_helper.h" />
@@ -1002,7 +994,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CB3DMeshWriter.cpp" />
-    <ClCompile Include="CD3D9RenderTarget.cpp" />
     <ClCompile Include="CDefaultSceneNodeAnimatorFactory.cpp" />
     <ClCompile Include="CDefaultSceneNodeFactory.cpp" />
     <ClCompile Include="CGeometryCreator.cpp" />
@@ -1120,12 +1111,6 @@
     <ClCompile Include="CImageLoaderRGB.cpp" />
     <ClCompile Include="CImageLoaderTGA.cpp" />
     <ClCompile Include="CImageLoaderWAL.cpp" />
-    <ClCompile Include="CD3D9Driver.cpp" />
-    <ClCompile Include="CD3D9HLSLMaterialRenderer.cpp" />
-    <ClCompile Include="CD3D9NormalMapRenderer.cpp" />
-    <ClCompile Include="CD3D9ParallaxMapRenderer.cpp" />
-    <ClCompile Include="CD3D9ShaderMaterialRenderer.cpp" />
-    <ClCompile Include="CD3D9Texture.cpp" />
     <ClCompile Include="CLogger.cpp" />
     <ClCompile Include="COSOperator.cpp" />
     <ClCompile Include="Irrlicht.cpp" />
