@@ -28,27 +28,20 @@ LOCAL_C_INCLUDES += $(SDL_PATH)/include
 LOCAL_SRC_FILES := \
 					minizip-ng/mz_crypt.c \
 					minizip-ng/mz_crypt_openssl.c \
-					C3DSMeshFileLoader.cpp \
 					CAnimatedMeshHalfLife.cpp \
 					CAnimatedMeshMD2.cpp \
 					CAnimatedMeshMD3.cpp \
 					CAnimatedMeshSceneNode.cpp \
 					CAttributes.cpp \
 					CB3DMeshFileLoader.cpp \
-					CB3DMeshWriter.cpp \
 					CBillboardSceneNode.cpp \
 					CBoneSceneNode.cpp \
-					CBSPMeshFileLoader.cpp \
 					CCameraSceneNode.cpp \
-					CColladaFileLoader.cpp \
-					CColladaMeshWriter.cpp \
 					CColorConverter.cpp \
-					CCSMLoader.cpp \
 					CCubeSceneNode.cpp \
 					CDefaultGUIElementFactory.cpp \
 					CDefaultSceneNodeAnimatorFactory.cpp \
 					CDefaultSceneNodeFactory.cpp \
-					CDMFLoader.cpp \
 					CDummyTransformationSceneNode.cpp \
 					CEmptySceneNode.cpp \
 					CFileList.cpp \
@@ -93,15 +86,9 @@ LOCAL_SRC_FILES := \
 					CImageWriterTGA.cpp \
 					CIrrDeviceSDL.cpp \
 					CIrrDeviceStub.cpp \
-					CIrrMeshFileLoader.cpp \
-					CIrrMeshWriter.cpp \
 					CLightSceneNode.cpp \
 					CLimitReadFile.cpp \
-					CLMTSMeshFileLoader.cpp \
 					CLogger.cpp \
-					CLWOMeshFileLoader.cpp \
-					CMD2MeshFileLoader.cpp \
-					CMD3MeshFileLoader.cpp \
 					CMemoryFile.cpp \
 					CMeshCache.cpp \
 					CMeshManipulator.cpp \
@@ -109,13 +96,9 @@ LOCAL_SRC_FILES := \
 					CMeshTextureLoader.cpp \
 					CMetaTriangleSelector.cpp \
 					CMountPointReader.cpp \
-					CMS3DMeshFileLoader.cpp \
-					CMY3DMeshFileLoader.cpp \
 					CNPKReader.cpp \
 					CNullDriver.cpp \
 					COBJMeshFileLoader.cpp \
-					COBJMeshWriter.cpp \
-					COCTLoader.cpp \
 					COctreeSceneNode.cpp \
 					COctreeTriangleSelector.cpp \
 					COGLES2Driver.cpp \
@@ -127,7 +110,6 @@ LOCAL_SRC_FILES := \
 					COGLES2Renderer2D.cpp \
 					COGLESDriver.cpp \
 					COGLESExtensionHandler.cpp \
-					COgreMeshFileLoader.cpp \
 					COpenGLCacheHandler.cpp \
 					COpenGLDriver.cpp \
 					COpenGLExtensionHandler.cpp \
@@ -150,11 +132,7 @@ LOCAL_SRC_FILES := \
 					CParticleScaleAffector.cpp \
 					CParticleSphereEmitter.cpp \
 					CParticleSystemSceneNode.cpp \
-					CPLYMeshFileLoader.cpp \
-					CPLYMeshWriter.cpp \
 					CProfiler.cpp \
-					CQ3LevelMesh.cpp \
-					CQuake3ShaderSceneNode.cpp \
 					CReadFile.cpp \
 					CSceneCollisionManager.cpp \
 					CSceneLoaderIrr.cpp \
@@ -172,10 +150,7 @@ LOCAL_SRC_FILES := \
 					CSkinnedMesh.cpp \
 					CSkyBoxSceneNode.cpp \
 					CSkyDomeSceneNode.cpp \
-					CSMFMeshFileLoader.cpp \
 					CSphereSceneNode.cpp \
-					CSTLMeshFileLoader.cpp \
-					CSTLMeshWriter.cpp \
 					CTarReader.cpp \
 					CTerrainSceneNode.cpp \
 					CTerrainTriangleSelector.cpp \

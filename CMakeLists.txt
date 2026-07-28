@@ -25,27 +25,20 @@ endif()
 set(IRRLICHT_SOURCES
 	source/Irrlicht/minizip-ng/mz_crypt.c
 	source/Irrlicht/minizip-ng/mz_crypt_openssl.c
-	source/Irrlicht/C3DSMeshFileLoader.cpp
 	source/Irrlicht/CAnimatedMeshHalfLife.cpp
 	source/Irrlicht/CAnimatedMeshMD2.cpp
 	source/Irrlicht/CAnimatedMeshMD3.cpp
 	source/Irrlicht/CAnimatedMeshSceneNode.cpp
 	source/Irrlicht/CAttributes.cpp
 	source/Irrlicht/CB3DMeshFileLoader.cpp
-	source/Irrlicht/CB3DMeshWriter.cpp
 	source/Irrlicht/CBillboardSceneNode.cpp
 	source/Irrlicht/CBoneSceneNode.cpp
-	source/Irrlicht/CBSPMeshFileLoader.cpp
 	source/Irrlicht/CCameraSceneNode.cpp
-	source/Irrlicht/CColladaFileLoader.cpp
-	source/Irrlicht/CColladaMeshWriter.cpp
 	source/Irrlicht/CColorConverter.cpp
-	source/Irrlicht/CCSMLoader.cpp
 	source/Irrlicht/CCubeSceneNode.cpp
 	source/Irrlicht/CDefaultGUIElementFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeAnimatorFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeFactory.cpp
-	source/Irrlicht/CDMFLoader.cpp
 	source/Irrlicht/CDummyTransformationSceneNode.cpp
 	source/Irrlicht/CEGLManager.cpp
 	source/Irrlicht/CEmptySceneNode.cpp
@@ -107,15 +100,9 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CIrrDeviceSDL.cpp
 	source/Irrlicht/CIrrDeviceStub.cpp
 	source/Irrlicht/CIrrDeviceWin32.cpp
-	source/Irrlicht/CIrrMeshFileLoader.cpp
-	source/Irrlicht/CIrrMeshWriter.cpp
 	source/Irrlicht/CLightSceneNode.cpp
 	source/Irrlicht/CLimitReadFile.cpp
-	source/Irrlicht/CLMTSMeshFileLoader.cpp
 	source/Irrlicht/CLogger.cpp
-	source/Irrlicht/CLWOMeshFileLoader.cpp
-	source/Irrlicht/CMD2MeshFileLoader.cpp
-	source/Irrlicht/CMD3MeshFileLoader.cpp
 	source/Irrlicht/CMemoryFile.cpp
 	source/Irrlicht/CMeshCache.cpp
 	source/Irrlicht/CMeshManipulator.cpp
@@ -123,13 +110,9 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CMeshTextureLoader.cpp
 	source/Irrlicht/CMetaTriangleSelector.cpp
 	source/Irrlicht/CMountPointReader.cpp
-	source/Irrlicht/CMS3DMeshFileLoader.cpp
-	source/Irrlicht/CMY3DMeshFileLoader.cpp
 	source/Irrlicht/CNPKReader.cpp
 	source/Irrlicht/CNullDriver.cpp
 	source/Irrlicht/COBJMeshFileLoader.cpp
-	source/Irrlicht/COBJMeshWriter.cpp
-	source/Irrlicht/COCTLoader.cpp
 	source/Irrlicht/COctreeSceneNode.cpp
 	source/Irrlicht/COctreeTriangleSelector.cpp
 	source/Irrlicht/COGLES2Driver.cpp
@@ -141,7 +124,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/COGLES2Renderer2D.cpp
 	source/Irrlicht/COGLESDriver.cpp
 	source/Irrlicht/COGLESExtensionHandler.cpp
-	source/Irrlicht/COgreMeshFileLoader.cpp
 	source/Irrlicht/COpenGLCacheHandler.cpp
 	source/Irrlicht/COpenGLDriver.cpp
 	source/Irrlicht/COpenGLExtensionHandler.cpp
@@ -164,11 +146,7 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CParticleScaleAffector.cpp
 	source/Irrlicht/CParticleSphereEmitter.cpp
 	source/Irrlicht/CParticleSystemSceneNode.cpp
-	source/Irrlicht/CPLYMeshFileLoader.cpp
-	source/Irrlicht/CPLYMeshWriter.cpp
 	source/Irrlicht/CProfiler.cpp
-	source/Irrlicht/CQ3LevelMesh.cpp
-	source/Irrlicht/CQuake3ShaderSceneNode.cpp
 	source/Irrlicht/CReadFile.cpp
 	source/Irrlicht/CSceneCollisionManager.cpp
 	source/Irrlicht/CSceneLoaderIrr.cpp
@@ -186,10 +164,7 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CSkinnedMesh.cpp
 	source/Irrlicht/CSkyBoxSceneNode.cpp
 	source/Irrlicht/CSkyDomeSceneNode.cpp
-	source/Irrlicht/CSMFMeshFileLoader.cpp
 	source/Irrlicht/CSphereSceneNode.cpp
-	source/Irrlicht/CSTLMeshFileLoader.cpp
-	source/Irrlicht/CSTLMeshWriter.cpp
 	source/Irrlicht/CTarReader.cpp
 	source/Irrlicht/CTerrainSceneNode.cpp
 	source/Irrlicht/CTerrainTriangleSelector.cpp

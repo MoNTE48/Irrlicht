@@ -603,9 +603,6 @@
     <ClInclude Include="Octree.h">
       <Filter>Irrlicht\scene</Filter>
     </ClInclude>
-    <ClInclude Include="C3DSMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="CAnimatedMeshHalfLife.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
@@ -618,64 +615,16 @@
     <ClInclude Include="CB3DMeshFileLoader.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
-    <ClInclude Include="CBSPMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CColladaFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CCSMLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CDMFLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CIrrMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CLMTSMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CLWOMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CMD2MeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CMD3MeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="CMeshTextureLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CMS3DMeshFileLoader.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
     <ClInclude Include="CMY3DHelper.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
-    <ClInclude Include="CMY3DMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="COBJMeshFileLoader.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
-    <ClInclude Include="COCTLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="COgreMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CPLYMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CQ3LevelMesh.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="CSkinnedMesh.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CSTLMeshFileLoader.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
     <ClInclude Include="CXMeshFileLoader.h">
@@ -712,9 +661,6 @@
       <Filter>Irrlicht\scene\sceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="COctreeSceneNode.h">
-      <Filter>Irrlicht\scene\sceneNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="CQuake3ShaderSceneNode.h">
       <Filter>Irrlicht\scene\sceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="CShadowVolumeSceneNode.h">
@@ -824,21 +770,6 @@
     </ClInclude>
     <ClInclude Include="CSceneNodeAnimatorTexture.h">
       <Filter>Irrlicht\scene\animators</Filter>
-    </ClInclude>
-    <ClInclude Include="CColladaMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClInclude>
-    <ClInclude Include="CIrrMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClInclude>
-    <ClInclude Include="COBJMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClInclude>
-    <ClInclude Include="CPLYMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClInclude>
-    <ClInclude Include="CSTLMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
     </ClInclude>
     <ClInclude Include="CVideoModeList.h">
       <Filter>Irrlicht\video</Filter>
@@ -1114,9 +1045,6 @@
     <ClInclude Include="..\..\include\ISceneLoader.h">
       <Filter>include\scene</Filter>
     </ClInclude>
-    <ClInclude Include="CSMFMeshFileLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\EDriverFeatures.h">
       <Filter>include\video</Filter>
     </ClInclude>
@@ -1131,9 +1059,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\IRenderTarget.h">
       <Filter>include\video</Filter>
-    </ClInclude>
-    <ClInclude Include="CB3DMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
     </ClInclude>
     <ClInclude Include="SB3DStructs.h">
       <Filter>Irrlicht\scene</Filter>
@@ -1292,9 +1217,6 @@
     <ClCompile Include="CSceneManager.cpp">
       <Filter>Irrlicht\scene</Filter>
     </ClCompile>
-    <ClCompile Include="C3DSMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
     <ClCompile Include="CAnimatedMeshHalfLife.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
@@ -1307,61 +1229,13 @@
     <ClCompile Include="CB3DMeshFileLoader.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
-    <ClCompile Include="CBSPMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CColladaFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CCSMLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CDMFLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CIrrMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CLMTSMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CLWOMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CMD2MeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CMD3MeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
     <ClCompile Include="CMeshTextureLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CMS3DMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CMY3DMeshFileLoader.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
     <ClCompile Include="COBJMeshFileLoader.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
-    <ClCompile Include="COCTLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="COgreMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CPLYMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CQ3LevelMesh.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
     <ClCompile Include="CSkinnedMesh.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CSTLMeshFileLoader.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
     <ClCompile Include="CXMeshFileLoader.cpp">
@@ -1395,9 +1269,6 @@
       <Filter>Irrlicht\scene\sceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="COctreeSceneNode.cpp">
-      <Filter>Irrlicht\scene\sceneNodes</Filter>
-    </ClCompile>
-    <ClCompile Include="CQuake3ShaderSceneNode.cpp">
       <Filter>Irrlicht\scene\sceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="CShadowVolumeSceneNode.cpp">
@@ -1507,21 +1378,6 @@
     </ClCompile>
     <ClCompile Include="CSceneNodeAnimatorTexture.cpp">
       <Filter>Irrlicht\scene\animators</Filter>
-    </ClCompile>
-    <ClCompile Include="CColladaMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClCompile>
-    <ClCompile Include="CIrrMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClCompile>
-    <ClCompile Include="COBJMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClCompile>
-    <ClCompile Include="CPLYMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClCompile>
-    <ClCompile Include="CSTLMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
     </ClCompile>
     <ClCompile Include="CVideoModeList.cpp">
       <Filter>Irrlicht\video</Filter>
@@ -1768,12 +1624,6 @@
     </ClCompile>
     <ClCompile Include="CSceneLoaderIrr.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CSMFMeshFileLoader.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CB3DMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
     </ClCompile>
     <ClCompile Include="COpenGLCacheHandler.cpp">
       <Filter>Irrlicht\video\OpenGL</Filter>
