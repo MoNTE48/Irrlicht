@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Build all examples">
-		<Project filename="../source/Irrlicht/Irrlicht-gcc.cbp" active="1" />	
-		<Project filename="01.HelloWorld/HelloWorld.cbp" />
+		<Project active="1" filename="01.HelloWorld/HelloWorld.cbp" />
 		<Project filename="02.Quake3Map/Quake3Map.cbp" />
 		<Project filename="03.CustomSceneNode/CustomSceneNode.cbp" />
 		<Project filename="04.Movement/Movement.cbp" />
