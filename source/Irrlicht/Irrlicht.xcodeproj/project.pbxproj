@@ -145,24 +145,11 @@
 		5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B31B7F664100F212E8 /* CMeshCache.cpp */; };
 		5E34CB8A1B7F6EC400F212E8 /* CMeshManipulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B51B7F664100F212E8 /* CMeshManipulator.cpp */; };
 		5E34CB8C1B7F6EC400F212E8 /* CSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B71B7F664100F212E8 /* CSceneManager.cpp */; };
-		5E34CBB11B7F6EC500F212E8 /* CImageLoaderBMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9841B7F6AED00F212E8 /* CImageLoaderBMP.cpp */; };
-		5E34CBB31B7F6EC500F212E8 /* CImageLoaderDDS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9861B7F6AED00F212E8 /* CImageLoaderDDS.cpp */; };
 		5E34CBB51B7F6EC600F212E8 /* CImageLoaderJPG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9881B7F6AED00F212E8 /* CImageLoaderJPG.cpp */; };
-		5E34CBB71B7F6EC600F212E8 /* CImageLoaderPCX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98A1B7F6AED00F212E8 /* CImageLoaderPCX.cpp */; };
 		5E34CBB91B7F6EC600F212E8 /* CImageLoaderPNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98C1B7F6AED00F212E8 /* CImageLoaderPNG.cpp */; };
-		5E34CBBB1B7F6EC600F212E8 /* CImageLoaderPPM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98E1B7F6AED00F212E8 /* CImageLoaderPPM.cpp */; };
-		5E34CBBD1B7F6EC600F212E8 /* CImageLoaderPSD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9901B7F6AED00F212E8 /* CImageLoaderPSD.cpp */; };
-		5E34CBBF1B7F6EC600F212E8 /* CImageLoaderPVR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9921B7F6AED00F212E8 /* CImageLoaderPVR.cpp */; };
-		5E34CBC11B7F6EC600F212E8 /* CImageLoaderRGB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9941B7F6AED00F212E8 /* CImageLoaderRGB.cpp */; };
 		5E34CBC31B7F6EC600F212E8 /* CImageLoaderTGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9961B7F6AED00F212E8 /* CImageLoaderTGA.cpp */; };
-		5E34CBC51B7F6EC600F212E8 /* CImageLoaderWAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9981B7F6AED00F212E8 /* CImageLoaderWAL.cpp */; };
-		5E34CBC71B7F6EC600F212E8 /* CImageWriterBMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99A1B7F6B0900F212E8 /* CImageWriterBMP.cpp */; };
 		5E34CBC91B7F6EC600F212E8 /* CImageWriterJPG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99C1B7F6B0900F212E8 /* CImageWriterJPG.cpp */; };
-		5E34CBCB1B7F6EC600F212E8 /* CImageWriterPCX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99E1B7F6B0900F212E8 /* CImageWriterPCX.cpp */; };
 		5E34CBCD1B7F6EC600F212E8 /* CImageWriterPNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A01B7F6B0900F212E8 /* CImageWriterPNG.cpp */; };
-		5E34CBCF1B7F6EC600F212E8 /* CImageWriterPPM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A21B7F6B0900F212E8 /* CImageWriterPPM.cpp */; };
-		5E34CBD11B7F6EC600F212E8 /* CImageWriterPSD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A41B7F6B0900F212E8 /* CImageWriterPSD.cpp */; };
-		5E34CBD31B7F6EC600F212E8 /* CImageWriterTGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A61B7F6B0900F212E8 /* CImageWriterTGA.cpp */; };
 		5E34CBD51B7F6EC600F212E8 /* CColorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A81B7F6B6800F212E8 /* CColorConverter.cpp */; };
 		5E34CBD71B7F6EC700F212E8 /* CFPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AA1B7F6B6800F212E8 /* CFPSCounter.cpp */; };
 		5E34CBD91B7F6EC700F212E8 /* CImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AC1B7F6B6800F212E8 /* CImage.cpp */; };
@@ -307,24 +294,11 @@
 		5E5733951C18E212003F664E /* CMeshCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B31B7F664100F212E8 /* CMeshCache.cpp */; };
 		5E5733961C18E212003F664E /* CMeshManipulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B51B7F664100F212E8 /* CMeshManipulator.cpp */; };
 		5E5733971C18E212003F664E /* CSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B71B7F664100F212E8 /* CSceneManager.cpp */; };
-		5E5733B11C18E212003F664E /* CImageLoaderBMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9841B7F6AED00F212E8 /* CImageLoaderBMP.cpp */; };
-		5E5733B21C18E212003F664E /* CImageLoaderDDS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9861B7F6AED00F212E8 /* CImageLoaderDDS.cpp */; };
 		5E5733B31C18E212003F664E /* CImageLoaderJPG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9881B7F6AED00F212E8 /* CImageLoaderJPG.cpp */; };
-		5E5733B41C18E212003F664E /* CImageLoaderPCX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98A1B7F6AED00F212E8 /* CImageLoaderPCX.cpp */; };
 		5E5733B51C18E212003F664E /* CImageLoaderPNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98C1B7F6AED00F212E8 /* CImageLoaderPNG.cpp */; };
-		5E5733B61C18E212003F664E /* CImageLoaderPPM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C98E1B7F6AED00F212E8 /* CImageLoaderPPM.cpp */; };
-		5E5733B71C18E212003F664E /* CImageLoaderPSD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9901B7F6AED00F212E8 /* CImageLoaderPSD.cpp */; };
-		5E5733B81C18E212003F664E /* CImageLoaderPVR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9921B7F6AED00F212E8 /* CImageLoaderPVR.cpp */; };
-		5E5733B91C18E212003F664E /* CImageLoaderRGB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9941B7F6AED00F212E8 /* CImageLoaderRGB.cpp */; };
 		5E5733BA1C18E212003F664E /* CImageLoaderTGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9961B7F6AED00F212E8 /* CImageLoaderTGA.cpp */; };
-		5E5733BB1C18E212003F664E /* CImageLoaderWAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9981B7F6AED00F212E8 /* CImageLoaderWAL.cpp */; };
-		5E5733BC1C18E212003F664E /* CImageWriterBMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99A1B7F6B0900F212E8 /* CImageWriterBMP.cpp */; };
 		5E5733BD1C18E212003F664E /* CImageWriterJPG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99C1B7F6B0900F212E8 /* CImageWriterJPG.cpp */; };
-		5E5733BE1C18E212003F664E /* CImageWriterPCX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C99E1B7F6B0900F212E8 /* CImageWriterPCX.cpp */; };
 		5E5733BF1C18E212003F664E /* CImageWriterPNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A01B7F6B0900F212E8 /* CImageWriterPNG.cpp */; };
-		5E5733C01C18E212003F664E /* CImageWriterPPM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A21B7F6B0900F212E8 /* CImageWriterPPM.cpp */; };
-		5E5733C11C18E212003F664E /* CImageWriterPSD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A41B7F6B0900F212E8 /* CImageWriterPSD.cpp */; };
-		5E5733C21C18E212003F664E /* CImageWriterTGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A61B7F6B0900F212E8 /* CImageWriterTGA.cpp */; };
 		5E5733C31C18E212003F664E /* CColorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9A81B7F6B6800F212E8 /* CColorConverter.cpp */; };
 		5E5733C41C18E212003F664E /* CFPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AA1B7F6B6800F212E8 /* CFPSCounter.cpp */; };
 		5E5733C51C18E212003F664E /* CImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AC1B7F6B6800F212E8 /* CImage.cpp */; };
@@ -825,42 +799,16 @@
 		5E34C9571B7F691500F212E8 /* CPLYMeshWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPLYMeshWriter.h; sourceTree = "<group>"; };
 		5E34C9581B7F691500F212E8 /* CSTLMeshWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSTLMeshWriter.cpp; sourceTree = "<group>"; };
 		5E34C9591B7F691500F212E8 /* CSTLMeshWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSTLMeshWriter.h; sourceTree = "<group>"; };
-		5E34C9841B7F6AED00F212E8 /* CImageLoaderBMP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderBMP.cpp; sourceTree = "<group>"; };
-		5E34C9851B7F6AED00F212E8 /* CImageLoaderBMP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderBMP.h; sourceTree = "<group>"; };
-		5E34C9861B7F6AED00F212E8 /* CImageLoaderDDS.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderDDS.cpp; sourceTree = "<group>"; };
-		5E34C9871B7F6AED00F212E8 /* CImageLoaderDDS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderDDS.h; sourceTree = "<group>"; };
 		5E34C9881B7F6AED00F212E8 /* CImageLoaderJPG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderJPG.cpp; sourceTree = "<group>"; };
 		5E34C9891B7F6AED00F212E8 /* CImageLoaderJPG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderJPG.h; sourceTree = "<group>"; };
-		5E34C98A1B7F6AED00F212E8 /* CImageLoaderPCX.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPCX.cpp; sourceTree = "<group>"; };
-		5E34C98B1B7F6AED00F212E8 /* CImageLoaderPCX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderPCX.h; sourceTree = "<group>"; };
 		5E34C98C1B7F6AED00F212E8 /* CImageLoaderPNG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPNG.cpp; sourceTree = "<group>"; };
 		5E34C98D1B7F6AED00F212E8 /* CImageLoaderPNG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderPNG.h; sourceTree = "<group>"; };
-		5E34C98E1B7F6AED00F212E8 /* CImageLoaderPPM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPPM.cpp; sourceTree = "<group>"; };
-		5E34C98F1B7F6AED00F212E8 /* CImageLoaderPPM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderPPM.h; sourceTree = "<group>"; };
-		5E34C9901B7F6AED00F212E8 /* CImageLoaderPSD.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPSD.cpp; sourceTree = "<group>"; };
-		5E34C9911B7F6AED00F212E8 /* CImageLoaderPSD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderPSD.h; sourceTree = "<group>"; };
-		5E34C9921B7F6AED00F212E8 /* CImageLoaderPVR.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPVR.cpp; sourceTree = "<group>"; };
-		5E34C9931B7F6AED00F212E8 /* CImageLoaderPVR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderPVR.h; sourceTree = "<group>"; };
-		5E34C9941B7F6AED00F212E8 /* CImageLoaderRGB.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderRGB.cpp; sourceTree = "<group>"; };
-		5E34C9951B7F6AED00F212E8 /* CImageLoaderRGB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderRGB.h; sourceTree = "<group>"; };
 		5E34C9961B7F6AED00F212E8 /* CImageLoaderTGA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderTGA.cpp; sourceTree = "<group>"; };
 		5E34C9971B7F6AED00F212E8 /* CImageLoaderTGA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderTGA.h; sourceTree = "<group>"; };
-		5E34C9981B7F6AED00F212E8 /* CImageLoaderWAL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderWAL.cpp; sourceTree = "<group>"; };
-		5E34C9991B7F6AED00F212E8 /* CImageLoaderWAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderWAL.h; sourceTree = "<group>"; };
-		5E34C99A1B7F6B0900F212E8 /* CImageWriterBMP.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterBMP.cpp; sourceTree = "<group>"; };
-		5E34C99B1B7F6B0900F212E8 /* CImageWriterBMP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterBMP.h; sourceTree = "<group>"; };
 		5E34C99C1B7F6B0900F212E8 /* CImageWriterJPG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterJPG.cpp; sourceTree = "<group>"; };
 		5E34C99D1B7F6B0900F212E8 /* CImageWriterJPG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterJPG.h; sourceTree = "<group>"; };
-		5E34C99E1B7F6B0900F212E8 /* CImageWriterPCX.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterPCX.cpp; sourceTree = "<group>"; };
-		5E34C99F1B7F6B0900F212E8 /* CImageWriterPCX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterPCX.h; sourceTree = "<group>"; };
 		5E34C9A01B7F6B0900F212E8 /* CImageWriterPNG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterPNG.cpp; sourceTree = "<group>"; };
 		5E34C9A11B7F6B0900F212E8 /* CImageWriterPNG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterPNG.h; sourceTree = "<group>"; };
-		5E34C9A21B7F6B0900F212E8 /* CImageWriterPPM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterPPM.cpp; sourceTree = "<group>"; };
-		5E34C9A31B7F6B0900F212E8 /* CImageWriterPPM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterPPM.h; sourceTree = "<group>"; };
-		5E34C9A41B7F6B0900F212E8 /* CImageWriterPSD.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterPSD.cpp; sourceTree = "<group>"; };
-		5E34C9A51B7F6B0900F212E8 /* CImageWriterPSD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterPSD.h; sourceTree = "<group>"; };
-		5E34C9A61B7F6B0900F212E8 /* CImageWriterTGA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageWriterTGA.cpp; sourceTree = "<group>"; };
-		5E34C9A71B7F6B0900F212E8 /* CImageWriterTGA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageWriterTGA.h; sourceTree = "<group>"; };
 		5E34C9A81B7F6B6800F212E8 /* CColorConverter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CColorConverter.cpp; sourceTree = "<group>"; };
 		5E34C9A91B7F6B6800F212E8 /* CColorConverter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CColorConverter.h; sourceTree = "<group>"; };
 		5E34C9AA1B7F6B6800F212E8 /* CFPSCounter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CFPSCounter.cpp; sourceTree = "<group>"; };
@@ -1576,28 +1524,12 @@
 		5E34C9821B7F6A9700F212E8 /* loaders */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C9841B7F6AED00F212E8 /* CImageLoaderBMP.cpp */,
-				5E34C9851B7F6AED00F212E8 /* CImageLoaderBMP.h */,
-				5E34C9861B7F6AED00F212E8 /* CImageLoaderDDS.cpp */,
-				5E34C9871B7F6AED00F212E8 /* CImageLoaderDDS.h */,
 				5E34C9881B7F6AED00F212E8 /* CImageLoaderJPG.cpp */,
 				5E34C9891B7F6AED00F212E8 /* CImageLoaderJPG.h */,
-				5E34C98A1B7F6AED00F212E8 /* CImageLoaderPCX.cpp */,
-				5E34C98B1B7F6AED00F212E8 /* CImageLoaderPCX.h */,
 				5E34C98C1B7F6AED00F212E8 /* CImageLoaderPNG.cpp */,
 				5E34C98D1B7F6AED00F212E8 /* CImageLoaderPNG.h */,
-				5E34C98E1B7F6AED00F212E8 /* CImageLoaderPPM.cpp */,
-				5E34C98F1B7F6AED00F212E8 /* CImageLoaderPPM.h */,
-				5E34C9901B7F6AED00F212E8 /* CImageLoaderPSD.cpp */,
-				5E34C9911B7F6AED00F212E8 /* CImageLoaderPSD.h */,
-				5E34C9921B7F6AED00F212E8 /* CImageLoaderPVR.cpp */,
-				5E34C9931B7F6AED00F212E8 /* CImageLoaderPVR.h */,
-				5E34C9941B7F6AED00F212E8 /* CImageLoaderRGB.cpp */,
-				5E34C9951B7F6AED00F212E8 /* CImageLoaderRGB.h */,
 				5E34C9961B7F6AED00F212E8 /* CImageLoaderTGA.cpp */,
 				5E34C9971B7F6AED00F212E8 /* CImageLoaderTGA.h */,
-				5E34C9981B7F6AED00F212E8 /* CImageLoaderWAL.cpp */,
-				5E34C9991B7F6AED00F212E8 /* CImageLoaderWAL.h */,
 			);
 			name = loaders;
 			sourceTree = "<group>";
@@ -1605,20 +1537,10 @@
 		5E34C9831B7F6ABA00F212E8 /* writers */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C99A1B7F6B0900F212E8 /* CImageWriterBMP.cpp */,
-				5E34C99B1B7F6B0900F212E8 /* CImageWriterBMP.h */,
 				5E34C99C1B7F6B0900F212E8 /* CImageWriterJPG.cpp */,
 				5E34C99D1B7F6B0900F212E8 /* CImageWriterJPG.h */,
-				5E34C99E1B7F6B0900F212E8 /* CImageWriterPCX.cpp */,
-				5E34C99F1B7F6B0900F212E8 /* CImageWriterPCX.h */,
 				5E34C9A01B7F6B0900F212E8 /* CImageWriterPNG.cpp */,
 				5E34C9A11B7F6B0900F212E8 /* CImageWriterPNG.h */,
-				5E34C9A21B7F6B0900F212E8 /* CImageWriterPPM.cpp */,
-				5E34C9A31B7F6B0900F212E8 /* CImageWriterPPM.h */,
-				5E34C9A41B7F6B0900F212E8 /* CImageWriterPSD.cpp */,
-				5E34C9A51B7F6B0900F212E8 /* CImageWriterPSD.h */,
-				5E34C9A61B7F6B0900F212E8 /* CImageWriterTGA.cpp */,
-				5E34C9A71B7F6B0900F212E8 /* CImageWriterTGA.h */,
 			);
 			name = writers;
 			sourceTree = "<group>";
@@ -1894,24 +1816,11 @@
 				5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */,
 				5E34CB8A1B7F6EC400F212E8 /* CMeshManipulator.cpp in Sources */,
 				5E34CB8C1B7F6EC400F212E8 /* CSceneManager.cpp in Sources */,
-				5E34CBB11B7F6EC500F212E8 /* CImageLoaderBMP.cpp in Sources */,
-				5E34CBB31B7F6EC500F212E8 /* CImageLoaderDDS.cpp in Sources */,
 				5E34CBB51B7F6EC600F212E8 /* CImageLoaderJPG.cpp in Sources */,
-				5E34CBB71B7F6EC600F212E8 /* CImageLoaderPCX.cpp in Sources */,
 				5E34CBB91B7F6EC600F212E8 /* CImageLoaderPNG.cpp in Sources */,
-				5E34CBBB1B7F6EC600F212E8 /* CImageLoaderPPM.cpp in Sources */,
-				5E34CBBD1B7F6EC600F212E8 /* CImageLoaderPSD.cpp in Sources */,
-				5E34CBBF1B7F6EC600F212E8 /* CImageLoaderPVR.cpp in Sources */,
-				5E34CBC11B7F6EC600F212E8 /* CImageLoaderRGB.cpp in Sources */,
 				5E34CBC31B7F6EC600F212E8 /* CImageLoaderTGA.cpp in Sources */,
-				5E34CBC51B7F6EC600F212E8 /* CImageLoaderWAL.cpp in Sources */,
-				5E34CBC71B7F6EC600F212E8 /* CImageWriterBMP.cpp in Sources */,
 				5E34CBC91B7F6EC600F212E8 /* CImageWriterJPG.cpp in Sources */,
-				5E34CBCB1B7F6EC600F212E8 /* CImageWriterPCX.cpp in Sources */,
 				5E34CBCD1B7F6EC600F212E8 /* CImageWriterPNG.cpp in Sources */,
-				5E34CBCF1B7F6EC600F212E8 /* CImageWriterPPM.cpp in Sources */,
-				5E34CBD11B7F6EC600F212E8 /* CImageWriterPSD.cpp in Sources */,
-				5E34CBD31B7F6EC600F212E8 /* CImageWriterTGA.cpp in Sources */,
 				5E34CBD51B7F6EC600F212E8 /* CColorConverter.cpp in Sources */,
 				5E34CBD71B7F6EC700F212E8 /* CFPSCounter.cpp in Sources */,
 				5E34CBD91B7F6EC700F212E8 /* CImage.cpp in Sources */,
@@ -2075,24 +1984,11 @@
 				5E5733961C18E212003F664E /* CMeshManipulator.cpp in Sources */,
 				5E5733971C18E212003F664E /* CSceneManager.cpp in Sources */,
 				5E5734121C18E2E2003F664E /* COGLES2ParallaxMapRenderer.cpp in Sources */,
-				5E5733B11C18E212003F664E /* CImageLoaderBMP.cpp in Sources */,
-				5E5733B21C18E212003F664E /* CImageLoaderDDS.cpp in Sources */,
 				5E5733B31C18E212003F664E /* CImageLoaderJPG.cpp in Sources */,
-				5E5733B41C18E212003F664E /* CImageLoaderPCX.cpp in Sources */,
 				5E5733B51C18E212003F664E /* CImageLoaderPNG.cpp in Sources */,
-				5E5733B61C18E212003F664E /* CImageLoaderPPM.cpp in Sources */,
-				5E5733B71C18E212003F664E /* CImageLoaderPSD.cpp in Sources */,
-				5E5733B81C18E212003F664E /* CImageLoaderPVR.cpp in Sources */,
-				5E5733B91C18E212003F664E /* CImageLoaderRGB.cpp in Sources */,
 				5E5733BA1C18E212003F664E /* CImageLoaderTGA.cpp in Sources */,
-				5E5733BB1C18E212003F664E /* CImageLoaderWAL.cpp in Sources */,
-				5E5733BC1C18E212003F664E /* CImageWriterBMP.cpp in Sources */,
 				5E5733BD1C18E212003F664E /* CImageWriterJPG.cpp in Sources */,
-				5E5733BE1C18E212003F664E /* CImageWriterPCX.cpp in Sources */,
 				5E5733BF1C18E212003F664E /* CImageWriterPNG.cpp in Sources */,
-				5E5733C01C18E212003F664E /* CImageWriterPPM.cpp in Sources */,
-				5E5733C11C18E212003F664E /* CImageWriterPSD.cpp in Sources */,
-				5E5733C21C18E212003F664E /* CImageWriterTGA.cpp in Sources */,
 				5E5733C31C18E212003F664E /* CColorConverter.cpp in Sources */,
 				5E5733C41C18E212003F664E /* CFPSCounter.cpp in Sources */,
 				5E5733C51C18E212003F664E /* CImage.cpp in Sources */,

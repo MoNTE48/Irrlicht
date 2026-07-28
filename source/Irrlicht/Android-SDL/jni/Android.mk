@@ -85,24 +85,12 @@ LOCAL_SRC_FILES := \
 					CGUIWindow.cpp \
 					CGUIProfiler.cpp \
 					CImage.cpp \
-					CImageLoaderBMP.cpp \
-					CImageLoaderDDS.cpp \
 					CImageLoaderJPG.cpp \
-					CImageLoaderPCX.cpp \
 					CImageLoaderPNG.cpp \
-					CImageLoaderPPM.cpp \
-					CImageLoaderPSD.cpp \
-					CImageLoaderRGB.cpp \
 					CImageLoaderTGA.cpp \
-					CImageLoaderWAL.cpp \
-					CImageWriterBMP.cpp \
 					CImageWriterJPG.cpp \
-					CImageWriterPCX.cpp \
 					CImageWriterPNG.cpp \
-					CImageWriterPPM.cpp \
-					CImageWriterPSD.cpp \
 					CImageWriterTGA.cpp \
-					CImageLoaderPVR.cpp \
 					CIrrDeviceSDL.cpp \
 					CIrrDeviceStub.cpp \
 					CIrrMeshFileLoader.cpp \
