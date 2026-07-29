@@ -134,7 +134,6 @@ LOCAL_SRC_FILES := \
 					CProfiler.cpp \
 					CReadFile.cpp \
 					CSceneCollisionManager.cpp \
-					CSceneLoaderIrr.cpp \
 					CSceneManager.cpp \
 					CSceneNodeAnimatorCameraFPS.cpp \
 					CSceneNodeAnimatorCameraMaya.cpp \

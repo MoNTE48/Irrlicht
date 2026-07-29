@@ -534,7 +534,7 @@ tool <http://developer.nvidia.com/object/nvperfhud_home.html>. */
 
 //! Define _IRR_COMPILE_WITH_IRR_SCENE_LOADER_ if you want to be able to load
 /** .irr scenes using ISceneManager::loadScene */
-#define _IRR_COMPILE_WITH_IRR_SCENE_LOADER_
+//#define _IRR_COMPILE_WITH_IRR_SCENE_LOADER_
 #ifdef NO_IRR_COMPILE_WITH_IRR_SCENE_LOADER_
 #undef _IRR_COMPILE_WITH_IRR_SCENE_LOADER_
 #endif

@@ -81,7 +81,6 @@
 		5E34CB081B7F6EC200F212E8 /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
 		5E34CB1C1B7F6EC200F212E8 /* CMeshTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */; };
 		5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
-		5E34CB2D1B7F6EC200F212E8 /* CSceneLoaderIrr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9051B7F680200F212E8 /* CSceneLoaderIrr.cpp */; };
 		5E34CB2F1B7F6EC200F212E8 /* CSkinnedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */; };
 		5E34CB351B7F6EC200F212E8 /* CXMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */; };
 		5E34CB381B7F6EC200F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */; };
@@ -205,7 +204,6 @@
 		5E5733551C18E212003F664E /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
 		5E57335F1C18E212003F664E /* CMeshTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */; };
 		5E5733621C18E212003F664E /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
-		5E5733671C18E212003F664E /* CSceneLoaderIrr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9051B7F680200F212E8 /* CSceneLoaderIrr.cpp */; };
 		5E5733681C18E212003F664E /* CSkinnedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */; };
 		5E57336B1C18E212003F664E /* CXMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */; };
 		5E57336C1C18E212003F664E /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */; };
@@ -632,8 +630,6 @@
 		5E34C8F81B7F680200F212E8 /* CMY3DHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMY3DHelper.h; sourceTree = "<group>"; };
 		5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = COBJMeshFileLoader.cpp; sourceTree = "<group>"; };
 		5E34C8FC1B7F680200F212E8 /* COBJMeshFileLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COBJMeshFileLoader.h; sourceTree = "<group>"; };
-		5E34C9051B7F680200F212E8 /* CSceneLoaderIrr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneLoaderIrr.cpp; sourceTree = "<group>"; };
-		5E34C9061B7F680200F212E8 /* CSceneLoaderIrr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneLoaderIrr.h; sourceTree = "<group>"; };
 		5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSkinnedMesh.cpp; sourceTree = "<group>"; };
 		5E34C9081B7F680200F212E8 /* CSkinnedMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSkinnedMesh.h; sourceTree = "<group>"; };
 		5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CXMeshFileLoader.cpp; sourceTree = "<group>"; };
@@ -1259,8 +1255,6 @@
 				5E34C8F81B7F680200F212E8 /* CMY3DHelper.h */,
 				5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */,
 				5E34C8FC1B7F680200F212E8 /* COBJMeshFileLoader.h */,
-				5E34C9051B7F680200F212E8 /* CSceneLoaderIrr.cpp */,
-				5E34C9061B7F680200F212E8 /* CSceneLoaderIrr.h */,
 				5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */,
 				5E34C9081B7F680200F212E8 /* CSkinnedMesh.h */,
 				5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */,
@@ -1601,7 +1595,6 @@
 				8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */,
 				5E34CB1C1B7F6EC200F212E8 /* CMeshTextureLoader.cpp in Sources */,
 				5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */,
-				5E34CB2D1B7F6EC200F212E8 /* CSceneLoaderIrr.cpp in Sources */,
 				5E34CB2F1B7F6EC200F212E8 /* CSkinnedMesh.cpp in Sources */,
 				5E34CB351B7F6EC200F212E8 /* CXMeshFileLoader.cpp in Sources */,
 				5E34CB381B7F6EC200F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */,
@@ -1739,7 +1732,6 @@
 				84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */,
 				5E57335F1C18E212003F664E /* CMeshTextureLoader.cpp in Sources */,
 				5E5733621C18E212003F664E /* COBJMeshFileLoader.cpp in Sources */,
-				5E5733671C18E212003F664E /* CSceneLoaderIrr.cpp in Sources */,
 				5E5733681C18E212003F664E /* CSkinnedMesh.cpp in Sources */,
 				5E57336B1C18E212003F664E /* CXMeshFileLoader.cpp in Sources */,
 				5E57336C1C18E212003F664E /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */,

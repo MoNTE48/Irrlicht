@@ -862,7 +862,6 @@
     <ClInclude Include="CTerrainTriangleSelector.h" />
     <ClInclude Include="CTriangleBBSelector.h" />
     <ClInclude Include="CTriangleSelector.h" />
-    <ClInclude Include="CSceneLoaderIrr.h" />
     <ClInclude Include="CSceneNodeAnimatorCameraFPS.h" />
     <ClInclude Include="CSceneNodeAnimatorCameraMaya.h" />
     <ClInclude Include="CSceneNodeAnimatorCollisionResponse.h" />
@@ -1015,7 +1014,6 @@
     <ClCompile Include="CTerrainTriangleSelector.cpp" />
     <ClCompile Include="CTriangleBBSelector.cpp" />
     <ClCompile Include="CTriangleSelector.cpp" />
-    <ClCompile Include="CSceneLoaderIrr.cpp" />
     <ClCompile Include="CSceneNodeAnimatorCameraFPS.cpp" />
     <ClCompile Include="CSceneNodeAnimatorCameraMaya.cpp" />
     <ClCompile Include="CSceneNodeAnimatorCollisionResponse.cpp" />

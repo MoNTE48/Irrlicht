@@ -136,7 +136,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CProfiler.cpp
 	source/Irrlicht/CReadFile.cpp
 	source/Irrlicht/CSceneCollisionManager.cpp
-	source/Irrlicht/CSceneLoaderIrr.cpp
 	source/Irrlicht/CSceneManager.cpp
 	source/Irrlicht/CSceneNodeAnimatorCameraFPS.cpp
 	source/Irrlicht/CSceneNodeAnimatorCameraMaya.cpp
