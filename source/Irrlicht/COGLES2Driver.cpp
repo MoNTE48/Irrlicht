@@ -2336,6 +2336,56 @@ COGLES2Driver::~COGLES2Driver()
 
 
 	//! Draws a 3d line.
+	bool COGLES2Driver::getThickLineQuad(const core::vector3df& start,
+			const core::vector3df& end, core::vector3df* corners) const
+	{
+		// only a perspective projection divides by depth, which the offset below assumes
+		const core::matrix4& projection = getTransform(ETS_PROJECTION);
+		if (core::iszero(projection[11]))
+			return false;
+
+		const core::matrix4 modelview = getTransform(ETS_VIEW) * getTransform(ETS_WORLD);
+		core::matrix4 inverse;
+		if (!modelview.getInverse(inverse))
+			return false;
+
+		core::vector3df s = start, e = end;
+		modelview.transformVect(s);
+		modelview.transformVect(e);
+		if (s.Z < core::ROUNDING_ERROR_f32 || e.Z < core::ROUNDING_ERROR_f32)
+			return false;
+
+		// pixels a view unit covers at unit depth
+		const core::dimension2d<u32>& size = getCurrentRenderTargetSize();
+		const f32 scale_x = projection[0] * size.Width / 2.0f;
+		const f32 scale_y = projection[5] * size.Height / 2.0f;
+
+		// perpendicular to the line as it lands on the screen, in pixels
+		f32 perp_x = e.Y * scale_y / e.Z - s.Y * scale_y / s.Z;
+		f32 perp_y = s.X * scale_x / s.Z - e.X * scale_x / e.Z;
+		const f32 length = core::squareroot(perp_x * perp_x + perp_y * perp_y);
+		if (length < core::ROUNDING_ERROR_f32)
+			return false;
+
+		perp_x *= Material.Thickness / (2.0f * length);
+		perp_y *= Material.Thickness / (2.0f * length);
+
+		// back to view units, at the depth each end sits at
+		const core::vector3df s_off(perp_x * s.Z / scale_x, perp_y * s.Z / scale_y, 0.0f);
+		const core::vector3df e_off(perp_x * e.Z / scale_x, perp_y * e.Z / scale_y, 0.0f);
+
+		corners[0] = s - s_off;
+		corners[1] = s + s_off;
+		corners[2] = e - e_off;
+		corners[3] = e + e_off;
+
+		for (u32 i = 0; i < 4; ++i)
+			inverse.transformVect(corners[i]);
+
+		return true;
+	}
+
+
 	void COGLES2Driver::draw3DLine(const core::vector3df& start,
 			const core::vector3df& end, SColor color)
 	{
@@ -2343,17 +2393,38 @@ COGLES2Driver::~COGLES2Driver()
 
 		setRenderStates3DMode();
 
-		S3DVertex vertices[2];
-		vertices[0] = S3DVertex(start.X, start.Y, start.Z, 0, 0, 1, color, 0, 0);
-		vertices[1] = S3DVertex(end.X, end.Y, end.Z, 0, 0, 1, color, 0, 0);
+		S3DVertex vertices[4];
+		core::vector3df corners[4];
+
+		// Metal rasterises every line one pixel wide whatever glLineWidth was given
+		const bool quad = Material.Thickness > DimAliasedLine[1] &&
+				getThickLineQuad(start, end, corners);
+
+		if (quad) {
+			for (u32 i = 0; i < 4; ++i)
+				vertices[i] = S3DVertex(corners[i].X, corners[i].Y, corners[i].Z,
+						0, 0, 1, color, 0, 0);
+		} else {
+			vertices[0] = S3DVertex(start.X, start.Y, start.Z, 0, 0, 1, color, 0, 0);
+			vertices[1] = S3DVertex(end.X, end.Y, end.Z, 0, 0, 1, color, 0, 0);
+		}
+
+		// a line has no facing, and the winding flips with its direction
+		const bool culled = quad &&
+				(Material.FrontfaceCulling || Material.BackfaceCulling);
+		if (culled)
+			glDisable(GL_CULL_FACE);
 
 		glEnableVertexAttribArray(EVA_POSITION);
 		glEnableVertexAttribArray(EVA_COLOR);
 		glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Pos);
 		glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(S3DVertex), &(static_cast<const S3DVertex*>(vertices))[0].Color);
-		glDrawArrays(GL_LINES, 0, 2);
+		glDrawArrays(quad ? GL_TRIANGLE_STRIP : GL_LINES, 0, quad ? 4 : 2);
 		glDisableVertexAttribArray(EVA_COLOR);
 		glDisableVertexAttribArray(EVA_POSITION);
+
+		if (culled)
+			glEnable(GL_CULL_FACE);
 	}
 
 

@@ -171,6 +171,10 @@ namespace video
 				const core::vector3df& end,
 				SColor color = SColor(255, 255, 255, 255)) IRR_OVERRIDE;
 
+		//! Spans Material.Thickness pixels around a line as a camera facing quad
+		bool getThickLineQuad(const core::vector3df& start,
+				const core::vector3df& end, core::vector3df* corners) const;
+
 		//! Draws a pixel
 //			virtual void drawPixel(u32 x, u32 y, const SColor & color);
 
