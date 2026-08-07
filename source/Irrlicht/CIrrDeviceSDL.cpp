@@ -557,6 +557,9 @@ bool CIrrDeviceSDL::createWindowWithContext()
 								roundf((float)Width / NativeScaleX),
 								roundf((float)Height / NativeScaleY), SDL_Flags);
 
+		if (!Window)
+			os::Printer::log("SDL_CreateWindow failed", SDL_GetError(), ELL_ERROR);
+
 		if (Window)
 		{
 			Context = SDL_GL_CreateContext(Window);
@@ -567,8 +570,13 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	{
 		if (!Context)
 		{
-			SDL_DestroyWindow(Window);
-			Window = NULL;
+			if (Window)
+			{
+				os::Printer::log("SDL_GL_CreateContext failed", SDL_GetError(), ELL_ERROR);
+				SDL_DestroyWindow(Window);
+				Window = NULL;
+			}
+
 			return false;
 		}
 	}
