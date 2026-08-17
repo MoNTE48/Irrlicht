@@ -173,6 +173,11 @@ COGLES2Driver::~COGLES2Driver()
 			os::Printer::log("EDT_METAL was requested but the context is not backed "
 				"by ANGLE - rendering is NOT going through Metal.", ELL_WARNING);
 		}
+		else if (Params.DriverType == EDT_METAL && rendererName.find("OpenGL") >= 0)
+		{
+			os::Printer::log("ANGLE fell back to its own OpenGL backend, the GPU has "
+				"no Metal support - rendering is NOT going through Metal.", ELL_WARNING);
+		}
 #endif
 
 		// load extensions
