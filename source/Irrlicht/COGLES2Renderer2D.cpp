@@ -22,7 +22,9 @@ namespace video
 
 COGLES2Renderer2D::COGLES2Renderer2D(const c8* vertexShaderProgram, const c8* pixelShaderProgram, COGLES2Driver* driver, bool withTexture) :
 	COGLES2MaterialRenderer(driver, 0, EMT_SOLID),
-	WithTexture(withTexture)
+	WithTexture(withTexture),
+	LastThickness(0.f),
+	LastTextureUsage(0)
 {
 #ifdef _DEBUG
 	setDebugName("COGLES2Renderer2D");
@@ -67,12 +69,20 @@ void COGLES2Renderer2D::OnSetMaterial(const video::SMaterial& material,
 	Driver->setBasicRenderStates(material, lastMaterial, resetAllRenderstates);
 
 	f32 Thickness = (material.Thickness > 0.f) ? material.Thickness : 1.f;
-	setPixelShaderConstant(ThicknessID, &Thickness, 1);
+	if (Thickness != LastThickness)
+	{
+		setPixelShaderConstant(ThicknessID, &Thickness, 1);
+		LastThickness = Thickness;
+	}
 
 	if ( WithTexture )
 	{
 		s32 TextureUsage = material.TextureLayer[0].Texture ? 1 : 0;
-		setPixelShaderConstant(TextureUsageID, &TextureUsage, 1);
+		if (TextureUsage != LastTextureUsage)
+		{
+			setPixelShaderConstant(TextureUsageID, &TextureUsage, 1);
+			LastTextureUsage = TextureUsage;
+		}
 	}
 }
 

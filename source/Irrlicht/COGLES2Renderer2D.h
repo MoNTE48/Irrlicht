@@ -31,6 +31,10 @@ protected:
 	bool WithTexture;
 	s32 ThicknessID;
 	s32 TextureUsageID;
+
+	// Uniforms live in the program object, so the last value stays valid
+	f32 LastThickness;
+	s32 LastTextureUsage;
 };
 
 
