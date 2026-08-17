@@ -85,13 +85,21 @@ static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
 {
 	return driverType == video::EDT_OPENGL ||
 		driverType == video::EDT_OGLES2 ||
-		driverType == video::EDT_OGLES1;
+		driverType == video::EDT_OGLES1
+#if !defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
+		|| driverType == video::EDT_METAL
+#endif
+		;
 }
 
-//! Driver types that render into a window backed by a CAMetalLayer.
-static bool usesMetalLayer(video::E_DRIVER_TYPE driverType)
+//! Driver types for which the device creates the CAMetalLayer itself, not SDL.
+static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 {
+#if defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
 	return driverType == video::EDT_METAL;
+#else
+	return false;
+#endif
 }
 
 //! constructor
@@ -453,6 +461,18 @@ bool CIrrDeviceSDL::createWindowWithContext()
 {
 	int SDL_Flags = 0;
 
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && !defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
+	{
+		// SDL loads EGL and GLES from the embedded ANGLE, not from the system
+		static const char *ANGLE_PATH =
+			"@executable_path/../Frameworks/MetalANGLE.framework/Versions/A/MetalANGLE";
+		SDL_SetHint(SDL_HINT_EGL_LIBRARY, ANGLE_PATH);
+		SDL_SetHint(SDL_HINT_OPENGL_LIBRARY, ANGLE_PATH);
+		SDL_SetHint(SDL_HINT_VIDEO_FORCE_EGL, "1");
+		SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
+	}
+#endif
+
 	if (CreationParams.Fullscreen)
 	{
 		SDL_Flags |= SDL_WINDOW_FULLSCREEN;
@@ -462,7 +482,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		SDL_Flags |= SDL_WINDOW_RESIZABLE;
 	}
 
-	if (usesMetalLayer(CreationParams.DriverType))
+	if (createsOwnMetalView(CreationParams.DriverType))
 	{
 		SDL_Flags |= SDL_WINDOW_METAL | SDL_WINDOW_HIGH_PIXEL_DENSITY;
 	}
@@ -475,7 +495,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 
 		SDL_Flags |= SDL_WINDOW_OPENGL;
 
-		if (CreationParams.DriverType == video::EDT_OGLES2)
+		if (CreationParams.DriverType == video::EDT_OGLES2 ||
+				CreationParams.DriverType == video::EDT_METAL)
 		{
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -581,8 +602,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		}
 	}
 
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-	if (usesMetalLayer(CreationParams.DriverType))
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
+	if (createsOwnMetalView(CreationParams.DriverType))
 	{
 		if (!Window)
 			return false;
@@ -653,7 +674,7 @@ void CIrrDeviceSDL::updateNativeScale()
 	int real_height = height;
 
 	if (usesOpenGLContext(CreationParams.DriverType) ||
-		usesMetalLayer(CreationParams.DriverType))
+		createsOwnMetalView(CreationParams.DriverType))
 	{
 		SDL_GetWindowSizeInPixels(Window, &real_width, &real_height);
 	}

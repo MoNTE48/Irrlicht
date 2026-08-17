@@ -122,6 +122,14 @@ rather than joining it. The build has to supply ANGLE's headers. */
 #undef _IRR_COMPILE_WITH_ANGLE_
 #endif
 
+//! iOS creates the ANGLE context itself, macOS lets SDL create it.
+#if defined(_IRR_IOS_PLATFORM_)
+#define IRR_ANGLE_CONTEXT_WITHOUT_SDL
+#endif
+#ifdef NO_IRR_ANGLE_CONTEXT_WITHOUT_SDL
+#undef IRR_ANGLE_CONTEXT_WITHOUT_SDL
+#endif
+
 #if defined(_IRR_OSX_PLATFORM_)
 #if defined(_IRR_COMPILE_WITH_ANGLE_)
 #define NO_IRR_COMPILE_WITH_OPENGL_
