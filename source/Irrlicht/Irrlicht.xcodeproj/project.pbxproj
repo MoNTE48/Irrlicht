@@ -83,37 +83,17 @@
 		5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
 		5E34CB2F1B7F6EC200F212E8 /* CSkinnedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */; };
 		5E34CB351B7F6EC200F212E8 /* CXMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */; };
-		5E34CB381B7F6EC200F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */; };
-		5E34CB3A1B7F6EC200F212E8 /* CParticleAttractionAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9121B7F684000F212E8 /* CParticleAttractionAffector.cpp */; };
-		5E34CB3C1B7F6EC300F212E8 /* CParticleBoxEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9141B7F684000F212E8 /* CParticleBoxEmitter.cpp */; };
-		5E34CB3E1B7F6EC300F212E8 /* CParticleCylinderEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9161B7F684000F212E8 /* CParticleCylinderEmitter.cpp */; };
-		5E34CB401B7F6EC300F212E8 /* CParticleFadeOutAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9181B7F684000F212E8 /* CParticleFadeOutAffector.cpp */; };
-		5E34CB421B7F6EC300F212E8 /* CParticleGravityAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91A1B7F684000F212E8 /* CParticleGravityAffector.cpp */; };
-		5E34CB441B7F6EC300F212E8 /* CParticleMeshEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91C1B7F684000F212E8 /* CParticleMeshEmitter.cpp */; };
-		5E34CB461B7F6EC300F212E8 /* CParticlePointEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91E1B7F684000F212E8 /* CParticlePointEmitter.cpp */; };
-		5E34CB481B7F6EC300F212E8 /* CParticleRingEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9201B7F684000F212E8 /* CParticleRingEmitter.cpp */; };
-		5E34CB4A1B7F6EC300F212E8 /* CParticleRotationAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9221B7F684000F212E8 /* CParticleRotationAffector.cpp */; };
-		5E34CB4C1B7F6EC300F212E8 /* CParticleScaleAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9241B7F684000F212E8 /* CParticleScaleAffector.cpp */; };
-		5E34CB4E1B7F6EC300F212E8 /* CParticleSphereEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9261B7F684000F212E8 /* CParticleSphereEmitter.cpp */; };
-		5E34CB501B7F6EC300F212E8 /* CParticleSystemSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9281B7F684000F212E8 /* CParticleSystemSceneNode.cpp */; };
 		5E34CB521B7F6EC300F212E8 /* CAnimatedMeshSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92A1B7F68D600F212E8 /* CAnimatedMeshSceneNode.cpp */; };
 		5E34CB541B7F6EC300F212E8 /* CBillboardSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92C1B7F68D600F212E8 /* CBillboardSceneNode.cpp */; };
 		5E34CB561B7F6EC300F212E8 /* CBoneSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92E1B7F68D600F212E8 /* CBoneSceneNode.cpp */; };
 		5E34CB581B7F6EC300F212E8 /* CCameraSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9301B7F68D600F212E8 /* CCameraSceneNode.cpp */; };
-		5E34CB5A1B7F6EC300F212E8 /* CCubeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9321B7F68D600F212E8 /* CCubeSceneNode.cpp */; };
 		5E34CB5C1B7F6EC300F212E8 /* CDummyTransformationSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9341B7F68D600F212E8 /* CDummyTransformationSceneNode.cpp */; };
 		5E34CB5E1B7F6EC300F212E8 /* CEmptySceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9361B7F68D600F212E8 /* CEmptySceneNode.cpp */; };
 		5E34CB601B7F6EC300F212E8 /* CLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9381B7F68D600F212E8 /* CLightSceneNode.cpp */; };
 		5E34CB621B7F6EC300F212E8 /* CMeshSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C93A1B7F68D600F212E8 /* CMeshSceneNode.cpp */; };
-		5E34CB641B7F6EC300F212E8 /* COctreeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C93C1B7F68D600F212E8 /* COctreeSceneNode.cpp */; };
-		5E34CB681B7F6EC400F212E8 /* CShadowVolumeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9401B7F68D600F212E8 /* CShadowVolumeSceneNode.cpp */; };
 		5E34CB6A1B7F6EC400F212E8 /* CSkyBoxSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */; };
-		5E34CB6C1B7F6EC400F212E8 /* CSkyDomeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9441B7F68D600F212E8 /* CSkyDomeSceneNode.cpp */; };
-		5E34CB6E1B7F6EC400F212E8 /* CSphereSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9461B7F68D600F212E8 /* CSphereSceneNode.cpp */; };
-		5E34CB701B7F6EC400F212E8 /* CTerrainSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9481B7F68D600F212E8 /* CTerrainSceneNode.cpp */; };
 		5E34CB721B7F6EC400F212E8 /* CTextSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */; };
 		5E34CB741B7F6EC400F212E8 /* CVolumeLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */; };
-		5E34CB761B7F6EC400F212E8 /* CWaterSurfaceSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94E1B7F68D600F212E8 /* CWaterSurfaceSceneNode.cpp */; };
 		5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */; };
 		5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */; };
 		5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */; };
@@ -206,37 +186,17 @@
 		5E5733621C18E212003F664E /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
 		5E5733681C18E212003F664E /* CSkinnedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9071B7F680200F212E8 /* CSkinnedMesh.cpp */; };
 		5E57336B1C18E212003F664E /* CXMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */; };
-		5E57336C1C18E212003F664E /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */; };
-		5E57336D1C18E212003F664E /* CParticleAttractionAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9121B7F684000F212E8 /* CParticleAttractionAffector.cpp */; };
-		5E57336E1C18E212003F664E /* CParticleBoxEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9141B7F684000F212E8 /* CParticleBoxEmitter.cpp */; };
-		5E57336F1C18E212003F664E /* CParticleCylinderEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9161B7F684000F212E8 /* CParticleCylinderEmitter.cpp */; };
-		5E5733701C18E212003F664E /* CParticleFadeOutAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9181B7F684000F212E8 /* CParticleFadeOutAffector.cpp */; };
-		5E5733711C18E212003F664E /* CParticleGravityAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91A1B7F684000F212E8 /* CParticleGravityAffector.cpp */; };
-		5E5733721C18E212003F664E /* CParticleMeshEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91C1B7F684000F212E8 /* CParticleMeshEmitter.cpp */; };
-		5E5733731C18E212003F664E /* CParticlePointEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C91E1B7F684000F212E8 /* CParticlePointEmitter.cpp */; };
-		5E5733741C18E212003F664E /* CParticleRingEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9201B7F684000F212E8 /* CParticleRingEmitter.cpp */; };
-		5E5733751C18E212003F664E /* CParticleRotationAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9221B7F684000F212E8 /* CParticleRotationAffector.cpp */; };
-		5E5733761C18E212003F664E /* CParticleScaleAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9241B7F684000F212E8 /* CParticleScaleAffector.cpp */; };
-		5E5733771C18E212003F664E /* CParticleSphereEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9261B7F684000F212E8 /* CParticleSphereEmitter.cpp */; };
-		5E5733781C18E212003F664E /* CParticleSystemSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9281B7F684000F212E8 /* CParticleSystemSceneNode.cpp */; };
 		5E5733791C18E212003F664E /* CAnimatedMeshSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92A1B7F68D600F212E8 /* CAnimatedMeshSceneNode.cpp */; };
 		5E57337A1C18E212003F664E /* CBillboardSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92C1B7F68D600F212E8 /* CBillboardSceneNode.cpp */; };
 		5E57337B1C18E212003F664E /* CBoneSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C92E1B7F68D600F212E8 /* CBoneSceneNode.cpp */; };
 		5E57337C1C18E212003F664E /* CCameraSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9301B7F68D600F212E8 /* CCameraSceneNode.cpp */; };
-		5E57337D1C18E212003F664E /* CCubeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9321B7F68D600F212E8 /* CCubeSceneNode.cpp */; };
 		5E57337E1C18E212003F664E /* CDummyTransformationSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9341B7F68D600F212E8 /* CDummyTransformationSceneNode.cpp */; };
 		5E57337F1C18E212003F664E /* CEmptySceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9361B7F68D600F212E8 /* CEmptySceneNode.cpp */; };
 		5E5733801C18E212003F664E /* CLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9381B7F68D600F212E8 /* CLightSceneNode.cpp */; };
 		5E5733811C18E212003F664E /* CMeshSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C93A1B7F68D600F212E8 /* CMeshSceneNode.cpp */; };
-		5E5733821C18E212003F664E /* COctreeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C93C1B7F68D600F212E8 /* COctreeSceneNode.cpp */; };
-		5E5733841C18E212003F664E /* CShadowVolumeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9401B7F68D600F212E8 /* CShadowVolumeSceneNode.cpp */; };
 		5E5733851C18E212003F664E /* CSkyBoxSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */; };
-		5E5733861C18E212003F664E /* CSkyDomeSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9441B7F68D600F212E8 /* CSkyDomeSceneNode.cpp */; };
-		5E5733871C18E212003F664E /* CSphereSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9461B7F68D600F212E8 /* CSphereSceneNode.cpp */; };
-		5E5733881C18E212003F664E /* CTerrainSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9481B7F68D600F212E8 /* CTerrainSceneNode.cpp */; };
 		5E5733891C18E212003F664E /* CTextSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */; };
 		5E57338A1C18E212003F664E /* CVolumeLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */; };
-		5E57338B1C18E212003F664E /* CWaterSurfaceSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94E1B7F68D600F212E8 /* CWaterSurfaceSceneNode.cpp */; };
 		5E5733921C18E212003F664E /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */; };
 		5E5733931C18E212003F664E /* CDefaultSceneNodeFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */; };
 		5E5733941C18E212003F664E /* CGeometryCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */; };
@@ -635,32 +595,6 @@
 		5E34C90D1B7F680200F212E8 /* CXMeshFileLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CXMeshFileLoader.cpp; sourceTree = "<group>"; };
 		5E34C90E1B7F680200F212E8 /* CXMeshFileLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXMeshFileLoader.h; sourceTree = "<group>"; };
 		5E34C90F1B7F680200F212E8 /* dmfsupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dmfsupport.h; sourceTree = "<group>"; };
-		5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleAnimatedMeshSceneNodeEmitter.cpp; sourceTree = "<group>"; };
-		5E34C9111B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleAnimatedMeshSceneNodeEmitter.h; sourceTree = "<group>"; };
-		5E34C9121B7F684000F212E8 /* CParticleAttractionAffector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleAttractionAffector.cpp; sourceTree = "<group>"; };
-		5E34C9131B7F684000F212E8 /* CParticleAttractionAffector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleAttractionAffector.h; sourceTree = "<group>"; };
-		5E34C9141B7F684000F212E8 /* CParticleBoxEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleBoxEmitter.cpp; sourceTree = "<group>"; };
-		5E34C9151B7F684000F212E8 /* CParticleBoxEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleBoxEmitter.h; sourceTree = "<group>"; };
-		5E34C9161B7F684000F212E8 /* CParticleCylinderEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleCylinderEmitter.cpp; sourceTree = "<group>"; };
-		5E34C9171B7F684000F212E8 /* CParticleCylinderEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleCylinderEmitter.h; sourceTree = "<group>"; };
-		5E34C9181B7F684000F212E8 /* CParticleFadeOutAffector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleFadeOutAffector.cpp; sourceTree = "<group>"; };
-		5E34C9191B7F684000F212E8 /* CParticleFadeOutAffector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleFadeOutAffector.h; sourceTree = "<group>"; };
-		5E34C91A1B7F684000F212E8 /* CParticleGravityAffector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleGravityAffector.cpp; sourceTree = "<group>"; };
-		5E34C91B1B7F684000F212E8 /* CParticleGravityAffector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleGravityAffector.h; sourceTree = "<group>"; };
-		5E34C91C1B7F684000F212E8 /* CParticleMeshEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleMeshEmitter.cpp; sourceTree = "<group>"; };
-		5E34C91D1B7F684000F212E8 /* CParticleMeshEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleMeshEmitter.h; sourceTree = "<group>"; };
-		5E34C91E1B7F684000F212E8 /* CParticlePointEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticlePointEmitter.cpp; sourceTree = "<group>"; };
-		5E34C91F1B7F684000F212E8 /* CParticlePointEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticlePointEmitter.h; sourceTree = "<group>"; };
-		5E34C9201B7F684000F212E8 /* CParticleRingEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleRingEmitter.cpp; sourceTree = "<group>"; };
-		5E34C9211B7F684000F212E8 /* CParticleRingEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleRingEmitter.h; sourceTree = "<group>"; };
-		5E34C9221B7F684000F212E8 /* CParticleRotationAffector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleRotationAffector.cpp; sourceTree = "<group>"; };
-		5E34C9231B7F684000F212E8 /* CParticleRotationAffector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleRotationAffector.h; sourceTree = "<group>"; };
-		5E34C9241B7F684000F212E8 /* CParticleScaleAffector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleScaleAffector.cpp; sourceTree = "<group>"; };
-		5E34C9251B7F684000F212E8 /* CParticleScaleAffector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleScaleAffector.h; sourceTree = "<group>"; };
-		5E34C9261B7F684000F212E8 /* CParticleSphereEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleSphereEmitter.cpp; sourceTree = "<group>"; };
-		5E34C9271B7F684000F212E8 /* CParticleSphereEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleSphereEmitter.h; sourceTree = "<group>"; };
-		5E34C9281B7F684000F212E8 /* CParticleSystemSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleSystemSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9291B7F684000F212E8 /* CParticleSystemSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CParticleSystemSceneNode.h; sourceTree = "<group>"; };
 		5E34C92A1B7F68D600F212E8 /* CAnimatedMeshSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatedMeshSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C92B1B7F68D600F212E8 /* CAnimatedMeshSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAnimatedMeshSceneNode.h; sourceTree = "<group>"; };
 		5E34C92C1B7F68D600F212E8 /* CBillboardSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CBillboardSceneNode.cpp; sourceTree = "<group>"; };
@@ -669,8 +603,6 @@
 		5E34C92F1B7F68D600F212E8 /* CBoneSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBoneSceneNode.h; sourceTree = "<group>"; };
 		5E34C9301B7F68D600F212E8 /* CCameraSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CCameraSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C9311B7F68D600F212E8 /* CCameraSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCameraSceneNode.h; sourceTree = "<group>"; };
-		5E34C9321B7F68D600F212E8 /* CCubeSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CCubeSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9331B7F68D600F212E8 /* CCubeSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCubeSceneNode.h; sourceTree = "<group>"; };
 		5E34C9341B7F68D600F212E8 /* CDummyTransformationSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CDummyTransformationSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C9351B7F68D600F212E8 /* CDummyTransformationSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDummyTransformationSceneNode.h; sourceTree = "<group>"; };
 		5E34C9361B7F68D600F212E8 /* CEmptySceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CEmptySceneNode.cpp; sourceTree = "<group>"; };
@@ -679,24 +611,12 @@
 		5E34C9391B7F68D600F212E8 /* CLightSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLightSceneNode.h; sourceTree = "<group>"; };
 		5E34C93A1B7F68D600F212E8 /* CMeshSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMeshSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C93B1B7F68D600F212E8 /* CMeshSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMeshSceneNode.h; sourceTree = "<group>"; };
-		5E34C93C1B7F68D600F212E8 /* COctreeSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = COctreeSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C93D1B7F68D600F212E8 /* COctreeSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COctreeSceneNode.h; sourceTree = "<group>"; };
-		5E34C9401B7F68D600F212E8 /* CShadowVolumeSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CShadowVolumeSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9411B7F68D600F212E8 /* CShadowVolumeSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CShadowVolumeSceneNode.h; sourceTree = "<group>"; };
 		5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSkyBoxSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C9431B7F68D600F212E8 /* CSkyBoxSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSkyBoxSceneNode.h; sourceTree = "<group>"; };
-		5E34C9441B7F68D600F212E8 /* CSkyDomeSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSkyDomeSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9451B7F68D600F212E8 /* CSkyDomeSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSkyDomeSceneNode.h; sourceTree = "<group>"; };
-		5E34C9461B7F68D600F212E8 /* CSphereSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSphereSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9471B7F68D600F212E8 /* CSphereSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSphereSceneNode.h; sourceTree = "<group>"; };
-		5E34C9481B7F68D600F212E8 /* CTerrainSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTerrainSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C9491B7F68D600F212E8 /* CTerrainSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTerrainSceneNode.h; sourceTree = "<group>"; };
 		5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTextSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C94B1B7F68D600F212E8 /* CTextSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTextSceneNode.h; sourceTree = "<group>"; };
 		5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CVolumeLightSceneNode.cpp; sourceTree = "<group>"; };
 		5E34C94D1B7F68D600F212E8 /* CVolumeLightSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVolumeLightSceneNode.h; sourceTree = "<group>"; };
-		5E34C94E1B7F68D600F212E8 /* CWaterSurfaceSceneNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CWaterSurfaceSceneNode.cpp; sourceTree = "<group>"; };
-		5E34C94F1B7F68D600F212E8 /* CWaterSurfaceSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWaterSurfaceSceneNode.h; sourceTree = "<group>"; };
 		5E34C9881B7F6AED00F212E8 /* CImageLoaderJPG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderJPG.cpp; sourceTree = "<group>"; };
 		5E34C9891B7F6AED00F212E8 /* CImageLoaderJPG.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CImageLoaderJPG.h; sourceTree = "<group>"; };
 		5E34C98C1B7F6AED00F212E8 /* CImageLoaderPNG.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CImageLoaderPNG.cpp; sourceTree = "<group>"; };
@@ -1267,32 +1187,6 @@
 		5E34C8A21B7F656C00F212E8 /* particleSystem */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C9101B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp */,
-				5E34C9111B7F684000F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.h */,
-				5E34C9121B7F684000F212E8 /* CParticleAttractionAffector.cpp */,
-				5E34C9131B7F684000F212E8 /* CParticleAttractionAffector.h */,
-				5E34C9141B7F684000F212E8 /* CParticleBoxEmitter.cpp */,
-				5E34C9151B7F684000F212E8 /* CParticleBoxEmitter.h */,
-				5E34C9161B7F684000F212E8 /* CParticleCylinderEmitter.cpp */,
-				5E34C9171B7F684000F212E8 /* CParticleCylinderEmitter.h */,
-				5E34C9181B7F684000F212E8 /* CParticleFadeOutAffector.cpp */,
-				5E34C9191B7F684000F212E8 /* CParticleFadeOutAffector.h */,
-				5E34C91A1B7F684000F212E8 /* CParticleGravityAffector.cpp */,
-				5E34C91B1B7F684000F212E8 /* CParticleGravityAffector.h */,
-				5E34C91C1B7F684000F212E8 /* CParticleMeshEmitter.cpp */,
-				5E34C91D1B7F684000F212E8 /* CParticleMeshEmitter.h */,
-				5E34C91E1B7F684000F212E8 /* CParticlePointEmitter.cpp */,
-				5E34C91F1B7F684000F212E8 /* CParticlePointEmitter.h */,
-				5E34C9201B7F684000F212E8 /* CParticleRingEmitter.cpp */,
-				5E34C9211B7F684000F212E8 /* CParticleRingEmitter.h */,
-				5E34C9221B7F684000F212E8 /* CParticleRotationAffector.cpp */,
-				5E34C9231B7F684000F212E8 /* CParticleRotationAffector.h */,
-				5E34C9241B7F684000F212E8 /* CParticleScaleAffector.cpp */,
-				5E34C9251B7F684000F212E8 /* CParticleScaleAffector.h */,
-				5E34C9261B7F684000F212E8 /* CParticleSphereEmitter.cpp */,
-				5E34C9271B7F684000F212E8 /* CParticleSphereEmitter.h */,
-				5E34C9281B7F684000F212E8 /* CParticleSystemSceneNode.cpp */,
-				5E34C9291B7F684000F212E8 /* CParticleSystemSceneNode.h */,
 			);
 			name = particleSystem;
 			sourceTree = "<group>";
@@ -1308,8 +1202,6 @@
 				5E34C92F1B7F68D600F212E8 /* CBoneSceneNode.h */,
 				5E34C9301B7F68D600F212E8 /* CCameraSceneNode.cpp */,
 				5E34C9311B7F68D600F212E8 /* CCameraSceneNode.h */,
-				5E34C9321B7F68D600F212E8 /* CCubeSceneNode.cpp */,
-				5E34C9331B7F68D600F212E8 /* CCubeSceneNode.h */,
 				5E34C9341B7F68D600F212E8 /* CDummyTransformationSceneNode.cpp */,
 				5E34C9351B7F68D600F212E8 /* CDummyTransformationSceneNode.h */,
 				5E34C9361B7F68D600F212E8 /* CEmptySceneNode.cpp */,
@@ -1318,24 +1210,12 @@
 				5E34C9391B7F68D600F212E8 /* CLightSceneNode.h */,
 				5E34C93A1B7F68D600F212E8 /* CMeshSceneNode.cpp */,
 				5E34C93B1B7F68D600F212E8 /* CMeshSceneNode.h */,
-				5E34C93C1B7F68D600F212E8 /* COctreeSceneNode.cpp */,
-				5E34C93D1B7F68D600F212E8 /* COctreeSceneNode.h */,
-				5E34C9401B7F68D600F212E8 /* CShadowVolumeSceneNode.cpp */,
-				5E34C9411B7F68D600F212E8 /* CShadowVolumeSceneNode.h */,
 				5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */,
 				5E34C9431B7F68D600F212E8 /* CSkyBoxSceneNode.h */,
-				5E34C9441B7F68D600F212E8 /* CSkyDomeSceneNode.cpp */,
-				5E34C9451B7F68D600F212E8 /* CSkyDomeSceneNode.h */,
-				5E34C9461B7F68D600F212E8 /* CSphereSceneNode.cpp */,
-				5E34C9471B7F68D600F212E8 /* CSphereSceneNode.h */,
-				5E34C9481B7F68D600F212E8 /* CTerrainSceneNode.cpp */,
-				5E34C9491B7F68D600F212E8 /* CTerrainSceneNode.h */,
 				5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */,
 				5E34C94B1B7F68D600F212E8 /* CTextSceneNode.h */,
 				5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */,
 				5E34C94D1B7F68D600F212E8 /* CVolumeLightSceneNode.h */,
-				5E34C94E1B7F68D600F212E8 /* CWaterSurfaceSceneNode.cpp */,
-				5E34C94F1B7F68D600F212E8 /* CWaterSurfaceSceneNode.h */,
 			);
 			name = sceneNodes;
 			sourceTree = "<group>";
@@ -1597,37 +1477,17 @@
 				5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */,
 				5E34CB2F1B7F6EC200F212E8 /* CSkinnedMesh.cpp in Sources */,
 				5E34CB351B7F6EC200F212E8 /* CXMeshFileLoader.cpp in Sources */,
-				5E34CB381B7F6EC200F212E8 /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */,
-				5E34CB3A1B7F6EC200F212E8 /* CParticleAttractionAffector.cpp in Sources */,
-				5E34CB3C1B7F6EC300F212E8 /* CParticleBoxEmitter.cpp in Sources */,
-				5E34CB3E1B7F6EC300F212E8 /* CParticleCylinderEmitter.cpp in Sources */,
-				5E34CB401B7F6EC300F212E8 /* CParticleFadeOutAffector.cpp in Sources */,
-				5E34CB421B7F6EC300F212E8 /* CParticleGravityAffector.cpp in Sources */,
-				5E34CB441B7F6EC300F212E8 /* CParticleMeshEmitter.cpp in Sources */,
-				5E34CB461B7F6EC300F212E8 /* CParticlePointEmitter.cpp in Sources */,
-				5E34CB481B7F6EC300F212E8 /* CParticleRingEmitter.cpp in Sources */,
-				5E34CB4A1B7F6EC300F212E8 /* CParticleRotationAffector.cpp in Sources */,
-				5E34CB4C1B7F6EC300F212E8 /* CParticleScaleAffector.cpp in Sources */,
-				5E34CB4E1B7F6EC300F212E8 /* CParticleSphereEmitter.cpp in Sources */,
-				5E34CB501B7F6EC300F212E8 /* CParticleSystemSceneNode.cpp in Sources */,
 				5E34CB521B7F6EC300F212E8 /* CAnimatedMeshSceneNode.cpp in Sources */,
 				5E34CB541B7F6EC300F212E8 /* CBillboardSceneNode.cpp in Sources */,
 				5E34CB561B7F6EC300F212E8 /* CBoneSceneNode.cpp in Sources */,
 				5E34CB581B7F6EC300F212E8 /* CCameraSceneNode.cpp in Sources */,
-				5E34CB5A1B7F6EC300F212E8 /* CCubeSceneNode.cpp in Sources */,
 				5E34CB5C1B7F6EC300F212E8 /* CDummyTransformationSceneNode.cpp in Sources */,
 				5E34CB5E1B7F6EC300F212E8 /* CEmptySceneNode.cpp in Sources */,
 				5E34CB601B7F6EC300F212E8 /* CLightSceneNode.cpp in Sources */,
 				5E34CB621B7F6EC300F212E8 /* CMeshSceneNode.cpp in Sources */,
-				5E34CB641B7F6EC300F212E8 /* COctreeSceneNode.cpp in Sources */,
-				5E34CB681B7F6EC400F212E8 /* CShadowVolumeSceneNode.cpp in Sources */,
 				5E34CB6A1B7F6EC400F212E8 /* CSkyBoxSceneNode.cpp in Sources */,
-				5E34CB6C1B7F6EC400F212E8 /* CSkyDomeSceneNode.cpp in Sources */,
-				5E34CB6E1B7F6EC400F212E8 /* CSphereSceneNode.cpp in Sources */,
-				5E34CB701B7F6EC400F212E8 /* CTerrainSceneNode.cpp in Sources */,
 				5E34CB721B7F6EC400F212E8 /* CTextSceneNode.cpp in Sources */,
 				5E34CB741B7F6EC400F212E8 /* CVolumeLightSceneNode.cpp in Sources */,
-				5E34CB761B7F6EC400F212E8 /* CWaterSurfaceSceneNode.cpp in Sources */,
 				5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */,
 				5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */,
@@ -1734,40 +1594,20 @@
 				5E5733621C18E212003F664E /* COBJMeshFileLoader.cpp in Sources */,
 				5E5733681C18E212003F664E /* CSkinnedMesh.cpp in Sources */,
 				5E57336B1C18E212003F664E /* CXMeshFileLoader.cpp in Sources */,
-				5E57336C1C18E212003F664E /* CParticleAnimatedMeshSceneNodeEmitter.cpp in Sources */,
-				5E57336D1C18E212003F664E /* CParticleAttractionAffector.cpp in Sources */,
-				5E57336E1C18E212003F664E /* CParticleBoxEmitter.cpp in Sources */,
-				5E57336F1C18E212003F664E /* CParticleCylinderEmitter.cpp in Sources */,
-				5E5733701C18E212003F664E /* CParticleFadeOutAffector.cpp in Sources */,
-				5E5733711C18E212003F664E /* CParticleGravityAffector.cpp in Sources */,
-				5E5733721C18E212003F664E /* CParticleMeshEmitter.cpp in Sources */,
 				84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */,
-				5E5733731C18E212003F664E /* CParticlePointEmitter.cpp in Sources */,
-				5E5733741C18E212003F664E /* CParticleRingEmitter.cpp in Sources */,
-				5E5733751C18E212003F664E /* CParticleRotationAffector.cpp in Sources */,
-				5E5733761C18E212003F664E /* CParticleScaleAffector.cpp in Sources */,
-				5E5733771C18E212003F664E /* CParticleSphereEmitter.cpp in Sources */,
-				5E5733781C18E212003F664E /* CParticleSystemSceneNode.cpp in Sources */,
 				5E5733791C18E212003F664E /* CAnimatedMeshSceneNode.cpp in Sources */,
 				5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */,
 				5E57337A1C18E212003F664E /* CBillboardSceneNode.cpp in Sources */,
 				5E57337B1C18E212003F664E /* CBoneSceneNode.cpp in Sources */,
 				5E57337C1C18E212003F664E /* CCameraSceneNode.cpp in Sources */,
-				5E57337D1C18E212003F664E /* CCubeSceneNode.cpp in Sources */,
 				5E5734101C18E2E2003F664E /* COGLES2NormalMapRenderer.cpp in Sources */,
 				5E57337E1C18E212003F664E /* CDummyTransformationSceneNode.cpp in Sources */,
 				5E57337F1C18E212003F664E /* CEmptySceneNode.cpp in Sources */,
 				5E5733801C18E212003F664E /* CLightSceneNode.cpp in Sources */,
 				5E5733811C18E212003F664E /* CMeshSceneNode.cpp in Sources */,
-				5E5733821C18E212003F664E /* COctreeSceneNode.cpp in Sources */,
-				5E5733841C18E212003F664E /* CShadowVolumeSceneNode.cpp in Sources */,
 				5E5733851C18E212003F664E /* CSkyBoxSceneNode.cpp in Sources */,
-				5E5733861C18E212003F664E /* CSkyDomeSceneNode.cpp in Sources */,
-				5E5733871C18E212003F664E /* CSphereSceneNode.cpp in Sources */,
-				5E5733881C18E212003F664E /* CTerrainSceneNode.cpp in Sources */,
 				5E5733891C18E212003F664E /* CTextSceneNode.cpp in Sources */,
 				5E57338A1C18E212003F664E /* CVolumeLightSceneNode.cpp in Sources */,
-				5E57338B1C18E212003F664E /* CWaterSurfaceSceneNode.cpp in Sources */,
 				5E57340A1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp in Sources */,
 				5E5733921C18E212003F664E /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E5733931C18E212003F664E /* CDefaultSceneNodeFactory.cpp in Sources */,

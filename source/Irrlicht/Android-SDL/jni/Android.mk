@@ -38,7 +38,6 @@ LOCAL_SRC_FILES := \
 					CBoneSceneNode.cpp \
 					CCameraSceneNode.cpp \
 					CColorConverter.cpp \
-					CCubeSceneNode.cpp \
 					CDefaultGUIElementFactory.cpp \
 					CDefaultSceneNodeAnimatorFactory.cpp \
 					CDefaultSceneNodeFactory.cpp \
@@ -98,7 +97,6 @@ LOCAL_SRC_FILES := \
 					CNPKReader.cpp \
 					CNullDriver.cpp \
 					COBJMeshFileLoader.cpp \
-					COctreeSceneNode.cpp \
 					COctreeTriangleSelector.cpp \
 					COGLES2Driver.cpp \
 					COGLES2ExtensionHandler.cpp \
@@ -118,19 +116,6 @@ LOCAL_SRC_FILES := \
 					COpenGLSLMaterialRenderer.cpp \
 					COSOperator.cpp \
 					CPakReader.cpp \
-					CParticleAnimatedMeshSceneNodeEmitter.cpp \
-					CParticleAttractionAffector.cpp \
-					CParticleBoxEmitter.cpp \
-					CParticleCylinderEmitter.cpp \
-					CParticleFadeOutAffector.cpp \
-					CParticleGravityAffector.cpp \
-					CParticleMeshEmitter.cpp \
-					CParticlePointEmitter.cpp \
-					CParticleRingEmitter.cpp \
-					CParticleRotationAffector.cpp \
-					CParticleScaleAffector.cpp \
-					CParticleSphereEmitter.cpp \
-					CParticleSystemSceneNode.cpp \
 					CProfiler.cpp \
 					CReadFile.cpp \
 					CSceneCollisionManager.cpp \
@@ -144,13 +129,9 @@ LOCAL_SRC_FILES := \
 					CSceneNodeAnimatorFollowSpline.cpp \
 					CSceneNodeAnimatorRotation.cpp \
 					CSceneNodeAnimatorTexture.cpp \
-					CShadowVolumeSceneNode.cpp \
 					CSkinnedMesh.cpp \
 					CSkyBoxSceneNode.cpp \
-					CSkyDomeSceneNode.cpp \
-					CSphereSceneNode.cpp \
 					CTarReader.cpp \
-					CTerrainSceneNode.cpp \
 					CTerrainTriangleSelector.cpp \
 					CTextSceneNode.cpp \
 					CTriangleBBSelector.cpp \
@@ -158,7 +139,6 @@ LOCAL_SRC_FILES := \
 					CVideoModeList.cpp \
 					CVolumeLightSceneNode.cpp \
 					CWADReader.cpp \
-					CWaterSurfaceSceneNode.cpp \
 					CWriteFile.cpp \
 					CXMeshFileLoader.cpp \
 					CXMLReader.cpp \

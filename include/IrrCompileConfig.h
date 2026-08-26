@@ -405,7 +405,7 @@ you will not be able to use anything provided by the GUI Environment, including 
 
 //! Define _IRR_COMPILE_WITH_PARTICLES to compile the engine the with the build-in particle system
 /** You can disable this if you don't need particles or use an external particle system. */
-#define _IRR_COMPILE_WITH_PARTICLES_
+//#define _IRR_COMPILE_WITH_PARTICLES_
 #ifdef NO_IRR_COMPILE_WITH_PARTICLES_
 #undef _IRR_COMPILE_WITH_PARTICLES_
 #endif
@@ -493,19 +493,19 @@ tool <http://developer.nvidia.com/object/nvperfhud_home.html>. */
 //#define IGNORE_DEPRECATED_WARNING
 
 //! Define _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_ to support ShadowVolumes
-#define _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
+//#define _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
 #undef _IRR_COMPILE_WITH_SHADOW_VOLUME_SCENENODE_
 #endif
 
 //! Define _IRR_COMPILE_WITH_OCTREE_SCENENODE_ to support OctreeSceneNodes
-#define _IRR_COMPILE_WITH_OCTREE_SCENENODE_
+//#define _IRR_COMPILE_WITH_OCTREE_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_OCTREE_SCENENODE_
 #undef _IRR_COMPILE_WITH_OCTREE_SCENENODE_
 #endif
 
 //! Define _IRR_COMPILE_WITH_TERRAIN_SCENENODE_ to support TerrainSceneNodes
-#define _IRR_COMPILE_WITH_TERRAIN_SCENENODE_
+//#define _IRR_COMPILE_WITH_TERRAIN_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_TERRAIN_SCENENODE_
 #undef _IRR_COMPILE_WITH_TERRAIN_SCENENODE_
 #endif
@@ -517,25 +517,25 @@ tool <http://developer.nvidia.com/object/nvperfhud_home.html>. */
 #endif
 
 //! Define _IRR_COMPILE_WITH_WATER_SURFACE_SCENENODE_ to support WaterSurfaceSceneNodes
-#define _IRR_COMPILE_WITH_WATER_SURFACE_SCENENODE_
+//#define _IRR_COMPILE_WITH_WATER_SURFACE_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_WATER_SURFACE_SCENENODE_
 #undef _IRR_COMPILE_WITH_WATER_SURFACE_SCENENODE_
 #endif
 
 //! Define _IRR_COMPILE_WITH_SKYDOME_SCENENODE_ to support SkydomeSceneNodes
-#define _IRR_COMPILE_WITH_SKYDOME_SCENENODE_
+//#define _IRR_COMPILE_WITH_SKYDOME_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_SKYDOME_SCENENODE_
 #undef _IRR_COMPILE_WITH_SKYDOME_SCENENODE_
 #endif
 
 //! Define _IRR_COMPILE_WITH_CUBE_SCENENODE_ to support CubeSceneNodes
-#define _IRR_COMPILE_WITH_CUBE_SCENENODE_
+//#define _IRR_COMPILE_WITH_CUBE_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_CUBE_SCENENODE_
 #undef _IRR_COMPILE_WITH_CUBE_SCENENODE_
 #endif
 
 //! Define _IRR_COMPILE_WITH_SPHERE_SCENENODE_ to support CubeSceneNodes
-#define _IRR_COMPILE_WITH_SPHERE_SCENENODE_
+//#define _IRR_COMPILE_WITH_SPHERE_SCENENODE_
 #ifdef NO_IRR_COMPILE_WITH_SPHERE_SCENENODE_
 #undef _IRR_COMPILE_WITH_SPHERE_SCENENODE_
 #endif
