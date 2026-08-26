@@ -222,9 +222,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 			if (param.Vsync)
 			{
 				// Try adaptive vsync first
-				int ret = SDL_GL_SetSwapInterval(-1);
-
-				if (ret == -1)
+				if (!SDL_GL_SetSwapInterval(-1))
 				{
 					SDL_GL_SetSwapInterval(1);
 				}
