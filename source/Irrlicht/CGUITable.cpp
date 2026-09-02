@@ -6,6 +6,8 @@
 //                                          A_Buschhueter@gmx.de
 
 #include "CGUITable.h"
+
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUISkin.h"
@@ -1293,3 +1295,4 @@ void CGUITable::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWri
 
 #endif
 
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

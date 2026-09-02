@@ -6,6 +6,8 @@
 
 #include "CGUITreeView.h"
 
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUISkin.h"
@@ -1486,3 +1488,5 @@ irr::s32 CGUITreeView::getNumItemsDisplayed() const
 
 
 #endif // _IRR_COMPILE_WITH_GUI_
+
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

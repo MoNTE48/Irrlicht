@@ -11,31 +11,55 @@
 
 #include "CGUISkin.h"
 #include "CGUIButton.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIWindow.h"
+#endif
 #include "CGUIScrollBar.h"
 #include "CGUIFont.h"
 #include "CGUISpriteBank.h"
 #include "CGUIImage.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIMeshViewer.h"
+#endif
 #include "CGUICheckBox.h"
 #include "CGUIListBox.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUITreeView.h"
+#endif
 #include "CGUIImageList.h"
 #include "CGUIFileOpenDialog.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIColorSelectDialog.h"
+#endif
 #include "CGUIStaticText.h"
 #include "CGUIEditBox.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUISpinBox.h"
+#endif
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIInOutFader.h"
+#endif
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIMessageBox.h"
+#endif
 #include "CGUIModalScreen.h"
 #include "CGUITabControl.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIContextMenu.h"
+#endif
 #include "CGUIComboBox.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIMenu.h"
+#endif
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIToolBar.h"
+#endif
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUITable.h"
+#endif
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #include "CGUIProfiler.h"
+#endif
 
 #include "CDefaultGUIElementFactory.h"
 #include "IWriteFile.h"
@@ -1059,6 +1083,7 @@ IGUIButton* CGUIEnvironment::addButton(const core::rect<s32>& rectangle, IGUIEle
 IGUIWindow* CGUIEnvironment::addWindow(const core::rect<s32>& rectangle, bool modal,
 		const wchar_t* text, IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	parent = parent ? parent : this;
 
 	IGUIWindow* win = new CGUIWindow(this, parent, id, rectangle);
@@ -1076,6 +1101,9 @@ IGUIWindow* CGUIEnvironment::addWindow(const core::rect<s32>& rectangle, bool mo
 	}
 
 	return win;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1096,6 +1124,7 @@ IGUIElement* CGUIEnvironment::addModalScreen(IGUIElement* parent, int blinkMode)
 IGUIWindow* CGUIEnvironment::addMessageBox(const wchar_t* caption, const wchar_t* text,
 	bool modal, s32 flag, IGUIElement* parent, s32 id, video::ITexture* image)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	if (!CurrentSkin)
 		return 0;
 
@@ -1129,6 +1158,9 @@ IGUIWindow* CGUIEnvironment::addMessageBox(const wchar_t* caption, const wchar_t
 
 
 	return win;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1143,17 +1175,25 @@ IGUIScrollBar* CGUIEnvironment::addScrollBar(bool horizontal, const core::rect<s
 //! Adds a table to the environment
 IGUITable* CGUIEnvironment::addTable(const core::rect<s32>& rectangle, IGUIElement* parent, s32 id, bool drawBackground)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	CGUITable* b = new CGUITable(this, parent ? parent : this, id, rectangle, true, drawBackground, false);
 	b->drop();
 	return b;
+#else
+	return 0;
+#endif
 }
 
 	//! Adds an element to display the information from the Irrlicht profiler
 IGUIProfiler* CGUIEnvironment::addProfilerDisplay(const core::rect<s32>& rectangle, IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	CGUIProfiler* p = new CGUIProfiler(this, parent ? parent : this, id, rectangle, NULL);
 	p->drop();
 	return p;
+#else
+	return 0;
+#endif
 }
 
 //! Adds an image element.
@@ -1201,6 +1241,7 @@ IGUIImage* CGUIEnvironment::addImage(const core::rect<s32>& rectangle, IGUIEleme
 //! adds an mesh viewer. The returned pointer must not be dropped.
 IGUIMeshViewer* CGUIEnvironment::addMeshViewer(const core::rect<s32>& rectangle, IGUIElement* parent, s32 id, const wchar_t* text)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	IGUIMeshViewer* v = new CGUIMeshViewer(this, parent ? parent : this,
 		id, rectangle);
 
@@ -1209,6 +1250,9 @@ IGUIMeshViewer* CGUIEnvironment::addMeshViewer(const core::rect<s32>& rectangle,
 
 	v->drop();
 	return v;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1252,12 +1296,16 @@ IGUITreeView* CGUIEnvironment::addTreeView(const core::rect<s32>& rectangle,
 					 bool drawBackground,
 					 bool scrollBarVertical, bool scrollBarHorizontal)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	IGUITreeView* b = new CGUITreeView(this, parent ? parent : this, id, rectangle,
 		true, drawBackground, scrollBarVertical, scrollBarHorizontal);
 
 	b->setIconFont ( getBuiltInFont () );
 	b->drop();
 	return b;
+#else
+	return 0;
+#endif
 }
 
 //! adds a file open dialog. The returned pointer must not be dropped.
@@ -1288,6 +1336,7 @@ IGUIFileOpenDialog* CGUIEnvironment::addFileOpenDialog(const wchar_t* title,
 IGUIColorSelectDialog* CGUIEnvironment::addColorSelectDialog(const wchar_t* title,
 				bool modal, IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	parent = parent ? parent : this;
 
 	IGUIColorSelectDialog* d = new CGUIColorSelectDialog( title,
@@ -1304,6 +1353,9 @@ IGUIColorSelectDialog* CGUIEnvironment::addColorSelectDialog(const wchar_t* titl
 	}
 
 	return d;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1341,11 +1393,15 @@ IGUISpinBox* CGUIEnvironment::addSpinBox(const wchar_t* text,
 					 const core::rect<s32> &rectangle,
 					 bool border,IGUIElement* parent, s32 id, bool hasButtons)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	IGUISpinBox* d = new CGUISpinBox(text, border,this,
 		parent ? parent : this, id, rectangle, hasButtons);
 
 	d->drop();
 	return d;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1375,16 +1431,21 @@ IGUITab* CGUIEnvironment::addTab(const core::rect<s32>& rectangle,
 IGUIContextMenu* CGUIEnvironment::addContextMenu(const core::rect<s32>& rectangle,
 	IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	IGUIContextMenu* c = new CGUIContextMenu(this,
 		parent ? parent : this, id, rectangle, true);
 	c->drop();
 	return c;
+#else
+	return 0;
+#endif
 }
 
 
 //! Adds a menu to the environment.
 IGUIContextMenu* CGUIEnvironment::addMenu(IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	if (!parent)
 		parent = this;
 
@@ -1395,6 +1456,9 @@ IGUIContextMenu* CGUIEnvironment::addMenu(IGUIElement* parent, s32 id)
 
 	c->drop();
 	return c;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1402,18 +1466,23 @@ IGUIContextMenu* CGUIEnvironment::addMenu(IGUIElement* parent, s32 id)
 //! in its parent, and contains buttons.
 IGUIToolBar* CGUIEnvironment::addToolBar(IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	if (!parent)
 		parent = this;
 
 	IGUIToolBar* b = new CGUIToolBar(this, parent, id, core::rect<s32>(0,0,10,10));
 	b->drop();
 	return b;
+#else
+	return 0;
+#endif
 }
 
 
 //! Adds an element for fading in or out.
 IGUIInOutFader* CGUIEnvironment::addInOutFader(const core::rect<s32>* rectangle, IGUIElement* parent, s32 id)
 {
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 	core::rect<s32> rect;
 
 	if (rectangle)
@@ -1427,6 +1496,9 @@ IGUIInOutFader* CGUIEnvironment::addInOutFader(const core::rect<s32>* rectangle,
 	IGUIInOutFader* fader = new CGUIInOutFader(this, parent, id, rect);
 	fader->drop();
 	return fader;
+#else
+	return 0;
+#endif
 }
 
 

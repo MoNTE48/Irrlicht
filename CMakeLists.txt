@@ -44,32 +44,20 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CGLXManager.cpp
 	source/Irrlicht/CGUIButton.cpp
 	source/Irrlicht/CGUICheckBox.cpp
-	source/Irrlicht/CGUIColorSelectDialog.cpp
 	source/Irrlicht/CGUIComboBox.cpp
-	source/Irrlicht/CGUIContextMenu.cpp
 	source/Irrlicht/CGUIEditBox.cpp
 	source/Irrlicht/CGUIEnvironment.cpp
 	source/Irrlicht/CGUIFileOpenDialog.cpp
 	source/Irrlicht/CGUIFont.cpp
 	source/Irrlicht/CGUIImage.cpp
 	source/Irrlicht/CGUIImageList.cpp
-	source/Irrlicht/CGUIInOutFader.cpp
 	source/Irrlicht/CGUIListBox.cpp
-	source/Irrlicht/CGUIMenu.cpp
-	source/Irrlicht/CGUIMeshViewer.cpp
-	source/Irrlicht/CGUIMessageBox.cpp
 	source/Irrlicht/CGUIModalScreen.cpp
-	source/Irrlicht/CGUIProfiler.cpp
 	source/Irrlicht/CGUIScrollBar.cpp
 	source/Irrlicht/CGUISkin.cpp
-	source/Irrlicht/CGUISpinBox.cpp
 	source/Irrlicht/CGUISpriteBank.cpp
 	source/Irrlicht/CGUIStaticText.cpp
 	source/Irrlicht/CGUITabControl.cpp
-	source/Irrlicht/CGUITable.cpp
-	source/Irrlicht/CGUIToolBar.cpp
-	source/Irrlicht/CGUITreeView.cpp
-	source/Irrlicht/CGUIWindow.cpp
 	source/Irrlicht/CImage.cpp
 	source/Irrlicht/CImageLoaderJPG.cpp
 	source/Irrlicht/CImageLoaderPNG.cpp

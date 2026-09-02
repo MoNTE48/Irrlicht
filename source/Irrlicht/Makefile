@@ -47,7 +47,7 @@ IRRIMAGEOBJ = CColorConverter.o CImage.o CImageLoaderJPG.o CImageLoaderPNG.o CIm
 IRRVIDEOOBJ = CVideoModeList.o CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
 IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CZipReader.o irrXML.o CAttributes.o
 IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o
-IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIContextMenu.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIInOutFader.o CGUIListBox.o CGUIMenu.o CGUIMeshViewer.o CGUIMessageBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISpinBox.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CGUITable.o CGUIToolBar.o CGUIWindow.o CGUIColorSelectDialog.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o CGUITreeView.o CGUIProfiler.o
+IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIListBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o
 MINIZIPOBJ = minizip-ng/mz_crypt_openssl.o minizip-ng/mz_crypt.o
 
 # Next variable is for additional scene nodes etc. of customized Irrlicht versions

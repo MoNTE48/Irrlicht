@@ -10,32 +10,20 @@
 		5E34C9F91B7F6EBF00F212E8 /* CDefaultGUIElementFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E21B7F50DE00F212E8 /* CDefaultGUIElementFactory.cpp */; };
 		5E34C9FB1B7F6EBF00F212E8 /* CGUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7A91B7F50A900F212E8 /* CGUIButton.cpp */; };
 		5E34C9FD1B7F6EBF00F212E8 /* CGUICheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AB1B7F50A900F212E8 /* CGUICheckBox.cpp */; };
-		5E34C9FF1B7F6EBF00F212E8 /* CGUIColorSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AD1B7F50A900F212E8 /* CGUIColorSelectDialog.cpp */; };
 		5E34CA011B7F6EBF00F212E8 /* CGUIComboBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AF1B7F50A900F212E8 /* CGUIComboBox.cpp */; };
-		5E34CA031B7F6EBF00F212E8 /* CGUIContextMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B11B7F50A900F212E8 /* CGUIContextMenu.cpp */; };
 		5E34CA051B7F6EBF00F212E8 /* CGUIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B31B7F50A900F212E8 /* CGUIEditBox.cpp */; };
 		5E34CA071B7F6EBF00F212E8 /* CGUIEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B51B7F50A900F212E8 /* CGUIEnvironment.cpp */; };
 		5E34CA091B7F6EBF00F212E8 /* CGUIFileOpenDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B71B7F50A900F212E8 /* CGUIFileOpenDialog.cpp */; };
 		5E34CA0B1B7F6EBF00F212E8 /* CGUIFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B91B7F50A900F212E8 /* CGUIFont.cpp */; };
 		5E34CA0D1B7F6EBF00F212E8 /* CGUIImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BB1B7F50A900F212E8 /* CGUIImage.cpp */; };
 		5E34CA0F1B7F6EBF00F212E8 /* CGUIImageList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BD1B7F50A900F212E8 /* CGUIImageList.cpp */; };
-		5E34CA111B7F6EBF00F212E8 /* CGUIInOutFader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BF1B7F50A900F212E8 /* CGUIInOutFader.cpp */; };
 		5E34CA131B7F6EBF00F212E8 /* CGUIListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C11B7F50A900F212E8 /* CGUIListBox.cpp */; };
-		5E34CA151B7F6EBF00F212E8 /* CGUIMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C31B7F50A900F212E8 /* CGUIMenu.cpp */; };
-		5E34CA171B7F6EBF00F212E8 /* CGUIMeshViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C51B7F50A900F212E8 /* CGUIMeshViewer.cpp */; };
-		5E34CA191B7F6EBF00F212E8 /* CGUIMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C71B7F50A900F212E8 /* CGUIMessageBox.cpp */; };
 		5E34CA1B1B7F6EBF00F212E8 /* CGUIModalScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C91B7F50A900F212E8 /* CGUIModalScreen.cpp */; };
-		5E34CA1D1B7F6EBF00F212E8 /* CGUIProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CB1B7F50A900F212E8 /* CGUIProfiler.cpp */; };
 		5E34CA1F1B7F6EBF00F212E8 /* CGUIScrollBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CD1B7F50A900F212E8 /* CGUIScrollBar.cpp */; };
 		5E34CA211B7F6EBF00F212E8 /* CGUISkin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CF1B7F50A900F212E8 /* CGUISkin.cpp */; };
-		5E34CA231B7F6EBF00F212E8 /* CGUISpinBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D11B7F50A900F212E8 /* CGUISpinBox.cpp */; };
 		5E34CA251B7F6EBF00F212E8 /* CGUISpriteBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D31B7F50A900F212E8 /* CGUISpriteBank.cpp */; };
 		5E34CA271B7F6EBF00F212E8 /* CGUIStaticText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D51B7F50A900F212E8 /* CGUIStaticText.cpp */; };
 		5E34CA291B7F6EBF00F212E8 /* CGUITabControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D71B7F50A900F212E8 /* CGUITabControl.cpp */; };
-		5E34CA2B1B7F6EBF00F212E8 /* CGUITable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D91B7F50A900F212E8 /* CGUITable.cpp */; };
-		5E34CA2D1B7F6EBF00F212E8 /* CGUIToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DB1B7F50A900F212E8 /* CGUIToolBar.cpp */; };
-		5E34CA2F1B7F6EBF00F212E8 /* CGUITreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DD1B7F50A900F212E8 /* CGUITreeView.cpp */; };
-		5E34CA311B7F6EBF00F212E8 /* CGUIWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DF1B7F50A900F212E8 /* CGUIWindow.cpp */; };
 		5E34CA341B7F6EBF00F212E8 /* CAttributes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E51B7F517000F212E8 /* CAttributes.cpp */; };
 		5E34CA361B7F6EBF00F212E8 /* CFileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E71B7F517000F212E8 /* CFileList.cpp */; };
 		5E34CA381B7F6EBF00F212E8 /* CFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E91B7F517000F212E8 /* CFileSystem.cpp */; };
@@ -94,32 +82,20 @@
 		5E5732B31C18E212003F664E /* CDefaultGUIElementFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E21B7F50DE00F212E8 /* CDefaultGUIElementFactory.cpp */; };
 		5E5732B41C18E212003F664E /* CGUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7A91B7F50A900F212E8 /* CGUIButton.cpp */; };
 		5E5732B51C18E212003F664E /* CGUICheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AB1B7F50A900F212E8 /* CGUICheckBox.cpp */; };
-		5E5732B61C18E212003F664E /* CGUIColorSelectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AD1B7F50A900F212E8 /* CGUIColorSelectDialog.cpp */; };
 		5E5732B71C18E212003F664E /* CGUIComboBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AF1B7F50A900F212E8 /* CGUIComboBox.cpp */; };
-		5E5732B81C18E212003F664E /* CGUIContextMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B11B7F50A900F212E8 /* CGUIContextMenu.cpp */; };
 		5E5732B91C18E212003F664E /* CGUIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B31B7F50A900F212E8 /* CGUIEditBox.cpp */; };
 		5E5732BA1C18E212003F664E /* CGUIEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B51B7F50A900F212E8 /* CGUIEnvironment.cpp */; };
 		5E5732BB1C18E212003F664E /* CGUIFileOpenDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B71B7F50A900F212E8 /* CGUIFileOpenDialog.cpp */; };
 		5E5732BC1C18E212003F664E /* CGUIFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7B91B7F50A900F212E8 /* CGUIFont.cpp */; };
 		5E5732BD1C18E212003F664E /* CGUIImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BB1B7F50A900F212E8 /* CGUIImage.cpp */; };
 		5E5732BE1C18E212003F664E /* CGUIImageList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BD1B7F50A900F212E8 /* CGUIImageList.cpp */; };
-		5E5732BF1C18E212003F664E /* CGUIInOutFader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7BF1B7F50A900F212E8 /* CGUIInOutFader.cpp */; };
 		5E5732C01C18E212003F664E /* CGUIListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C11B7F50A900F212E8 /* CGUIListBox.cpp */; };
-		5E5732C11C18E212003F664E /* CGUIMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C31B7F50A900F212E8 /* CGUIMenu.cpp */; };
-		5E5732C21C18E212003F664E /* CGUIMeshViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C51B7F50A900F212E8 /* CGUIMeshViewer.cpp */; };
-		5E5732C31C18E212003F664E /* CGUIMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C71B7F50A900F212E8 /* CGUIMessageBox.cpp */; };
 		5E5732C41C18E212003F664E /* CGUIModalScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7C91B7F50A900F212E8 /* CGUIModalScreen.cpp */; };
-		5E5732C51C18E212003F664E /* CGUIProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CB1B7F50A900F212E8 /* CGUIProfiler.cpp */; };
 		5E5732C61C18E212003F664E /* CGUIScrollBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CD1B7F50A900F212E8 /* CGUIScrollBar.cpp */; };
 		5E5732C71C18E212003F664E /* CGUISkin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7CF1B7F50A900F212E8 /* CGUISkin.cpp */; };
-		5E5732C81C18E212003F664E /* CGUISpinBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D11B7F50A900F212E8 /* CGUISpinBox.cpp */; };
 		5E5732C91C18E212003F664E /* CGUISpriteBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D31B7F50A900F212E8 /* CGUISpriteBank.cpp */; };
 		5E5732CA1C18E212003F664E /* CGUIStaticText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D51B7F50A900F212E8 /* CGUIStaticText.cpp */; };
 		5E5732CB1C18E212003F664E /* CGUITabControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D71B7F50A900F212E8 /* CGUITabControl.cpp */; };
-		5E5732CC1C18E212003F664E /* CGUITable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7D91B7F50A900F212E8 /* CGUITable.cpp */; };
-		5E5732CD1C18E212003F664E /* CGUIToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DB1B7F50A900F212E8 /* CGUIToolBar.cpp */; };
-		5E5732CE1C18E212003F664E /* CGUITreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DD1B7F50A900F212E8 /* CGUITreeView.cpp */; };
-		5E5732CF1C18E212003F664E /* CGUIWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7DF1B7F50A900F212E8 /* CGUIWindow.cpp */; };
 		5E5732D01C18E212003F664E /* CAttributes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E51B7F517000F212E8 /* CAttributes.cpp */; };
 		5E5732D11C18E212003F664E /* CFileList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E71B7F517000F212E8 /* CFileList.cpp */; };
 		5E5732D21C18E212003F664E /* CFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E91B7F517000F212E8 /* CFileSystem.cpp */; };
@@ -392,12 +368,8 @@
 		5E34C7AA1B7F50A900F212E8 /* CGUIButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIButton.h; sourceTree = "<group>"; };
 		5E34C7AB1B7F50A900F212E8 /* CGUICheckBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUICheckBox.cpp; sourceTree = "<group>"; };
 		5E34C7AC1B7F50A900F212E8 /* CGUICheckBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUICheckBox.h; sourceTree = "<group>"; };
-		5E34C7AD1B7F50A900F212E8 /* CGUIColorSelectDialog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIColorSelectDialog.cpp; sourceTree = "<group>"; };
-		5E34C7AE1B7F50A900F212E8 /* CGUIColorSelectDialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIColorSelectDialog.h; sourceTree = "<group>"; };
 		5E34C7AF1B7F50A900F212E8 /* CGUIComboBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIComboBox.cpp; sourceTree = "<group>"; };
 		5E34C7B01B7F50A900F212E8 /* CGUIComboBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIComboBox.h; sourceTree = "<group>"; };
-		5E34C7B11B7F50A900F212E8 /* CGUIContextMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIContextMenu.cpp; sourceTree = "<group>"; };
-		5E34C7B21B7F50A900F212E8 /* CGUIContextMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIContextMenu.h; sourceTree = "<group>"; };
 		5E34C7B31B7F50A900F212E8 /* CGUIEditBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIEditBox.cpp; sourceTree = "<group>"; };
 		5E34C7B41B7F50A900F212E8 /* CGUIEditBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIEditBox.h; sourceTree = "<group>"; };
 		5E34C7B51B7F50A900F212E8 /* CGUIEnvironment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIEnvironment.cpp; sourceTree = "<group>"; };
@@ -410,40 +382,20 @@
 		5E34C7BC1B7F50A900F212E8 /* CGUIImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIImage.h; sourceTree = "<group>"; };
 		5E34C7BD1B7F50A900F212E8 /* CGUIImageList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIImageList.cpp; sourceTree = "<group>"; };
 		5E34C7BE1B7F50A900F212E8 /* CGUIImageList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIImageList.h; sourceTree = "<group>"; };
-		5E34C7BF1B7F50A900F212E8 /* CGUIInOutFader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIInOutFader.cpp; sourceTree = "<group>"; };
-		5E34C7C01B7F50A900F212E8 /* CGUIInOutFader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIInOutFader.h; sourceTree = "<group>"; };
 		5E34C7C11B7F50A900F212E8 /* CGUIListBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIListBox.cpp; sourceTree = "<group>"; };
 		5E34C7C21B7F50A900F212E8 /* CGUIListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIListBox.h; sourceTree = "<group>"; };
-		5E34C7C31B7F50A900F212E8 /* CGUIMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIMenu.cpp; sourceTree = "<group>"; };
-		5E34C7C41B7F50A900F212E8 /* CGUIMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIMenu.h; sourceTree = "<group>"; };
-		5E34C7C51B7F50A900F212E8 /* CGUIMeshViewer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIMeshViewer.cpp; sourceTree = "<group>"; };
-		5E34C7C61B7F50A900F212E8 /* CGUIMeshViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIMeshViewer.h; sourceTree = "<group>"; };
-		5E34C7C71B7F50A900F212E8 /* CGUIMessageBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIMessageBox.cpp; sourceTree = "<group>"; };
-		5E34C7C81B7F50A900F212E8 /* CGUIMessageBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIMessageBox.h; sourceTree = "<group>"; };
 		5E34C7C91B7F50A900F212E8 /* CGUIModalScreen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIModalScreen.cpp; sourceTree = "<group>"; };
 		5E34C7CA1B7F50A900F212E8 /* CGUIModalScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIModalScreen.h; sourceTree = "<group>"; };
-		5E34C7CB1B7F50A900F212E8 /* CGUIProfiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIProfiler.cpp; sourceTree = "<group>"; };
-		5E34C7CC1B7F50A900F212E8 /* CGUIProfiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIProfiler.h; sourceTree = "<group>"; };
 		5E34C7CD1B7F50A900F212E8 /* CGUIScrollBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIScrollBar.cpp; sourceTree = "<group>"; };
 		5E34C7CE1B7F50A900F212E8 /* CGUIScrollBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIScrollBar.h; sourceTree = "<group>"; };
 		5E34C7CF1B7F50A900F212E8 /* CGUISkin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUISkin.cpp; sourceTree = "<group>"; };
 		5E34C7D01B7F50A900F212E8 /* CGUISkin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUISkin.h; sourceTree = "<group>"; };
-		5E34C7D11B7F50A900F212E8 /* CGUISpinBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUISpinBox.cpp; sourceTree = "<group>"; };
-		5E34C7D21B7F50A900F212E8 /* CGUISpinBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUISpinBox.h; sourceTree = "<group>"; };
 		5E34C7D31B7F50A900F212E8 /* CGUISpriteBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUISpriteBank.cpp; sourceTree = "<group>"; };
 		5E34C7D41B7F50A900F212E8 /* CGUISpriteBank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUISpriteBank.h; sourceTree = "<group>"; };
 		5E34C7D51B7F50A900F212E8 /* CGUIStaticText.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIStaticText.cpp; sourceTree = "<group>"; };
 		5E34C7D61B7F50A900F212E8 /* CGUIStaticText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIStaticText.h; sourceTree = "<group>"; };
 		5E34C7D71B7F50A900F212E8 /* CGUITabControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUITabControl.cpp; sourceTree = "<group>"; };
 		5E34C7D81B7F50A900F212E8 /* CGUITabControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUITabControl.h; sourceTree = "<group>"; };
-		5E34C7D91B7F50A900F212E8 /* CGUITable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUITable.cpp; sourceTree = "<group>"; };
-		5E34C7DA1B7F50A900F212E8 /* CGUITable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUITable.h; sourceTree = "<group>"; };
-		5E34C7DB1B7F50A900F212E8 /* CGUIToolBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIToolBar.cpp; sourceTree = "<group>"; };
-		5E34C7DC1B7F50A900F212E8 /* CGUIToolBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIToolBar.h; sourceTree = "<group>"; };
-		5E34C7DD1B7F50A900F212E8 /* CGUITreeView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUITreeView.cpp; sourceTree = "<group>"; };
-		5E34C7DE1B7F50A900F212E8 /* CGUITreeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUITreeView.h; sourceTree = "<group>"; };
-		5E34C7DF1B7F50A900F212E8 /* CGUIWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGUIWindow.cpp; sourceTree = "<group>"; };
-		5E34C7E01B7F50A900F212E8 /* CGUIWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUIWindow.h; sourceTree = "<group>"; };
 		5E34C7E11B7F50DE00F212E8 /* BuiltInFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuiltInFont.h; sourceTree = "<group>"; };
 		5E34C7E21B7F50DE00F212E8 /* CDefaultGUIElementFactory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CDefaultGUIElementFactory.cpp; sourceTree = "<group>"; };
 		5E34C7E31B7F50DE00F212E8 /* CDefaultGUIElementFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDefaultGUIElementFactory.h; sourceTree = "<group>"; };
@@ -873,12 +825,8 @@
 				5E34C7AA1B7F50A900F212E8 /* CGUIButton.h */,
 				5E34C7AB1B7F50A900F212E8 /* CGUICheckBox.cpp */,
 				5E34C7AC1B7F50A900F212E8 /* CGUICheckBox.h */,
-				5E34C7AD1B7F50A900F212E8 /* CGUIColorSelectDialog.cpp */,
-				5E34C7AE1B7F50A900F212E8 /* CGUIColorSelectDialog.h */,
 				5E34C7AF1B7F50A900F212E8 /* CGUIComboBox.cpp */,
 				5E34C7B01B7F50A900F212E8 /* CGUIComboBox.h */,
-				5E34C7B11B7F50A900F212E8 /* CGUIContextMenu.cpp */,
-				5E34C7B21B7F50A900F212E8 /* CGUIContextMenu.h */,
 				5E34C7B31B7F50A900F212E8 /* CGUIEditBox.cpp */,
 				5E34C7B41B7F50A900F212E8 /* CGUIEditBox.h */,
 				5E34C7B51B7F50A900F212E8 /* CGUIEnvironment.cpp */,
@@ -891,40 +839,20 @@
 				5E34C7BC1B7F50A900F212E8 /* CGUIImage.h */,
 				5E34C7BD1B7F50A900F212E8 /* CGUIImageList.cpp */,
 				5E34C7BE1B7F50A900F212E8 /* CGUIImageList.h */,
-				5E34C7BF1B7F50A900F212E8 /* CGUIInOutFader.cpp */,
-				5E34C7C01B7F50A900F212E8 /* CGUIInOutFader.h */,
 				5E34C7C11B7F50A900F212E8 /* CGUIListBox.cpp */,
 				5E34C7C21B7F50A900F212E8 /* CGUIListBox.h */,
-				5E34C7C31B7F50A900F212E8 /* CGUIMenu.cpp */,
-				5E34C7C41B7F50A900F212E8 /* CGUIMenu.h */,
-				5E34C7C51B7F50A900F212E8 /* CGUIMeshViewer.cpp */,
-				5E34C7C61B7F50A900F212E8 /* CGUIMeshViewer.h */,
-				5E34C7C71B7F50A900F212E8 /* CGUIMessageBox.cpp */,
-				5E34C7C81B7F50A900F212E8 /* CGUIMessageBox.h */,
 				5E34C7C91B7F50A900F212E8 /* CGUIModalScreen.cpp */,
 				5E34C7CA1B7F50A900F212E8 /* CGUIModalScreen.h */,
-				5E34C7CB1B7F50A900F212E8 /* CGUIProfiler.cpp */,
-				5E34C7CC1B7F50A900F212E8 /* CGUIProfiler.h */,
 				5E34C7CD1B7F50A900F212E8 /* CGUIScrollBar.cpp */,
 				5E34C7CE1B7F50A900F212E8 /* CGUIScrollBar.h */,
 				5E34C7CF1B7F50A900F212E8 /* CGUISkin.cpp */,
 				5E34C7D01B7F50A900F212E8 /* CGUISkin.h */,
-				5E34C7D11B7F50A900F212E8 /* CGUISpinBox.cpp */,
-				5E34C7D21B7F50A900F212E8 /* CGUISpinBox.h */,
 				5E34C7D31B7F50A900F212E8 /* CGUISpriteBank.cpp */,
 				5E34C7D41B7F50A900F212E8 /* CGUISpriteBank.h */,
 				5E34C7D51B7F50A900F212E8 /* CGUIStaticText.cpp */,
 				5E34C7D61B7F50A900F212E8 /* CGUIStaticText.h */,
 				5E34C7D71B7F50A900F212E8 /* CGUITabControl.cpp */,
 				5E34C7D81B7F50A900F212E8 /* CGUITabControl.h */,
-				5E34C7D91B7F50A900F212E8 /* CGUITable.cpp */,
-				5E34C7DA1B7F50A900F212E8 /* CGUITable.h */,
-				5E34C7DB1B7F50A900F212E8 /* CGUIToolBar.cpp */,
-				5E34C7DC1B7F50A900F212E8 /* CGUIToolBar.h */,
-				5E34C7DD1B7F50A900F212E8 /* CGUITreeView.cpp */,
-				5E34C7DE1B7F50A900F212E8 /* CGUITreeView.h */,
-				5E34C7DF1B7F50A900F212E8 /* CGUIWindow.cpp */,
-				5E34C7E01B7F50A900F212E8 /* CGUIWindow.h */,
 			);
 			name = gui;
 			sourceTree = "<group>";
@@ -1289,32 +1217,20 @@
 				84295DEA2D69443D00B6C388 /* mz_crypt.c in Sources */,
 				5E34C9FB1B7F6EBF00F212E8 /* CGUIButton.cpp in Sources */,
 				5E34C9FD1B7F6EBF00F212E8 /* CGUICheckBox.cpp in Sources */,
-				5E34C9FF1B7F6EBF00F212E8 /* CGUIColorSelectDialog.cpp in Sources */,
 				5E34CA011B7F6EBF00F212E8 /* CGUIComboBox.cpp in Sources */,
-				5E34CA031B7F6EBF00F212E8 /* CGUIContextMenu.cpp in Sources */,
 				5E34CA051B7F6EBF00F212E8 /* CGUIEditBox.cpp in Sources */,
 				5E34CA071B7F6EBF00F212E8 /* CGUIEnvironment.cpp in Sources */,
 				5E34CA091B7F6EBF00F212E8 /* CGUIFileOpenDialog.cpp in Sources */,
 				5E34CA0B1B7F6EBF00F212E8 /* CGUIFont.cpp in Sources */,
 				5E34CA0D1B7F6EBF00F212E8 /* CGUIImage.cpp in Sources */,
 				5E34CA0F1B7F6EBF00F212E8 /* CGUIImageList.cpp in Sources */,
-				5E34CA111B7F6EBF00F212E8 /* CGUIInOutFader.cpp in Sources */,
 				5E34CA131B7F6EBF00F212E8 /* CGUIListBox.cpp in Sources */,
-				5E34CA151B7F6EBF00F212E8 /* CGUIMenu.cpp in Sources */,
-				5E34CA171B7F6EBF00F212E8 /* CGUIMeshViewer.cpp in Sources */,
-				5E34CA191B7F6EBF00F212E8 /* CGUIMessageBox.cpp in Sources */,
 				5E34CA1B1B7F6EBF00F212E8 /* CGUIModalScreen.cpp in Sources */,
-				5E34CA1D1B7F6EBF00F212E8 /* CGUIProfiler.cpp in Sources */,
 				5E34CA1F1B7F6EBF00F212E8 /* CGUIScrollBar.cpp in Sources */,
 				5E34CA211B7F6EBF00F212E8 /* CGUISkin.cpp in Sources */,
-				5E34CA231B7F6EBF00F212E8 /* CGUISpinBox.cpp in Sources */,
 				5E34CA251B7F6EBF00F212E8 /* CGUISpriteBank.cpp in Sources */,
 				5E34CA271B7F6EBF00F212E8 /* CGUIStaticText.cpp in Sources */,
 				5E34CA291B7F6EBF00F212E8 /* CGUITabControl.cpp in Sources */,
-				5E34CA2B1B7F6EBF00F212E8 /* CGUITable.cpp in Sources */,
-				5E34CA2D1B7F6EBF00F212E8 /* CGUIToolBar.cpp in Sources */,
-				5E34CA2F1B7F6EBF00F212E8 /* CGUITreeView.cpp in Sources */,
-				5E34CA311B7F6EBF00F212E8 /* CGUIWindow.cpp in Sources */,
 				5E34CA341B7F6EBF00F212E8 /* CAttributes.cpp in Sources */,
 				5E34CA361B7F6EBF00F212E8 /* CFileList.cpp in Sources */,
 				5E34CA381B7F6EBF00F212E8 /* CFileSystem.cpp in Sources */,
@@ -1384,33 +1300,21 @@
 				5E5732B31C18E212003F664E /* CDefaultGUIElementFactory.cpp in Sources */,
 				5E5732B41C18E212003F664E /* CGUIButton.cpp in Sources */,
 				5E5732B51C18E212003F664E /* CGUICheckBox.cpp in Sources */,
-				5E5732B61C18E212003F664E /* CGUIColorSelectDialog.cpp in Sources */,
 				5E5732B71C18E212003F664E /* CGUIComboBox.cpp in Sources */,
-				5E5732B81C18E212003F664E /* CGUIContextMenu.cpp in Sources */,
 				5E5732B91C18E212003F664E /* CGUIEditBox.cpp in Sources */,
 				5E5732BA1C18E212003F664E /* CGUIEnvironment.cpp in Sources */,
 				5E5732BB1C18E212003F664E /* CGUIFileOpenDialog.cpp in Sources */,
 				5E5732BC1C18E212003F664E /* CGUIFont.cpp in Sources */,
 				5E5732BD1C18E212003F664E /* CGUIImage.cpp in Sources */,
 				5E5732BE1C18E212003F664E /* CGUIImageList.cpp in Sources */,
-				5E5732BF1C18E212003F664E /* CGUIInOutFader.cpp in Sources */,
 				5E5732C01C18E212003F664E /* CGUIListBox.cpp in Sources */,
-				5E5732C11C18E212003F664E /* CGUIMenu.cpp in Sources */,
-				5E5732C21C18E212003F664E /* CGUIMeshViewer.cpp in Sources */,
-				5E5732C31C18E212003F664E /* CGUIMessageBox.cpp in Sources */,
 				5E5732C41C18E212003F664E /* CGUIModalScreen.cpp in Sources */,
 				8495BD2F28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */,
-				5E5732C51C18E212003F664E /* CGUIProfiler.cpp in Sources */,
 				5E5732C61C18E212003F664E /* CGUIScrollBar.cpp in Sources */,
 				5E5732C71C18E212003F664E /* CGUISkin.cpp in Sources */,
-				5E5732C81C18E212003F664E /* CGUISpinBox.cpp in Sources */,
 				5E5732C91C18E212003F664E /* CGUISpriteBank.cpp in Sources */,
 				5E5732CA1C18E212003F664E /* CGUIStaticText.cpp in Sources */,
 				5E5732CB1C18E212003F664E /* CGUITabControl.cpp in Sources */,
-				5E5732CC1C18E212003F664E /* CGUITable.cpp in Sources */,
-				5E5732CD1C18E212003F664E /* CGUIToolBar.cpp in Sources */,
-				5E5732CE1C18E212003F664E /* CGUITreeView.cpp in Sources */,
-				5E5732CF1C18E212003F664E /* CGUIWindow.cpp in Sources */,
 				5E5732D01C18E212003F664E /* CAttributes.cpp in Sources */,
 				5E5732D11C18E212003F664E /* CFileList.cpp in Sources */,
 				5E5732D21C18E212003F664E /* CFileSystem.cpp in Sources */,

@@ -9,6 +9,9 @@
 #define IRR_C_GUI_TABLE_BAR_H_INCLUDED
 
 #include "IrrCompileConfig.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+
+#include "IrrCompileConfig.h"
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUITable.h"
@@ -249,5 +252,7 @@ namespace gui
 } // end namespace irr
 
 #endif // _IRR_COMPILE_WITH_GUI_
+
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 
 #endif

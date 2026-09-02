@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CGUIInOutFader.h"
+
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUIEnvironment.h"
@@ -176,3 +178,4 @@ void CGUIInOutFader::deserializeAttributes(io::IAttributes* in, io::SAttributeRe
 
 #endif // _IRR_COMPILE_WITH_GUI_
 
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

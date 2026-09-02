@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CGUIMeshViewer.h"
+
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUIEnvironment.h"
@@ -170,3 +172,4 @@ void CGUIMeshViewer::draw()
 
 #endif // _IRR_COMPILE_WITH_GUI_
 
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

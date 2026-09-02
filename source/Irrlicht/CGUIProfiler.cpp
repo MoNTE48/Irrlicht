@@ -3,6 +3,8 @@
 // Written by Michael Zeilfelder
 
 #include "CGUIProfiler.h"
+
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUITable.h"
@@ -329,3 +331,5 @@ void CGUIProfiler::setFilters(irr::u32 minCalls, irr::u32 minTimeSum, irr::f32 m
 
 
 #endif // _IRR_COMPILE_WITH_GUI_
+
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

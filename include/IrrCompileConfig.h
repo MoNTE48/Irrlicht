@@ -403,6 +403,14 @@ you will not be able to use anything provided by the GUI Environment, including 
 #undef _IRR_COMPILE_WITH_GUI_
 #endif
 
+//! Define _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_ to compile the engine with the desktop widgets
+/** These are the window, message box, menu, toolbar, table, tree view, spin box,
+colour dialog, fader, mesh viewer and profiler elements. */
+//#define _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+#ifdef NO_IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+#undef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+#endif
+
 //! Define _IRR_COMPILE_WITH_PARTICLES to compile the engine the with the build-in particle system
 /** You can disable this if you don't need particles or use an external particle system. */
 //#define _IRR_COMPILE_WITH_PARTICLES_

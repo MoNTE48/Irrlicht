@@ -4,6 +4,9 @@
 #ifndef IRR_C_GUI_TREE_VIEW_H_INCLUDED
 #define IRR_C_GUI_TREE_VIEW_H_INCLUDED
 
+#include "IrrCompileConfig.h"
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
+
 #include "IGUITreeView.h"
 #include "irrList.h"
 
@@ -386,5 +389,7 @@ namespace gui
 
 } // end namespace gui
 } // end namespace irr
+
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 
 #endif

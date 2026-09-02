@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CGUIToolBar.h"
+
+#ifdef _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_
 #ifdef _IRR_COMPILE_WITH_GUI_
 
 #include "IGUISkin.h"
@@ -196,3 +198,4 @@ IGUIButton* CGUIToolBar::addButton(s32 id, const wchar_t* text,const wchar_t* to
 
 #endif // _IRR_COMPILE_WITH_GUI_
 
+#endif // _IRR_COMPILE_WITH_DESKTOP_GUI_ELEMENTS_

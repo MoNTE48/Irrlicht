@@ -46,32 +46,20 @@ LOCAL_SRC_FILES := \
 					CGeometryCreator.cpp \
 					CGUIButton.cpp \
 					CGUICheckBox.cpp \
-					CGUIColorSelectDialog.cpp \
 					CGUIComboBox.cpp \
-					CGUIContextMenu.cpp \
 					CGUIEditBox.cpp \
 					CGUIEnvironment.cpp \
 					CGUIFileOpenDialog.cpp \
 					CGUIFont.cpp \
 					CGUIImage.cpp \
 					CGUIImageList.cpp \
-					CGUIInOutFader.cpp \
 					CGUIListBox.cpp \
-					CGUIMenu.cpp \
-					CGUIMeshViewer.cpp \
-					CGUIMessageBox.cpp \
 					CGUIModalScreen.cpp \
 					CGUIScrollBar.cpp \
 					CGUISkin.cpp \
-					CGUISpinBox.cpp \
 					CGUISpriteBank.cpp \
 					CGUIStaticText.cpp \
 					CGUITabControl.cpp \
-					CGUITable.cpp \
-					CGUIToolBar.cpp \
-					CGUITreeView.cpp \
-					CGUIWindow.cpp \
-					CGUIProfiler.cpp \
 					CImage.cpp \
 					CImageLoaderJPG.cpp \
 					CImageLoaderPNG.cpp \
