@@ -25,9 +25,6 @@ endif()
 set(IRRLICHT_SOURCES
 	source/Irrlicht/minizip-ng/mz_crypt.c
 	source/Irrlicht/minizip-ng/mz_crypt_openssl.c
-	source/Irrlicht/CAnimatedMeshHalfLife.cpp
-	source/Irrlicht/CAnimatedMeshMD2.cpp
-	source/Irrlicht/CAnimatedMeshMD3.cpp
 	source/Irrlicht/CAnimatedMeshSceneNode.cpp
 	source/Irrlicht/CAttributes.cpp
 	source/Irrlicht/CB3DMeshFileLoader.cpp
@@ -35,9 +32,7 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CBoneSceneNode.cpp
 	source/Irrlicht/CCameraSceneNode.cpp
 	source/Irrlicht/CColorConverter.cpp
-	source/Irrlicht/CCubeSceneNode.cpp
 	source/Irrlicht/CDefaultGUIElementFactory.cpp
-	source/Irrlicht/CDefaultSceneNodeAnimatorFactory.cpp
 	source/Irrlicht/CDefaultSceneNodeFactory.cpp
 	source/Irrlicht/CDummyTransformationSceneNode.cpp
 	source/Irrlicht/CEGLManager.cpp
@@ -96,11 +91,8 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CMeshSceneNode.cpp
 	source/Irrlicht/CMeshTextureLoader.cpp
 	source/Irrlicht/CMetaTriangleSelector.cpp
-	source/Irrlicht/CMountPointReader.cpp
-	source/Irrlicht/CNPKReader.cpp
 	source/Irrlicht/CNullDriver.cpp
 	source/Irrlicht/COBJMeshFileLoader.cpp
-	source/Irrlicht/COctreeSceneNode.cpp
 	source/Irrlicht/COctreeTriangleSelector.cpp
 	source/Irrlicht/COGLES2Driver.cpp
 	source/Irrlicht/COGLES2ExtensionHandler.cpp
@@ -119,54 +111,23 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/COpenGLShaderMaterialRenderer.cpp
 	source/Irrlicht/COpenGLSLMaterialRenderer.cpp
 	source/Irrlicht/COSOperator.cpp
-	source/Irrlicht/CPakReader.cpp
-	source/Irrlicht/CParticleAnimatedMeshSceneNodeEmitter.cpp
-	source/Irrlicht/CParticleAttractionAffector.cpp
-	source/Irrlicht/CParticleBoxEmitter.cpp
-	source/Irrlicht/CParticleCylinderEmitter.cpp
-	source/Irrlicht/CParticleFadeOutAffector.cpp
-	source/Irrlicht/CParticleGravityAffector.cpp
-	source/Irrlicht/CParticleMeshEmitter.cpp
-	source/Irrlicht/CParticlePointEmitter.cpp
-	source/Irrlicht/CParticleRingEmitter.cpp
-	source/Irrlicht/CParticleRotationAffector.cpp
-	source/Irrlicht/CParticleScaleAffector.cpp
-	source/Irrlicht/CParticleSphereEmitter.cpp
-	source/Irrlicht/CParticleSystemSceneNode.cpp
 	source/Irrlicht/CProfiler.cpp
 	source/Irrlicht/CReadFile.cpp
 	source/Irrlicht/CSceneCollisionManager.cpp
 	source/Irrlicht/CSceneManager.cpp
-	source/Irrlicht/CSceneNodeAnimatorCameraFPS.cpp
-	source/Irrlicht/CSceneNodeAnimatorCameraMaya.cpp
-	source/Irrlicht/CSceneNodeAnimatorCollisionResponse.cpp
-	source/Irrlicht/CSceneNodeAnimatorDelete.cpp
-	source/Irrlicht/CSceneNodeAnimatorFlyCircle.cpp
-	source/Irrlicht/CSceneNodeAnimatorFlyStraight.cpp
-	source/Irrlicht/CSceneNodeAnimatorFollowSpline.cpp
-	source/Irrlicht/CSceneNodeAnimatorRotation.cpp
-	source/Irrlicht/CSceneNodeAnimatorTexture.cpp
-	source/Irrlicht/CShadowVolumeSceneNode.cpp
 	source/Irrlicht/CSkinnedMesh.cpp
 	source/Irrlicht/CSkyBoxSceneNode.cpp
-	source/Irrlicht/CSkyDomeSceneNode.cpp
-	source/Irrlicht/CSphereSceneNode.cpp
-	source/Irrlicht/CTarReader.cpp
-	source/Irrlicht/CTerrainSceneNode.cpp
 	source/Irrlicht/CTerrainTriangleSelector.cpp
 	source/Irrlicht/CTextSceneNode.cpp
 	source/Irrlicht/CTriangleBBSelector.cpp
 	source/Irrlicht/CTriangleSelector.cpp
 	source/Irrlicht/CVideoModeList.cpp
 	source/Irrlicht/CVolumeLightSceneNode.cpp
-	source/Irrlicht/CWADReader.cpp
-	source/Irrlicht/CWaterSurfaceSceneNode.cpp
 	source/Irrlicht/CWebGL1Driver.cpp
 	source/Irrlicht/CWGLManager.cpp
 	source/Irrlicht/CWriteFile.cpp
 	source/Irrlicht/CXMeshFileLoader.cpp
 	source/Irrlicht/CXMLReader.cpp
-	source/Irrlicht/CXMLWriter.cpp
 	source/Irrlicht/CZipReader.cpp
 	source/Irrlicht/Irrlicht.cpp
 	source/Irrlicht/irrXML.cpp

@@ -4,6 +4,8 @@
 
 #include "CSceneNodeAnimatorFlyStraight.h"
 
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+
 namespace irr
 {
 namespace scene
@@ -117,3 +119,4 @@ ISceneNodeAnimator* CSceneNodeAnimatorFlyStraight::createClone(ISceneNode* node,
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

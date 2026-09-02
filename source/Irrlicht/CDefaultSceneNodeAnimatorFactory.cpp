@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CDefaultSceneNodeAnimatorFactory.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "CSceneNodeAnimatorCameraFPS.h"
 #include "CSceneNodeAnimatorCameraMaya.h"
 #include "ICursorControl.h"
@@ -160,3 +162,4 @@ ESCENE_NODE_ANIMATOR_TYPE CDefaultSceneNodeAnimatorFactory::getTypeFromName(cons
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

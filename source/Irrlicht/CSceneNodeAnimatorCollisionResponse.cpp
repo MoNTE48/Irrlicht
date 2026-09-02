@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CSceneNodeAnimatorCollisionResponse.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "ISceneCollisionManager.h"
 #include "ISceneManager.h"
 #include "ICameraSceneNode.h"
@@ -308,3 +310,4 @@ bool CSceneNodeAnimatorCollisionResponse::getAnimateTarget () const
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

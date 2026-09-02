@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CSceneNodeAnimatorCameraFPS.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "IVideoDriver.h"
 #include "ISceneManager.h"
 #include "Keycodes.h"
@@ -423,3 +425,4 @@ void CSceneNodeAnimatorCameraFPS::deserializeAttributes(io::IAttributes* in, io:
 } // namespace scene
 } // namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

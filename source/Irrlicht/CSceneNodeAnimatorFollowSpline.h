@@ -5,6 +5,9 @@
 #ifndef IRR_C_SCENE_NODE_ANIMATOR_FOLLOW_SPLINE_H_INCLUDED
 #define IRR_C_SCENE_NODE_ANIMATOR_FOLLOW_SPLINE_H_INCLUDED
 
+#include "IrrCompileConfig.h"
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+
 #include "ISceneNode.h"
 #include "irrArray.h"
 #include "ISceneNodeAnimatorFinishing.h"
@@ -58,5 +61,7 @@ namespace scene
 
 } // end namespace scene
 } // end namespace irr
+
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 
 #endif

@@ -99,6 +99,9 @@
 #include "CTerrainTriangleSelector.h"
 #endif // _IRR_COMPILE_WITH_TERRAIN_SCENENODE_
 
+#include "ISceneNodeAnimatorFactory.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "CSceneNodeAnimatorRotation.h"
 #include "CSceneNodeAnimatorFlyCircle.h"
 #include "CSceneNodeAnimatorFlyStraight.h"
@@ -109,6 +112,7 @@
 #include "CSceneNodeAnimatorCameraFPS.h"
 #include "CSceneNodeAnimatorCameraMaya.h"
 #include "CDefaultSceneNodeAnimatorFactory.h"
+#endif
 
 #include "CGeometryCreator.h"
 
@@ -197,9 +201,11 @@ CSceneManager::CSceneManager(video::IVideoDriver* driver, io::IFileSystem* fs,
 	registerSceneNodeFactory(factory);
 	factory->drop();
 
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimatorFactory* animatorFactory = new CDefaultSceneNodeAnimatorFactory(this, CursorControl);
 	registerSceneNodeAnimatorFactory(animatorFactory);
 	animatorFactory->drop();
+#endif
 
 	IRR_PROFILE(
 		static bool initProfile = false;
@@ -623,6 +629,7 @@ ICameraSceneNode* CSceneManager::addCameraSceneNodeMaya(ISceneNode* parent,
 {
 	ICameraSceneNode* node = addCameraSceneNode(parent, core::vector3df(),
 			core::vector3df(0,0,100), id, makeActive);
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	if (node)
 	{
 		ISceneNodeAnimator* anm = new CSceneNodeAnimatorCameraMaya(CursorControl,
@@ -632,6 +639,7 @@ ICameraSceneNode* CSceneManager::addCameraSceneNodeMaya(ISceneNode* parent,
 		node->addAnimator(anm);
 		anm->drop();
 	}
+#endif
 
 	return node;
 }
@@ -646,6 +654,7 @@ ICameraSceneNode* CSceneManager::addCameraSceneNodeFPS(ISceneNode* parent,
 {
 	ICameraSceneNode* node = addCameraSceneNode(parent, core::vector3df(),
 			core::vector3df(0,0,100), id, makeActive);
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	if (node)
 	{
 		ISceneNodeAnimator* anm = new CSceneNodeAnimatorCameraFPS(CursorControl,
@@ -657,6 +666,7 @@ ICameraSceneNode* CSceneManager::addCameraSceneNodeFPS(ISceneNode* parent,
 		node->addAnimator(anm);
 		anm->drop();
 	}
+#endif
 
 	return node;
 }
@@ -1660,10 +1670,14 @@ IShadowVolumeSceneNode* CSceneManager::createShadowVolumeSceneNode(const IMesh* 
 //! creates a rotation animator, which rotates the attached scene node around itself.
 ISceneNodeAnimator* CSceneManager::createRotationAnimator(const core::vector3df& rotationPerSecond)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimator* anim = new CSceneNodeAnimatorRotation(os::Timer::getTime(),
 		rotationPerSecond);
 
 	return anim;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1674,6 +1688,7 @@ ISceneNodeAnimator* CSceneManager::createFlyCircleAnimator(
 		f32 startPosition,
 		f32 radiusEllipsoid)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	const f32 orbitDurationMs = (core::DEGTORAD * 360.f) / speed;
 	const u32 effectiveTime = os::Timer::getTime() + (u32)(orbitDurationMs * startPosition);
 
@@ -1681,6 +1696,9 @@ ISceneNodeAnimator* CSceneManager::createFlyCircleAnimator(
 			effectiveTime, center,
 			radius, speed, direction,radiusEllipsoid);
 	return anim;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1689,10 +1707,14 @@ ISceneNodeAnimator* CSceneManager::createFlyCircleAnimator(
 ISceneNodeAnimator* CSceneManager::createFlyStraightAnimator(const core::vector3df& startPoint,
 					const core::vector3df& endPoint, u32 timeForWay, bool loop,bool pingpong)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimator* anim = new CSceneNodeAnimatorFlyStraight(startPoint,
 		endPoint, timeForWay, loop, os::Timer::getTime(), pingpong);
 
 	return anim;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1701,10 +1723,14 @@ ISceneNodeAnimator* CSceneManager::createFlyStraightAnimator(const core::vector3
 ISceneNodeAnimator* CSceneManager::createTextureAnimator(const core::array<video::ITexture*>& textures,
 	s32 timePerFrame, bool loop)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimator* anim = new CSceneNodeAnimatorTexture(textures,
 		timePerFrame, loop, os::Timer::getTime());
 
 	return anim;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1712,7 +1738,11 @@ ISceneNodeAnimator* CSceneManager::createTextureAnimator(const core::array<video
 //! some time automatically.
 ISceneNodeAnimator* CSceneManager::createDeleteAnimator(u32 when)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	return new CSceneNodeAnimatorDelete(this, os::Timer::getTime() + when);
+#else
+	return 0;
+#endif
 }
 
 
@@ -1723,12 +1753,16 @@ ISceneNodeAnimatorCollisionResponse* CSceneManager::createCollisionResponseAnima
 	const core::vector3df& gravityPerSecond,
 	const core::vector3df& ellipsoidTranslation, f32 slidingValue)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimatorCollisionResponse* anim = new
 		CSceneNodeAnimatorCollisionResponse(this, world, sceneNode,
 			ellipsoidRadius, gravityPerSecond,
 			ellipsoidTranslation, slidingValue);
 
 	return anim;
+#else
+	return 0;
+#endif
 }
 
 
@@ -1737,9 +1771,13 @@ ISceneNodeAnimator* CSceneManager::createFollowSplineAnimator(s32 startTime,
 	const core::array< core::vector3df >& points,
 	f32 speed, f32 tightness, bool loop, bool pingpong, bool steer)
 {
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 	ISceneNodeAnimator* a = new CSceneNodeAnimatorFollowSpline(startTime, points,
 		speed, tightness, loop, pingpong, steer);
 	return a;
+#else
+	return 0;
+#endif
 }
 
 

@@ -41,15 +41,9 @@
 		5E34CA381B7F6EBF00F212E8 /* CFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E91B7F517000F212E8 /* CFileSystem.cpp */; };
 		5E34CA3A1B7F6EBF00F212E8 /* CLimitReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7EB1B7F517000F212E8 /* CLimitReadFile.cpp */; };
 		5E34CA3C1B7F6EBF00F212E8 /* CMemoryFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7ED1B7F517000F212E8 /* CMemoryFile.cpp */; };
-		5E34CA3E1B7F6EBF00F212E8 /* CMountPointReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7EF1B7F517000F212E8 /* CMountPointReader.cpp */; };
-		5E34CA401B7F6EBF00F212E8 /* CNPKReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F11B7F517000F212E8 /* CNPKReader.cpp */; };
-		5E34CA421B7F6EBF00F212E8 /* CPakReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F31B7F517000F212E8 /* CPakReader.cpp */; };
 		5E34CA441B7F6EBF00F212E8 /* CReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F51B7F51D900F212E8 /* CReadFile.cpp */; };
-		5E34CA461B7F6EBF00F212E8 /* CTarReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F71B7F51D900F212E8 /* CTarReader.cpp */; };
-		5E34CA481B7F6EBF00F212E8 /* CWADReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F91B7F51D900F212E8 /* CWADReader.cpp */; };
 		5E34CA4A1B7F6EBF00F212E8 /* CWriteFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */; };
 		5E34CA4C1B7F6EBF00F212E8 /* CXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */; };
-		5E34CA4F1B7F6EBF00F212E8 /* CXMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8001B7F51D900F212E8 /* CXMLWriter.cpp */; };
 		5E34CA511B7F6EBF00F212E8 /* CZipReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8021B7F51D900F212E8 /* CZipReader.cpp */; };
 		5E34CA541B7F6EBF00F212E8 /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
@@ -60,24 +54,12 @@
 		5E34CADE1B7F6EC100F212E8 /* leakHunter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89B1B7F652600F212E8 /* leakHunter.cpp */; };
 		5E34CADF1B7F6EC100F212E8 /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89C1B7F652600F212E8 /* os.cpp */; };
 		5E34CAE11B7F6EC100F212E8 /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89E1B7F652600F212E8 /* utf8.cpp */; };
-		5E34CAE21B7F6EC100F212E8 /* CSceneNodeAnimatorCameraFPS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BA1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.cpp */; };
-		5E34CAE41B7F6EC100F212E8 /* CSceneNodeAnimatorCameraMaya.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BC1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.cpp */; };
-		5E34CAE61B7F6EC100F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BE1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp */; };
-		5E34CAE81B7F6EC100F212E8 /* CSceneNodeAnimatorDelete.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C01B7F669200F212E8 /* CSceneNodeAnimatorDelete.cpp */; };
-		5E34CAEA1B7F6EC100F212E8 /* CSceneNodeAnimatorFlyCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C21B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.cpp */; };
-		5E34CAEC1B7F6EC100F212E8 /* CSceneNodeAnimatorFlyStraight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C41B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.cpp */; };
-		5E34CAEE1B7F6EC100F212E8 /* CSceneNodeAnimatorFollowSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C61B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.cpp */; };
-		5E34CAF01B7F6EC100F212E8 /* CSceneNodeAnimatorRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C81B7F669200F212E8 /* CSceneNodeAnimatorRotation.cpp */; };
-		5E34CAF21B7F6EC100F212E8 /* CSceneNodeAnimatorTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CA1B7F669200F212E8 /* CSceneNodeAnimatorTexture.cpp */; };
 		5E34CAF41B7F6EC100F212E8 /* CMetaTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CC1B7F66E600F212E8 /* CMetaTriangleSelector.cpp */; };
 		5E34CAF61B7F6EC100F212E8 /* COctreeTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CE1B7F66E600F212E8 /* COctreeTriangleSelector.cpp */; };
 		5E34CAF81B7F6EC100F212E8 /* CSceneCollisionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */; };
 		5E34CAFA1B7F6EC100F212E8 /* CTerrainTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */; };
 		5E34CAFC1B7F6EC100F212E8 /* CTriangleBBSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */; };
 		5E34CAFE1B7F6EC100F212E8 /* CTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D61B7F66E600F212E8 /* CTriangleSelector.cpp */; };
-		5E34CB021B7F6EC100F212E8 /* CAnimatedMeshHalfLife.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DA1B7F680200F212E8 /* CAnimatedMeshHalfLife.cpp */; };
-		5E34CB041B7F6EC100F212E8 /* CAnimatedMeshMD2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DC1B7F680200F212E8 /* CAnimatedMeshMD2.cpp */; };
-		5E34CB061B7F6EC100F212E8 /* CAnimatedMeshMD3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DE1B7F680200F212E8 /* CAnimatedMeshMD3.cpp */; };
 		5E34CB081B7F6EC200F212E8 /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
 		5E34CB1C1B7F6EC200F212E8 /* CMeshTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */; };
 		5E34CB231B7F6EC200F212E8 /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
@@ -94,7 +76,6 @@
 		5E34CB6A1B7F6EC400F212E8 /* CSkyBoxSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */; };
 		5E34CB721B7F6EC400F212E8 /* CTextSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */; };
 		5E34CB741B7F6EC400F212E8 /* CVolumeLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */; };
-		5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */; };
 		5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */; };
 		5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */; };
 		5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B31B7F664100F212E8 /* CMeshCache.cpp */; };
@@ -144,15 +125,9 @@
 		5E5732D21C18E212003F664E /* CFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E91B7F517000F212E8 /* CFileSystem.cpp */; };
 		5E5732D31C18E212003F664E /* CLimitReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7EB1B7F517000F212E8 /* CLimitReadFile.cpp */; };
 		5E5732D41C18E212003F664E /* CMemoryFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7ED1B7F517000F212E8 /* CMemoryFile.cpp */; };
-		5E5732D51C18E212003F664E /* CMountPointReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7EF1B7F517000F212E8 /* CMountPointReader.cpp */; };
-		5E5732D61C18E212003F664E /* CNPKReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F11B7F517000F212E8 /* CNPKReader.cpp */; };
-		5E5732D71C18E212003F664E /* CPakReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F31B7F517000F212E8 /* CPakReader.cpp */; };
 		5E5732D81C18E212003F664E /* CReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F51B7F51D900F212E8 /* CReadFile.cpp */; };
-		5E5732D91C18E212003F664E /* CTarReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F71B7F51D900F212E8 /* CTarReader.cpp */; };
-		5E5732DA1C18E212003F664E /* CWADReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7F91B7F51D900F212E8 /* CWADReader.cpp */; };
 		5E5732DB1C18E212003F664E /* CWriteFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */; };
 		5E5732DC1C18E212003F664E /* CXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */; };
-		5E5732DD1C18E212003F664E /* CXMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8001B7F51D900F212E8 /* CXMLWriter.cpp */; };
 		5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8021B7F51D900F212E8 /* CZipReader.cpp */; };
 		5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
@@ -163,24 +138,12 @@
 		5E57333F1C18E212003F664E /* leakHunter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89B1B7F652600F212E8 /* leakHunter.cpp */; };
 		5E5733401C18E212003F664E /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89C1B7F652600F212E8 /* os.cpp */; };
 		5E5733411C18E212003F664E /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89E1B7F652600F212E8 /* utf8.cpp */; };
-		5E5733421C18E212003F664E /* CSceneNodeAnimatorCameraFPS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BA1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.cpp */; };
-		5E5733431C18E212003F664E /* CSceneNodeAnimatorCameraMaya.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BC1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.cpp */; };
-		5E5733441C18E212003F664E /* CSceneNodeAnimatorCollisionResponse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8BE1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp */; };
-		5E5733451C18E212003F664E /* CSceneNodeAnimatorDelete.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C01B7F669200F212E8 /* CSceneNodeAnimatorDelete.cpp */; };
-		5E5733461C18E212003F664E /* CSceneNodeAnimatorFlyCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C21B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.cpp */; };
-		5E5733471C18E212003F664E /* CSceneNodeAnimatorFlyStraight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C41B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.cpp */; };
-		5E5733481C18E212003F664E /* CSceneNodeAnimatorFollowSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C61B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.cpp */; };
-		5E5733491C18E212003F664E /* CSceneNodeAnimatorRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8C81B7F669200F212E8 /* CSceneNodeAnimatorRotation.cpp */; };
-		5E57334A1C18E212003F664E /* CSceneNodeAnimatorTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CA1B7F669200F212E8 /* CSceneNodeAnimatorTexture.cpp */; };
 		5E57334B1C18E212003F664E /* CMetaTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CC1B7F66E600F212E8 /* CMetaTriangleSelector.cpp */; };
 		5E57334C1C18E212003F664E /* COctreeTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CE1B7F66E600F212E8 /* COctreeTriangleSelector.cpp */; };
 		5E57334D1C18E212003F664E /* CSceneCollisionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */; };
 		5E57334E1C18E212003F664E /* CTerrainTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */; };
 		5E57334F1C18E212003F664E /* CTriangleBBSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */; };
 		5E5733501C18E212003F664E /* CTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D61B7F66E600F212E8 /* CTriangleSelector.cpp */; };
-		5E5733521C18E212003F664E /* CAnimatedMeshHalfLife.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DA1B7F680200F212E8 /* CAnimatedMeshHalfLife.cpp */; };
-		5E5733531C18E212003F664E /* CAnimatedMeshMD2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DC1B7F680200F212E8 /* CAnimatedMeshMD2.cpp */; };
-		5E5733541C18E212003F664E /* CAnimatedMeshMD3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8DE1B7F680200F212E8 /* CAnimatedMeshMD3.cpp */; };
 		5E5733551C18E212003F664E /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
 		5E57335F1C18E212003F664E /* CMeshTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */; };
 		5E5733621C18E212003F664E /* COBJMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8FB1B7F680200F212E8 /* COBJMeshFileLoader.cpp */; };
@@ -197,7 +160,6 @@
 		5E5733851C18E212003F664E /* CSkyBoxSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9421B7F68D600F212E8 /* CSkyBoxSceneNode.cpp */; };
 		5E5733891C18E212003F664E /* CTextSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94A1B7F68D600F212E8 /* CTextSceneNode.cpp */; };
 		5E57338A1C18E212003F664E /* CVolumeLightSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C94C1B7F68D600F212E8 /* CVolumeLightSceneNode.cpp */; };
-		5E5733921C18E212003F664E /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */; };
 		5E5733931C18E212003F664E /* CDefaultSceneNodeFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */; };
 		5E5733941C18E212003F664E /* CGeometryCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */; };
 		5E5733951C18E212003F664E /* CMeshCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8B31B7F664100F212E8 /* CMeshCache.cpp */; };
@@ -496,25 +458,13 @@
 		5E34C7EC1B7F517000F212E8 /* CLimitReadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLimitReadFile.h; sourceTree = "<group>"; };
 		5E34C7ED1B7F517000F212E8 /* CMemoryFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMemoryFile.cpp; sourceTree = "<group>"; };
 		5E34C7EE1B7F517000F212E8 /* CMemoryFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMemoryFile.h; sourceTree = "<group>"; };
-		5E34C7EF1B7F517000F212E8 /* CMountPointReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMountPointReader.cpp; sourceTree = "<group>"; };
-		5E34C7F01B7F517000F212E8 /* CMountPointReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMountPointReader.h; sourceTree = "<group>"; };
-		5E34C7F11B7F517000F212E8 /* CNPKReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CNPKReader.cpp; sourceTree = "<group>"; };
-		5E34C7F21B7F517000F212E8 /* CNPKReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNPKReader.h; sourceTree = "<group>"; };
-		5E34C7F31B7F517000F212E8 /* CPakReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CPakReader.cpp; sourceTree = "<group>"; };
-		5E34C7F41B7F517000F212E8 /* CPakReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPakReader.h; sourceTree = "<group>"; };
 		5E34C7F51B7F51D900F212E8 /* CReadFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CReadFile.cpp; sourceTree = "<group>"; };
 		5E34C7F61B7F51D900F212E8 /* CReadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CReadFile.h; sourceTree = "<group>"; };
-		5E34C7F71B7F51D900F212E8 /* CTarReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTarReader.cpp; sourceTree = "<group>"; };
-		5E34C7F81B7F51D900F212E8 /* CTarReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTarReader.h; sourceTree = "<group>"; };
-		5E34C7F91B7F51D900F212E8 /* CWADReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CWADReader.cpp; sourceTree = "<group>"; };
-		5E34C7FA1B7F51D900F212E8 /* CWADReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWADReader.h; sourceTree = "<group>"; };
 		5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CWriteFile.cpp; sourceTree = "<group>"; };
 		5E34C7FC1B7F51D900F212E8 /* CWriteFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWriteFile.h; sourceTree = "<group>"; };
 		5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CXMLReader.cpp; sourceTree = "<group>"; };
 		5E34C7FE1B7F51D900F212E8 /* CXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXMLReader.h; sourceTree = "<group>"; };
 		5E34C7FF1B7F51D900F212E8 /* CXMLReaderImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXMLReaderImpl.h; sourceTree = "<group>"; };
-		5E34C8001B7F51D900F212E8 /* CXMLWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CXMLWriter.cpp; sourceTree = "<group>"; };
-		5E34C8011B7F51D900F212E8 /* CXMLWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXMLWriter.h; sourceTree = "<group>"; };
 		5E34C8021B7F51D900F212E8 /* CZipReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CZipReader.cpp; sourceTree = "<group>"; };
 		5E34C8031B7F51D900F212E8 /* CZipReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZipReader.h; sourceTree = "<group>"; };
 		5E34C8041B7F51D900F212E8 /* IAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAttribute.h; sourceTree = "<group>"; };
@@ -534,8 +484,6 @@
 		5E34C89C1B7F652600F212E8 /* os.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = os.cpp; sourceTree = "<group>"; };
 		5E34C89D1B7F652600F212E8 /* os.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = os.h; sourceTree = "<group>"; };
 		5E34C89E1B7F652600F212E8 /* utf8.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utf8.cpp; sourceTree = "<group>"; };
-		5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CDefaultSceneNodeAnimatorFactory.cpp; sourceTree = "<group>"; };
-		5E34C8AE1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDefaultSceneNodeAnimatorFactory.h; sourceTree = "<group>"; };
 		5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CDefaultSceneNodeFactory.cpp; sourceTree = "<group>"; };
 		5E34C8B01B7F664100F212E8 /* CDefaultSceneNodeFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDefaultSceneNodeFactory.h; sourceTree = "<group>"; };
 		5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CGeometryCreator.cpp; sourceTree = "<group>"; };
@@ -547,24 +495,6 @@
 		5E34C8B71B7F664100F212E8 /* CSceneManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneManager.cpp; sourceTree = "<group>"; };
 		5E34C8B81B7F664100F212E8 /* CSceneManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneManager.h; sourceTree = "<group>"; };
 		5E34C8B91B7F664100F212E8 /* Octree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Octree.h; sourceTree = "<group>"; };
-		5E34C8BA1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorCameraFPS.cpp; sourceTree = "<group>"; };
-		5E34C8BB1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorCameraFPS.h; sourceTree = "<group>"; };
-		5E34C8BC1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorCameraMaya.cpp; sourceTree = "<group>"; };
-		5E34C8BD1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorCameraMaya.h; sourceTree = "<group>"; };
-		5E34C8BE1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorCollisionResponse.cpp; sourceTree = "<group>"; };
-		5E34C8BF1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorCollisionResponse.h; sourceTree = "<group>"; };
-		5E34C8C01B7F669200F212E8 /* CSceneNodeAnimatorDelete.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorDelete.cpp; sourceTree = "<group>"; };
-		5E34C8C11B7F669200F212E8 /* CSceneNodeAnimatorDelete.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorDelete.h; sourceTree = "<group>"; };
-		5E34C8C21B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorFlyCircle.cpp; sourceTree = "<group>"; };
-		5E34C8C31B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorFlyCircle.h; sourceTree = "<group>"; };
-		5E34C8C41B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorFlyStraight.cpp; sourceTree = "<group>"; };
-		5E34C8C51B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorFlyStraight.h; sourceTree = "<group>"; };
-		5E34C8C61B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorFollowSpline.cpp; sourceTree = "<group>"; };
-		5E34C8C71B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorFollowSpline.h; sourceTree = "<group>"; };
-		5E34C8C81B7F669200F212E8 /* CSceneNodeAnimatorRotation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorRotation.cpp; sourceTree = "<group>"; };
-		5E34C8C91B7F669200F212E8 /* CSceneNodeAnimatorRotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorRotation.h; sourceTree = "<group>"; };
-		5E34C8CA1B7F669200F212E8 /* CSceneNodeAnimatorTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneNodeAnimatorTexture.cpp; sourceTree = "<group>"; };
-		5E34C8CB1B7F669200F212E8 /* CSceneNodeAnimatorTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneNodeAnimatorTexture.h; sourceTree = "<group>"; };
 		5E34C8CC1B7F66E600F212E8 /* CMetaTriangleSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMetaTriangleSelector.cpp; sourceTree = "<group>"; };
 		5E34C8CD1B7F66E600F212E8 /* CMetaTriangleSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMetaTriangleSelector.h; sourceTree = "<group>"; };
 		5E34C8CE1B7F66E600F212E8 /* COctreeTriangleSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = COctreeTriangleSelector.cpp; sourceTree = "<group>"; };
@@ -577,12 +507,6 @@
 		5E34C8D51B7F66E600F212E8 /* CTriangleBBSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTriangleBBSelector.h; sourceTree = "<group>"; };
 		5E34C8D61B7F66E600F212E8 /* CTriangleSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTriangleSelector.cpp; sourceTree = "<group>"; };
 		5E34C8D71B7F66E600F212E8 /* CTriangleSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTriangleSelector.h; sourceTree = "<group>"; };
-		5E34C8DA1B7F680200F212E8 /* CAnimatedMeshHalfLife.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatedMeshHalfLife.cpp; sourceTree = "<group>"; };
-		5E34C8DB1B7F680200F212E8 /* CAnimatedMeshHalfLife.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAnimatedMeshHalfLife.h; sourceTree = "<group>"; };
-		5E34C8DC1B7F680200F212E8 /* CAnimatedMeshMD2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatedMeshMD2.cpp; sourceTree = "<group>"; };
-		5E34C8DD1B7F680200F212E8 /* CAnimatedMeshMD2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAnimatedMeshMD2.h; sourceTree = "<group>"; };
-		5E34C8DE1B7F680200F212E8 /* CAnimatedMeshMD3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatedMeshMD3.cpp; sourceTree = "<group>"; };
-		5E34C8DF1B7F680200F212E8 /* CAnimatedMeshMD3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAnimatedMeshMD3.h; sourceTree = "<group>"; };
 		5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CB3DMeshFileLoader.cpp; sourceTree = "<group>"; };
 		5E34C8E11B7F680200F212E8 /* CB3DMeshFileLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CB3DMeshFileLoader.h; sourceTree = "<group>"; };
 		5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMeshTextureLoader.cpp; sourceTree = "<group>"; };
@@ -1019,25 +943,13 @@
 				5E34C7EC1B7F517000F212E8 /* CLimitReadFile.h */,
 				5E34C7ED1B7F517000F212E8 /* CMemoryFile.cpp */,
 				5E34C7EE1B7F517000F212E8 /* CMemoryFile.h */,
-				5E34C7EF1B7F517000F212E8 /* CMountPointReader.cpp */,
-				5E34C7F01B7F517000F212E8 /* CMountPointReader.h */,
-				5E34C7F11B7F517000F212E8 /* CNPKReader.cpp */,
-				5E34C7F21B7F517000F212E8 /* CNPKReader.h */,
-				5E34C7F31B7F517000F212E8 /* CPakReader.cpp */,
-				5E34C7F41B7F517000F212E8 /* CPakReader.h */,
 				5E34C7F51B7F51D900F212E8 /* CReadFile.cpp */,
 				5E34C7F61B7F51D900F212E8 /* CReadFile.h */,
-				5E34C7F71B7F51D900F212E8 /* CTarReader.cpp */,
-				5E34C7F81B7F51D900F212E8 /* CTarReader.h */,
-				5E34C7F91B7F51D900F212E8 /* CWADReader.cpp */,
-				5E34C7FA1B7F51D900F212E8 /* CWADReader.h */,
 				5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */,
 				5E34C7FC1B7F51D900F212E8 /* CWriteFile.h */,
 				5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */,
 				5E34C7FE1B7F51D900F212E8 /* CXMLReader.h */,
 				5E34C7FF1B7F51D900F212E8 /* CXMLReaderImpl.h */,
-				5E34C8001B7F51D900F212E8 /* CXMLWriter.cpp */,
-				5E34C8011B7F51D900F212E8 /* CXMLWriter.h */,
 				5E34C8021B7F51D900F212E8 /* CZipReader.cpp */,
 				5E34C8031B7F51D900F212E8 /* CZipReader.h */,
 				5E34C8041B7F51D900F212E8 /* IAttribute.h */,
@@ -1055,8 +967,6 @@
 				5E34C8A21B7F656C00F212E8 /* particleSystem */,
 				5E34C8A31B7F657A00F212E8 /* sceneNodes */,
 				5E34C8A41B7F658300F212E8 /* writers */,
-				5E34C8AD1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp */,
-				5E34C8AE1B7F664100F212E8 /* CDefaultSceneNodeAnimatorFactory.h */,
 				5E34C8AF1B7F664100F212E8 /* CDefaultSceneNodeFactory.cpp */,
 				5E34C8B01B7F664100F212E8 /* CDefaultSceneNodeFactory.h */,
 				5E34C8B11B7F664100F212E8 /* CGeometryCreator.cpp */,
@@ -1118,24 +1028,6 @@
 		5E34C89F1B7F655200F212E8 /* animators */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C8BA1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.cpp */,
-				5E34C8BB1B7F669200F212E8 /* CSceneNodeAnimatorCameraFPS.h */,
-				5E34C8BC1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.cpp */,
-				5E34C8BD1B7F669200F212E8 /* CSceneNodeAnimatorCameraMaya.h */,
-				5E34C8BE1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp */,
-				5E34C8BF1B7F669200F212E8 /* CSceneNodeAnimatorCollisionResponse.h */,
-				5E34C8C01B7F669200F212E8 /* CSceneNodeAnimatorDelete.cpp */,
-				5E34C8C11B7F669200F212E8 /* CSceneNodeAnimatorDelete.h */,
-				5E34C8C21B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.cpp */,
-				5E34C8C31B7F669200F212E8 /* CSceneNodeAnimatorFlyCircle.h */,
-				5E34C8C41B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.cpp */,
-				5E34C8C51B7F669200F212E8 /* CSceneNodeAnimatorFlyStraight.h */,
-				5E34C8C61B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.cpp */,
-				5E34C8C71B7F669200F212E8 /* CSceneNodeAnimatorFollowSpline.h */,
-				5E34C8C81B7F669200F212E8 /* CSceneNodeAnimatorRotation.cpp */,
-				5E34C8C91B7F669200F212E8 /* CSceneNodeAnimatorRotation.h */,
-				5E34C8CA1B7F669200F212E8 /* CSceneNodeAnimatorTexture.cpp */,
-				5E34C8CB1B7F669200F212E8 /* CSceneNodeAnimatorTexture.h */,
 			);
 			name = animators;
 			sourceTree = "<group>";
@@ -1162,12 +1054,6 @@
 		5E34C8A11B7F656300F212E8 /* loaders */ = {
 			isa = PBXGroup;
 			children = (
-				5E34C8DA1B7F680200F212E8 /* CAnimatedMeshHalfLife.cpp */,
-				5E34C8DB1B7F680200F212E8 /* CAnimatedMeshHalfLife.h */,
-				5E34C8DC1B7F680200F212E8 /* CAnimatedMeshMD2.cpp */,
-				5E34C8DD1B7F680200F212E8 /* CAnimatedMeshMD2.h */,
-				5E34C8DE1B7F680200F212E8 /* CAnimatedMeshMD3.cpp */,
-				5E34C8DF1B7F680200F212E8 /* CAnimatedMeshMD3.h */,
 				5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */,
 				5E34C8E11B7F680200F212E8 /* CB3DMeshFileLoader.h */,
 				5E34C8F41B7F680200F212E8 /* CMeshTextureLoader.cpp */,
@@ -1434,15 +1320,9 @@
 				5E34CA381B7F6EBF00F212E8 /* CFileSystem.cpp in Sources */,
 				5E34CA3A1B7F6EBF00F212E8 /* CLimitReadFile.cpp in Sources */,
 				5E34CA3C1B7F6EBF00F212E8 /* CMemoryFile.cpp in Sources */,
-				5E34CA3E1B7F6EBF00F212E8 /* CMountPointReader.cpp in Sources */,
-				5E34CA401B7F6EBF00F212E8 /* CNPKReader.cpp in Sources */,
-				5E34CA421B7F6EBF00F212E8 /* CPakReader.cpp in Sources */,
 				5E34CA441B7F6EBF00F212E8 /* CReadFile.cpp in Sources */,
-				5E34CA461B7F6EBF00F212E8 /* CTarReader.cpp in Sources */,
-				5E34CA481B7F6EBF00F212E8 /* CWADReader.cpp in Sources */,
 				5E34CA4A1B7F6EBF00F212E8 /* CWriteFile.cpp in Sources */,
 				5E34CA4C1B7F6EBF00F212E8 /* CXMLReader.cpp in Sources */,
-				5E34CA4F1B7F6EBF00F212E8 /* CXMLWriter.cpp in Sources */,
 				5E34CA511B7F6EBF00F212E8 /* CZipReader.cpp in Sources */,
 				5E34CA541B7F6EBF00F212E8 /* irrXML.cpp in Sources */,
 				5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */,
@@ -1453,24 +1333,12 @@
 				5E34CADE1B7F6EC100F212E8 /* leakHunter.cpp in Sources */,
 				5E34CADF1B7F6EC100F212E8 /* os.cpp in Sources */,
 				5E34CAE11B7F6EC100F212E8 /* utf8.cpp in Sources */,
-				5E34CAE21B7F6EC100F212E8 /* CSceneNodeAnimatorCameraFPS.cpp in Sources */,
-				5E34CAE41B7F6EC100F212E8 /* CSceneNodeAnimatorCameraMaya.cpp in Sources */,
-				5E34CAE61B7F6EC100F212E8 /* CSceneNodeAnimatorCollisionResponse.cpp in Sources */,
-				5E34CAE81B7F6EC100F212E8 /* CSceneNodeAnimatorDelete.cpp in Sources */,
-				5E34CAEA1B7F6EC100F212E8 /* CSceneNodeAnimatorFlyCircle.cpp in Sources */,
-				5E34CAEC1B7F6EC100F212E8 /* CSceneNodeAnimatorFlyStraight.cpp in Sources */,
-				5E34CAEE1B7F6EC100F212E8 /* CSceneNodeAnimatorFollowSpline.cpp in Sources */,
-				5E34CAF01B7F6EC100F212E8 /* CSceneNodeAnimatorRotation.cpp in Sources */,
-				5E34CAF21B7F6EC100F212E8 /* CSceneNodeAnimatorTexture.cpp in Sources */,
 				5E34CAF41B7F6EC100F212E8 /* CMetaTriangleSelector.cpp in Sources */,
 				5E34CAF61B7F6EC100F212E8 /* COctreeTriangleSelector.cpp in Sources */,
 				5E34CAF81B7F6EC100F212E8 /* CSceneCollisionManager.cpp in Sources */,
 				5E34CAFA1B7F6EC100F212E8 /* CTerrainTriangleSelector.cpp in Sources */,
 				5E34CAFC1B7F6EC100F212E8 /* CTriangleBBSelector.cpp in Sources */,
 				5E34CAFE1B7F6EC100F212E8 /* CTriangleSelector.cpp in Sources */,
-				5E34CB021B7F6EC100F212E8 /* CAnimatedMeshHalfLife.cpp in Sources */,
-				5E34CB041B7F6EC100F212E8 /* CAnimatedMeshMD2.cpp in Sources */,
-				5E34CB061B7F6EC100F212E8 /* CAnimatedMeshMD3.cpp in Sources */,
 				5E34CB081B7F6EC200F212E8 /* CB3DMeshFileLoader.cpp in Sources */,
 				8495BD2E28C0E591009FCF4D /* CIrrDeviceSDL.cpp in Sources */,
 				5E34CB1C1B7F6EC200F212E8 /* CMeshTextureLoader.cpp in Sources */,
@@ -1488,7 +1356,6 @@
 				5E34CB6A1B7F6EC400F212E8 /* CSkyBoxSceneNode.cpp in Sources */,
 				5E34CB721B7F6EC400F212E8 /* CTextSceneNode.cpp in Sources */,
 				5E34CB741B7F6EC400F212E8 /* CVolumeLightSceneNode.cpp in Sources */,
-				5E34CB821B7F6EC400F212E8 /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E34CB841B7F6EC400F212E8 /* CDefaultSceneNodeFactory.cpp in Sources */,
 				5E34CB861B7F6EC400F212E8 /* CGeometryCreator.cpp in Sources */,
 				5E34CB881B7F6EC400F212E8 /* CMeshCache.cpp in Sources */,
@@ -1549,15 +1416,9 @@
 				5E5732D21C18E212003F664E /* CFileSystem.cpp in Sources */,
 				5E5732D31C18E212003F664E /* CLimitReadFile.cpp in Sources */,
 				5E5732D41C18E212003F664E /* CMemoryFile.cpp in Sources */,
-				5E5732D51C18E212003F664E /* CMountPointReader.cpp in Sources */,
-				5E5732D61C18E212003F664E /* CNPKReader.cpp in Sources */,
-				5E5732D71C18E212003F664E /* CPakReader.cpp in Sources */,
 				5E5732D81C18E212003F664E /* CReadFile.cpp in Sources */,
-				5E5732D91C18E212003F664E /* CTarReader.cpp in Sources */,
-				5E5732DA1C18E212003F664E /* CWADReader.cpp in Sources */,
 				5E5732DB1C18E212003F664E /* CWriteFile.cpp in Sources */,
 				5E5732DC1C18E212003F664E /* CXMLReader.cpp in Sources */,
-				5E5732DD1C18E212003F664E /* CXMLWriter.cpp in Sources */,
 				5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */,
 				5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */,
 				5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */,
@@ -1570,24 +1431,12 @@
 				5E57333F1C18E212003F664E /* leakHunter.cpp in Sources */,
 				5E5733401C18E212003F664E /* os.cpp in Sources */,
 				5E5733411C18E212003F664E /* utf8.cpp in Sources */,
-				5E5733421C18E212003F664E /* CSceneNodeAnimatorCameraFPS.cpp in Sources */,
-				5E5733431C18E212003F664E /* CSceneNodeAnimatorCameraMaya.cpp in Sources */,
-				5E5733441C18E212003F664E /* CSceneNodeAnimatorCollisionResponse.cpp in Sources */,
-				5E5733451C18E212003F664E /* CSceneNodeAnimatorDelete.cpp in Sources */,
-				5E5733461C18E212003F664E /* CSceneNodeAnimatorFlyCircle.cpp in Sources */,
-				5E5733471C18E212003F664E /* CSceneNodeAnimatorFlyStraight.cpp in Sources */,
-				5E5733481C18E212003F664E /* CSceneNodeAnimatorFollowSpline.cpp in Sources */,
-				5E5733491C18E212003F664E /* CSceneNodeAnimatorRotation.cpp in Sources */,
-				5E57334A1C18E212003F664E /* CSceneNodeAnimatorTexture.cpp in Sources */,
 				5E57334B1C18E212003F664E /* CMetaTriangleSelector.cpp in Sources */,
 				5E57334C1C18E212003F664E /* COctreeTriangleSelector.cpp in Sources */,
 				5E57334D1C18E212003F664E /* CSceneCollisionManager.cpp in Sources */,
 				5E57334E1C18E212003F664E /* CTerrainTriangleSelector.cpp in Sources */,
 				5E57334F1C18E212003F664E /* CTriangleBBSelector.cpp in Sources */,
 				5E5733501C18E212003F664E /* CTriangleSelector.cpp in Sources */,
-				5E5733521C18E212003F664E /* CAnimatedMeshHalfLife.cpp in Sources */,
-				5E5733531C18E212003F664E /* CAnimatedMeshMD2.cpp in Sources */,
-				5E5733541C18E212003F664E /* CAnimatedMeshMD3.cpp in Sources */,
 				5E5733551C18E212003F664E /* CB3DMeshFileLoader.cpp in Sources */,
 				84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */,
 				5E57335F1C18E212003F664E /* CMeshTextureLoader.cpp in Sources */,
@@ -1609,7 +1458,6 @@
 				5E5733891C18E212003F664E /* CTextSceneNode.cpp in Sources */,
 				5E57338A1C18E212003F664E /* CVolumeLightSceneNode.cpp in Sources */,
 				5E57340A1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp in Sources */,
-				5E5733921C18E212003F664E /* CDefaultSceneNodeAnimatorFactory.cpp in Sources */,
 				5E5733931C18E212003F664E /* CDefaultSceneNodeFactory.cpp in Sources */,
 				5E5733941C18E212003F664E /* CGeometryCreator.cpp in Sources */,
 				5E5733951C18E212003F664E /* CMeshCache.cpp in Sources */,

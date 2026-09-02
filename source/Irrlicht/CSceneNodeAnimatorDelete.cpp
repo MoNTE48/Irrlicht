@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CSceneNodeAnimatorDelete.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "ISceneManager.h"
 
 namespace irr
@@ -53,3 +55,4 @@ ISceneNodeAnimator* CSceneNodeAnimatorDelete::createClone(ISceneNode* node, ISce
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

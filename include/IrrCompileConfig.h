@@ -540,6 +540,12 @@ tool <http://developer.nvidia.com/object/nvperfhud_home.html>. */
 #undef _IRR_COMPILE_WITH_SPHERE_SCENENODE_
 #endif
 
+//! Define _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_ to support scene node animators
+//#define _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+#ifdef NO_IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+#undef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+#endif
+
 //! Define _IRR_COMPILE_WITH_IRR_SCENE_LOADER_ if you want to be able to load
 /** .irr scenes using ISceneManager::loadScene */
 //#define _IRR_COMPILE_WITH_IRR_SCENE_LOADER_

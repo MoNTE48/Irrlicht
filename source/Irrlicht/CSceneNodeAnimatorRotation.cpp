@@ -4,6 +4,8 @@
 
 #include "CSceneNodeAnimatorRotation.h"
 
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+
 namespace irr
 {
 namespace scene
@@ -78,3 +80,4 @@ ISceneNodeAnimator* CSceneNodeAnimatorRotation::createClone(ISceneNode* node, IS
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

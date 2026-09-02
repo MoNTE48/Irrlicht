@@ -28,9 +28,6 @@ LOCAL_C_INCLUDES += $(SDL_PATH)/include
 LOCAL_SRC_FILES := \
 					minizip-ng/mz_crypt.c \
 					minizip-ng/mz_crypt_openssl.c \
-					CAnimatedMeshHalfLife.cpp \
-					CAnimatedMeshMD2.cpp \
-					CAnimatedMeshMD3.cpp \
 					CAnimatedMeshSceneNode.cpp \
 					CAttributes.cpp \
 					CB3DMeshFileLoader.cpp \
@@ -39,7 +36,6 @@ LOCAL_SRC_FILES := \
 					CCameraSceneNode.cpp \
 					CColorConverter.cpp \
 					CDefaultGUIElementFactory.cpp \
-					CDefaultSceneNodeAnimatorFactory.cpp \
 					CDefaultSceneNodeFactory.cpp \
 					CDummyTransformationSceneNode.cpp \
 					CEmptySceneNode.cpp \
@@ -93,8 +89,6 @@ LOCAL_SRC_FILES := \
 					CMeshSceneNode.cpp \
 					CMeshTextureLoader.cpp \
 					CMetaTriangleSelector.cpp \
-					CMountPointReader.cpp \
-					CNPKReader.cpp \
 					CNullDriver.cpp \
 					COBJMeshFileLoader.cpp \
 					COctreeTriangleSelector.cpp \
@@ -115,34 +109,21 @@ LOCAL_SRC_FILES := \
 					COpenGLShaderMaterialRenderer.cpp \
 					COpenGLSLMaterialRenderer.cpp \
 					COSOperator.cpp \
-					CPakReader.cpp \
 					CProfiler.cpp \
 					CReadFile.cpp \
 					CSceneCollisionManager.cpp \
 					CSceneManager.cpp \
-					CSceneNodeAnimatorCameraFPS.cpp \
-					CSceneNodeAnimatorCameraMaya.cpp \
-					CSceneNodeAnimatorCollisionResponse.cpp \
-					CSceneNodeAnimatorDelete.cpp \
-					CSceneNodeAnimatorFlyCircle.cpp \
-					CSceneNodeAnimatorFlyStraight.cpp \
-					CSceneNodeAnimatorFollowSpline.cpp \
-					CSceneNodeAnimatorRotation.cpp \
-					CSceneNodeAnimatorTexture.cpp \
 					CSkinnedMesh.cpp \
 					CSkyBoxSceneNode.cpp \
-					CTarReader.cpp \
 					CTerrainTriangleSelector.cpp \
 					CTextSceneNode.cpp \
 					CTriangleBBSelector.cpp \
 					CTriangleSelector.cpp \
 					CVideoModeList.cpp \
 					CVolumeLightSceneNode.cpp \
-					CWADReader.cpp \
 					CWriteFile.cpp \
 					CXMeshFileLoader.cpp \
 					CXMLReader.cpp \
-					CXMLWriter.cpp \
 					CZipReader.cpp \
 					Irrlicht.cpp \
 					irrXML.cpp \

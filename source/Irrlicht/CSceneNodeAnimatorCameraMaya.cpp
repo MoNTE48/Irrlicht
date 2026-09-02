@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CSceneNodeAnimatorCameraMaya.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "ICursorControl.h"
 #include "ICameraSceneNode.h"
 #include "SViewFrustum.h"
@@ -362,3 +364,4 @@ void CSceneNodeAnimatorCameraMaya::deserializeAttributes(io::IAttributes* in, io
 } // end namespace
 } // end namespace
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_

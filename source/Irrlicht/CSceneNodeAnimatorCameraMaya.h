@@ -5,6 +5,9 @@
 #ifndef IRR_C_SCENE_NODE_ANIMATOR_CAMERA_MAYA_H_INCLUDED
 #define IRR_C_SCENE_NODE_ANIMATOR_CAMERA_MAYA_H_INCLUDED
 
+#include "IrrCompileConfig.h"
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
+
 #include "ISceneNodeAnimatorCameraMaya.h"
 #include "ICameraSceneNode.h"
 #include "position2d.h"
@@ -127,5 +130,7 @@ namespace scene
 
 } // end namespace scene
 } // end namespace irr
+
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 
 #endif

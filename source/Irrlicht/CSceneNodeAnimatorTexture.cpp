@@ -3,6 +3,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CSceneNodeAnimatorTexture.h"
+
+#ifdef _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
 #include "ITexture.h"
 
 namespace irr
@@ -144,3 +146,4 @@ ISceneNodeAnimator* CSceneNodeAnimatorTexture::createClone(ISceneNode* node, ISc
 } // end namespace scene
 } // end namespace irr
 
+#endif // _IRR_COMPILE_WITH_SCENE_NODE_ANIMATORS_
