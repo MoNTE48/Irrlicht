@@ -215,16 +215,7 @@ IMesh * CAnimatedMeshSceneNode::getMeshForCurrentFrame()
 		skinnedMesh->skinMesh();
 
 		if (JointMode == EJUOR_READ)//read from mesh
-		{
-			skinnedMesh->recoverJointsFromMesh(JointChildSceneNodes);
-
-			//---slow---
-			for (u32 n=0;n<JointChildSceneNodes.size();++n)
-				if (JointChildSceneNodes[n]->getParent()==this)
-				{
-					JointChildSceneNodes[n]->updateAbsolutePositionOfAllChildren(); //temp, should be an option
-				}
-		}
+			recoverJoints();
 
 		if(JointMode == EJUOR_CONTROL)
 		{
@@ -235,6 +226,47 @@ IMesh * CAnimatedMeshSceneNode::getMeshForCurrentFrame()
 		return skinnedMesh;
 #endif
 	}
+}
+
+
+//! Copies the current pose back into the joint scene nodes.
+void CAnimatedMeshSceneNode::recoverJoints()
+{
+#ifdef _IRR_COMPILE_WITH_SKINNED_MESH_SUPPORT_
+	CSkinnedMesh* skinnedMesh = static_cast<CSkinnedMesh*>(Mesh);
+	skinnedMesh->recoverJointsFromMesh(JointChildSceneNodes);
+
+	//---slow---
+	for (u32 n=0;n<JointChildSceneNodes.size();++n)
+		if (JointChildSceneNodes[n]->getParent()==this)
+		{
+			JointChildSceneNodes[n]->updateAbsolutePositionOfAllChildren(); //temp, should be an option
+		}
+#endif
+}
+
+
+//! Updates the joints and the bounding box of a skinned mesh for the current frame.
+/** This is the cheap part of getMeshForCurrentFrame(); the software skinning
+itself is left to render(). */
+void CAnimatedMeshSceneNode::updateJointsForCurrentFrame()
+{
+#ifdef _IRR_COMPILE_WITH_SKINNED_MESH_SUPPORT_
+	// EJUOR_CONTROL builds the pose out of the bone scene nodes, which only
+	// render() does, and its box would cost a pass over every vertex
+	if (JointMode == EJUOR_CONTROL)
+		return;
+
+	CSkinnedMesh* skinnedMesh = static_cast<CSkinnedMesh*>(Mesh);
+
+	// animateMesh() ends in updateBoundingBox(), so the box comes for free and
+	// holds what render() would store anyway
+	skinnedMesh->animateMesh(getFrameNr(), 1.0f);
+	Box = skinnedMesh->getBoundingBox();
+
+	if (JointMode == EJUOR_READ)
+		recoverJoints();
+#endif
 }
 
 
@@ -249,13 +281,21 @@ void CAnimatedMeshSceneNode::OnAnimate(u32 timeMs)
 	// set CurrentFrameNr
 	buildFrameNr(timeMs-LastTimeMs);
 
-	// update bbox
 	if (Mesh)
 	{
-		scene::IMesh * mesh = getMeshForCurrentFrame();
+		if (Mesh->getMeshType() == EAMT_SKINNED)
+		{
+			// Skinning happens in render(), so only the joints are updated here
+			updateJointsForCurrentFrame();
+		}
+		else
+		{
+			// update bbox
+			scene::IMesh * mesh = getMeshForCurrentFrame();
 
-		if (mesh)
-			Box = mesh->getBoundingBox();
+			if (mesh)
+				Box = mesh->getBoundingBox();
+		}
 	}
 	LastTimeMs = timeMs;
 

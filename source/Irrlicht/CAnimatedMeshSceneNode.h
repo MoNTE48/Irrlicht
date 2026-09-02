@@ -166,6 +166,12 @@ namespace scene
 		//! Get a static mesh for the current frame of this animated mesh
 		IMesh* getMeshForCurrentFrame();
 
+		//! Update the joints and the bounding box for the current frame (no skinning)
+		void updateJointsForCurrentFrame();
+
+		//! Copy the current pose back into the joint scene nodes
+		void recoverJoints();
+
 		void buildFrameNr(u32 timeMs);
 		void checkJoints();
 		void beginTransition();
