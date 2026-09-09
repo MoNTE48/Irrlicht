@@ -20,6 +20,7 @@
 #include "SVertexIndex.h"
 #include "SLight.h"
 #include "SExposedVideoData.h"
+#include <list>
 #include "SOverrideMaterial.h"
 
 #ifdef _MSC_VER
@@ -405,6 +406,8 @@ namespace video
 
 			virtual ~SHWBufferLink()
 			{
+				if (MeshBuffer && MeshBuffer->getHWBuffer() == this)
+					MeshBuffer->setHWBuffer(0);
 				if (MeshBuffer)
 					MeshBuffer->drop();
 			}
@@ -415,6 +418,8 @@ namespace video
 			u32 LastUsed;
 			scene::E_HARDWARE_MAPPING Mapped_Vertex;
 			scene::E_HARDWARE_MAPPING Mapped_Index;
+			std::list<SHWBufferLink*>::iterator listPosition;
+			const void* Owner = 0;
 		};
 
 		//! Gets hardware buffer link from a meshbuffer (may create or update buffer)
@@ -872,7 +877,7 @@ namespace video
 		core::array<SMaterialRenderer> MaterialRenderers;
 
 		//core::array<SHWBufferLink*> HWBufferLinks;
-		core::map< const scene::IMeshBuffer* , SHWBufferLink* > HWBufferMap;
+		std::list<SHWBufferLink*> HWBufferList;
 
 		io::IFileSystem* FileSystem;
 

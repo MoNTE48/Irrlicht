@@ -162,6 +162,10 @@ s		\param updateBoundingBox When true update boundingbox by the added vertices *
 		/** This shouldn't be used for anything outside the VideoDriver. */
 		virtual u32 getChangedID_Index() const = 0;
 
+		//! Driver's hardware buffer link
+		virtual void setHWBuffer(void *ptr) const { HWBuffer = ptr; }
+		virtual void *getHWBuffer() const { return HWBuffer; }
+
 		//! Describe what kind of primitive geometry is used by the meshbuffer
 		/** Note: Default is EPT_TRIANGLES. Using other types is fine for rendering.
 		But meshbuffer manipulation functions might expect type EPT_TRIANGLES
@@ -211,6 +215,8 @@ s		\param updateBoundingBox When true update boundingbox by the added vertices *
 		//\param cloneFlags A combination of ECloneFlags
 		virtual IMeshBuffer* createClone(int cloneFlags=ECF_VERTICES|ECF_INDICES) const = 0;
 
+	protected:
+		mutable void *HWBuffer = 0;
 	};
 
 } // end namespace scene

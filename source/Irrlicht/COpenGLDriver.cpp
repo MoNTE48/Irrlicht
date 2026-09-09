@@ -615,7 +615,7 @@ COpenGLDriver::SHWBufferLink *COpenGLDriver::createHardwareBuffer(const scene::I
 	SHWBufferLink_opengl *HWBuffer=new SHWBufferLink_opengl(mb);
 
 	//add to map
-	HWBufferMap.insert(HWBuffer->MeshBuffer, HWBuffer);
+	HWBuffer->listPosition = HWBufferList.insert(HWBufferList.end(), HWBuffer);
 
 	HWBuffer->ChangedID_Vertex=HWBuffer->MeshBuffer->getChangedID_Vertex();
 	HWBuffer->ChangedID_Index=HWBuffer->MeshBuffer->getChangedID_Index();
