@@ -1,7 +1,5 @@
 LOCAL_PATH := $(call my-dir)/../..
 
-include $(CLEAR_VARS)
-
 IRRLICHT_LIB_PATH := $(LOCAL_PATH)/../../lib/Android-SDL
 
 include $(CLEAR_VARS)
@@ -9,14 +7,14 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := Irrlicht
 IRRLICHT_LIB_NAME := lib$(LOCAL_MODULE).a
 
-LOCAL_CFLAGS := -Wall -pipe -fno-exceptions -fno-rtti -fstrict-aliasing
+LOCAL_CFLAGS := -Wall -fno-exceptions -fno-rtti
 
 LOCAL_CFLAGS += -DNO_IRR_COMPILE_WITH_ANDROID_DEVICE_
 
 ifndef NDEBUG
 LOCAL_CFLAGS += -g -D_DEBUG
 else
-LOCAL_CFLAGS += -fexpensive-optimizations -O3
+LOCAL_CFLAGS += -O3 -ffast-math
 endif
 
 LOCAL_C_INCLUDES := ../../../include
