@@ -168,15 +168,13 @@ COGLES2Driver::~COGLES2Driver()
 
 #if defined(_IRR_COMPILE_WITH_ANGLE_)
 		// Catch a silent fallback to the system GL driver.
-		if (Params.DriverType == EDT_METAL && rendererName.find("ANGLE") < 0)
+		if (Params.DriverType == EDT_ANGLE)
 		{
-			os::Printer::log("EDT_METAL was requested but the context is not backed "
-				"by ANGLE - rendering is NOT going through Metal.", ELL_WARNING);
-		}
-		else if (Params.DriverType == EDT_METAL && rendererName.find("OpenGL") >= 0)
-		{
-			os::Printer::log("ANGLE fell back to its own OpenGL backend, the GPU has "
-				"no Metal support - rendering is NOT going through Metal.", ELL_WARNING);
+			if (rendererName.find("ANGLE") < 0)
+				os::Printer::log("EDT_ANGLE was requested but the context is not backed "
+					"by ANGLE.", ELL_WARNING);
+			else if (rendererName.find("OpenGL") >= 0)
+				os::Printer::log("ANGLE renders through its OpenGL backend.", ELL_WARNING);
 		}
 #endif
 

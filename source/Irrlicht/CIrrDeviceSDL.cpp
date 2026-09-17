@@ -87,7 +87,7 @@ static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
 		driverType == video::EDT_OGLES2 ||
 		driverType == video::EDT_OGLES1
 #if !defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
-		|| driverType == video::EDT_METAL
+		|| driverType == video::EDT_ANGLE
 #endif
 		;
 }
@@ -96,7 +96,7 @@ static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
 static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 {
 #if defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
-	return driverType == video::EDT_METAL;
+	return driverType == video::EDT_ANGLE;
 #else
 	return false;
 #endif
@@ -494,7 +494,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		SDL_Flags |= SDL_WINDOW_OPENGL;
 
 		if (CreationParams.DriverType == video::EDT_OGLES2 ||
-				CreationParams.DriverType == video::EDT_METAL)
+				CreationParams.DriverType == video::EDT_ANGLE)
 		{
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -740,12 +740,12 @@ void CIrrDeviceSDL::createDriver()
 #endif
 		break;
 
-	case video::EDT_METAL:
+	case video::EDT_ANGLE:
 #if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(_IRR_COMPILE_WITH_OGLES2_)
 		// ANGLE hands out a plain GLES2 context, so the ES2 driver is reused as is.
 		VideoDriver = video::createOGLES2Driver(CreationParams, FileSystem, this, ContextManager);
 #else
-		os::Printer::log("No Metal (ANGLE) support compiled in.", ELL_ERROR);
+		os::Printer::log("No ANGLE support compiled in.", ELL_ERROR);
 #endif
 		break;
 

@@ -388,7 +388,7 @@ namespace irr
 #else
 					return false;
 #endif
-				case video::EDT_METAL:
+				case video::EDT_ANGLE:
 #if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(_IRR_COMPILE_WITH_OGLES2_)
 					return true;
 #else

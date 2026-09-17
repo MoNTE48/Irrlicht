@@ -207,12 +207,10 @@ EGLConfig CEGLManager::chooseConfig(EConfigStyle confStyle)
 	case EDT_WEBGL1:
 		eglOpenGLBIT = EGL_OPENGL_ES2_BIT;
 		break;
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-	case EDT_METAL:
-		// ANGLE on Metal provides ES 3.0.
+	case EDT_ANGLE:
+		// ANGLE provides ES 3.0.
 		eglOpenGLBIT = EGL_OPENGL_ES3_BIT;
 		break;
-#endif
 	default:
 		break;
 	}
@@ -565,11 +563,9 @@ bool CEGLManager::generateContext()
 	case EDT_WEBGL1:
 		OpenGLESVersion = 2;
 		break;
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-	case EDT_METAL:
+	case EDT_ANGLE:
 		OpenGLESVersion = 3;
 		break;
-#endif
 	default:
 		break;
 	}

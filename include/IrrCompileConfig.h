@@ -115,7 +115,7 @@
 
 //! Apple platforms render the OpenGL ES 2.x path through ANGLE, which targets Metal.
 /** ANGLE and the system GL export the same symbols, and a two-level namespace binds
-each name to one library at link time, so EDT_METAL replaces the native driver
+each name to one library at link time, so EDT_ANGLE replaces the native driver
 rather than joining it. The build has to supply ANGLE's headers. */
 #define _IRR_COMPILE_WITH_ANGLE_
 #ifdef NO_IRR_COMPILE_WITH_ANGLE_
