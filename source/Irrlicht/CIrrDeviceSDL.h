@@ -289,6 +289,7 @@ namespace irr
 		core::array<SDL_JoystickID> Joysticks;
 #endif
 
+		mutable core::stringc ClipboardText;
 		s32 MouseX, MouseY;
 		u32 MouseButtonStates;
 		bool IgnoreWarpMouseEvent;

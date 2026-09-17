@@ -1425,38 +1425,33 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 		// enumerate video modes.
 		int display_count = 0;
 		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
+		int mode_count = 0;
+		SDL_DisplayMode** modes = display_count > 0 ?
+			SDL_GetFullscreenDisplayModes(displays[0], &mode_count) : 0;
 
 		if (display_count < 1)
-		{
 			os::Printer::log("No display created: ", SDL_GetError(), ELL_ERROR);
-			return VideoModeList;
-		}
-
-		int mode_count = 0;
-		SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(displays[0], &mode_count);
-
-		if (mode_count < 1)
-		{
+		else if (mode_count < 1)
 			os::Printer::log("No display modes available: ", SDL_GetError(), ELL_ERROR);
-			return VideoModeList;
-		}
-
-		const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
-
-		if (mode)
+		else
 		{
-			VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
-				core::dimension2d<u32>(mode->w, mode->h));
-		}
-
-		for (int i = 0; i < mode_count; i++)
-		{
-			const SDL_DisplayMode* mode = modes[i];
+			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
 
 			if (mode)
 			{
-				VideoModeList->addMode(core::dimension2d<u32>(mode->w, mode->h),
-					SDL_BITSPERPIXEL(mode->format));
+				VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
+					core::dimension2d<u32>(mode->w, mode->h));
+			}
+
+			for (int i = 0; i < mode_count; i++)
+			{
+				const SDL_DisplayMode* mode = modes[i];
+
+				if (mode)
+				{
+					VideoModeList->addMode(core::dimension2d<u32>(mode->w, mode->h),
+						SDL_BITSPERPIXEL(mode->format));
+				}
 			}
 		}
 
@@ -1558,7 +1553,10 @@ bool CIrrDeviceSDL::getGammaRamp( f32 &red, f32 &green, f32 &blue, f32 &brightne
 //! \return Returns empty string on failure.
 const c8* CIrrDeviceSDL::getTextFromClipboard() const
 {
-	return SDL_GetClipboardText();
+	char* text = SDL_GetClipboardText();
+	ClipboardText = text;
+	SDL_free(text);
+	return ClipboardText.c_str();
 }
 
 //! copies text to the clipboard
