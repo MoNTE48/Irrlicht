@@ -175,9 +175,9 @@ namespace video
 	inline u16 RGBA16(u32 r, u32 g, u32 b, u32 a=0xFF)
 	{
 		return (u16)((a & 0x80) << 8 |
-			(r & 0xF8) << 7 |
-			(g & 0xF8) << 2 |
-			(b & 0xF8) >> 3);
+			((r & 0xFF) * 31 + 127) / 255 << 10 |
+			((g & 0xFF) * 31 + 127) / 255 << 5 |
+			((b & 0xFF) * 31 + 127) / 255);
 	}
 
 
@@ -212,18 +212,18 @@ namespace video
 	inline u16 A8R8G8B8toA1R5G5B5(u32 color)
 	{
 		return (u16)(( color & 0x80000000) >> 16|
-			( color & 0x00F80000) >> 9 |
-			( color & 0x0000F800) >> 6 |
-			( color & 0x000000F8) >> 3);
+			(( color >> 16 & 0xFF) * 31 + 127) / 255 << 10 |
+			(( color >> 8 & 0xFF) * 31 + 127) / 255 << 5 |
+			(( color & 0xFF) * 31 + 127) / 255);
 	}
 
 
 	//! Converts a 32bit (A8R8G8B8) color to a 16bit R5G6B5 color
 	inline u16 A8R8G8B8toR5G6B5(u32 color)
 	{
-		return (u16)(( color & 0x00F80000) >> 8 |
-			( color & 0x0000FC00) >> 5 |
-			( color & 0x000000F8) >> 3);
+		return (u16)((( color >> 16 & 0xFF) * 31 + 127) / 255 << 11 |
+			(( color >> 8 & 0xFF) * 63 + 127) / 255 << 5 |
+			(( color & 0xFF) * 31 + 127) / 255);
 	}
 
 
@@ -243,9 +243,9 @@ namespace video
 	inline u32 R5G6B5toA8R8G8B8(u16 color)
 	{
 		return 0xFF000000 |
-			((color & 0xF800) << 8)|
-			((color & 0x07E0) << 5)|
-			((color & 0x001F) << 3);
+			(( color & 0xF800 ) << 8) | (( color & 0xE000 ) << 3) |
+			(( color & 0x07E0 ) << 5) | (( color & 0x0600 ) >> 1) |
+			(( color & 0x001F ) << 3) | (( color & 0x001C ) >> 2);
 	}
 
 

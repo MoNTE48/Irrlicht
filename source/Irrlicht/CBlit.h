@@ -204,28 +204,6 @@ static inline u32 packAlpha(const u32 c)
 }
 
 
-/*!
-	Scale Color by (1/value)
-	value 0 - 256 ( alpha )
-*/
-inline u32 PixelLerp32(const u32 source, const u32 value)
-{
-	u32 srcRB = source & 0x00FF00FF;
-	u32 srcXG = (source & 0xFF00FF00) >> 8;
-
-	srcRB *= value;
-	srcXG *= value;
-
-	srcRB >>= 8;
-	//srcXG >>= 8;
-
-	srcXG &= 0xFF00FF00;
-	srcRB &= 0x00FF00FF;
-
-	return srcRB | srcXG;
-}
-
-
 /*
 */
 static void RenderLine32_Decal(video::IImage *t,
@@ -567,9 +545,7 @@ static void executeBlit_TextureCopy_32_to_16( const SBlitJob * job )
 			for ( u32 dx = 0; dx < w; ++dx )
 			{
 				const u32 src_x = (u32)(dx*wscale);
-				//16 bit Blitter depends on pre-multiplied color
-				const u32 s = PixelLerp32( src[src_x] | 0xFF000000, extractAlpha( src[src_x] ) );
-				dst[dx] = video::A8R8G8B8toA1R5G5B5( s );
+				dst[dx] = video::A8R8G8B8toA1R5G5B5( src[src_x] );
 			}
 			dst = (u16*) ( (u8*) (dst) + job->dstPitch );
 		}
@@ -580,9 +556,7 @@ static void executeBlit_TextureCopy_32_to_16( const SBlitJob * job )
 		{
 			for ( u32 dx = 0; dx != w; ++dx )
 			{
-				//16 bit Blitter depends on pre-multiplied color
-				const u32 s = PixelLerp32( src[dx] | 0xFF000000, extractAlpha( src[dx] ) );
-				dst[dx] = video::A8R8G8B8toA1R5G5B5( s );
+				dst[dx] = video::A8R8G8B8toA1R5G5B5( src[dx] );
 			}
 
 			src = (const u32*) ( (const u8*) (src) + job->srcPitch );
