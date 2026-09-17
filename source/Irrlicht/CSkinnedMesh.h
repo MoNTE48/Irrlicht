@@ -143,6 +143,9 @@ namespace scene
 
 		virtual void updateBoundingBox(void);
 
+		//! Box of the pose the joints hold
+		core::aabbox3d<f32> getJointBoundingBox();
+
 		//! Recovers the joints from the mesh
 		void recoverJointsFromMesh(core::array<IBoneSceneNode*> &jointChildSceneNodes);
 
@@ -203,6 +206,19 @@ private:
 		bool PreparedForSkinning;
 		bool AnimateNormals;
 		bool HardwareSkinning;
+
+		//! One buffer's vertices a joint pulls, in joint space; Joint ~0u holds its unpulled ones
+		struct SJointBox
+		{
+			u32 Joint;
+			u32 Buffer;
+			core::aabbox3d<f32> Box;
+		};
+		void buildJointBoxes();
+		core::array<SJointBox> JointBoxes;
+		//! Per buffer: its joint or -1
+		core::array<s32> AttachedTo;
+		bool JointBoxesBuilt;
 	};
 
 } // end namespace scene

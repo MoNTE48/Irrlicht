@@ -9,6 +9,7 @@
 #include "CBoneSceneNode.h"
 #include "IAnimatedMeshSceneNode.h"
 #include "os.h"
+#include <vector>
 
 namespace
 {
@@ -96,7 +97,7 @@ CSkinnedMesh::CSkinnedMesh()
 	LastAnimatedFrame(-1), SkinnedLastFrame(false),
 	InterpolationMode(EIM_LINEAR),
 	HasAnimation(false), PreparedForSkinning(false),
-	AnimateNormals(true), HardwareSkinning(false)
+	AnimateNormals(true), HardwareSkinning(false), JointBoxesBuilt(false)
 {
 	#ifdef _DEBUG
 	setDebugName("CSkinnedMesh");
@@ -964,6 +965,7 @@ void CSkinnedMesh::finalize()
 	// Make sure we recalc the next frame
 	LastAnimatedFrame=-1;
 	SkinnedLastFrame=false;
+	JointBoxesBuilt=false;
 
 	//calculate bounding box
 	for (i=0; i<LocalBuffers.size(); ++i)
@@ -1163,6 +1165,105 @@ void CSkinnedMesh::finalize()
 			BoundingBox.addInternalBox(bb);
 		}
 	}
+}
+
+
+//! Box vertices per joint in bind space and the unpulled ones
+void CSkinnedMesh::buildJointBoxes()
+{
+	JointBoxesBuilt = true;
+	JointBoxes.clear();
+
+	const u32 bufferCount = LocalBuffers.size();
+	AttachedTo.set_used(bufferCount);
+
+	std::vector<std::vector<bool>> pulled(bufferCount);
+	for (u32 b = 0; b < bufferCount; ++b)
+	{
+		AttachedTo[b] = -1;
+		pulled[b].assign(LocalBuffers[b]->getVertexCount(), false);
+	}
+
+	for (u32 j = 0; j < AllJoints.size(); ++j)
+	{
+		const SJoint* joint = AllJoints[j];
+		for (u32 a = 0; a < joint->AttachedMeshes.size(); ++a)
+			if (joint->AttachedMeshes[a] < bufferCount)
+				AttachedTo[joint->AttachedMeshes[a]] = (s32)j;
+
+		const u32 first = JointBoxes.size();
+		for (u32 w = 0; w < joint->Weights.size(); ++w)
+		{
+			const SWeight& weight = joint->Weights[w];
+			if (weight.buffer_id >= bufferCount || weight.vertex_id >= pulled[weight.buffer_id].size())
+				continue;
+			pulled[weight.buffer_id][weight.vertex_id] = true;
+
+			core::vector3df local;
+			joint->GlobalInversedMatrix.transformVect(local, weight.StaticPos);
+
+			u32 e = first;
+			while (e < JointBoxes.size() && JointBoxes[e].Buffer != weight.buffer_id)
+				++e;
+			if (e < JointBoxes.size())
+				JointBoxes[e].Box.addInternalPoint(local);
+			else
+				JointBoxes.push_back({j, weight.buffer_id, core::aabbox3d<f32>(local)});
+		}
+	}
+
+	for (u32 b = 0; b < bufferCount; ++b)
+	{
+		const u32 first = JointBoxes.size();
+		for (u32 v = 0; v < pulled[b].size(); ++v)
+		{
+			if (pulled[b][v])
+				continue;
+			const core::vector3df& pos = LocalBuffers[b]->getVertex(v)->Pos;
+			if (JointBoxes.size() > first)
+				JointBoxes.getLast().Box.addInternalPoint(pos);
+			else
+				JointBoxes.push_back({~0u, b, core::aabbox3d<f32>(pos)});
+		}
+	}
+}
+
+
+static void addPlacedBox(core::aabbox3d<f32>& into, bool& empty, const core::matrix4& place,
+		core::aabbox3d<f32> box)
+{
+	place.transformBoxEx(box);
+	if (empty)
+		into = box;
+	else
+		into.addInternalBox(box);
+	empty = false;
+}
+
+
+core::aabbox3d<f32> CSkinnedMesh::getJointBoundingBox()
+{
+	if (!HasAnimation)
+		return BoundingBox;
+	if (!JointBoxesBuilt)
+		buildJointBoxes();
+
+	buildAllGlobalAnimatedMatrices();
+
+	core::aabbox3d<f32> box;
+	bool empty = true;
+	// Blended vertices stay inside their joints' boxes
+	for (u32 i = 0; i < JointBoxes.size(); ++i)
+	{
+		const SJointBox& e = JointBoxes[i];
+		const s32 hanger = AttachedTo[e.Buffer];
+		const core::matrix4& place = hanger >= 0 ? AllJoints[hanger]->GlobalAnimatedMatrix :
+				(*SkinningBuffers)[e.Buffer]->Transformation;
+		addPlacedBox(box, empty, e.Joint < AllJoints.size() ?
+				place * AllJoints[e.Joint]->GlobalAnimatedMatrix : place, e.Box);
+	}
+
+	return empty ? BoundingBox : box;
 }
 
 

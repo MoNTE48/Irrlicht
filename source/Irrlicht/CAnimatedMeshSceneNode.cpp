@@ -252,17 +252,15 @@ itself is left to render(). */
 void CAnimatedMeshSceneNode::updateJointsForCurrentFrame()
 {
 #ifdef _IRR_COMPILE_WITH_SKINNED_MESH_SUPPORT_
-	// EJUOR_CONTROL builds the pose out of the bone scene nodes, which only
-	// render() does, and its box would cost a pass over every vertex
-	if (JointMode == EJUOR_CONTROL)
-		return;
-
 	CSkinnedMesh* skinnedMesh = static_cast<CSkinnedMesh*>(Mesh);
 
-	// animateMesh() ends in updateBoundingBox(), so the box comes for free and
-	// holds what render() would store anyway
-	skinnedMesh->animateMesh(getFrameNr(), 1.0f);
-	Box = skinnedMesh->getBoundingBox();
+	// EJUOR_CONTROL takes the pose from bone nodes
+	if (JointMode == EJUOR_CONTROL)
+		skinnedMesh->transferJointsToMesh(JointChildSceneNodes);
+	else
+		skinnedMesh->animateMesh(getFrameNr(), 1.0f);
+	// Joints hold this node's pose; vertices may not
+	Box = skinnedMesh->getJointBoundingBox();
 
 	if (JointMode == EJUOR_READ)
 		recoverJoints();
