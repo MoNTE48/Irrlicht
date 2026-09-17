@@ -68,6 +68,7 @@ COpenGLSLMaterialRenderer::COpenGLSLMaterialRenderer(video::COpenGLDriver* drive
 	default:
 		break;
 	}
+	AlphaChannel = baseMaterial == EMT_TRANSPARENT_ALPHA_CHANNEL;
 
 	if (CallBack)
 		CallBack->grab();
@@ -108,6 +109,7 @@ COpenGLSLMaterialRenderer::COpenGLSLMaterialRenderer(COpenGLDriver* driver,
 	default:
 		break;
 	}
+	AlphaChannel = baseMaterial == EMT_TRANSPARENT_ALPHA_CHANNEL;
 
 	if (CallBack)
 		CallBack->grab();
@@ -245,6 +247,11 @@ void COpenGLSLMaterialRenderer::OnSetMaterial(const video::SMaterial& material,
 	{
 		cacheHandler->setBlend(true);
 		cacheHandler->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		if (AlphaChannel)
+		{
+			cacheHandler->setAlphaTest(true);
+			cacheHandler->setAlphaFunc(GL_GREATER, material.MaterialTypeParam);
+		}
 	}
 	else if (FixedBlending)
 	{
@@ -292,6 +299,8 @@ void COpenGLSLMaterialRenderer::OnUnsetMaterial()
 	if (Alpha || FixedBlending || Blending)
 	{
 		cacheHandler->setBlend(false);
+		if (AlphaChannel)
+			cacheHandler->setAlphaTest(false);
 	}
 	else if (AlphaTest)
 	{

@@ -174,6 +174,7 @@ bool COpenGLDriver::genericDriverInit()
 	DriverAttributes->setAttribute("AntiAlias", AntiAlias);
 
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	UserClipPlanes.reallocate(MaxUserClipPlanes);
 	for (i=0; i<MaxUserClipPlanes; ++i)
@@ -1902,8 +1903,6 @@ void COpenGLDriver::draw2DRectangle(const core::rect<s32>& position,
 void COpenGLDriver::draw2DLine(const core::position2d<s32>& start,
 				const core::position2d<s32>& end, SColor color)
 {
-	// TODO: It's not pixel-exact. Reason is the way OpenGL handles line-drawing (search the web for "diamond exit rule").
-
 	if (start==end)
 		drawPixel(start.X, start.Y, color);
 	else
@@ -1914,8 +1913,15 @@ void COpenGLDriver::draw2DLine(const core::position2d<s32>& start,
 		Quad2DVertices[0].Color = color;
 		Quad2DVertices[1].Color = color;
 
-		Quad2DVertices[0].Pos = core::vector3df((f32)start.X, (f32)start.Y, 0.0f);
-		Quad2DVertices[1].Pos = core::vector3df((f32)end.X, (f32)end.Y, 0.0f);
+		// Runs towards the larger coordinate of its major axis, the end a multisampled target
+		// leaves out as well
+		const bool forward = core::abs_(end.X - start.X) >= core::abs_(end.Y - start.Y) ?
+				start.X < end.X : start.Y < end.Y;
+		const core::position2d<s32>& first = forward ? start : end;
+		const core::position2d<s32>& last = forward ? end : start;
+		// Ends at +0.375, where the diamond exit rule takes the first pixel and leaves out the last
+		Quad2DVertices[0].Pos = core::vector3df((f32)first.X + 0.375f, (f32)first.Y + 0.375f, 0.0f);
+		Quad2DVertices[1].Pos = core::vector3df((f32)last.X + 0.375f, (f32)last.Y + 0.375f, 0.0f);
 
 		if (!FeatureAvailable[IRR_ARB_vertex_array_bgra] && !FeatureAvailable[IRR_EXT_vertex_array_bgra])
 			getColorBuffer(Quad2DVertices, 2, EVT_STANDARD);
@@ -1938,6 +1944,8 @@ void COpenGLDriver::draw2DLine(const core::position2d<s32>& start,
 		}
 
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, Quad2DIndices);
+
+		drawPixel((u32)last.X, (u32)last.Y, color);
 	}
 }
 
@@ -1953,7 +1961,7 @@ void COpenGLDriver::drawPixel(u32 x, u32 y, const SColor &color)
 
 	Quad2DVertices[0].Color = color;
 
-	Quad2DVertices[0].Pos = core::vector3df((f32)x, (f32)y, 0.0f);
+	Quad2DVertices[0].Pos = core::vector3df((f32)x + 0.5f, (f32)y + 0.5f, 0.0f);
 
 	if (!FeatureAvailable[IRR_ARB_vertex_array_bgra] && !FeatureAvailable[IRR_EXT_vertex_array_bgra])
 		getColorBuffer(Quad2DVertices, 1, EVT_STANDARD);
@@ -2167,8 +2175,6 @@ GLint COpenGLDriver::getTextureWrapMode(const u8 clamp)
 			mode=GL_REPEAT;
 			break;
 		case ETC_CLAMP:
-			mode=GL_CLAMP;
-			break;
 		case ETC_CLAMP_TO_EDGE:
 #ifdef GL_VERSION_1_2
 			if (Version>101)
@@ -2735,34 +2741,26 @@ void COpenGLDriver::setTextureRenderStates(const SMaterial& material, bool reset
 
 	for (s32 i = Feature.MaxTextureUnits - 1; i >= 0; --i)
 	{
-		bool fixedPipeline = false;
-
-		if (ActivePipelineState == EOAP_FIXED || ActivePipelineState == EOAP_SHADER_TO_FIXED)
-			fixedPipeline = true;
-
 		const COpenGLTexture* tmpTexture = CacheHandler->getTextureCache().get(i);
 
 		if (tmpTexture)
 		{
 			CacheHandler->setActiveTexture(GL_TEXTURE0 + i);
 
-			if (fixedPipeline)
+			const bool isRTT = tmpTexture->isRenderTarget();
+
+			CacheHandler->setMatrixMode(GL_TEXTURE);
+
+			if (!isRTT && Matrices[ETS_TEXTURE_0 + i].isIdentity())
+				glLoadIdentity();
+			else
 			{
-				const bool isRTT = tmpTexture->isRenderTarget();
-
-				CacheHandler->setMatrixMode(GL_TEXTURE);
-
-				if (!isRTT && Matrices[ETS_TEXTURE_0 + i].isIdentity())
-					glLoadIdentity();
+				GLfloat glmat[16];
+				if (isRTT)
+					getGLTextureMatrix(glmat, Matrices[ETS_TEXTURE_0 + i] * TextureFlipMatrix);
 				else
-				{
-					GLfloat glmat[16];
-					if (isRTT)
-						getGLTextureMatrix(glmat, Matrices[ETS_TEXTURE_0 + i] * TextureFlipMatrix);
-					else
-						getGLTextureMatrix(glmat, Matrices[ETS_TEXTURE_0 + i]);
-					glLoadMatrixf(glmat);
-				}
+					getGLTextureMatrix(glmat, Matrices[ETS_TEXTURE_0 + i]);
+				glLoadMatrixf(glmat);
 			}
 
 			const GLenum tmpType = tmpTexture->getOpenGLTextureType();
@@ -2811,43 +2809,23 @@ void COpenGLDriver::setTextureRenderStates(const SMaterial& material, bool reset
 			}
 #endif
 
+			const bool mipMaps = material.UseMipMaps && tmpTexture->hasMipMaps();
 			if (!statesCache.IsCached || material.TextureLayer[i].BilinearFilter != statesCache.BilinearFilter ||
-				material.TextureLayer[i].TrilinearFilter != statesCache.TrilinearFilter)
+				material.TextureLayer[i].TrilinearFilter != statesCache.TrilinearFilter ||
+				mipMaps != statesCache.MipMapStatus)
 			{
-				glTexParameteri(tmpType, GL_TEXTURE_MAG_FILTER,
-					(material.TextureLayer[i].BilinearFilter || material.TextureLayer[i].TrilinearFilter) ? GL_LINEAR : GL_NEAREST);
+				const bool smooth = material.TextureLayer[i].BilinearFilter ||
+						material.TextureLayer[i].TrilinearFilter;
+				glTexParameteri(tmpType, GL_TEXTURE_MAG_FILTER, smooth ? GL_LINEAR : GL_NEAREST);
+				glTexParameteri(tmpType, GL_TEXTURE_MIN_FILTER,
+						!mipMaps ? (smooth ? GL_LINEAR : GL_NEAREST) :
+						material.TextureLayer[i].TrilinearFilter ? GL_LINEAR_MIPMAP_LINEAR :
+						material.TextureLayer[i].BilinearFilter ?
+						GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST);
 
 				statesCache.BilinearFilter = material.TextureLayer[i].BilinearFilter;
 				statesCache.TrilinearFilter = material.TextureLayer[i].TrilinearFilter;
-			}
-
-			if (material.UseMipMaps && tmpTexture->hasMipMaps())
-			{
-				if (!statesCache.IsCached || material.TextureLayer[i].BilinearFilter != statesCache.BilinearFilter ||
-					material.TextureLayer[i].TrilinearFilter != statesCache.TrilinearFilter || !statesCache.MipMapStatus)
-				{
-					glTexParameteri(tmpType, GL_TEXTURE_MIN_FILTER,
-						material.TextureLayer[i].TrilinearFilter ? GL_LINEAR_MIPMAP_LINEAR :
-						material.TextureLayer[i].BilinearFilter ? GL_LINEAR_MIPMAP_NEAREST :
-						GL_NEAREST_MIPMAP_NEAREST);
-
-					statesCache.BilinearFilter = material.TextureLayer[i].BilinearFilter;
-					statesCache.TrilinearFilter = material.TextureLayer[i].TrilinearFilter;
-					statesCache.MipMapStatus = true;
-				}
-			}
-			else
-			{
-				if (!statesCache.IsCached || material.TextureLayer[i].BilinearFilter != statesCache.BilinearFilter ||
-					material.TextureLayer[i].TrilinearFilter != statesCache.TrilinearFilter || statesCache.MipMapStatus)
-				{
-					glTexParameteri(tmpType, GL_TEXTURE_MIN_FILTER,
-						(material.TextureLayer[i].BilinearFilter || material.TextureLayer[i].TrilinearFilter) ? GL_LINEAR : GL_NEAREST);
-
-					statesCache.BilinearFilter = material.TextureLayer[i].BilinearFilter;
-					statesCache.TrilinearFilter = material.TextureLayer[i].TrilinearFilter;
-					statesCache.MipMapStatus = false;
-				}
+				statesCache.MipMapStatus = mipMaps;
 			}
 
 #ifdef GL_EXT_texture_filter_anisotropic
@@ -2926,7 +2904,6 @@ void COpenGLDriver::setRenderStates2DMode(bool alpha, bool texture, bool alphaCh
 
 			CacheHandler->setMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
-			glTranslatef(0.375f, 0.375f, 0.0f);
 
 			Transformation3DChanged = false;
 		}

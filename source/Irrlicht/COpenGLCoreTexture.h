@@ -242,15 +242,17 @@ public:
 		if (IImage::isCompressedFormat(ColorFormat))
 			return 0;
 
+		// A cube map has 6 layers, any other texture one
+		if (layer >= (Type == ETT_CUBEMAP ? 6u : 1u))
+			return 0;
+
 		LockReadOnly |= (mode == ETLM_READ_ONLY);
 		LockLayer = layer;
 		MipLevelStored = mipmapLevel;
 
 		if (KeepImage)
 		{
-			IRR_DEBUG_BREAK_IF(LockLayer > Images.size())
-
-			if ( mipmapLevel == 0 || (Images[LockLayer] && Images[LockLayer]->getMipMapsData(mipmapLevel)) )
+			if ( mipmapLevel == 0 || Images[LockLayer]->getMipMapsData(mipmapLevel) )
 			{
 				LockImage = Images[LockLayer];
 				LockImage->grab();
@@ -278,11 +280,7 @@ public:
 				GLenum tmpTextureType = TextureType;
 
 				if (tmpTextureType == GL_TEXTURE_CUBE_MAP)
-				{
-					IRR_DEBUG_BREAK_IF(layer > 5)
-
 					tmpTextureType = GL_TEXTURE_CUBE_MAP_POSITIVE_X + layer;
-				}
 
 				glGetTexImage(tmpTextureType, MipLevelStored, PixelFormat, PixelType, tmpImage->getData());
 				Driver->testGLError(__LINE__);

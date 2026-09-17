@@ -108,6 +108,7 @@ protected:
 	bool Blending;
 	bool FixedBlending;
 	bool AlphaTest;
+	bool AlphaChannel;
 
 	struct SUniformInfo
 	{
