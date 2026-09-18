@@ -278,12 +278,15 @@ namespace irr
 #endif
 
 	public:
-		//! What a driver that talks to the platform directly has to draw into: the layer
-		//! this device made on Apple, and the window the system owns everywhere else
+		//! What a driver that talks to the platform directly has to draw into: on Apple the
+		//! layer this device made, or for Vulkan the window SDL makes the surface from, and the
+		//! window the system owns everywhere else
 		void* getDrawTarget() const
 		{
 #if defined(IRR_SDL_METAL_VIEW)
-			return MetalView ? SDL_Metal_GetLayer(MetalView) : 0;
+			if (MetalView)
+				return SDL_Metal_GetLayer(MetalView);
+			return CreationParams.DriverType == video::EDT_VULKAN ? (void*)Window : 0;
 #elif defined(_IRR_ANDROID_PLATFORM_)
 			return Window ? SDL_GetPointerProperty(SDL_GetWindowProperties(Window),
 					SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER, 0) : 0;

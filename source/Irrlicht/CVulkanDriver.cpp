@@ -23,17 +23,16 @@
 #include <utility>
 #include <vector>
 
-#include <dlfcn.h>
-
-#define VK_USE_PLATFORM_ANDROID_KHR
 #include <vulkan/vulkan.h>
+#include <SDL3/SDL_vulkan.h>
 
 namespace irr::video
 {
 
 //! Vulkan functions, loaded at run time
 #define IRR_VULKAN_GLOBAL(X) \
-	X(vkCreateInstance)
+	X(vkCreateInstance) \
+	X(vkEnumerateInstanceExtensionProperties)
 
 #define IRR_VULKAN_INSTANCE(X) \
 	X(vkDestroyInstance) \
@@ -46,12 +45,10 @@ namespace irr::video
 	X(vkEnumerateDeviceExtensionProperties) \
 	X(vkCreateDevice) \
 	X(vkGetDeviceProcAddr) \
-	X(vkDestroySurfaceKHR) \
 	X(vkGetPhysicalDeviceSurfaceSupportKHR) \
 	X(vkGetPhysicalDeviceSurfaceCapabilitiesKHR) \
 	X(vkGetPhysicalDeviceSurfaceFormatsKHR) \
-	X(vkGetPhysicalDeviceSurfacePresentModesKHR) \
-	X(vkCreateAndroidSurfaceKHR)
+	X(vkGetPhysicalDeviceSurfacePresentModesKHR)
 
 #define IRR_VULKAN_DEVICE(X) \
 	X(vkDestroyDevice) X(vkGetDeviceQueue) X(vkDeviceWaitIdle) X(vkQueueSubmit) \
@@ -493,7 +490,6 @@ static bool reflectStage(std::vector<u32>& words, u32 stage, SVulkanShaderProgra
 
 struct CVulkanDriver::SImpl
 {
-	void* Library = nullptr;
 	SVulkanFunctions Vk;
 
 	VkInstance Instance = VK_NULL_HANDLE;
@@ -507,7 +503,7 @@ struct CVulkanDriver::SImpl
 	//! Device lost; nothing is drawn after that
 	bool Lost = false;
 
-	//! Native window the surface was made for
+	//! Window the surface was made for, the system's or on the Mac SDL's
 	void* Window = nullptr;
 	VkSurfaceKHR Surface = VK_NULL_HANDLE;
 	VkSwapchainKHR Swapchain = VK_NULL_HANDLE;
@@ -2019,11 +2015,9 @@ static void logFailed(const c8* what, VkResult result)
 }
 
 
-static VkResult createSurface(CVulkanDriver::SImpl* impl)
+static bool createSurface(CVulkanDriver::SImpl* impl, SDL_Window* window)
 {
-	const VkAndroidSurfaceCreateInfoKHR info = { VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
-			nullptr, 0, (ANativeWindow*)impl->Window };
-	return impl->Vk.vkCreateAndroidSurfaceKHR(impl->Instance, &info, 0, &impl->Surface);
+	return SDL_Vulkan_CreateSurface(window, impl->Instance, nullptr, &impl->Surface);
 }
 
 
@@ -2332,11 +2326,9 @@ CVulkanDriver::~CVulkanDriver()
 		impl->Vk.vkDestroyDevice(impl->Device, 0);
 	}
 
-	destroyIfMade(impl->Instance, impl->Vk.vkDestroySurfaceKHR, impl->Surface);
+	SDL_Vulkan_DestroySurface(impl->Instance, impl->Surface, nullptr);
 	if (impl->Instance)
 		impl->Vk.vkDestroyInstance(impl->Instance, 0);
-	if (impl->Library)
-		dlclose(impl->Library);
 
 	delete impl;
 }
@@ -2346,10 +2338,8 @@ bool CVulkanDriver::genericDriverInit()
 {
 	SImpl* impl = Impl;
 
-	impl->Library = dlopen("libvulkan.so", RTLD_NOW | RTLD_LOCAL);
-	if (impl->Library)
-		impl->Vk.vkGetInstanceProcAddr = (decltype(impl->Vk.vkGetInstanceProcAddr))dlsym(
-				impl->Library, "vkGetInstanceProcAddr");
+	impl->Vk.vkGetInstanceProcAddr = (decltype(impl->Vk.vkGetInstanceProcAddr))
+			SDL_Vulkan_GetVkGetInstanceProcAddr();
 	if (!impl->Vk.vkGetInstanceProcAddr)
 	{
 		os::Printer::log("No Vulkan loader on this system", ELL_ERROR);
@@ -2369,10 +2359,26 @@ bool CVulkanDriver::genericDriverInit()
 	IRR_VULKAN_GLOBAL(IRR_VULKAN_TAKE)
 
 	u32 count = 0;
+	impl->Vk.vkEnumerateInstanceExtensionProperties(0, &count, 0);
+	std::vector<VkExtensionProperties> instanceExtensions(count);
+	impl->Vk.vkEnumerateInstanceExtensionProperties(0, &count, instanceExtensions.data());
 
-	std::vector<const c8*> extensions;
-	extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-	extensions.push_back(VK_KHR_ANDROID_SURFACE_EXTENSION_NAME);
+	Uint32 requiredExtensionCount = 0;
+	const char* const* requiredExtensions =
+			SDL_Vulkan_GetInstanceExtensions(&requiredExtensionCount);
+	if (!requiredExtensions)
+	{
+		os::Printer::log("Could not get Vulkan instance extensions from SDL", SDL_GetError(),
+				ELL_ERROR);
+		return false;
+	}
+	std::vector<const c8*> extensions(requiredExtensions,
+			requiredExtensions + requiredExtensionCount);
+	//! MoltenVK is listed only with portability enumeration
+	const bool portability = hasExtension(instanceExtensions,
+			VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+	if (portability)
+		extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 
 	u32 loaderVersion = VK_API_VERSION_1_0;
 	if (const auto version =
@@ -2383,8 +2389,9 @@ bool CVulkanDriver::genericDriverInit()
 			"Irrlicht", 0, "Irrlicht", 0,
 			core::min_(loaderVersion, (u32)VK_API_VERSION_1_3) };
 
-	const VkInstanceCreateInfo instance = { VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO, nullptr, 0,
-			&application, 0, nullptr, (u32)extensions.size(), extensions.data() };
+	const VkInstanceCreateInfo instance = { VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO, nullptr,
+			portability ? VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR : 0u, &application, 0,
+			nullptr, (u32)extensions.size(), extensions.data() };
 	std::vector<VkPhysicalDevice> gpus;
 	//! With no GPU past 1.0 the instance is remade as 1.0, so layers make no 1.1 queries
 	for (;;)
@@ -2423,10 +2430,10 @@ bool CVulkanDriver::genericDriverInit()
 		os::Printer::log("The window is gone, Vulkan has nothing to draw into", ELL_WARNING);
 		return false;
 	}
-	const VkResult surface = createSurface(impl);
-	if (surface != VK_SUCCESS)
+	if (!createSurface(impl, SDLDevice->getWindow()))
 	{
-		logFailed("Could not make a Vulkan surface for the window", surface);
+		os::Printer::log("Could not make a Vulkan surface for the window", SDL_GetError(),
+				ELL_ERROR);
 		return false;
 	}
 
@@ -2490,6 +2497,9 @@ bool CVulkanDriver::genericDriverInit()
 	std::vector<VkExtensionProperties> deviceExtensions(count);
 	impl->Vk.vkEnumerateDeviceExtensionProperties(impl->Gpu, 0, &count, deviceExtensions.data());
 	extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+	//! A device with portability_subset must have it enabled
+	if (hasExtension(deviceExtensions, "VK_KHR_portability_subset"))
+		extensions.push_back("VK_KHR_portability_subset");
 
 	//! Below 1.1 the flipped viewport and format transfer bits need VK_KHR_maintenance1
 	const u32 version = core::min_(application.apiVersion, impl->Properties.apiVersion);
@@ -2942,21 +2952,21 @@ bool CVulkanDriver::beginScene(u16 clearFlag, SColor clearColor, f32 clearDepth,
 	{
 		waitIdle(impl);
 		destroySwapchain(impl);
-		destroyIfMade(impl->Instance, impl->Vk.vkDestroySurfaceKHR, impl->Surface);
+		SDL_Vulkan_DestroySurface(impl->Instance, impl->Surface, nullptr);
 		impl->Surface = VK_NULL_HANDLE;
 		impl->Window = window;
 		if (!window)
 			return false;
 		//! An unusable surface is not retried until the window changes
 		VkBool32 presents = VK_FALSE;
-		if (createSurface(impl) == VK_SUCCESS)
+		if (createSurface(impl, SDLDevice->getWindow()))
 			impl->Vk.vkGetPhysicalDeviceSurfaceSupportKHR(impl->Gpu, impl->QueueFamily,
 					impl->Surface, &presents);
 		else
 			impl->Surface = VK_NULL_HANDLE;
 		if (!presents || surfaceFormat(impl) != impl->ColorFormat)
 		{
-			destroyIfMade(impl->Instance, impl->Vk.vkDestroySurfaceKHR, impl->Surface);
+			SDL_Vulkan_DestroySurface(impl->Instance, impl->Surface, nullptr);
 			impl->Surface = VK_NULL_HANDLE;
 			return false;
 		}

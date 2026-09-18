@@ -20,6 +20,11 @@
 #include <string>
 #include <utility>
 #include "SIrrCreationParameters.h"
+#include "IGUIEnvironment.h"
+#include "ISceneManager.h"
+#if defined(_IRR_COMPILE_WITH_VULKAN_) && defined(_IRR_OSX_PLATFORM_)
+#include <SDL3/SDL_vulkan.h>
+#endif
 #if defined(_IRR_COMPILE_WITH_ANGLE_)
 #include "CEGLManager.h"
 #endif
@@ -423,6 +428,12 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	// create driver
 	createDriver();
 
+#if defined(_IRR_COMPILE_WITH_VULKAN_) && defined(_IRR_OSX_PLATFORM_)
+	// SDL makes the Vulkan Metal view with the surface; the window shows afterwards
+	if (CreationParams.DriverType == video::EDT_VULKAN && Window)
+		SDL_ShowWindow(Window);
+#endif
+
 	if (VideoDriver)
 		createGUIAndScene();
 }
@@ -434,6 +445,21 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 	SDL_RemoveEventWatch(onAppEvent, this);
 	if (VideoDriver)
 		VideoDriver->resetExposedData();
+
+#if defined(_IRR_COMPILE_WITH_VULKAN_)
+	// SDL_Quit unloads the Vulkan loader, so the driver goes first with what holds it
+	if (VideoDriver && VideoDriver->getDriverType() == video::EDT_VULKAN)
+	{
+		if (GUIEnvironment)
+			GUIEnvironment->drop();
+		if (SceneManager)
+			SceneManager->drop();
+		VideoDriver->drop();
+		GUIEnvironment = 0;
+		SceneManager = 0;
+		VideoDriver = 0;
+	}
+#endif
 
 	for (u32 i = 0; i < Joysticks.size(); i++)
 		SDL_CloseGamepad(SDL_GetGamepadFromID(Joysticks[i]));
@@ -597,6 +623,19 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		// Shown after the Metal view is attached, which resets the root view controller on UIKit
 		SDL_Flags |= SDL_WINDOW_METAL | SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN;
 	}
+
+#if defined(_IRR_COMPILE_WITH_VULKAN_)
+	if (CreationParams.DriverType == video::EDT_VULKAN)
+	{
+		SDL_Flags |= SDL_WINDOW_VULKAN;
+#if defined(_IRR_OSX_PLATFORM_)
+		SDL_Flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN;
+		//! SDL looks for the loader by name only, which misses Homebrew's
+		if (!SDL_Vulkan_LoadLibrary("/opt/homebrew/lib/libvulkan.1.dylib"))
+			SDL_Vulkan_LoadLibrary("/usr/local/lib/libvulkan.1.dylib");
+#endif
+	}
+#endif
 
 	if (usesOpenGLContext(CreationParams.DriverType))
 	{
@@ -784,8 +823,10 @@ void CIrrDeviceSDL::updateNativeScale()
 	int real_width = width;
 	int real_height = height;
 
+	//! SDL makes the Vulkan surface in pixels, as the device's own Metal view
 	if (usesOpenGLContext(CreationParams.DriverType) ||
-		createsOwnMetalView(CreationParams.DriverType))
+		createsOwnMetalView(CreationParams.DriverType) ||
+		CreationParams.DriverType == video::EDT_VULKAN)
 	{
 		SDL_GetWindowSizeInPixels(Window, &real_width, &real_height);
 	}

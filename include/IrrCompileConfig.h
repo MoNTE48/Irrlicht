@@ -296,8 +296,9 @@ define out. */
 #endif
 #endif
 
-//! Define _IRR_COMPILE_WITH_VULKAN_ for the Vulkan driver; it opens the loader at run time
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
+//! Define _IRR_COMPILE_WITH_VULKAN_ for the Vulkan driver; SDL opens the loader at run time
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && (defined(_IRR_ANDROID_PLATFORM_) || \
+		(defined(_IRR_OSX_PLATFORM_) && defined(IRR_VULKAN_MOLTENVK)))
 #define _IRR_COMPILE_WITH_VULKAN_
 #endif
 #ifdef NO_IRR_COMPILE_WITH_VULKAN_
