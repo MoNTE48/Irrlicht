@@ -1,5 +1,5 @@
 #version 310 es
-// Fixed pipeline of the Metal driver; inputs numbered as E_VERTEX_ATTRIBUTES
+// Fixed pipeline of the Metal and Vulkan drivers; inputs numbered as E_VERTEX_ATTRIBUTES
 precision highp float;
 
 layout(location = 0) in vec3 inPosition;
@@ -23,6 +23,14 @@ layout(set = 0, binding = 0) uniform Uniforms
 // Same position for a vertex in every pipeline
 invariant gl_Position;
 
+#ifdef IRR_PRE_ROTATION
+// Turn of a screen drawn pre-rotated: 1 by 90 degrees, -1 by 270
+layout(push_constant) uniform PreRotation
+{
+	int turn;
+} preRotation;
+#endif
+
 layout(location = 0) out lowp vec4 vColor;
 layout(location = 1) out mediump vec2 vTexCoord;
 layout(location = 3) out float vFog;
@@ -30,6 +38,10 @@ layout(location = 3) out float vFog;
 void main()
 {
 	gl_Position = uniforms.worldViewProj * vec4(inPosition, 1.0);
+#ifdef IRR_PRE_ROTATION
+	if (preRotation.turn != 0)
+		gl_Position.xy = gl_Position.yx * vec2(preRotation.turn, -preRotation.turn);
+#endif
 	// SColor sits in memory as B, G, R, A
 	vec4 color = inColor.bgra;
 #if 0

@@ -408,6 +408,12 @@ namespace irr
 				case video::EDT_METAL:
 					return true;
 #endif
+				case video::EDT_VULKAN:
+#ifdef _IRR_COMPILE_WITH_VULKAN_
+					return true;
+#else
+					return false;
+#endif
 				default:
 					return false;
 			}

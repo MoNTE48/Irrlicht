@@ -337,6 +337,14 @@ define out. */
 #endif
 #endif
 
+//! Define _IRR_COMPILE_WITH_VULKAN_ for the Vulkan driver; it opens the loader at run time
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
+#define _IRR_COMPILE_WITH_VULKAN_
+#endif
+#ifdef NO_IRR_COMPILE_WITH_VULKAN_
+#undef _IRR_COMPILE_WITH_VULKAN_
+#endif
+
 
 
 //! Define _IRR_COMPILE_WITH_SOFTWARE_ to compile the Irrlicht engine with software driver

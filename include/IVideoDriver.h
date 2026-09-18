@@ -1420,9 +1420,12 @@ namespace video
 		virtual IGPUProgrammingServices* getGPUProgrammingServices() =0;
 
 		//! Adds a precompiled program for sources whose first line is "//SHADER:<name>", false if
-		//! not added. Metal takes the MSL of the two stages.
+		//! not added. Metal takes the MSL of the two stages, Vulkan their names in its library
 		virtual bool addPrecompiledShader(const c8* name, const void* vertexProgram,
 				u32 vertexSize, const void* fragmentProgram, u32 fragmentSize) =0;
+
+		//! Loads the shader library of the precompiled programs, false if not loaded; Vulkan only
+		virtual bool addPrecompiledShaderLibrary(const void* data, u32 size) =0;
 
 		//! Sets the bool specialization constant id, 16 and up, of the precompiled programs; a
 		//! changed value holds from each program's next use, so set it outside a frame

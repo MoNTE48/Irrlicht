@@ -105,6 +105,7 @@ LOCAL_SRC_FILES := \
 					CTriangleSelector.cpp \
 					CVideoModeList.cpp \
 					CVolumeLightSceneNode.cpp \
+					CVulkanDriver.cpp \
 					CWriteFile.cpp \
 					CXMeshFileLoader.cpp \
 					CXMLReader.cpp \

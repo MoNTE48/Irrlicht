@@ -24,7 +24,7 @@
 #include <iterator>
 #include <vector>
 
-//! The Metal driver's parts that other drivers can share
+//! What the Metal and Vulkan drivers share
 namespace irr::video
 {
 
@@ -161,6 +161,20 @@ inline u32 sharedSizeFor(u32 bytes)
 			bytes) - std::begin(DRIVER_SHARED_SIZES));
 }
 
+inline void splitPositions(u8* to, const u8* from, u32 count, u32 stride)
+{
+	u8* rest = to + count * 12;
+	for (u32 i = 0; i < count; ++i, from += stride)
+	{
+		memcpy(to + i * 12, from, 12);
+		memcpy(rest + i * (stride - 12), from + 12, stride - 12);
+	}
+}
+
+
+template <class TStore>
+struct SDriverHoldsOnlyCopy { static const bool Value = true; };
+
 
 //! Mesh buffers on the GPU: static meshes in equal chunks of shared pools, the rest in their own
 //! buffers; TStore holds the memory, TLinkBase is CNullDriver::SHWBufferLink
@@ -208,6 +222,7 @@ public:
 		SPool* IndexPool = nullptr;
 		u32 VertexOffset = 0;
 		u32 IndexOffset = 0;
+		u32 VertexCount = 0;
 		u32 IndexCount = 0;
 		u64 DrawnAt = 0;
 		E_VERTEX_TYPE VertexType = EVT_STANDARD;
@@ -253,7 +268,8 @@ public:
 		const bool filled = link->Shared ?
 				put(link->VertexPool, link->Vertices, link->VertexOffset,
 						sharedSizeFor(vertexBytes),
-						Store.kindOf(stride), mb->getVertices(), vertexBytes) &&
+						Store.kindOf(stride), mb->getVertices(), vertexBytes,
+						SplitPositions ? stride : 0) &&
 				put(link->IndexPool, link->Indices, link->IndexOffset, sharedSizeFor(indexBytes), 0,
 						mb->getIndices(), indexBytes) :
 				Store.fillOwn(link->Vertices, link->DrawnAt, mb->getVertices(), vertexBytes) &&
@@ -261,13 +277,14 @@ public:
 		if (!filled)
 			return false;
 
+		link->VertexCount = vertexCount;
 		link->IndexCount = indexCount;
 		link->VertexType = mb->getVertexType();
 		link->IndexType = mb->getIndexType();
 		link->ChangedID_Vertex = mb->getChangedID_Vertex();
 		link->ChangedID_Index = mb->getChangedID_Index();
 		//! The pools now hold a releasable buffer's only copy
-		if (link->Shared)
+		if (link->Shared && SDriverHoldsOnlyCopy<TStore>::Value)
 			link->Pinned = const_cast<scene::IMeshBuffer*>(mb)->releaseData();
 		return true;
 	}
@@ -341,6 +358,8 @@ public:
 
 	TStore Store;
 	std::vector<SPool*> Pools;
+	//! Shared chunks hold the positions first, then the rest of each vertex
+	bool SplitPositions = false;
 
 private:
 	void unlist(SPool* pool)
@@ -406,14 +425,18 @@ private:
 	}
 
 	//! Copies bytes into a new chunk of the size and kind, then gives the old chunk back
-	bool put(SPool*& pool, SHandle& handle, u32& offset, u32 size, u32 kind, const void* data,
-			u32 bytes)
+	bool put(SPool*& pool, SHandle& handle, u32& offset, u32 size, u32 kind,
+			const void* data, u32 bytes, u32 stride = 0)
 	{
 		u32 at = 0;
 		SPool* taken = take(size, kind, bytes, at);
 		if (!taken)
 			return false;
-		memcpy(Store.mapped(taken->Range) + at, data, bytes);
+		u8* to = Store.mapped(taken->Range) + at;
+		if (stride)
+			splitPositions(to, (const u8*)data, bytes / stride, stride);
+		else
+			memcpy(to, data, bytes);
 		Store.written(taken->Range, at, bytes);
 		give(pool, handle, offset);
 		pool = taken;
@@ -969,11 +992,8 @@ public:
 
 protected:
 	//! Draws a link, binding the state first unless bound is its vertex layout; bound is the
-	//! layout bound last, ~0u for none. By default each draw binds on its own
-	virtual void drawLink(SHWBufferLink* link, u32& bound)
-	{
-		drawHardwareBuffer(link);
-	}
+	//! layout bound last, ~0u for none
+	virtual void drawLink(SHWBufferLink* link, u32& bound) = 0;
 
 	void drawHardwareBuffer(SHWBufferLink* link) IRR_OVERRIDE
 	{
@@ -1147,7 +1167,7 @@ protected:
 		return depthCompare() != (u32)ECFN_DISABLED && getWriteZBuffer(Material);
 	}
 
-	//! Culled side as MTL::CullMode numbers it: 0 none, 1 front, 2 back
+	//! Culled side as MTL::CullMode and VkCullModeFlagBits number it: 0 none, 1 front, 2 back
 	u32 cullMode() const
 	{
 		return Material.BackfaceCulling ? 2 : (Material.FrontfaceCulling ? 1 : 0);

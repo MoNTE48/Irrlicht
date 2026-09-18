@@ -32,9 +32,11 @@ void main()
 	{
 		vec4 t = texture(tex, vTexCoord);
 		c.rgb *= t.rgb;
-		if (alphaSource == 0)
+		// A plain copy: the GE8300 compiler faults on specialization constant operations
+		int source = alphaSource;
+		if (source == 0)
 			c.a *= t.a;
-		else if (alphaSource == 1)
+		else if (source == 1)
 			c.a = t.a;
 	}
 

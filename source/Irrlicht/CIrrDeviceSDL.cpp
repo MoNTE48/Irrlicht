@@ -46,6 +46,11 @@ namespace irr::video
 			io::IFileSystem* io, CIrrDeviceSDL* device);
 #endif
 
+#ifdef _IRR_COMPILE_WITH_VULKAN_
+	IVideoDriver* createVulkanDriver(const SIrrlichtCreationParameters& params,
+			io::IFileSystem* io, CIrrDeviceSDL* device);
+#endif
+
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
 	IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
 			io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
@@ -881,6 +886,14 @@ void CIrrDeviceSDL::createDriver()
 		VideoDriver = video::createMetalDriver(CreationParams, FileSystem, this);
 #else
 		os::Printer::log("No native Metal support compiled in.", ELL_ERROR);
+#endif
+		break;
+
+	case video::EDT_VULKAN:
+#ifdef _IRR_COMPILE_WITH_VULKAN_
+		VideoDriver = video::createVulkanDriver(CreationParams, FileSystem, this);
+#else
+		os::Printer::log("No native Vulkan support compiled in.", ELL_ERROR);
 #endif
 		break;
 

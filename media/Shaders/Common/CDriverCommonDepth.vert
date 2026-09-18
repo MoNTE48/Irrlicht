@@ -1,5 +1,5 @@
 #version 310 es
-// Full-screen triangle at a given depth, for the depth clears Metal draws inside a pass
+// Full-screen triangle at a given depth, for the depth clears Metal and Vulkan draw inside a pass
 precision highp float;
 
 layout(set = 0, binding = 0) uniform Depth

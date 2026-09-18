@@ -70,6 +70,10 @@ namespace video
 		/** Requires _IRR_COMPILE_WITH_METAL_. */
 		EDT_METAL,
 
+		//! Native Vulkan device for Android
+		/** Requires _IRR_COMPILE_WITH_VULKAN_ */
+		EDT_VULKAN,
+
 		//! No driver, just for counting the elements
 		EDT_COUNT
 	};
@@ -87,6 +91,7 @@ namespace video
 		"WebGL 1",
 		"ANGLE",
 		"Metal",
+		"Vulkan",
 		0
 	};
 
@@ -103,6 +108,7 @@ namespace video
 		"webgl1",
 		"angle",
 		"metal",
+		"vulkan",
 		0
 	};
 
