@@ -41,6 +41,11 @@ namespace irr::video
 			io::IFileSystem* io, CIrrDeviceSDL* device);
 #endif
 
+#ifdef _IRR_COMPILE_WITH_METAL_
+	IVideoDriver* createMetalDriver(const SIrrlichtCreationParameters& params,
+			io::IFileSystem* io, CIrrDeviceSDL* device);
+#endif
+
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
 	IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
 			io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
@@ -256,6 +261,10 @@ static bool usesOpenGLContext(video::E_DRIVER_TYPE driverType)
 //! Driver types for which the device creates the CAMetalLayer itself, not SDL.
 static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 {
+#if defined(_IRR_COMPILE_WITH_METAL_)
+	if (driverType == video::EDT_METAL)
+		return true;
+#endif
 #if defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
 	return driverType == video::EDT_ANGLE;
 #else
@@ -864,6 +873,14 @@ void CIrrDeviceSDL::createDriver()
 		VideoDriver = video::createOGLES1Driver(CreationParams, FileSystem, this);
 #else
 		os::Printer::log("No OpenGL ES1 support compiled in.", ELL_ERROR);
+#endif
+		break;
+
+	case video::EDT_METAL:
+#ifdef _IRR_COMPILE_WITH_METAL_
+		VideoDriver = video::createMetalDriver(CreationParams, FileSystem, this);
+#else
+		os::Printer::log("No native Metal support compiled in.", ELL_ERROR);
 #endif
 		break;
 

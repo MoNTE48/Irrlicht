@@ -1077,6 +1077,9 @@ namespace video
 		\return Amount of primitives drawn in the last frame. */
 		virtual u32 getPrimitiveCountDrawn( u32 mode =0 ) const =0;
 
+		//! Returns the microseconds the GPU spent on the last finished frame, 0 if unknown.
+		virtual u32 getGPUTimeMicros() const { return 0; }
+
 		//! Deletes all dynamic lights which were previously added with addDynamicLight().
 		virtual void deleteAllDynamicLights() =0;
 
@@ -1409,6 +1412,11 @@ namespace video
 		if the video driver does not support this. For example the
 		Software driver and the Null driver will always return 0. */
 		virtual IGPUProgrammingServices* getGPUProgrammingServices() =0;
+
+		//! Adds a precompiled program for sources whose first line is "//SHADER:<name>", false if
+		//! not added. Metal takes the MSL of the two stages.
+		virtual bool addPrecompiledShader(const c8* name, const void* vertexProgram,
+				u32 vertexSize, const void* fragmentProgram, u32 fragmentSize) =0;
 
 		//! Returns a pointer to the mesh manipulator.
 		virtual scene::IMeshManipulator* getMeshManipulator() =0;

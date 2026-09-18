@@ -404,6 +404,10 @@ namespace irr
 #else
 					return false;
 #endif
+#ifdef _IRR_COMPILE_WITH_METAL_
+				case video::EDT_METAL:
+					return true;
+#endif
 				default:
 					return false;
 			}

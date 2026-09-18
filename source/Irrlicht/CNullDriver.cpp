@@ -1751,7 +1751,7 @@ void CNullDriver::updateAllHardwareBuffers()
 		if (Link->AgedAt)
 			Link->LastUsed += HWBufferFrame - Link->AgedAt;
 		Link->AgedAt = HWBufferFrame;
-		if (Link->LastUsed>1000 || Link->MeshBuffer->getReferenceCount() == 1)
+		if (Link->LastUsed>HWBufferIdleFrames || Link->MeshBuffer->getReferenceCount() == 1)
 		{
 			deleteHardwareBuffer(Link);
 		}

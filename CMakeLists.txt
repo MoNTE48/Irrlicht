@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 
 project(Irrlicht)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(ZLIB REQUIRED)
@@ -121,6 +124,10 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/os.cpp
 	source/Irrlicht/utf8.cpp
 )
+
+if(APPLE)
+	list(APPEND IRRLICHT_SOURCES source/Irrlicht/CMetalDriver.cpp)
+endif()
 
 add_library(irrlicht STATIC ${IRRLICHT_SOURCES})
 

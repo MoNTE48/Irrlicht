@@ -159,6 +159,8 @@
 		6A1BF59E306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF59D306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp */; };
 		6A1BF5A0306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF59F306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp */; };
 		6A1BF5A2306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF5A1306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp */; };
+		6A1BF5A4306ABFA500D17930 /* CMetalDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF5A3306ABFA500D17930 /* CMetalDriver.cpp */; };
+		6A1BF5A5306ABFA500D17930 /* CMetalDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF5A3306ABFA500D17930 /* CMetalDriver.cpp */; };
 		84295DEA2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
 		84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
 		84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
@@ -546,6 +548,7 @@
 		6A1BF59D306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLParallaxMapRenderer.cpp; sourceTree = "<group>"; };
 		6A1BF59F306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLSLMaterialRenderer.cpp; sourceTree = "<group>"; };
 		6A1BF5A1306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLShaderMaterialRenderer.cpp; sourceTree = "<group>"; };
+		6A1BF5A3306ABFA500D17930 /* CMetalDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMetalDriver.cpp; sourceTree = "<group>"; };
 		84295DE82D69443D00B6C388 /* mz_crypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt.c; path = "minizip-ng/mz_crypt.c"; sourceTree = "<group>"; };
 		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
@@ -1130,6 +1133,7 @@
 			children = (
 				5E5733F81C18E2E2003F664E /* COGLES2Common.h */,
 				5E5733F91C18E2E2003F664E /* COGLES2Driver.cpp */,
+				6A1BF5A3306ABFA500D17930 /* CMetalDriver.cpp */,
 				AF0E61000000000000000001 /* CEGLManager.cpp */,
 				5E5733FA1C18E2E2003F664E /* COGLES2Driver.h */,
 				5E5733FB1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp */,
@@ -1249,6 +1253,7 @@
 			files = (
 				AF0E61000000000000000100 /* CEGLManager.cpp in Sources */,
 				AA000C0FFEE0000000000000 /* COGLES2Driver.cpp in Sources */,
+				6A1BF5A4306ABFA500D17930 /* CMetalDriver.cpp in Sources */,
 				6A1BF596306ABFA500D17930 /* COpenGLCacheHandler.cpp in Sources */,
 				6A1BF598306ABFA500D17930 /* COpenGLDriver.cpp in Sources */,
 				6A1BF59A306ABFA500D17930 /* COpenGLExtensionHandler.cpp in Sources */,
@@ -1341,6 +1346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A1BF5A5306ABFA500D17930 /* CMetalDriver.cpp in Sources */,
 				B00105000000000000000001 /* CEGLManager.cpp in Sources */,
 				5E57340E1C18E2E2003F664E /* COGLES2MaterialRenderer.cpp in Sources */,
 				5E5732B31C18E212003F664E /* CDefaultGUIElementFactory.cpp in Sources */,

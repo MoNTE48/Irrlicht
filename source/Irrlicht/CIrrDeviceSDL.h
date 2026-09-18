@@ -21,7 +21,7 @@
 #include <SDL3/SDL_video.h>
 
 //! Set for the drivers that draw into a CAMetalLayer the device owns
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
+#if defined(_IRR_COMPILE_WITH_ANGLE_) || defined(_IRR_COMPILE_WITH_METAL_)
 #define IRR_SDL_METAL_VIEW
 #endif
 

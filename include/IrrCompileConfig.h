@@ -103,32 +103,32 @@
 #endif
 #define NO_IRR_COMPILE_WITH_OGLES1_
 #define NO_IRR_COMPILE_WITH_WEBGL1_
+#define NO_IRR_COMPILE_WITH_OGLES2_
 #endif
 
-//! Apple platforms render the OpenGL ES 2.x path through ANGLE, which targets Metal.
+//! iOS renders the OpenGL ES 2.x path through ANGLE, which targets Metal.
 /** ANGLE and the system GL export the same symbols, and a two-level namespace binds
 each name to one library at link time, so EDT_ANGLE replaces the native driver
 rather than joining it. The build has to supply ANGLE's headers. */
+#if defined(_IRR_IOS_PLATFORM_)
 #define _IRR_COMPILE_WITH_ANGLE_
+#endif
 #ifdef NO_IRR_COMPILE_WITH_ANGLE_
 #undef _IRR_COMPILE_WITH_ANGLE_
 #endif
 
-//! iOS creates the ANGLE context itself, macOS lets SDL create it.
+//! Apple platforms compile the native Metal driver.
+#define _IRR_COMPILE_WITH_METAL_
+#ifdef NO_IRR_COMPILE_WITH_METAL_
+#undef _IRR_COMPILE_WITH_METAL_
+#endif
+
+//! iOS creates the ANGLE context itself, without SDL.
 #if defined(_IRR_IOS_PLATFORM_)
 #define IRR_ANGLE_CONTEXT_WITHOUT_SDL
 #endif
 #ifdef NO_IRR_ANGLE_CONTEXT_WITHOUT_SDL
 #undef IRR_ANGLE_CONTEXT_WITHOUT_SDL
-#endif
-
-#if defined(_IRR_OSX_PLATFORM_)
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-#define NO_IRR_COMPILE_WITH_OPENGL_
-#else
-// macOS has no system OpenGL ES, so the ES driver needs ANGLE to be buildable.
-#define NO_IRR_COMPILE_WITH_OGLES2_
-#endif
 #endif
 #endif
 

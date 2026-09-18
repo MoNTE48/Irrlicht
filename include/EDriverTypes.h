@@ -66,6 +66,10 @@ namespace video
 		/** Requires _IRR_COMPILE_WITH_ANGLE_ and linking against ANGLE. */
 		EDT_ANGLE,
 
+		//! Native Metal device for iOS and macOS, without a translation layer.
+		/** Requires _IRR_COMPILE_WITH_METAL_. */
+		EDT_METAL,
+
 		//! No driver, just for counting the elements
 		EDT_COUNT
 	};
@@ -82,6 +86,7 @@ namespace video
 		"OpenGL ES2",
 		"WebGL 1",
 		"ANGLE",
+		"Metal",
 		0
 	};
 
@@ -97,6 +102,7 @@ namespace video
 		"ogles2",
 		"webgl1",
 		"angle",
+		"metal",
 		0
 	};
 

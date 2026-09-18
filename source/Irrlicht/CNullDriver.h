@@ -502,6 +502,10 @@ namespace video
 		/** Used to notify the driver that the window was resized. */
 		virtual void OnResize(const core::dimension2d<u32>& size) IRR_OVERRIDE;
 
+		//! No precompiled programs, unless the driver has them
+		bool addPrecompiledShader(const c8*, const void*, u32, const void*, u32)
+				IRR_OVERRIDE { return false; }
+
 		//! Adds a new material renderer to the video device.
 		virtual s32 addMaterialRenderer(IMaterialRenderer* renderer,
 				const char* name = 0) IRR_OVERRIDE;
@@ -895,9 +899,12 @@ namespace video
 		u32 PrimitivesDrawn;
 		u32 MinVertexCountForVBO;
 
+		//! Frames a hardware buffer may go undrawn before it is released
+		u32 HWBufferIdleFrames = 1000;
 		//! Frames the hardware buffers aged in, and the link the next frame starts from
 		u32 HWBufferFrame = 0;
 		std::list<SHWBufferLink*>::iterator HWBufferNext = HWBufferList.end();
+
 		u32 TextureCreationFlags;
 
 		f32 FogStart;
