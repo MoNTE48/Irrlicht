@@ -67,6 +67,8 @@ namespace video
 				return FeatureAvailable[IRR_GL_OES_compressed_ETC1_RGB8_texture];
 			case EVDF_TEXTURE_CUBEMAP:
 				return FeatureAvailable[IRR_GL_OES_texture_cube_map];
+			case EVDF_ARB_GLSL:
+				return false;
 			default:
 				return true;
 			};
