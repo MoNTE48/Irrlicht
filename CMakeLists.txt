@@ -89,8 +89,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/COGLES2NormalMapRenderer.cpp
 	source/Irrlicht/COGLES2ParallaxMapRenderer.cpp
 	source/Irrlicht/COGLES2Renderer2D.cpp
-	source/Irrlicht/COGLESDriver.cpp
-	source/Irrlicht/COGLESExtensionHandler.cpp
 	source/Irrlicht/COpenGLCacheHandler.cpp
 	source/Irrlicht/COpenGLDriver.cpp
 	source/Irrlicht/COpenGLExtensionHandler.cpp

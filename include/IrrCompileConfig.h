@@ -270,8 +270,11 @@ define out.
 Currently only enabled on Android by default.
 Depending on platform you may have to enable _IRR_OGLES1_USE_KHRONOS_API_HEADERS_ as well when using it.
 */
+//! No platform builds OpenGL ES 1.1
+#if 0
 #ifdef _IRR_ANDROID_PLATFORM_
 #define _IRR_COMPILE_WITH_OGLES1_
+#endif
 #endif
 #ifdef NO_IRR_COMPILE_WITH_OGLES1_
 #undef _IRR_COMPILE_WITH_OGLES1_

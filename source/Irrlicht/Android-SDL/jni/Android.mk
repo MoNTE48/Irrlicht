@@ -85,8 +85,6 @@ LOCAL_SRC_FILES := \
 					COGLES2NormalMapRenderer.cpp \
 					COGLES2ParallaxMapRenderer.cpp \
 					COGLES2Renderer2D.cpp \
-					COGLESDriver.cpp \
-					COGLESExtensionHandler.cpp \
 					COpenGLCacheHandler.cpp \
 					COpenGLDriver.cpp \
 					COpenGLExtensionHandler.cpp \
