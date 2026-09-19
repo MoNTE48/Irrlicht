@@ -36,7 +36,9 @@ CCameraSceneNode::CCameraSceneNode(ISceneNode* parent, ISceneManager* mgr, s32 i
 		if ( d->getCurrentRenderTargetSize().Height )
 			Aspect = (f32)d->getCurrentRenderTargetSize().Width /
 				(f32)d->getCurrentRenderTargetSize().Height;
-		HasD3DStyleProjectionMatrix = d->getDriverType() != video::EDT_OPENGL;
+		// OpenGL and GLES clip depth from -1, the others from 0
+		const video::E_DRIVER_TYPE type = d->getDriverType();
+		HasD3DStyleProjectionMatrix = type != video::EDT_OPENGL && type != video::EDT_OGLES2;
 	}
 
 	ViewArea.setFarNearDistance(ZFar - ZNear);

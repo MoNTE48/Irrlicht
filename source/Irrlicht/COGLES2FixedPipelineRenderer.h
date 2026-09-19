@@ -11,6 +11,7 @@
 
 #include "IShaderConstantSetCallBack.h"
 #include "IMaterialRendererServices.h"
+#include <optional>
 
 namespace irr
 {
@@ -30,23 +31,6 @@ protected:
 
 	s32 WVPMatrixID;
 	s32 WVMatrixID;
-	s32 NMatrixID;
-
-	s32 GlobalAmbientID;
-	s32 MaterialAmbientID;
-	s32 MaterialDiffuseID;
-	s32 MaterialEmissiveID;
-	s32 MaterialSpecularID;
-	s32 MaterialShininessID;
-
-	s32 LightCountID;
-	s32 LightTypeID;
-	s32 LightPositionID;
-	s32 LightDirectionID;
-	s32 LightAttenuationID;
-	s32 LightAmbientID;
-	s32 LightDiffuseID;
-	s32 LightSpecularID;
 
 	s32 FogEnableID;
 	s32 FogTypeID;
@@ -57,22 +41,6 @@ protected:
 
 	s32 ThicknessID;
 
-	bool LightEnable;
-	SColorf GlobalAmbient;
-	SColorf MaterialAmbient;
-	SColorf MaterialDiffuse;
-	SColorf MaterialEmissive;
-	SColorf MaterialSpecular;
-	f32 MaterialShininess;
-
-	s32 LightType[8];
-	core::vector3df LightPosition[8];
-	core::vector3df LightDirection[8];
-	core::vector3df LightAttenuation[8];
-	SColorf LightAmbient[8];
-	SColorf LightDiffuse[8];
-	SColorf LightSpecular[8];
-
 	s32 FogEnable;
 	s32 FogType;
 	SColorf FogColor;
@@ -81,6 +49,13 @@ protected:
 	f32 FogDensity;
 
 	f32 Thickness;
+
+	//! The program keeps what it was sent, so a transform goes again only when it moved
+	core::matrix4 View, Projection, ViewProjection, World, WorldView;
+	bool TransformSent;
+	std::optional<s32> SentFogEnable, SentFogType;
+	std::optional<f32> SentThickness, SentFogStart, SentFogEnd, SentFogDensity;
+	std::optional<SColorf> SentFogColor;
 };
 
 class COGLES2MaterialSolidCB : public COGLES2MaterialBaseCB
@@ -102,6 +77,10 @@ protected:
 	f32 AlphaRef;
 	s32 TextureUsage0;
 	s32 TextureUnit0;
+
+	std::optional<core::matrix4> SentTMatrix0;
+	std::optional<f32> SentAlphaRef;
+	std::optional<s32> SentTextureUsage0, SentTextureUnit0;
 };
 
 class COGLES2MaterialSolid2CB : public COGLES2MaterialBaseCB

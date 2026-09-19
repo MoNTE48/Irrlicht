@@ -1,9 +1,13 @@
+#if 0
 #define MAX_LIGHTS 8
 
+#endif
 /* Attributes */
 
 attribute vec3 inVertexPosition;
+#if 0
 attribute vec3 inVertexNormal;
+#endif
 attribute vec4 inVertexColor;
 attribute vec2 inTexCoord0;
 
@@ -11,9 +15,12 @@ attribute vec2 inTexCoord0;
 
 uniform mat4 uWVPMatrix;
 uniform mat4 uWVMatrix;
+#if 0
 uniform mat4 uNMatrix;
+#endif
 uniform mat4 uTMatrix0;
 
+#if 0
 uniform vec4 uGlobalAmbient;
 uniform vec4 uMaterialAmbient;
 uniform vec4 uMaterialDiffuse;
@@ -29,6 +36,10 @@ uniform vec3 uLightAttenuation[MAX_LIGHTS];
 uniform vec4 uLightAmbient[MAX_LIGHTS];
 uniform vec4 uLightDiffuse[MAX_LIGHTS];
 uniform vec4 uLightSpecular[MAX_LIGHTS];
+// OpenGL's lit colour with no lights, and how much of the vertex colour it takes
+uniform vec4 uLit;
+uniform vec4 uLitByVertex;
+#endif
 
 uniform float uThickness;
 
@@ -36,8 +47,11 @@ uniform float uThickness;
 
 varying vec2 vTextureCoord0;
 varying vec4 vVertexColor;
+#if 0
 varying vec4 vSpecularColor;
+#endif
 varying float vFogCoord;
+#if 0
 
 void dirLight(in int index, in vec3 position, in vec3 normal, inout vec4 ambient, inout vec4 diffuse, inout vec4 specular)
 {
@@ -90,6 +104,7 @@ void spotLight(in int index, in vec3 position, in vec3 normal, inout vec4 ambien
 {
 	// TO-DO
 }
+#endif
 
 void main()
 {
@@ -100,9 +115,14 @@ void main()
 	vTextureCoord0 = vec4(uTMatrix0 * TextureCoord0).xy;
 
 	vVertexColor = inVertexColor.bgra;
+#if 0
 	vSpecularColor = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 Color = inVertexColor.bgra;
+	vVertexColor = vec4(clamp(uLit.rgb + Color.rgb * uLitByVertex.rgb, 0.0, 1.0), mix(uLit.a, Color.a, uLitByVertex.a));
+#endif
 
 	vec3 Position = (uWVMatrix * vec4(inVertexPosition, 1.0)).xyz;
+#if 0
 
 	if (uLightCount > 0)
 	{
@@ -146,6 +166,7 @@ void main()
 		
 		vSpecularColor *= uMaterialSpecular;
 	}
+#endif
 
 	vFogCoord = length(Position);
 }

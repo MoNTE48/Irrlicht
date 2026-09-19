@@ -15,7 +15,9 @@ uniform float uFogDensity;
 
 varying vec2 vTextureCoord0;
 varying vec4 vVertexColor;
+#if 0
 varying vec4 vSpecularColor;
+#endif
 varying float vFogCoord;
 
 float computeFog()
@@ -48,14 +50,19 @@ void main()
 
 	if (bool(uTextureUsage0))
 		Color *= texture2D(uTextureUnit0, vTextureCoord0);
+#if 0
 	Color += vSpecularColor;
+#endif
 
 	if (bool(uFogEnable))
 	{
 		float FogFactor = computeFog();
+#if 0
 		vec4 FogColor = uFogColor;
 		FogColor.a = 1.0;
 		Color = mix(FogColor, Color, FogFactor);
+#endif
+		Color.rgb = mix(uFogColor.rgb, Color.rgb, FogFactor);
 	}
 
 	gl_FragColor = Color;

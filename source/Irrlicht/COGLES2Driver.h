@@ -355,6 +355,9 @@ namespace video
 		//! inits the opengl-es driver
 		virtual bool genericDriverInit(const core::dimension2d<u32>& screenSize, bool stencilBuffer);
 
+		//! turns on the attribute arrays a draw needs and off the rest
+		void setVertexAttribs(u32 want);
+
 		void chooseMaterial2D(bool textureClampToEdge=false);
 
 		virtual ITexture* createDeviceDependentTexture(const io::path& name, IImage* image) IRR_OVERRIDE;
@@ -395,6 +398,9 @@ namespace video
 		void loadShaderData(const io::path& vertexShaderName, const io::path& fragmentShaderName, c8** vertexShaderData, c8** fragmentShaderData);
 
 		bool setMaterialTexture(irr::u32 layerIdx, const irr::video::ITexture* texture);
+
+		// Attribute arrays the context has on, so a draw flips only what it must
+		u32 EnabledAttribs = 0;
 
 		COGLES2CacheHandler* CacheHandler;
 		core::stringw Name;

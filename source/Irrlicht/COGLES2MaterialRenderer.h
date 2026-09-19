@@ -86,6 +86,10 @@ protected:
 	bool Alpha;
 	bool Blending;
 	bool FixedBlending;
+	//! A base that cuts on the alpha channel, and the reference its program last read
+	bool AlphaChannel;
+	s32 AlphaRefID;
+	f32 AlphaRef;
 
 	struct SUniformInfo
 	{

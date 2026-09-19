@@ -30,7 +30,9 @@ COGLES2MaterialRenderer::COGLES2MaterialRenderer(COGLES2Driver* driver,
 		IShaderConstantSetCallBack* callback,
 		E_MATERIAL_TYPE baseMaterial,
 		s32 userData)
-	: Driver(driver), CallBack(callback), Alpha(false), Blending(false), FixedBlending(false), Program(0), UserData(userData)
+	: Driver(driver), CallBack(callback), Alpha(false), Blending(false), FixedBlending(false),
+	AlphaChannel(baseMaterial == EMT_TRANSPARENT_ALPHA_CHANNEL), AlphaRefID(-1), AlphaRef(0.f),
+	Program(0), UserData(userData)
 {
 #ifdef _DEBUG
 	setDebugName("COGLES2MaterialRenderer");
@@ -66,7 +68,9 @@ COGLES2MaterialRenderer::COGLES2MaterialRenderer(COGLES2Driver* driver,
 COGLES2MaterialRenderer::COGLES2MaterialRenderer(COGLES2Driver* driver,
 					IShaderConstantSetCallBack* callback,
 					E_MATERIAL_TYPE baseMaterial, s32 userData)
-: Driver(driver), CallBack(callback), Alpha(false), Blending(false), FixedBlending(false), Program(0), UserData(userData)
+: Driver(driver), CallBack(callback), Alpha(false), Blending(false), FixedBlending(false),
+	AlphaChannel(baseMaterial == EMT_TRANSPARENT_ALPHA_CHANNEL), AlphaRefID(-1), AlphaRef(0.f),
+	Program(0), UserData(userData)
 {
 	switch (baseMaterial)
 	{
@@ -145,6 +149,10 @@ void COGLES2MaterialRenderer::init(s32& outMaterialTypeNr,
 	if (!linkProgram())
 		return;
 
+	// A program that tests the alpha channel itself names the reference alphaRef
+	if (AlphaChannel)
+		AlphaRefID = getPixelShaderConstantID("alphaRef");
+
 	if (addMaterial)
 		outMaterialTypeNr = Driver->addMaterialRenderer(this);
 }
@@ -174,6 +182,13 @@ void COGLES2MaterialRenderer::OnSetMaterial(const video::SMaterial& material,
 	{
 		cacheHandler->setBlend(true);
 		cacheHandler->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		// GLES 2 has no alpha test, so the program cuts at the reference of the material
+		if (AlphaRefID >= 0 && !core::equals(material.MaterialTypeParam, AlphaRef))
+		{
+			AlphaRef = material.MaterialTypeParam;
+			setPixelShaderConstant(AlphaRefID, &AlphaRef, 1);
+		}
 	}
 	else if (FixedBlending)
 	{
@@ -245,6 +260,8 @@ bool COGLES2MaterialRenderer::createShader(GLenum shaderType, const char* shader
 				delete [] infoLog;
 			}
 
+			// nothing holds a shader that was never attached
+			glDeleteShader(shaderHandle);
 			return false;
 		}
 
