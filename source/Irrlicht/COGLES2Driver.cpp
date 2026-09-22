@@ -2355,27 +2355,36 @@ COGLES2Driver::~COGLES2Driver()
 		core::vector3df s = start, e = end;
 		modelview.transformVect(s);
 		modelview.transformVect(e);
-		if (s.Z < core::ROUNDING_ERROR_f32 || e.Z < core::ROUNDING_ERROR_f32)
+
+		// where the projection sends the near plane to depth -1
+		const f32 near_z = core::max_(-projection[14] / (projection[10] + 1.0f), core::ROUNDING_ERROR_f32);
+		if (s.Z < near_z && e.Z < near_z)
 			return false;
+		if (s.Z < near_z)
+			s = e + (s - e) * ((e.Z - near_z) / (e.Z - s.Z));
+		else if (e.Z < near_z)
+			e = s + (e - s) * ((s.Z - near_z) / (s.Z - e.Z));
 
 		// pixels a view unit covers at unit depth
 		const core::dimension2d<u32>& size = getCurrentRenderTargetSize();
 		const f32 scale_x = projection[0] * size.Width / 2.0f;
 		const f32 scale_y = projection[5] * size.Height / 2.0f;
 
-		// perpendicular to the line as it lands on the screen, in pixels
-		f32 perp_x = e.Y * scale_y / e.Z - s.Y * scale_y / s.Z;
-		f32 perp_y = s.X * scale_x / s.Z - e.X * scale_x / e.Z;
-		const f32 length = core::squareroot(perp_x * perp_x + perp_y * perp_y);
-		if (length < core::ROUNDING_ERROR_f32)
+		// the line as it lands on the screen, in pixels
+		const f32 dx = e.X * scale_x / e.Z - s.X * scale_x / s.Z;
+		const f32 dy = e.Y * scale_y / e.Z - s.Y * scale_y / s.Z;
+		if (core::abs_(dx) < core::ROUNDING_ERROR_f32 && core::abs_(dy) < core::ROUNDING_ERROR_f32)
 			return false;
 
-		perp_x *= Material.Thickness / (2.0f * length);
-		perp_y *= Material.Thickness / (2.0f * length);
+		// OpenGL spreads a wide line along its minor axis, and no wider than 16 pixels
+		const f32 half = core::min_(Material.Thickness, 16.0f) * 0.5f;
+		const bool x_major = core::abs_(dx) >= core::abs_(dy);
+		const f32 off_x = x_major ? 0.0f : half / scale_x;
+		const f32 off_y = x_major ? half / scale_y : 0.0f;
 
 		// back to view units, at the depth each end sits at
-		const core::vector3df s_off(perp_x * s.Z / scale_x, perp_y * s.Z / scale_y, 0.0f);
-		const core::vector3df e_off(perp_x * e.Z / scale_x, perp_y * e.Z / scale_y, 0.0f);
+		const core::vector3df s_off(off_x * s.Z, off_y * s.Z, 0.0f);
+		const core::vector3df e_off(off_x * e.Z, off_y * e.Z, 0.0f);
 
 		corners[0] = s - s_off;
 		corners[1] = s + s_off;
