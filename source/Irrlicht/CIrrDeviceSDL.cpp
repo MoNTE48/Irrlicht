@@ -111,9 +111,11 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 #endif
 	MouseX(0), MouseY(0), MouseButtonStates(0), IgnoreWarpMouseEvent(false),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
-	WindowHasFocus(false), WindowMinimized(false),
-	Resizable(param.WindowResizable == 1), AccelerometerIndex(0),
+	Resizable(param.WindowResizable == 1),
+#if 0
+	AccelerometerIndex(0),
 	AccelerometerInstance(0), GyroscopeIndex(0), GyroscopeInstance(0),
+#endif
 	NativeScaleX(1.0f), NativeScaleY(1.0f), LongTouchTimer(0), LongTouchX(0),
 	LongTouchY(0), LongTouchHandled(true)
 {
@@ -152,20 +154,26 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 			Close = true;
 		}
 
+#if 0 // The game reads no accelerometer or gyroscope
 		if (!SDL_InitSubSystem(SDL_INIT_SENSOR))
 		{
 			os::Printer::log("Failed to init SDL sensor!", SDL_GetError());
 		}
+#endif
 
 		RelativeMouseAvailable = supportsRelativeMouse();
 
 		// Disable simulated touch and mouse events
 		SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
 		SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+		// A pen comes as touches only, like a finger
+		SDL_SetHint(SDL_HINT_PEN_MOUSE_EVENTS, "0");
+#endif
 
 		// Enable simulated touch events on Android versions
 		// that don't support relative mouse mode.
-#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+#if defined(_IRR_ANDROID_PLATFORM_)
 		if (!RelativeMouseAvailable)
 		{
 			SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "1");
@@ -194,6 +202,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 	if (CreationParams.DriverType != video::EDT_NULL)
 	{
+#if 0
 		int num_sensors = 0;
 		SDL_SensorID* sensors = SDL_GetSensors(&num_sensors);
 
@@ -210,6 +219,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		}
 
 		SDL_free(sensors);
+#endif
 
 		// create the window, only if we do not use the null device
 		bool success = createWindow();
@@ -224,6 +234,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 				// Try adaptive vsync first
 				if (!SDL_GL_SetSwapInterval(-1))
 				{
+					SDL_ClearError();
 					SDL_GL_SetSwapInterval(1);
 				}
 			}
@@ -292,7 +303,11 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 
 	if (SDLDeviceInstances == 0)
 	{
+		// SDL_Quit frees the error, which the caller of a failed device still reads
+		const core::stringc error = SDL_GetError();
 		SDL_Quit();
+		if (!VideoDriver)
+			SDL_SetError("%s", error.c_str());
 	}
 }
 
@@ -335,7 +350,8 @@ bool CIrrDeviceSDL::createWindow()
 
 	bool success = createWindowWithContext();
 
-	if (!success)
+	// The retries give up attributes only an OpenGL context has
+	if (!success && usesOpenGLContext(CreationParams.DriverType))
 	{
 		if (CreationParams.AntiAlias > 1)
 		{
@@ -466,8 +482,6 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			"@executable_path/../Frameworks/MetalANGLE.framework/Versions/A/MetalANGLE";
 		SDL_SetHint(SDL_HINT_EGL_LIBRARY, ANGLE_PATH);
 		SDL_SetHint(SDL_HINT_OPENGL_LIBRARY, ANGLE_PATH);
-		SDL_SetHint(SDL_HINT_VIDEO_FORCE_EGL, "1");
-		SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
 	}
 #endif
 
@@ -482,7 +496,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 
 	if (createsOwnMetalView(CreationParams.DriverType))
 	{
-		SDL_Flags |= SDL_WINDOW_METAL | SDL_WINDOW_HIGH_PIXEL_DENSITY;
+		// Shown after the Metal view is attached, which resets the root view controller on UIKit
+		SDL_Flags |= SDL_WINDOW_METAL | SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN;
 	}
 
 	if (usesOpenGLContext(CreationParams.DriverType))
@@ -627,6 +642,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			Window = NULL;
 			return false;
 		}
+
+		SDL_ShowWindow(Window);
 	}
 #endif
 
@@ -794,6 +811,7 @@ bool CIrrDeviceSDL::run()
 			Close = true;
 			return false;
 
+#if 0
 		case SDL_EVENT_SENSOR_UPDATE:
 			if (SDL_event.sensor.which == AccelerometerInstance)
 			{
@@ -837,6 +855,7 @@ bool CIrrDeviceSDL::run()
 				postEventFromUser(irrevent);
 			}
 			break;
+#endif
 
 		case SDL_EVENT_FINGER_MOTION:
 			if (TouchIDs.size() == 1)
@@ -912,9 +931,11 @@ bool CIrrDeviceSDL::run()
 					keyboardState[SDL_SCANCODE_RSHIFT];
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-				irrevent.MouseInput.Wheel = SDL_event.wheel.x + SDL_event.wheel.y;
+				// Whole steps: SDL adds up the fractions a trackpad sends
+				irrevent.MouseInput.Wheel = SDL_event.wheel.integer_x + SDL_event.wheel.integer_y;
 
-				postEventFromUser(irrevent);
+				if (irrevent.MouseInput.Wheel != 0)
+					postEventFromUser(irrevent);
 			}
 			break;
 		case SDL_EVENT_MOUSE_MOTION:
@@ -1143,21 +1164,6 @@ bool CIrrDeviceSDL::run()
 						VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
 				}
 			}
-			break;
-		case SDL_EVENT_WINDOW_MINIMIZED:
-			WindowMinimized = true;
-			break;
-		case SDL_EVENT_WINDOW_MAXIMIZED:
-			WindowMinimized = false;
-			break;
-		case SDL_EVENT_WINDOW_RESTORED:
-			WindowMinimized = false;
-			break;
-		case SDL_EVENT_WINDOW_FOCUS_GAINED:
-			WindowHasFocus = true;
-			break;
-		case SDL_EVENT_WINDOW_FOCUS_LOST:
-			WindowHasFocus = false;
 			break;
 		case SDL_EVENT_WINDOW_MOVED:
 			break;
@@ -1512,21 +1518,22 @@ bool CIrrDeviceSDL::isFullscreen() const
 //! returns if window is active. if not, nothing need to be drawn
 bool CIrrDeviceSDL::isWindowActive() const
 {
-	return (WindowHasFocus && !WindowMinimized);
+	const SDL_WindowFlags flags = SDL_GetWindowFlags(Window);
+	return (flags & SDL_WINDOW_INPUT_FOCUS) && !(flags & SDL_WINDOW_MINIMIZED);
 }
 
 
 //! returns if window has focus.
 bool CIrrDeviceSDL::isWindowFocused() const
 {
-	return WindowHasFocus;
+	return SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS;
 }
 
 
 //! returns if window is minimized.
 bool CIrrDeviceSDL::isWindowMinimized() const
 {
-	return WindowMinimized;
+	return SDL_GetWindowFlags(Window) & SDL_WINDOW_MINIMIZED;
 }
 
 
@@ -1734,6 +1741,7 @@ void CIrrDeviceSDL::createKeyMap()
 	KeyMap.sort();
 }
 
+#if 0
 bool CIrrDeviceSDL::activateAccelerometer(float updateInterval)
 {
 	if (AccelerometerInstance == 0 && AccelerometerIndex != 0)
@@ -1811,6 +1819,7 @@ bool CIrrDeviceSDL::isGyroscopeAvailable()
 {
 	return GyroscopeIndex != 0;
 }
+#endif
 
 bool CIrrDeviceSDL::supportsRelativeMouse()
 {
@@ -1826,22 +1835,16 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 		return false;
 
 	jclass activityClass = env->GetObjectClass(activity);
+	env->DeleteLocalRef(activity);
 
 	if (!activityClass)
 		return false;
 
 	jmethodID supportsRelativeMouse = env->GetStaticMethodID(activityClass, "supportsRelativeMouse", "()Z");
+	const bool supported = supportsRelativeMouse && env->CallStaticBooleanMethod(activityClass, supportsRelativeMouse);
+	env->DeleteLocalRef(activityClass);
 
-	if (!supportsRelativeMouse)
-		return false;
-
-	return env->CallStaticBooleanMethod(activityClass, supportsRelativeMouse);
-
-#elif defined(_IRR_IOS_PLATFORM_)
-	if (__builtin_available(iOS 14, *))
-		return true;
-	else
-		return false;
+	return supported;
 
 #else
 	return true;

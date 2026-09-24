@@ -108,6 +108,7 @@ namespace irr
 			return EIDT_SDL;
 		}
 
+#if 0 // The game reads no accelerometer or gyroscope
 		virtual bool activateAccelerometer(float updateInterval) IRR_OVERRIDE;
 
 		virtual bool deactivateAccelerometer() IRR_OVERRIDE;
@@ -123,6 +124,7 @@ namespace irr
 		virtual bool isGyroscopeActive() IRR_OVERRIDE;
 
 		virtual bool isGyroscopeAvailable() IRR_OVERRIDE;
+#endif
 
 		SDL_Window* getWindow() const { return Window; }
 
@@ -296,14 +298,14 @@ namespace irr
 
 		u32 Width, Height;
 
-		bool WindowHasFocus;
-		bool WindowMinimized;
 		bool Resizable;
 
+#if 0
 		SDL_SensorID AccelerometerIndex;
 		SDL_SensorID AccelerometerInstance;
 		SDL_SensorID GyroscopeIndex;
 		SDL_SensorID GyroscopeInstance;
+#endif
 
 		f32 NativeScaleX, NativeScaleY;
 
