@@ -301,6 +301,11 @@ void CNullDriver::removeTexture(ITexture* texture)
 	if (!texture)
 		return;
 
+	// setRenderTarget keeps its depth textures without a reference
+	const s32 shared = SharedDepthTextures.linear_search(texture);
+	if (shared != -1)
+		SharedDepthTextures.erase((u32)shared);
+
 	for (u32 i=0; i<Textures.size(); ++i)
 	{
 		if (Textures[i].Surface == texture)
