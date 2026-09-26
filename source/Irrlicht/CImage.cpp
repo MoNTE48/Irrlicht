@@ -215,6 +215,19 @@ void CImage::copyToScaling(void* target, u32 width, u32 height, ECOLOR_FORMAT fo
 		}
 	}
 
+	if (Size.Width==width && Size.Height==height)
+	{
+		u8* tgtpos = (u8*) target;
+		const u8* srcpos = Data;
+		for (u32 y=0; y<height; ++y)
+		{
+			CColorConverter::convert_viaFormat(srcpos, Format, width, tgtpos, format);
+			tgtpos += pitch;
+			srcpos += Pitch;
+		}
+		return;
+	}
+
 	// NOTE: Scaling is coded to keep the border pixels intact.
 	// Alternatively we could for example work with first pixel being taken at half step-size.
 	// Then we have one more step here and it would be:

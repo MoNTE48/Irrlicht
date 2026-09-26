@@ -729,11 +729,11 @@ static void executeBlit_TextureCopy_24_to_32( const SBlitJob * job )
 	}
 	else
 	{
-		for ( u32 dy = 0; dy < job->height; ++dy )
+		for ( u32 dy = 0; dy < h; ++dy )
 		{
 			const u8* s = src;
 
-			for ( u32 dx = 0; dx < job->width; ++dx )
+			for ( u32 dx = 0; dx < w; ++dx )
 			{
 				dst[dx] = 0xFF000000 | s[0] << 16 | s[1] << 8 | s[2];
 				s += 3;
@@ -817,17 +817,19 @@ static void executeBlit_TextureBlend_16_to_16( const SBlitJob * job )
 */
 static void executeBlit_TextureBlend_32_to_32( const SBlitJob * job )
 {
+	const u32 w = job->width;
+	const u32 h = job->height;
 	const f18 wscale = f32_to_f18(job->x_stretch);
 	const f18 hscale = f32_to_f18(job->y_stretch);
 
 	f18 src_y = f18_zero;
 	u32 *dst = (u32*)job->dst;
-	for (u32 dy = 0; dy < job->height; ++dy, src_y += hscale)
+	for (u32 dy = 0; dy < h; ++dy, src_y += hscale)
 	{
 		const u32* src = (const u32*)((const u8*)(job->src) + job->srcPitch*f18_floor(src_y));
 
 		f18 src_x = f18_zero;
-		for (u32 dx = 0; dx < job->width; ++dx, src_x += wscale)
+		for (u32 dx = 0; dx < w; ++dx, src_x += wscale)
 		{
 			dst[dx] = PixelBlend32(dst[dx], src[f18_floor(src_x)]);
 		}
@@ -867,19 +869,22 @@ static void executeBlit_TextureBlendColor_16_to_16( const SBlitJob * job )
 */
 static void executeBlit_TextureBlendColor_32_to_32( const SBlitJob * job )
 {
+	const u32 w = job->width;
+	const u32 h = job->height;
+	const u32 argb = job->argb;
 	const f18 wscale = f32_to_f18(job->x_stretch);
 	const f18 hscale = f32_to_f18(job->y_stretch);
 
 	u32* dst = (u32*)job->dst;
 	f18 src_y = f18_zero;
-	for (u32 dy = 0; dy < job->height; ++dy, src_y += hscale)
+	for (u32 dy = 0; dy < h; ++dy, src_y += hscale)
 	{
 		const u32* src = (const u32*)((const u8*)(job->src) + job->srcPitch*f18_floor(src_y));
 
 		f18 src_x = f18_zero;
-		for (u32 dx = 0; dx < job->width; ++dx, src_x += wscale)
+		for (u32 dx = 0; dx < w; ++dx, src_x += wscale)
 		{
-			dst[dx] = PixelBlend32(dst[dx], PixelMul32_2(src[f18_floor(src_x)], job->argb));
+			dst[dx] = PixelBlend32(dst[dx], PixelMul32_2(src[f18_floor(src_x)], argb));
 		}
 		dst = (u32*)((u8*)(dst)+job->dstPitch);
 	}
@@ -1164,14 +1169,17 @@ static void executeBlit_TextureCombineColor_32_to_24( const SBlitJob * job )
 */
 static void executeBlit_TextureCombineColor_32_to_32( const SBlitJob * job )
 {
+	const u32 w = job->width;
+	const u32 h = job->height;
+	const u32 argb = job->argb;
 	const u32 *src = (const u32*) job->src;
 	u32 *dst = (u32*) job->dst;
 
-	for ( u32 dy = 0; dy != job->height; ++dy )
+	for ( u32 dy = 0; dy != h; ++dy )
 	{
-		for (u32 dx = 0; dx != job->width; ++dx )
+		for (u32 dx = 0; dx != w; ++dx )
 		{
-			dst[dx] = PixelCombine32( dst[dx], PixelMul32_2( src[dx], job->argb ) );
+			dst[dx] = PixelCombine32( dst[dx], PixelMul32_2( src[dx], argb ) );
 		}
 		src = (const u32*) ( (const u8*) (src) + job->srcPitch );
 		dst = (u32*) ( (u8*) (dst) + job->dstPitch );
