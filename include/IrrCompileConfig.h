@@ -430,6 +430,11 @@ the engine will no longer read .jpeg images. */
 #ifdef NO_IRR_COMPILE_WITH_LIBJPEG_
 #undef _IRR_COMPILE_WITH_LIBJPEG_
 #endif
+//! macOS and iOS read and write JPEG through the system's ImageIO instead of libjpeg
+#if defined(_IRR_OSX_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+#undef _IRR_COMPILE_WITH_LIBJPEG_
+#define _IRR_COMPILE_WITH_IMAGEIO_
+#endif
 
 //! Define _IRR_COMPILE_WITH_LIBPNG_ to enable compiling the engine using libpng.
 /** This enables the engine to read png images. If you comment this out,

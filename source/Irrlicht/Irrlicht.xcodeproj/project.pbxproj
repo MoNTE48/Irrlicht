@@ -173,6 +173,8 @@
 		AA000C0FFEE0000000000006 /* COGLES2Renderer2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734051C18E2E2003F664E /* COGLES2Renderer2D.cpp */; };
 		AF0E61000000000000000100 /* CEGLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0E61000000000000000001 /* CEGLManager.cpp */; };
 		B00105000000000000000001 /* CEGLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0E61000000000000000001 /* CEGLManager.cpp */; };
+		C1E9F7C3BE42AA41BC37BEAF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AD967070B335FE29CCB2F6 /* ImageIO.framework */; };
+		D8D1A91988236C5A5E0C33E8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AD967070B335FE29CCB2F6 /* ImageIO.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -547,7 +549,27 @@
 		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
 		AF0E61000000000000000001 /* CEGLManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGLManager.cpp; sourceTree = "<group>"; };
+		35AD967070B335FE29CCB2F6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9F1013E2CD1EC869F94E438C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1E9F7C3BE42AA41BC37BEAF /* ImageIO.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0A55E574804EBEA44F87E09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8D1A91988236C5A5E0C33E8 /* ImageIO.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		5E34C6D81B7F4A0C00F212E8 = {
@@ -556,6 +578,7 @@
 				5E34C6DF1B7F4AB500F212E8 /* include */,
 				5E34C6E01B7F4ABD00F212E8 /* Irrlicht */,
 				5E34C9F41B7F6E3400F212E8 /* Products */,
+				399994861B53BD614D1BD90D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1135,6 +1158,14 @@
 			name = "minizip-ng";
 			sourceTree = "<group>";
 		};
+		399994861B53BD614D1BD90D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				35AD967070B335FE29CCB2F6 /* ImageIO.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1143,6 +1174,7 @@
 			buildConfigurationList = 5E34C9F51B7F6E3400F212E8 /* Build configuration list for PBXNativeTarget "Irrlicht_OSX" */;
 			buildPhases = (
 				5E34C9EF1B7F6E3400F212E8 /* Sources */,
+				9F1013E2CD1EC869F94E438C /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1158,6 +1190,7 @@
 			buildConfigurationList = 5E5733E21C18E212003F664E /* Build configuration list for PBXNativeTarget "Irrlicht_iOS" */;
 			buildPhases = (
 				5E5732B21C18E212003F664E /* Sources */,
+				E0A55E574804EBEA44F87E09 /* Frameworks */,
 			);
 			buildRules = (
 			);

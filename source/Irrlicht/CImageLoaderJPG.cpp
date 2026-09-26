@@ -10,6 +10,9 @@
 #include "CImage.h"
 #include "os.h"
 #include "irrString.h"
+#ifdef _IRR_COMPILE_WITH_IMAGEIO_
+#include <ImageIO/ImageIO.h>
+#endif
 
 namespace irr
 {
@@ -118,10 +121,84 @@ void CImageLoaderJPG::output_message(j_common_ptr cinfo)
 }
 #endif // _IRR_COMPILE_WITH_LIBJPEG_
 
+#ifdef _IRR_COMPILE_WITH_IMAGEIO_
+//! Decodes into 32-bit pixels drawn in the picture's own colour space, so no colour matching changes
+//! them, and keeps 24 bits of them as libjpeg does; grey keeps its space until spread over the channels,
+//! CMYK and the rest are matched to sRGB
+static IImage* loadImageIO(io::IReadFile* file)
+{
+	const long size = file->getSize();
+	if (size < 3)
+		return 0;
+
+	CFMutableDataRef bytes = CFDataCreateMutable(0, size);
+	CFDataSetLength(bytes, size);
+	const bool read = file->read(CFDataGetMutableBytePtr(bytes), size) == (size_t)size;
+	CGImageSourceRef source = read ? CGImageSourceCreateWithData(bytes, 0) : 0;
+	CFRelease(bytes);
+	CGImageRef picture = source ? CGImageSourceCreateImageAtIndex(source, 0, 0) : 0;
+	if (source)
+		CFRelease(source);
+	if (!picture)
+	{
+		os::Printer::log("ImageIO could not decode the JPEG", file->getFileName(), ELL_ERROR);
+		return 0;
+	}
+
+	const core::dimension2du dim((u32)CGImageGetWidth(picture), (u32)CGImageGetHeight(picture));
+	//! The limits of libjpeg: 65500 a side and the 2 GB of IImage
+	if (dim.Width > 65500 || dim.Height > 65500 ||
+			!IImage::checkDataSizeLimit(IImage::getDataSizeFromFormat(ECF_A8R8G8B8, dim.Width, dim.Height)))
+	{
+		os::Printer::log("Image dimensions too large in file", file->getFileName(), ELL_ERROR);
+		CGImageRelease(picture);
+		return 0;
+	}
+	CGColorSpaceRef space = CGImageGetColorSpace(picture);
+	const CGColorSpaceModel model = space ? CGColorSpaceGetModel(space) : kCGColorSpaceModelUnknown;
+	IImage* image = new CImage(ECF_A8R8G8B8, dim);
+	u8* grey = model == kCGColorSpaceModelMonochrome ? new u8[dim.getArea()] : 0;
+	CGColorSpaceRef target = grey || model == kCGColorSpaceModelRGB ? CGColorSpaceRetain(space) :
+			CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+	CGContextRef context = grey ?
+			CGBitmapContextCreate(grey, dim.Width, dim.Height, 8, dim.Width, target, kCGImageAlphaNone) :
+			CGBitmapContextCreate(image->getData(), dim.Width, dim.Height, 8, image->getPitch(), target,
+					kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+	CGColorSpaceRelease(target);
+	if (context)
+	{
+		CGContextSetBlendMode(context, kCGBlendModeCopy);
+		CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+		CGContextDrawImage(context, CGRectMake(0, 0, dim.Width, dim.Height), picture);
+		CGContextRelease(context);
+	}
+	CGImageRelease(picture);
+	if (!context)
+	{
+		os::Printer::log("ImageIO could not draw the JPEG", file->getFileName(), ELL_ERROR);
+		delete [] grey;
+		image->drop();
+		return 0;
+	}
+
+	if (grey)
+	{
+		u32* pixel = (u32*)image->getData();
+		for (u32 i = 0; i < dim.getArea(); ++i)
+			pixel[i] = 0xFF000000u | grey[i] << 16 | grey[i] << 8 | grey[i];
+		delete [] grey;
+	}
+	IImage* rgb = new CImage(ECF_R8G8B8, dim);
+	image->copyToScaling(rgb->getData(), dim.Width, dim.Height, ECF_R8G8B8, rgb->getPitch());
+	image->drop();
+	return rgb;
+}
+#endif
+
 //! returns true if the file maybe is able to be loaded by this class
 bool CImageLoaderJPG::isALoadableFileFormat(io::IReadFile* file) const
 {
-	#ifndef _IRR_COMPILE_WITH_LIBJPEG_
+	#if !defined(_IRR_COMPILE_WITH_LIBJPEG_) && !defined(_IRR_COMPILE_WITH_IMAGEIO_)
 	return false;
 	#else
 
@@ -136,7 +213,9 @@ bool CImageLoaderJPG::isALoadableFileFormat(io::IReadFile* file) const
 //! creates a surface from the file
 IImage* CImageLoaderJPG::loadImage(io::IReadFile* file) const
 {
-	#ifndef _IRR_COMPILE_WITH_LIBJPEG_
+	#if defined(_IRR_COMPILE_WITH_IMAGEIO_)
+	return file ? loadImageIO(file) : 0;
+	#elif !defined(_IRR_COMPILE_WITH_LIBJPEG_)
 	os::Printer::log("Can't load as not compiled with _IRR_COMPILE_WITH_LIBJPEG_", file->getFileName(), ELL_DEBUG);
 	return 0;
 	#else

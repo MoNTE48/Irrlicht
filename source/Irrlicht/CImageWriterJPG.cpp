@@ -182,6 +182,59 @@ static bool writeJPEGFile(io::IWriteFile* file, IImage* image, u32 quality)
 
 #endif // _IRR_COMPILE_WITH_LIBJPEG_
 
+#ifdef _IRR_COMPILE_WITH_IMAGEIO_
+#include "CImage.h"
+#include <ImageIO/ImageIO.h>
+
+namespace irr
+{
+namespace video
+{
+
+//! Encodes through ImageIO from 32-bit pixels tagged sRGB
+static bool writeJPEGFile(io::IWriteFile* file, IImage* image, u32 quality)
+{
+	const core::dimension2du dim = image->getDimension();
+	IImage* pixels = new CImage(ECF_A8R8G8B8, dim);
+	image->copyTo(pixels);
+	CGColorSpaceRef space = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+	CGDataProviderRef provider = CGDataProviderCreateWithData(0, pixels->getData(),
+			pixels->getImageDataSizeInBytes(), 0);
+	CGImageRef picture = CGImageCreate(dim.Width, dim.Height, 8, 32, pixels->getPitch(), space,
+			kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little, provider, 0, false, kCGRenderingIntentDefault);
+	CGDataProviderRelease(provider);
+	CGColorSpaceRelease(space);
+
+	// libjpeg takes 0 as its default of 75 and caps the rest at 100
+	const float level = (quality ? core::min_(quality, 100u) : 75u) / 100.f;
+	CFNumberRef number = CFNumberCreate(0, kCFNumberFloatType, &level);
+	const void* key = kCGImageDestinationLossyCompressionQuality;
+	CFDictionaryRef options = CFDictionaryCreate(0, &key, (const void**)&number, 1,
+			&kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+	CFRelease(number);
+
+	CFMutableDataRef bytes = CFDataCreateMutable(0, 0);
+	CGImageDestinationRef destination = CGImageDestinationCreateWithData(bytes, CFSTR("public.jpeg"), 1, 0);
+	bool written = false;
+	if (destination && picture)
+	{
+		CGImageDestinationAddImage(destination, picture, options);
+		const size_t size = CGImageDestinationFinalize(destination) ? (size_t)CFDataGetLength(bytes) : 0;
+		written = size && file->write(CFDataGetBytePtr(bytes), size) == size;
+	}
+	if (destination)
+		CFRelease(destination);
+	CFRelease(bytes);
+	CFRelease(options);
+	CGImageRelease(picture);
+	pixels->drop();
+	return written;
+}
+
+} // namespace video
+} // namespace irr
+#endif // _IRR_COMPILE_WITH_IMAGEIO_
+
 namespace irr
 {
 namespace video
@@ -208,7 +261,7 @@ bool CImageWriterJPG::isAWriteableFileExtension(const io::path& filename) const
 
 bool CImageWriterJPG::writeImage(io::IWriteFile *file, IImage *image, u32 quality) const
 {
-#ifndef _IRR_COMPILE_WITH_LIBJPEG_
+#if !defined(_IRR_COMPILE_WITH_LIBJPEG_) && !defined(_IRR_COMPILE_WITH_IMAGEIO_)
 	return false;
 #else
 	return writeJPEGFile(file, image, quality);
