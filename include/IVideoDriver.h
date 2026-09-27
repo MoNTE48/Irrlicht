@@ -1304,6 +1304,9 @@ namespace video
 		Usually, there is no need to call this method. */
 		virtual void OnResize(const core::dimension2d<u32>& size) =0;
 
+		//! Event handler for the app going to the background. Only used by the engine internally.
+		virtual void OnBackground() {}
+
 		//! Adds a new material renderer to the video device.
 		/** Use this method to extend the VideoDriver with new material
 		types. To extend the engine using this method do the following:

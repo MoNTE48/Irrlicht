@@ -49,6 +49,14 @@ namespace irr
 		//! pause execution for a specified time
 		virtual void sleep(u32 timeMs, bool pauseTimer) IRR_OVERRIDE;
 
+#if defined(_IRR_OSX_PLATFORM_)
+		bool paceFrames(f32 fps) IRR_OVERRIDE;
+#endif
+
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+		void setFrameRate(f32 fps) IRR_OVERRIDE;
+#endif
+
 		//! sets the caption of the window
 		virtual void setWindowCaption(const wchar_t* text) IRR_OVERRIDE;
 
@@ -271,6 +279,30 @@ namespace irr
 #ifdef IRR_SDL_METAL_VIEW
 		SDL_MetalView MetalView = 0;
 #endif
+
+	public:
+		//! What a driver that talks to the platform directly has to draw into: the layer
+		//! this device made on Apple, and the window the system owns everywhere else
+		void* getDrawTarget() const
+		{
+#if defined(IRR_SDL_METAL_VIEW)
+			return MetalView ? SDL_Metal_GetLayer(MetalView) : 0;
+#elif defined(_IRR_ANDROID_PLATFORM_)
+			return Window ? SDL_GetPointerProperty(SDL_GetWindowProperties(Window),
+					SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER, 0) : 0;
+#else
+			return 0;
+#endif
+		}
+
+		//! Lets SDL take in what the system sent, as an Android pause, without handing out events or waiting for a resume
+		void pumpSystemEvents() { SDL_PumpEvents(); }
+
+		//! Lets SDL take in what the system sent and, while the app is in the background, waits for it to come back,
+		//! without handing out events; true when a GL context is current again
+		bool waitForForeground() { SDL_PollEvent(0); return SDL_GL_GetCurrentContext() != 0; }
+
+	private:
 #if defined(_IRR_COMPILE_WITH_ANGLE_)
 		video::IContextManager* ContextManager = 0;
 #endif
@@ -284,6 +316,11 @@ namespace irr
 		u32 Width, Height;
 
 		bool Resizable;
+
+#if defined(_IRR_OSX_PLATFORM_)
+		//! When the frame the device sleeps for ends, in microseconds
+		u64 FrameTarget = 0;
+#endif
 
 #if 0
 		SDL_SensorID AccelerometerIndex;
