@@ -287,9 +287,7 @@ namespace irr
 		SDL_MetalView MetalView;
 		video::IContextManager* ContextManager;
 #endif
-#if defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_) || defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 		core::array<SDL_JoystickID> Joysticks;
-#endif
 
 		mutable core::stringc ClipboardText;
 		s32 MouseX, MouseY;

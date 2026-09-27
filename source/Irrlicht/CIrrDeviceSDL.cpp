@@ -136,15 +136,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 
 	if (SDLDeviceInstances == 1)
 	{
-		u32 flags = SDL_INIT_VIDEO;
-
-#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
-		flags |= SDL_INIT_GAMEPAD;
-#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		flags |= SDL_INIT_JOYSTICK;
-#endif
-
-		if (SDL_Init(flags))
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
 		{
 			os::Printer::log("SDL initialized", ELL_INFORMATION);
 		}
@@ -264,13 +256,8 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
 		SDL_CloseGamepad(gameController);
-#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-		SDL_Joystick* joystick = SDL_GetJoystickFromID(Joysticks[i]);
-		SDL_CloseJoystick(joystick);
-#endif
 	}
 
 	if (Context)
@@ -1099,7 +1086,6 @@ bool CIrrDeviceSDL::run()
 			}
 			break;
 
-#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
 			{
@@ -1142,7 +1128,6 @@ bool CIrrDeviceSDL::run()
 				}
 			}
 			break;
-#endif
 
 		case SDL_EVENT_QUIT:
 			Close = true;
@@ -1204,7 +1189,6 @@ bool CIrrDeviceSDL::run()
 
 	} // end while
 
-#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
 		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
@@ -1224,87 +1208,6 @@ bool CIrrDeviceSDL::run()
 			postEventFromUser(irrevent);
 		}
 	}
-
-#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-	// TODO: Check if the multiple open/close calls are too expensive, then
-	// open/close in the constructor/destructor instead
-
-	// update joystick states manually
-	SDL_UpdateJoysticks();
-	// we'll always send joystick input events...
-	SEvent joyevent;
-	joyevent.EventType = EET_JOYSTICK_INPUT_EVENT;
-	for (u32 i=0; i<Joysticks.size(); ++i)
-	{
-		SDL_Joystick* joystick = SDL_GetJoystickFromID(Joysticks[i]);
-		if (joystick)
-		{
-			int j;
-			// query all buttons
-			const int numButtons = core::min_(SDL_GetNumJoystickButtons(joystick), 32);
-			joyevent.JoystickEvent.ButtonStates=0;
-			for (j=0; j<numButtons; ++j)
-				joyevent.JoystickEvent.ButtonStates |= (SDL_GetJoystickButton(joystick, j)<<j);
-
-			// query all axes, already in correct range
-			const int numAxes = core::min_(SDL_GetNumJoystickAxes(joystick), (int)SEvent::SJoystickEvent::NUMBER_OF_AXES);
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_X]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Y]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_Z]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_R]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_U]=0;
-			joyevent.JoystickEvent.Axis[SEvent::SJoystickEvent::AXIS_V]=0;
-			for (j=0; j<numAxes; ++j)
-				joyevent.JoystickEvent.Axis[j] = SDL_GetJoystickAxis(joystick, j);
-
-			// we can only query one hat, SDL only supports 8 directions
-			if (SDL_GetNumJoystickHats(joystick)>0)
-			{
-				switch (SDL_GetJoystickHat(joystick, 0))
-				{
-					case SDL_HAT_UP:
-						joyevent.JoystickEvent.POV=0;
-						break;
-					case SDL_HAT_RIGHTUP:
-						joyevent.JoystickEvent.POV=4500;
-						break;
-					case SDL_HAT_RIGHT:
-						joyevent.JoystickEvent.POV=9000;
-						break;
-					case SDL_HAT_RIGHTDOWN:
-						joyevent.JoystickEvent.POV=13500;
-						break;
-					case SDL_HAT_DOWN:
-						joyevent.JoystickEvent.POV=18000;
-						break;
-					case SDL_HAT_LEFTDOWN:
-						joyevent.JoystickEvent.POV=22500;
-						break;
-					case SDL_HAT_LEFT:
-						joyevent.JoystickEvent.POV=27000;
-						break;
-					case SDL_HAT_LEFTUP:
-						joyevent.JoystickEvent.POV=31500;
-						break;
-					case SDL_HAT_CENTERED:
-					default:
-						joyevent.JoystickEvent.POV=65535;
-						break;
-				}
-			}
-			else
-			{
-				joyevent.JoystickEvent.POV=65535;
-			}
-
-			// we map the number directly
-			joyevent.JoystickEvent.Joystick=static_cast<u8>(i);
-			// now post the event
-			postEventFromUser(joyevent);
-			// and close the joystick
-		}
-	}
-#endif
 
 	if (os::Timer::getTime() > LongTouchTimer + 1000 && !LongTouchHandled)
 	{
@@ -1326,51 +1229,7 @@ bool CIrrDeviceSDL::run()
 //! Activate any joysticks, and generate events for them.
 bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
 {
-#if defined(_IRR_COMPILE_WITH_SDL_GAMECONTROLLER)
 	return true;
-
-#elif defined(_IRR_COMPILE_WITH_JOYSTICK_EVENTS_)
-	joystickInfo.clear();
-
-	// we can name up to 256 different joysticks
-	const int numJoysticks = core::min_(SDL_NumJoysticks(), 256);
-	Joysticks.reallocate(numJoysticks);
-	joystickInfo.reallocate(numJoysticks);
-
-	for (int i = 0; i < numJoysticks; i++)
-	{
-		SDL_Joystick* joystick = SDL_OpenJoystick(i);
-		SDL_JoystickID instanceId = SDL_GetJoystickID(joystick);
-		Joysticks.push_back(instanceId);
-
-		SJoystickInfo info;
-		info.Joystick = i;
-		info.Axes = SDL_GetNumJoystickAxes(joystick);
-		info.Buttons = SDL_GetNumJoystickButtons(joystick);
-		info.Name = SDL_JoystickNameForIndex(i);
-
-		if (SDL_GetNumJoystickHats(joystick) > 0)
-			info.PovHat = SJoystickInfo::POV_HAT_PRESENT;
-		else
-			info.PovHat = SJoystickInfo::POV_HAT_ABSENT;
-
-		joystickInfo.push_back(info);
-	}
-
-	for(u32 i = 0; i < joystickInfo.size(); i++)
-	{
-		char logString[256];
-		snprintf(logString, sizeof(logString), "Found joystick %d, %d axes, %d buttons '%s'",
-				i, joystickInfo[i].Axes, joystickInfo[i].Buttons,
-				joystickInfo[i].Name.c_str());
-		os::Printer::log(logString, ELL_INFORMATION);
-	}
-
-	return true;
-
-#endif
-
-	return false;
 }
 
 
