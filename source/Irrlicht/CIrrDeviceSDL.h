@@ -20,6 +20,12 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_video.h>
 
+//! Set for the drivers that draw into a CAMetalLayer the device owns
+#if defined(_IRR_COMPILE_WITH_ANGLE_)
+#define IRR_SDL_METAL_VIEW
+#endif
+
+#include <array>
 #include <set>
 
 namespace irr
@@ -32,7 +38,7 @@ namespace irr
 		CIrrDeviceSDL(const SIrrlichtCreationParameters& param);
 
 		//! destructor
-		virtual ~CIrrDeviceSDL();
+		~CIrrDeviceSDL() IRR_OVERRIDE;
 
 		//! runs the device. Returns false if device wants to be deleted
 		virtual bool run() IRR_OVERRIDE;
@@ -79,21 +85,11 @@ namespace irr
 		//! Restores the window size.
 		virtual void restoreWindow() IRR_OVERRIDE;
 
-		//! Checks if the Irrlicht window is running in fullscreen mode
-		/** \return True if window is fullscreen. */
-		virtual bool isFullscreen() const IRR_OVERRIDE;
-
 		//! Get the position of this window on screen
 		virtual core::position2di getWindowPosition() IRR_OVERRIDE;
 
 		//! Activate any joysticks, and generate events for them.
 		virtual bool activateJoysticks(core::array<SJoystickInfo> & joystickInfo) IRR_OVERRIDE;
-
-		//! Set the current Gamma Value for the Display
-		virtual bool setGammaRamp( f32 red, f32 green, f32 blue, f32 brightness, f32 contrast ) IRR_OVERRIDE;
-
-		//! Get the current Gamma Value for the Display
-		virtual bool getGammaRamp( f32 &red, f32 &green, f32 &blue, f32 &brightness, f32 &contrast ) IRR_OVERRIDE;
 
 		//! gets text from the clipboard
 		//! \return Returns empty string on failure.
@@ -145,7 +141,7 @@ namespace irr
 				initCursors();
 			}
 
-			~CCursorControl();
+			~CCursorControl() IRR_OVERRIDE;
 
 			//! Changes the visible state of the mouse cursor.
 			virtual void setVisible(bool visible) IRR_OVERRIDE
@@ -169,7 +165,7 @@ namespace irr
 			//! Sets the new position of the cursor.
 			virtual void setPosition(f32 x, f32 y) IRR_OVERRIDE
 			{
-				setPosition((s32)(x*Device->Width), (s32)(y*Device->Height));
+				setPosition((s32)(x*(f32)Device->Width), (s32)(y*(f32)Device->Height));
 			}
 
 			//! Sets the new position of the cursor.
@@ -215,11 +211,11 @@ namespace irr
 			{
 				if ( updateCursor )
 					updateCursorPos();
-				return core::position2d<f32>(CursorPos.X / (f32)Device->Width,
-					CursorPos.Y / (f32)Device->Height);
+				return core::position2d<f32>((f32)CursorPos.X / (f32)Device->Width,
+					(f32)CursorPos.Y / (f32)Device->Height);
 			}
 
-			virtual void setReferenceRect(core::rect<s32>* rect=0) IRR_OVERRIDE
+			virtual void setReferenceRect(core::rect<s32>* /*rect*/=0) IRR_OVERRIDE
 			{
 			}
 
@@ -242,17 +238,8 @@ namespace irr
 
 			void updateCursorPos()
 			{
-				CursorPos.X = Device->MouseX;
-				CursorPos.Y = Device->MouseY;
-
-				if (CursorPos.X < 0)
-					CursorPos.X = 0;
-				if (CursorPos.X > (s32)Device->Width)
-					CursorPos.X = Device->Width;
-				if (CursorPos.Y < 0)
-					CursorPos.Y = 0;
-				if (CursorPos.Y > (s32)Device->Height)
-					CursorPos.Y = Device->Height;
+				CursorPos.X = core::clamp(Device->MouseX, 0, (s32)Device->Width);
+				CursorPos.Y = core::clamp(Device->MouseY, 0, (s32)Device->Height);
 			}
 
 			void initCursors();
@@ -260,7 +247,7 @@ namespace irr
 			CIrrDeviceSDL* Device;
 			core::position2d<s32> CursorPos;
 			bool IsVisible;
-			core::array<SDL_Cursor*> Cursors;
+			std::array<SDL_Cursor*, gui::ECI_COUNT> Cursors{};
 			gui::ECURSOR_ICON ActiveIcon;
 		};
 
@@ -271,8 +258,6 @@ namespace irr
 
 		bool createWindowWithContext();
 
-		void createKeyMap();
-
 		void updateNativeScaleFromSystem();
 
 		void updateNativeScale();
@@ -281,18 +266,17 @@ namespace irr
 
 		bool supportsRelativeMouse();
 
-		SDL_Window* Window;
-		SDL_GLContext Context;
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-		SDL_MetalView MetalView;
-		video::IContextManager* ContextManager;
+		SDL_Window* Window = 0;
+		SDL_GLContext Context = 0;
+#ifdef IRR_SDL_METAL_VIEW
+		SDL_MetalView MetalView = 0;
 #endif
 		core::array<SDL_JoystickID> Joysticks;
 
 		mutable core::stringc ClipboardText;
-		s32 MouseX, MouseY;
-		u32 MouseButtonStates;
-		bool IgnoreWarpMouseEvent;
+		s32 MouseX = 0, MouseY = 0;
+		u32 MouseButtonStates = 0;
+		bool IgnoreWarpMouseEvent = false;
 
 		u32 Width, Height;
 
@@ -314,24 +298,6 @@ namespace irr
 
 		std::set<SDL_FingerID> TouchIDs;
 
-		struct SKeyMap
-		{
-			SKeyMap() {}
-			SKeyMap(SDL_Scancode scancode, s32 irrKeycode)
-				: Scancode(scancode), IrrKeycode(irrKeycode)
-			{
-			}
-
-			SDL_Scancode Scancode;
-			s32 IrrKeycode;
-
-			bool operator<(const SKeyMap& o) const
-			{
-				return Scancode<o.Scancode;
-			}
-		};
-
-		static core::array<SKeyMap> KeyMap;
 		static int SDLDeviceInstances;
 		static bool SimulateTouchEvents;
 		static bool RelativeMouseAvailable;

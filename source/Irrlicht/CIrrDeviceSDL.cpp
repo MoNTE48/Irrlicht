@@ -17,9 +17,10 @@
 #include "COSOperator.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <utility>
 #include "SIrrCreationParameters.h"
 #if defined(_IRR_COMPILE_WITH_ANGLE_)
-#include <SDL3/SDL_metal.h>
 #include "CEGLManager.h"
 #endif
 
@@ -31,44 +32,202 @@
 #pragma comment(lib, "SDL3.lib")
 #endif // _MSC_VER
 
-namespace irr
+namespace irr::video
 {
-	namespace video
-	{
 #ifdef _IRR_COMPILE_WITH_OPENGL_
-		IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
-				io::IFileSystem* io, CIrrDeviceSDL* device);
+	IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
+			io::IFileSystem* io, CIrrDeviceSDL* device);
 #endif
 
 #if defined(_IRR_COMPILE_WITH_OGLES2_)
-		IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
-				io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
+	IVideoDriver* createOGLES2Driver(const SIrrlichtCreationParameters& params,
+			io::IFileSystem* io, CIrrDeviceSDL* device, IContextManager* contextManager);
 #endif
 
 #if defined(_IRR_COMPILE_WITH_OGLES1_)
-		IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params,
-				io::IFileSystem* io, CIrrDeviceSDL* device);
+	IVideoDriver* createOGLES1Driver(const SIrrlichtCreationParameters& params,
+			io::IFileSystem* io, CIrrDeviceSDL* device);
 #endif
-	} // end namespace video
-
-} // end namespace irr
-
+}
 
 namespace irr
 {
 
-core::array<CIrrDeviceSDL::SKeyMap> CIrrDeviceSDL::KeyMap;
 int CIrrDeviceSDL::SDLDeviceInstances = 0;
 bool CIrrDeviceSDL::SimulateTouchEvents = false;
 bool CIrrDeviceSDL::RelativeMouseAvailable = false;
 
-static bool isPrimaryModifierPressed(const bool* keyboardState)
+static constexpr auto KeyMap = [] {
+	std::array<EKEY_CODE, SDL_SCANCODE_COUNT> map{};
+	map[SDL_SCANCODE_BACKSPACE] = KEY_BACK;
+	map[SDL_SCANCODE_TAB] = KEY_TAB;
+	map[SDL_SCANCODE_CLEAR] = KEY_CLEAR;
+	map[SDL_SCANCODE_RETURN] = KEY_RETURN;
+	map[SDL_SCANCODE_PAUSE] = KEY_PAUSE;
+	map[SDL_SCANCODE_CAPSLOCK] = KEY_CAPITAL;
+	map[SDL_SCANCODE_ESCAPE] = KEY_ESCAPE;
+	map[SDL_SCANCODE_SPACE] = KEY_SPACE;
+	map[SDL_SCANCODE_PAGEUP] = KEY_PRIOR;
+	map[SDL_SCANCODE_PAGEDOWN] = KEY_NEXT;
+	map[SDL_SCANCODE_END] = KEY_END;
+	map[SDL_SCANCODE_HOME] = KEY_HOME;
+	map[SDL_SCANCODE_LEFT] = KEY_LEFT;
+	map[SDL_SCANCODE_UP] = KEY_UP;
+	map[SDL_SCANCODE_RIGHT] = KEY_RIGHT;
+	map[SDL_SCANCODE_DOWN] = KEY_DOWN;
+	map[SDL_SCANCODE_SELECT] = KEY_SELECT;
+	map[SDL_SCANCODE_PRINTSCREEN] = KEY_PRINT; // KEY_SNAPSHOT?
+	map[SDL_SCANCODE_EXECUTE] = KEY_EXECUT;
+	map[SDL_SCANCODE_INSERT] = KEY_INSERT;
+	map[SDL_SCANCODE_DELETE] = KEY_DELETE;
+	map[SDL_SCANCODE_HELP] = KEY_HELP;
+	map[SDL_SCANCODE_0] = KEY_KEY_0;
+	map[SDL_SCANCODE_1] = KEY_KEY_1;
+	map[SDL_SCANCODE_2] = KEY_KEY_2;
+	map[SDL_SCANCODE_3] = KEY_KEY_3;
+	map[SDL_SCANCODE_4] = KEY_KEY_4;
+	map[SDL_SCANCODE_5] = KEY_KEY_5;
+	map[SDL_SCANCODE_6] = KEY_KEY_6;
+	map[SDL_SCANCODE_7] = KEY_KEY_7;
+	map[SDL_SCANCODE_8] = KEY_KEY_8;
+	map[SDL_SCANCODE_9] = KEY_KEY_9;
+	map[SDL_SCANCODE_A] = KEY_KEY_A;
+	map[SDL_SCANCODE_B] = KEY_KEY_B;
+	map[SDL_SCANCODE_C] = KEY_KEY_C;
+	map[SDL_SCANCODE_D] = KEY_KEY_D;
+	map[SDL_SCANCODE_E] = KEY_KEY_E;
+	map[SDL_SCANCODE_F] = KEY_KEY_F;
+	map[SDL_SCANCODE_G] = KEY_KEY_G;
+	map[SDL_SCANCODE_H] = KEY_KEY_H;
+	map[SDL_SCANCODE_I] = KEY_KEY_I;
+	map[SDL_SCANCODE_J] = KEY_KEY_J;
+	map[SDL_SCANCODE_K] = KEY_KEY_K;
+	map[SDL_SCANCODE_L] = KEY_KEY_L;
+	map[SDL_SCANCODE_M] = KEY_KEY_M;
+	map[SDL_SCANCODE_N] = KEY_KEY_N;
+	map[SDL_SCANCODE_O] = KEY_KEY_O;
+	map[SDL_SCANCODE_P] = KEY_KEY_P;
+	map[SDL_SCANCODE_Q] = KEY_KEY_Q;
+	map[SDL_SCANCODE_R] = KEY_KEY_R;
+	map[SDL_SCANCODE_S] = KEY_KEY_S;
+	map[SDL_SCANCODE_T] = KEY_KEY_T;
+	map[SDL_SCANCODE_U] = KEY_KEY_U;
+	map[SDL_SCANCODE_V] = KEY_KEY_V;
+	map[SDL_SCANCODE_W] = KEY_KEY_W;
+	map[SDL_SCANCODE_X] = KEY_KEY_X;
+	map[SDL_SCANCODE_Y] = KEY_KEY_Y;
+	map[SDL_SCANCODE_Z] = KEY_KEY_Z;
+	map[SDL_SCANCODE_LGUI] = KEY_LWIN;
+	map[SDL_SCANCODE_RGUI] = KEY_RWIN;
+	map[SDL_SCANCODE_APPLICATION] = KEY_APPS;
+	map[SDL_SCANCODE_POWER] = KEY_SLEEP;
+	map[SDL_SCANCODE_SLEEP] = KEY_SLEEP;
+	map[SDL_SCANCODE_KP_0] = KEY_NUMPAD0;
+	map[SDL_SCANCODE_KP_1] = KEY_NUMPAD1;
+	map[SDL_SCANCODE_KP_2] = KEY_NUMPAD2;
+	map[SDL_SCANCODE_KP_3] = KEY_NUMPAD3;
+	map[SDL_SCANCODE_KP_4] = KEY_NUMPAD4;
+	map[SDL_SCANCODE_KP_5] = KEY_NUMPAD5;
+	map[SDL_SCANCODE_KP_6] = KEY_NUMPAD6;
+	map[SDL_SCANCODE_KP_7] = KEY_NUMPAD7;
+	map[SDL_SCANCODE_KP_8] = KEY_NUMPAD8;
+	map[SDL_SCANCODE_KP_9] = KEY_NUMPAD9;
+	map[SDL_SCANCODE_KP_MULTIPLY] = KEY_MULTIPLY;
+	map[SDL_SCANCODE_KP_PERIOD] = KEY_PERIOD;
+	map[SDL_SCANCODE_KP_DECIMAL] = KEY_DECIMAL;
+	map[SDL_SCANCODE_KP_PLUS] = KEY_ADD;
+	map[SDL_SCANCODE_KP_MINUS] = KEY_SUBTRACT;
+	map[SDL_SCANCODE_KP_DIVIDE] = KEY_DIVIDE;
+	map[SDL_SCANCODE_KP_ENTER] = KEY_RETURN;
+	map[SDL_SCANCODE_SEPARATOR] = KEY_SEPARATOR;
+	map[SDL_SCANCODE_PERIOD] = KEY_PERIOD;
+	map[SDL_SCANCODE_F1] = KEY_F1;
+	map[SDL_SCANCODE_F2] = KEY_F2;
+	map[SDL_SCANCODE_F3] = KEY_F3;
+	map[SDL_SCANCODE_F4] = KEY_F4;
+	map[SDL_SCANCODE_F5] = KEY_F5;
+	map[SDL_SCANCODE_F6] = KEY_F6;
+	map[SDL_SCANCODE_F7] = KEY_F7;
+	map[SDL_SCANCODE_F8] = KEY_F8;
+	map[SDL_SCANCODE_F9] = KEY_F9;
+	map[SDL_SCANCODE_F10] = KEY_F10;
+	map[SDL_SCANCODE_F11] = KEY_F11;
+	map[SDL_SCANCODE_F12] = KEY_F12;
+	map[SDL_SCANCODE_F13] = KEY_F13;
+	map[SDL_SCANCODE_F14] = KEY_F14;
+	map[SDL_SCANCODE_F15] = KEY_F15;
+	map[SDL_SCANCODE_F16] = KEY_F16;
+	map[SDL_SCANCODE_F17] = KEY_F17;
+	map[SDL_SCANCODE_F18] = KEY_F18;
+	map[SDL_SCANCODE_F19] = KEY_F19;
+	map[SDL_SCANCODE_F20] = KEY_F20;
+	map[SDL_SCANCODE_F21] = KEY_F21;
+	map[SDL_SCANCODE_F22] = KEY_F22;
+	map[SDL_SCANCODE_F23] = KEY_F23;
+	map[SDL_SCANCODE_F24] = KEY_F24;
+	map[SDL_SCANCODE_NUMLOCKCLEAR] = KEY_NUMLOCK;
+	map[SDL_SCANCODE_SCROLLLOCK] = KEY_SCROLL;
+	map[SDL_SCANCODE_LSHIFT] = KEY_LSHIFT;
+	map[SDL_SCANCODE_RSHIFT] = KEY_RSHIFT;
+	map[SDL_SCANCODE_LCTRL] = KEY_LCONTROL;
+	map[SDL_SCANCODE_RCTRL] = KEY_RCONTROL;
+	map[SDL_SCANCODE_LALT] = KEY_LMENU;
+	map[SDL_SCANCODE_RALT] = KEY_RMENU;
+	map[SDL_SCANCODE_MENU] = KEY_MENU;
+	map[SDL_SCANCODE_COMMA] = KEY_COMMA;
+	map[SDL_SCANCODE_MINUS] = KEY_MINUS;
+	map[SDL_SCANCODE_AC_BACK] = KEY_ESCAPE;
+	map[SDL_SCANCODE_EQUALS] = KEY_PLUS;
+	map[SDL_SCANCODE_SEMICOLON] = KEY_OEM_1;
+	map[SDL_SCANCODE_SLASH] = KEY_OEM_2;
+	map[SDL_SCANCODE_GRAVE] = KEY_OEM_3;
+	map[SDL_SCANCODE_LEFTBRACKET] = KEY_OEM_4;
+	map[SDL_SCANCODE_BACKSLASH] = KEY_OEM_5;
+	map[SDL_SCANCODE_RIGHTBRACKET] = KEY_OEM_6;
+	map[SDL_SCANCODE_APOSTROPHE] = KEY_OEM_7;
+	map[SDL_SCANCODE_CRSEL] = KEY_CRSEL;
+	map[SDL_SCANCODE_EXSEL] = KEY_EXSEL;
+	map[SDL_SCANCODE_MEDIA_NEXT_TRACK] = KEY_MEDIA_NEXT_TRACK;
+	map[SDL_SCANCODE_MEDIA_PREVIOUS_TRACK] = KEY_MEDIA_PREV_TRACK;
+	map[SDL_SCANCODE_MEDIA_STOP] = KEY_MEDIA_STOP;
+	map[SDL_SCANCODE_MEDIA_PLAY] = KEY_MEDIA_PLAY_PAUSE;
+	map[SDL_SCANCODE_MUTE] = KEY_VOLUME_MUTE;
+	map[SDL_SCANCODE_VOLUMEDOWN] = KEY_VOLUME_DOWN;
+	map[SDL_SCANCODE_VOLUMEUP] = KEY_VOLUME_UP;
+	return map;
+}();
+
+static constexpr struct
 {
+	u8 Button;
+	EMOUSE_INPUT_EVENT Down, Up;
+	E_MOUSE_BUTTON_STATE_MASK Mask;
+} MouseButtons[] = {
+	{SDL_BUTTON_LEFT, EMIE_LMOUSE_PRESSED_DOWN, EMIE_LMOUSE_LEFT_UP, EMBSM_LEFT},
+	{SDL_BUTTON_RIGHT, EMIE_RMOUSE_PRESSED_DOWN, EMIE_RMOUSE_LEFT_UP, EMBSM_RIGHT},
+	{SDL_BUTTON_MIDDLE, EMIE_MMOUSE_PRESSED_DOWN, EMIE_MMOUSE_LEFT_UP, EMBSM_MIDDLE},
+};
+
+static void setMouseModifiers(SEvent::SMouseInput& input)
+{
+	const bool* keyboardState = SDL_GetKeyboardState(nullptr);
 #if defined(_IRR_IOS_PLATFORM_) || defined(_IRR_OSX_PLATFORM_)
-	return keyboardState[SDL_SCANCODE_LGUI] || keyboardState[SDL_SCANCODE_RGUI];
+	input.Control = keyboardState[SDL_SCANCODE_LGUI] || keyboardState[SDL_SCANCODE_RGUI];
 #else
-	return keyboardState[SDL_SCANCODE_LCTRL] || keyboardState[SDL_SCANCODE_RCTRL];
+	input.Control = keyboardState[SDL_SCANCODE_LCTRL] ||
+			keyboardState[SDL_SCANCODE_RCTRL];
 #endif
+	input.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
+			keyboardState[SDL_SCANCODE_RSHIFT];
+}
+
+static float widenSubpixelMove(float delta)
+{
+	if (delta > 0.0f && delta < 1.0f)
+		return 1.0f;
+	if (delta < 0.0f && delta > -1.0f)
+		return -1.0f;
+	return delta;
 }
 
 static bool isPrimaryModifierPressed(SDL_Keymod mod)
@@ -98,6 +257,7 @@ static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 #if defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
 	return driverType == video::EDT_ANGLE;
 #else
+	(void)driverType;
 	return false;
 #endif
 }
@@ -105,11 +265,6 @@ static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 //! constructor
 CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param),
-	Window(0), Context(0),
-#if defined(_IRR_COMPILE_WITH_ANGLE_)
-	MetalView(0), ContextManager(0),
-#endif
-	MouseX(0), MouseY(0), MouseButtonStates(0), IgnoreWarpMouseEvent(false),
 	Width(param.WindowSize.Width), Height(param.WindowSize.Height),
 	Resizable(param.WindowResizable == 1),
 #if 0
@@ -172,9 +327,6 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 			SimulateTouchEvents = true;
 		}
 #endif
-
-		if (KeyMap.empty())
-			createKeyMap();
 	}
 
 	const int version = SDL_GetVersion();
@@ -255,10 +407,7 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 		VideoDriver->resetExposedData();
 
 	for (u32 i = 0; i < Joysticks.size(); i++)
-	{
-		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
-		SDL_CloseGamepad(gameController);
-	}
+		SDL_CloseGamepad(SDL_GetGamepadFromID(Joysticks[i]));
 
 	if (Context)
 	{
@@ -272,12 +421,13 @@ CIrrDeviceSDL::~CIrrDeviceSDL()
 		ContextManager->drop();
 		ContextManager = NULL;
 	}
+#endif
 
-	if (MetalView)
-	{
-		SDL_Metal_DestroyView(MetalView);
-		MetalView = NULL;
-	}
+#ifdef IRR_SDL_METAL_VIEW
+	// Hidden before the Metal view leaves, which resets the root view controller on UIKit
+	if (MetalView && Window)
+		SDL_HideWindow(Window);
+	SDL_Metal_DestroyView(MetalView);
 #endif
 
 	if (Window)
@@ -321,15 +471,11 @@ bool CIrrDeviceSDL::createWindow()
 		int display_count = 0;
 		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
 
-		if (display_count > 0)
+		if (const SDL_DisplayMode* mode = display_count > 0 ?
+				SDL_GetDesktopDisplayMode(displays[0]) : nullptr)
 		{
-			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
-
-			if (mode)
-			{
-				Width = roundf((float)mode->w * NativeScaleX);
-				Height = roundf((float)mode->h * NativeScaleY);
-			}
+			Width = (u32)roundf((float)mode->w * NativeScaleX);
+			Height = (u32)roundf((float)mode->h * NativeScaleY);
 		}
 
 		SDL_free(displays);
@@ -340,112 +486,48 @@ bool CIrrDeviceSDL::createWindow()
 	// The retries give up attributes only an OpenGL context has
 	if (!success && usesOpenGLContext(CreationParams.DriverType))
 	{
-		if (CreationParams.AntiAlias > 1)
+		// Tries again with the lowered attribute and says so if that worked
+		auto tryAgain = [&](const char* message) {
+			success = createWindowWithContext();
+			if (success)
+				os::Printer::log(message);
+		};
+
+		while (!success && CreationParams.AntiAlias > 1)
 		{
-			while (--CreationParams.AntiAlias > 1)
-			{
-				success = createWindowWithContext();
-
-				if (success)
-					break;
-			}
-
-			if (!success)
-			{
-				CreationParams.AntiAlias = 0;
-
-				success = createWindowWithContext();
-
-				if (success)
-				{
-					os::Printer::log("AntiAliasing disabled due to lack of support!");
-				}
-			}
+			CreationParams.AntiAlias = CreationParams.AntiAlias > 2 ?
+					CreationParams.AntiAlias - 1 : 0;
+			tryAgain("Use lower AntiAliasing due to lack of support!");
 		}
-
 		if (!success && CreationParams.WithAlphaChannel)
 		{
 			CreationParams.WithAlphaChannel = false;
-
-			success = createWindowWithContext();
-
-			if (success)
-			{
-				os::Printer::log("AlphaChannel disabled due to lack of support!");
-			}
+			tryAgain("AlphaChannel disabled due to lack of support!");
 		}
-
 		if (!success && CreationParams.Stencilbuffer)
 		{
 			CreationParams.Stencilbuffer = false;
-
-			success = createWindowWithContext();
-
-			if (success)
-			{
-				os::Printer::log("Stencilbuffer disabled due to lack of support!");
-			}
+			tryAgain("Stencilbuffer disabled due to lack of support!");
 		}
-
-		if (!success && CreationParams.ZBufferBits > 16)
+		while (!success && CreationParams.ZBufferBits > 16)
 		{
-			while (CreationParams.ZBufferBits > 16)
-			{
-				CreationParams.ZBufferBits -= 8;
-
-				success = createWindowWithContext();
-
-				if (success)
-					break;
-			}
-
-			if (success)
-			{
-				os::Printer::log("Use lower ZBufferBits due to lack of support!");
-			}
+			CreationParams.ZBufferBits -= 8;
+			tryAgain("Use lower ZBufferBits due to lack of support!");
 		}
-
-		if (!success && CreationParams.Bits > 16)
+		while (!success && CreationParams.Bits > 16)
 		{
-			while (CreationParams.Bits > 16)
-			{
-				CreationParams.Bits -= 8;
-
-				success = createWindowWithContext();
-
-				if (success)
-					break;
-			}
-
-			if (success)
-			{
-				os::Printer::log("Use lower Bits due to lack of support!");
-			}
+			CreationParams.Bits -= 8;
+			tryAgain("Use lower Bits due to lack of support!");
 		}
-
 		if (!success && CreationParams.Stereobuffer)
 		{
 			CreationParams.Stereobuffer = false;
-
-			success = createWindowWithContext();
-
-			if (success)
-			{
-				os::Printer::log("Stereobuffer disabled due to lack of support!");
-			}
+			tryAgain("Stereobuffer disabled due to lack of support!");
 		}
-
 		if (!success && CreationParams.Doublebuffer)
 		{
-			// Try single buffer
-			CreationParams.Doublebuffer = 0;
-
-			success = createWindowWithContext();
-
-			if (success)
-			{
-				os::Printer::log("Doublebuffer disabled due to lack of support!");
-			}
+			CreationParams.Doublebuffer = false;
+			tryAgain("Doublebuffer disabled due to lack of support!");
 		}
 	}
 
@@ -460,7 +542,7 @@ bool CIrrDeviceSDL::createWindow()
 
 bool CIrrDeviceSDL::createWindowWithContext()
 {
-	int SDL_Flags = 0;
+	SDL_WindowFlags SDL_Flags = 0;
 
 #if defined(_IRR_COMPILE_WITH_ANGLE_) && !defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
 	{
@@ -550,8 +632,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 	}
 
 	Window = SDL_CreateWindow("",
-							roundf((float)Width / NativeScaleX),
-							roundf((float)Height / NativeScaleY), SDL_Flags);
+							(int)roundf((float)Width / NativeScaleX),
+							(int)roundf((float)Height / NativeScaleY), SDL_Flags);
 
 	if (!Window)
 		os::Printer::log("SDL_CreateWindow failed", SDL_GetError(), ELL_ERROR);
@@ -575,8 +657,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 
 		Window = SDL_CreateWindow("",
-								roundf((float)Width / NativeScaleX),
-								roundf((float)Height / NativeScaleY), SDL_Flags);
+								(int)roundf((float)Width / NativeScaleX),
+								(int)roundf((float)Height / NativeScaleY), SDL_Flags);
 
 		if (!Window)
 			os::Printer::log("SDL_CreateWindow failed", SDL_GetError(), ELL_ERROR);
@@ -602,7 +684,7 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		}
 	}
 
-#if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
+#ifdef IRR_SDL_METAL_VIEW
 	if (createsOwnMetalView(CreationParams.DriverType))
 	{
 		if (!Window)
@@ -617,18 +699,23 @@ bool CIrrDeviceSDL::createWindowWithContext()
 			return false;
 		}
 
-		video::SExposedVideoData data;
-		data.OpenGLOSX.Layer = SDL_Metal_GetLayer(MetalView);
-		data.OpenGLOSX.Window = Window;
-
-		ContextManager = new video::CEGLManager();
-		if (!ContextManager->initialize(CreationParams, data))
+#if defined(_IRR_COMPILE_WITH_ANGLE_) && defined(IRR_ANGLE_CONTEXT_WITHOUT_SDL)
+		if (CreationParams.DriverType == video::EDT_ANGLE)
 		{
-			os::Printer::log("Could not initialize ANGLE EGL context!", ELL_ERROR);
-			SDL_DestroyWindow(Window);
-			Window = NULL;
-			return false;
+			video::SExposedVideoData data;
+			data.OpenGLOSX.Layer = SDL_Metal_GetLayer(MetalView);
+			data.OpenGLOSX.Window = Window;
+
+			ContextManager = new video::CEGLManager();
+			if (!ContextManager->initialize(CreationParams, data))
+			{
+				os::Printer::log("Could not initialize ANGLE EGL context!", ELL_ERROR);
+				SDL_DestroyWindow(Window);
+				Window = NULL;
+				return false;
+			}
 		}
+#endif
 
 		SDL_ShowWindow(Window);
 	}
@@ -642,8 +729,8 @@ bool CIrrDeviceSDL::createWindowWithContext()
 		int h = 0;
 		SDL_GetWindowSize(Window, &w, &h);
 
-		Width = roundf((float)w * NativeScaleX);
-		Height = roundf((float)h * NativeScaleY);
+		Width = (u32)roundf((float)w * NativeScaleX);
+		Height = (u32)roundf((float)h * NativeScaleY);
 	}
 
 	CreationParams.WindowSize.Width = Width;
@@ -657,9 +744,8 @@ void CIrrDeviceSDL::updateNativeScaleFromSystem()
 	float scaleFactor = 1.0f;
 
 	// Not SDL_GetDisplayContentScale, which is always 1.0 on Apple platforms
-	const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(SDL_GetPrimaryDisplay());
-
-	if (mode && mode->pixel_density > 0.0f)
+	if (const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(SDL_GetPrimaryDisplay());
+			mode && mode->pixel_density > 0.0f)
 		scaleFactor = mode->pixel_density;
 
 	NativeScaleX = scaleFactor;
@@ -782,6 +868,16 @@ bool CIrrDeviceSDL::run()
 	SEvent irrevent;
 	SDL_Event SDL_event;
 
+	auto postTouch = [&](ETOUCH_INPUT_EVENT event) {
+		irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
+		irrevent.TouchInput.Event = event;
+		irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
+		irrevent.TouchInput.X = (f64)(SDL_event.tfinger.x * (f32)Width);
+		irrevent.TouchInput.Y = (f64)(SDL_event.tfinger.y * (f32)Height);
+		irrevent.TouchInput.touchedCount = (f64)TouchIDs.size();
+		postEventFromUser(irrevent);
+	};
+
 	while (!Close && SDL_PollEvent(&SDL_event))
 	{
 		// os::Printer::log("event: ", core::stringc((int)SDL_event.type).c_str(), ELL_INFORMATION); // just for debugging
@@ -847,20 +943,16 @@ bool CIrrDeviceSDL::run()
 		case SDL_EVENT_FINGER_MOTION:
 			if (TouchIDs.size() == 1)
 			{
-				if (fabsf(LongTouchX - SDL_event.tfinger.x * Width) > Width * 0.05f ||
-					fabsf(LongTouchY - SDL_event.tfinger.y * Height) > Height * 0.05f)
+				const f32 x = SDL_event.tfinger.x * (f32)Width;
+				const f32 y = SDL_event.tfinger.y * (f32)Height;
+				if (fabsf((f32)LongTouchX - x) > (f32)Width * 0.05f ||
+					fabsf((f32)LongTouchY - y) > (f32)Height * 0.05f)
 				{
 					LongTouchHandled = true;
 				}
 			}
 
-			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
-			irrevent.TouchInput.Event = irr::ETIE_MOVED;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
-			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
-			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
-			irrevent.TouchInput.touchedCount = TouchIDs.size();
-			postEventFromUser(irrevent);
+			postTouch(irr::ETIE_MOVED);
 			break;
 
 		case SDL_EVENT_FINGER_DOWN:
@@ -868,8 +960,8 @@ bool CIrrDeviceSDL::run()
 			if (TouchIDs.size() == 0)
 			{
 				LongTouchTimer = os::Timer::getTime();
-				LongTouchX = SDL_event.tfinger.x * Width;
-				LongTouchY = SDL_event.tfinger.y * Height;
+				LongTouchX = (s32)(SDL_event.tfinger.x * (f32)Width);
+				LongTouchY = (s32)(SDL_event.tfinger.y * (f32)Height);
 				LongTouchHandled = false;
 			}
 			else
@@ -878,13 +970,7 @@ bool CIrrDeviceSDL::run()
 			}
 
 			TouchIDs.insert(SDL_event.tfinger.fingerID);
-			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
-			irrevent.TouchInput.Event = irr::ETIE_PRESSED_DOWN;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
-			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
-			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
-			irrevent.TouchInput.touchedCount = TouchIDs.size();
-			postEventFromUser(irrevent);
+			postTouch(irr::ETIE_PRESSED_DOWN);
 			break;
 
 		case SDL_EVENT_FINGER_UP:
@@ -894,88 +980,56 @@ bool CIrrDeviceSDL::run()
 				LongTouchHandled = true;
 			}
 
-			irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
-			irrevent.TouchInput.Event = irr::ETIE_LEFT_UP;
-			irrevent.TouchInput.ID = SDL_event.tfinger.fingerID;
-			irrevent.TouchInput.X = SDL_event.tfinger.x * Width;
-			irrevent.TouchInput.Y = SDL_event.tfinger.y * Height;
-			irrevent.TouchInput.touchedCount = TouchIDs.size();
-			postEventFromUser(irrevent);
+			postTouch(irr::ETIE_LEFT_UP);
 			TouchIDs.erase(SDL_event.tfinger.fingerID);
 			break;
 
 		case SDL_EVENT_MOUSE_WHEEL:
-			{
-				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-				irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
-				irrevent.MouseInput.X = MouseX;
-				irrevent.MouseInput.Y = MouseY;
+			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+			irrevent.MouseInput.Event = irr::EMIE_MOUSE_WHEEL;
+			irrevent.MouseInput.X = MouseX;
+			irrevent.MouseInput.Y = MouseY;
+			setMouseModifiers(irrevent.MouseInput);
+			irrevent.MouseInput.ButtonStates = MouseButtonStates;
+			// Whole steps: SDL adds up the fractions a trackpad sends
+			irrevent.MouseInput.Wheel = (f32)(SDL_event.wheel.integer_x +
+					SDL_event.wheel.integer_y);
 
-				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
-
-				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
-					keyboardState[SDL_SCANCODE_RSHIFT];
-
-				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-				// Whole steps: SDL adds up the fractions a trackpad sends
-				irrevent.MouseInput.Wheel = SDL_event.wheel.integer_x + SDL_event.wheel.integer_y;
-
-				if (irrevent.MouseInput.Wheel != 0)
-					postEventFromUser(irrevent);
-			}
+			if (!core::iszero(irrevent.MouseInput.Wheel))
+				postEventFromUser(irrevent);
 			break;
 		case SDL_EVENT_MOUSE_MOTION:
+			if (SimulateTouchEvents)
+				break;
+
+			if (IgnoreWarpMouseEvent)
 			{
-				if (SimulateTouchEvents)
-					break;
-
-				if (IgnoreWarpMouseEvent)
-				{
-					IgnoreWarpMouseEvent = false;
-					break;
-				}
-
-				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
-
-				if (SDL_GetWindowRelativeMouseMode(Window))
-				{
-					float x = SDL_event.motion.xrel * NativeScaleX;
-					float y = SDL_event.motion.yrel * NativeScaleY;
-
-					if (x > 0.0f && x < 1.0f)
-						x = 1.0f;
-					else if (x < 0.0f && x > -1.0f)
-						x = -1.0f;
-
-					if (y > 0.0f && y < 1.0f)
-						y = 1.0f;
-					else if (y < 0.0f && y > -1.0f)
-						y = -1.0f;
-
-					MouseX += roundf(x);
-					MouseY += roundf(y);
-				}
-				else
-				{
-					MouseX = roundf(SDL_event.motion.x * NativeScaleX);
-					MouseY = roundf(SDL_event.motion.y * NativeScaleY);
-				}
-
-				irrevent.MouseInput.X = MouseX;
-				irrevent.MouseInput.Y = MouseY;
-
-				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
-
-				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
-					keyboardState[SDL_SCANCODE_RSHIFT];
-
-				irrevent.MouseInput.ButtonStates = MouseButtonStates;
-
-				postEventFromUser(irrevent);
+				IgnoreWarpMouseEvent = false;
+				break;
 			}
+
+			irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
+			irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
+
+			if (SDL_GetWindowRelativeMouseMode(Window))
+			{
+				MouseX += (s32)roundf(widenSubpixelMove(
+					SDL_event.motion.xrel * NativeScaleX));
+				MouseY += (s32)roundf(widenSubpixelMove(
+					SDL_event.motion.yrel * NativeScaleY));
+			}
+			else
+			{
+				MouseX = (s32)roundf(SDL_event.motion.x * NativeScaleX);
+				MouseY = (s32)roundf(SDL_event.motion.y * NativeScaleY);
+			}
+
+			irrevent.MouseInput.X = MouseX;
+			irrevent.MouseInput.Y = MouseY;
+			setMouseModifiers(irrevent.MouseInput);
+			irrevent.MouseInput.ButtonStates = MouseButtonStates;
+
+			postEventFromUser(irrevent);
 			break;
 		case SDL_EVENT_MOUSE_BUTTON_DOWN:
 		case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -984,57 +1038,21 @@ bool CIrrDeviceSDL::run()
 					break;
 
 				irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
-				irrevent.MouseInput.X = SDL_event.button.x * NativeScaleX;
-				irrevent.MouseInput.Y = SDL_event.button.y * NativeScaleY;
-
-				const bool* keyboardState = SDL_GetKeyboardState(nullptr);
-
-				irrevent.MouseInput.Control = isPrimaryModifierPressed(keyboardState);
-				irrevent.MouseInput.Shift = keyboardState[SDL_SCANCODE_LSHIFT] ||
-					keyboardState[SDL_SCANCODE_RSHIFT];
-
+				irrevent.MouseInput.X = (s32)(SDL_event.button.x * NativeScaleX);
+				irrevent.MouseInput.Y = (s32)(SDL_event.button.y * NativeScaleY);
+				setMouseModifiers(irrevent.MouseInput);
 				irrevent.MouseInput.Event = irr::EMIE_MOUSE_MOVED;
 
-				switch(SDL_event.button.button)
+				const bool pressed = SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN;
+				for (const auto& [button, down, up, mask] : MouseButtons)
 				{
-				case SDL_BUTTON_LEFT:
-					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
-					{
-						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_PRESSED_DOWN;
-						MouseButtonStates |= irr::EMBSM_LEFT;
-					}
+					if (button != SDL_event.button.button)
+						continue;
+					irrevent.MouseInput.Event = pressed ? down : up;
+					if (pressed)
+						MouseButtonStates |= mask;
 					else
-					{
-						irrevent.MouseInput.Event = irr::EMIE_LMOUSE_LEFT_UP;
-						MouseButtonStates &= ~irr::EMBSM_LEFT;
-					}
-					break;
-
-				case SDL_BUTTON_RIGHT:
-					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
-					{
-						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_PRESSED_DOWN;
-						MouseButtonStates |= irr::EMBSM_RIGHT;
-					}
-					else
-					{
-						irrevent.MouseInput.Event = irr::EMIE_RMOUSE_LEFT_UP;
-						MouseButtonStates &= ~irr::EMBSM_RIGHT;
-					}
-					break;
-
-				case SDL_BUTTON_MIDDLE:
-					if (SDL_event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
-					{
-						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_PRESSED_DOWN;
-						MouseButtonStates |= irr::EMBSM_MIDDLE;
-					}
-					else
-					{
-						irrevent.MouseInput.Event = irr::EMIE_MMOUSE_LEFT_UP;
-						MouseButtonStates &= ~irr::EMBSM_MIDDLE;
-					}
-					break;
+						MouseButtonStates &= ~(u32)mask;
 				}
 
 				irrevent.MouseInput.ButtonStates = MouseButtonStates;
@@ -1063,69 +1081,38 @@ bool CIrrDeviceSDL::run()
 
 		case SDL_EVENT_KEY_DOWN:
 		case SDL_EVENT_KEY_UP:
-			{
-				SKeyMap mp;
-				mp.Scancode = SDL_event.key.scancode;
-				s32 idx = KeyMap.binary_search(mp);
-
-				EKEY_CODE key;
-				if (idx == -1)
-					key = (EKEY_CODE)0;
-				else
-					key = (EKEY_CODE)KeyMap[idx].IrrKeycode;
-
-				irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
-				irrevent.KeyInput.Char = 0;
-				irrevent.KeyInput.Key = key;
-				irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_EVENT_KEY_DOWN);
-				irrevent.KeyInput.Shift = (SDL_event.key.mod & SDL_KMOD_SHIFT) != 0;
-				irrevent.KeyInput.Control = isPrimaryModifierPressed(SDL_event.key.mod);
-				irrevent.KeyInput.AutoRepeat = SDL_event.key.repeat != 0;
-				irrevent.KeyInput.Extended = false;
-				postEventFromUser(irrevent);
-			}
+			irrevent.EventType = irr::EET_KEY_INPUT_EVENT;
+			irrevent.KeyInput.Char = 0;
+			irrevent.KeyInput.Key = (size_t)SDL_event.key.scancode < KeyMap.size() ?
+					KeyMap[SDL_event.key.scancode] : (EKEY_CODE)0;
+			irrevent.KeyInput.PressedDown = (SDL_event.type == SDL_EVENT_KEY_DOWN);
+			irrevent.KeyInput.Shift = (SDL_event.key.mod & SDL_KMOD_SHIFT) != 0;
+			irrevent.KeyInput.Control = isPrimaryModifierPressed(SDL_event.key.mod);
+			irrevent.KeyInput.AutoRepeat = SDL_event.key.repeat != 0;
+			irrevent.KeyInput.Extended = false;
+			postEventFromUser(irrevent);
 			break;
 
 		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
-			{
-				irrevent.EventType = irr::EET_SDL_CONTROLLER_BUTTON_EVENT;
-				irrevent.SDLControllerButtonEvent.Joystick = SDL_event.gbutton.which;
-				irrevent.SDLControllerButtonEvent.Button = SDL_event.gbutton.button;
-				irrevent.SDLControllerButtonEvent.Pressed = SDL_event.gbutton.down;
-				postEventFromUser(irrevent);
-			}
+			irrevent.EventType = irr::EET_SDL_CONTROLLER_BUTTON_EVENT;
+			irrevent.SDLControllerButtonEvent.Joystick = (u8)SDL_event.gbutton.which;
+			irrevent.SDLControllerButtonEvent.Button = SDL_event.gbutton.button;
+			irrevent.SDLControllerButtonEvent.Pressed = SDL_event.gbutton.down;
+			postEventFromUser(irrevent);
 			break;
 
 		case SDL_EVENT_GAMEPAD_ADDED:
-			{
-				int index = SDL_event.cdevice.which;
-
-				SDL_Gamepad* gameController = SDL_OpenGamepad(index);
-
-				if (gameController)
-				{
-					SDL_Joystick* joystick = SDL_GetGamepadJoystick(gameController);
-					SDL_JoystickID instanceId = SDL_GetJoystickID(joystick);
-					Joysticks.push_back(instanceId);
-				}
-			}
+			if (SDL_Gamepad* gameController = SDL_OpenGamepad(SDL_event.gdevice.which))
+				Joysticks.push_back(SDL_GetJoystickID(
+						SDL_GetGamepadJoystick(gameController)));
 			break;
 
 		case SDL_EVENT_GAMEPAD_REMOVED:
+			if (const s32 i = Joysticks.linear_search(SDL_event.gdevice.which); i != -1)
 			{
-				SDL_JoystickID instanceId = SDL_event.cdevice.which;
-
-				for (u32 i = 0; i < Joysticks.size(); i++)
-				{
-					if (instanceId != Joysticks[i])
-						continue;
-
-					SDL_Gamepad* gameController = SDL_GetGamepadFromID(instanceId);
-					SDL_CloseGamepad(gameController);
-					Joysticks.erase(i);
-					break;
-				}
+				SDL_CloseGamepad(SDL_GetGamepadFromID(Joysticks[(u32)i]));
+				Joysticks.erase((u32)i);
 			}
 			break;
 
@@ -1137,8 +1124,8 @@ bool CIrrDeviceSDL::run()
 			{
 				updateNativeScale();
 
-				u32 new_width = SDL_event.window.data1;
-				u32 new_height = SDL_event.window.data2;
+				u32 new_width = (u32)SDL_event.window.data1;
+				u32 new_height = (u32)SDL_event.window.data2;
 
 				if (new_width != Width || new_height != Height)
 				{
@@ -1154,25 +1141,21 @@ bool CIrrDeviceSDL::run()
 			break;
 
 		case SDL_EVENT_TEXT_EDITING:
-			{
-				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
-				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTEDITING;
-				irrevent.SDLTextEvent.Text = SDL_event.edit.text;
-				irrevent.SDLTextEvent.Start = SDL_event.edit.start;
-				irrevent.SDLTextEvent.Length = SDL_event.edit.length;
-				postEventFromUser(irrevent);
-			}
+			irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
+			irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTEDITING;
+			irrevent.SDLTextEvent.Text = SDL_event.edit.text;
+			irrevent.SDLTextEvent.Start = SDL_event.edit.start;
+			irrevent.SDLTextEvent.Length = SDL_event.edit.length;
+			postEventFromUser(irrevent);
 			break;
 
 		case SDL_EVENT_TEXT_INPUT:
-			{
-				irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
-				irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTINPUT;
-				irrevent.SDLTextEvent.Text = SDL_event.text.text;
-				irrevent.SDLTextEvent.Start = 0;
-				irrevent.SDLTextEvent.Length = 0;
-				postEventFromUser(irrevent);
-			}
+			irrevent.EventType = irr::EET_SDL_TEXT_EVENT;
+			irrevent.SDLTextEvent.Type = irr::ESDLET_TEXTINPUT;
+			irrevent.SDLTextEvent.Text = SDL_event.text.text;
+			irrevent.SDLTextEvent.Start = 0;
+			irrevent.SDLTextEvent.Length = 0;
+			postEventFromUser(irrevent);
 			break;
 
 		case SDL_EVENT_USER:
@@ -1191,21 +1174,19 @@ bool CIrrDeviceSDL::run()
 
 	for (u32 i = 0; i < Joysticks.size(); i++)
 	{
-		SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]);
-
-		if (gameController)
+		if (SDL_Gamepad* gameController = SDL_GetGamepadFromID(Joysticks[i]))
 		{
-			SEvent irrevent;
-			irrevent.EventType = EET_SDL_CONTROLLER_AXIS_EVENT;
-			irrevent.SDLControllerAxisEvent.Joystick = Joysticks[i];
+			SEvent axisEvent;
+			axisEvent.EventType = EET_SDL_CONTROLLER_AXIS_EVENT;
+			axisEvent.SDLControllerAxisEvent.Joystick = (u8)Joysticks[i];
 
 			for (s32 j = 0; j < 6; j++)
 			{
-				irrevent.SDLControllerAxisEvent.Axis[j] = j;
-				irrevent.SDLControllerAxisEvent.Value[j] = SDL_GetGamepadAxis(gameController, (SDL_GamepadAxis)j);
+				axisEvent.SDLControllerAxisEvent.Axis[j] = (u8)j;
+				axisEvent.SDLControllerAxisEvent.Value[j] = SDL_GetGamepadAxis(gameController, (SDL_GamepadAxis)j);
 			}
 
-			postEventFromUser(irrevent);
+			postEventFromUser(axisEvent);
 		}
 	}
 
@@ -1213,21 +1194,21 @@ bool CIrrDeviceSDL::run()
 	{
 		LongTouchHandled = true;
 
-		SEvent irrevent;
-		irrevent.EventType = irr::EET_TOUCH_INPUT_EVENT;
-		irrevent.TouchInput.Event = irr::ETIE_PRESSED_LONG;
-		irrevent.TouchInput.ID = *(TouchIDs.begin());
-		irrevent.TouchInput.X = LongTouchX;
-		irrevent.TouchInput.Y = LongTouchY;
-		irrevent.TouchInput.touchedCount = TouchIDs.size();
-		postEventFromUser(irrevent);
+		SEvent touchEvent;
+		touchEvent.EventType = irr::EET_TOUCH_INPUT_EVENT;
+		touchEvent.TouchInput.Event = irr::ETIE_PRESSED_LONG;
+		touchEvent.TouchInput.ID = *(TouchIDs.begin());
+		touchEvent.TouchInput.X = LongTouchX;
+		touchEvent.TouchInput.Y = LongTouchY;
+		touchEvent.TouchInput.touchedCount = (f64)TouchIDs.size();
+		postEventFromUser(touchEvent);
 	}
 
 	return !Close;
 }
 
 //! Activate any joysticks, and generate events for them.
-bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & joystickInfo)
+bool CIrrDeviceSDL::activateJoysticks(core::array<SJoystickInfo> & /*joystickInfo*/)
 {
 	return true;
 }
@@ -1258,18 +1239,14 @@ void CIrrDeviceSDL::sleep(u32 timeMs, bool pauseTimer)
 //! sets the caption of the window
 void CIrrDeviceSDL::setWindowCaption(const wchar_t* text)
 {
-	size_t length = wcslen(text);
-	char* textc = new char[length * sizeof(wchar_t) + 1]();
-	irr::core::wcharToUtf8(text, textc, length * sizeof(wchar_t) + 1);
-
-	SDL_SetWindowTitle(Window, textc);
-
-	delete[] textc;
+	std::string title(wcslen(text) * sizeof(wchar_t) + 1, '\0');
+	core::wcharToUtf8(text, title.data(), title.size());
+	SDL_SetWindowTitle(Window, title.c_str());
 }
 
 
 //! presents a surface in the client area
-bool CIrrDeviceSDL::present(video::IImage* surface, void* windowId, core::rect<s32>* srcClip)
+bool CIrrDeviceSDL::present(video::IImage* /*surface*/, void* /*windowId*/, core::rect<s32>* /*srcClip*/)
 {
 	return false;
 }
@@ -1300,21 +1277,18 @@ video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
 			os::Printer::log("No display modes available: ", SDL_GetError(), ELL_ERROR);
 		else
 		{
-			const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]);
-
-			if (mode)
+			if (const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]))
 			{
 				VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
-					core::dimension2d<u32>(mode->w, mode->h));
+					core::dimension2d<u32>((u32)mode->w, (u32)mode->h));
 			}
 
 			for (int i = 0; i < mode_count; i++)
 			{
-				const SDL_DisplayMode* mode = modes[i];
-
-				if (mode)
+				if (const SDL_DisplayMode* mode = modes[i])
 				{
-					VideoModeList->addMode(core::dimension2d<u32>(mode->w, mode->h),
+					VideoModeList->addMode(
+						core::dimension2d<u32>((u32)mode->w, (u32)mode->h),
 						SDL_BITSPERPIXEL(mode->format));
 				}
 			}
@@ -1368,12 +1342,6 @@ void CIrrDeviceSDL::restoreWindow()
 	SDL_RestoreWindow(Window);
 }
 
-bool CIrrDeviceSDL::isFullscreen() const
-{
-	return CIrrDeviceStub::isFullscreen();
-}
-
-
 //! returns if window is active. if not, nothing need to be drawn
 bool CIrrDeviceSDL::isWindowActive() const
 {
@@ -1396,25 +1364,6 @@ bool CIrrDeviceSDL::isWindowMinimized() const
 }
 
 
-//! Set the current Gamma Value for the Display
-bool CIrrDeviceSDL::setGammaRamp( f32 red, f32 green, f32 blue, f32 brightness, f32 contrast )
-{
-	/*
-	// todo: Gamma in SDL takes ints, what does Irrlicht use?
-	return (SDL_SetGamma(red, green, blue) != -1);
-	*/
-	return false;
-}
-
-//! Get the current Gamma Value for the Display
-bool CIrrDeviceSDL::getGammaRamp( f32 &red, f32 &green, f32 &blue, f32 &brightness, f32 &contrast )
-{
-/*	brightness = 0.f;
-	contrast = 0.f;
-	return (SDL_GetGamma(&red, &green, &blue) != -1);*/
-	return false;
-}
-
 //! gets text from the clipboard
 //! \return Returns empty string on failure.
 const c8* CIrrDeviceSDL::getTextFromClipboard() const
@@ -1434,171 +1383,16 @@ void CIrrDeviceSDL::copyToClipboard(const c8* text) const
 //! returns color format of the window.
 video::ECOLOR_FORMAT CIrrDeviceSDL::getColorFormat() const
 {
-	if (Window)
-	{
-		u32 pixel_format = SDL_GetWindowPixelFormat(Window);
-		if (SDL_BITSPERPIXEL(pixel_format) == 16)
-		{
-			if (SDL_ISPIXELFORMAT_ALPHA(pixel_format))
-				return video::ECF_A1R5G5B5;
-			else
-				return video::ECF_R5G6B5;
-		}
-		else
-		{
-			if (SDL_ISPIXELFORMAT_ALPHA(pixel_format))
-				return video::ECF_A8R8G8B8;
-			else
-				return video::ECF_R8G8B8;
-		}
-	}
-	else
+	if (!Window)
 		return CIrrDeviceStub::getColorFormat();
+
+	const u32 pixel_format = SDL_GetWindowPixelFormat(Window);
+	const bool alpha = SDL_ISPIXELFORMAT_ALPHA(pixel_format);
+	if (SDL_BITSPERPIXEL(pixel_format) == 16)
+		return alpha ? video::ECF_A1R5G5B5 : video::ECF_R5G6B5;
+	return alpha ? video::ECF_A8R8G8B8 : video::ECF_R8G8B8;
 }
 
-
-void CIrrDeviceSDL::createKeyMap()
-{
-	KeyMap.reallocate(136);
-
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_BACKSPACE, KEY_BACK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_TAB, KEY_TAB));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_CLEAR, KEY_CLEAR));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RETURN, KEY_RETURN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_PAUSE, KEY_PAUSE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_CAPSLOCK, KEY_CAPITAL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_ESCAPE, KEY_ESCAPE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SPACE, KEY_SPACE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_PAGEUP, KEY_PRIOR));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_PAGEDOWN, KEY_NEXT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_END, KEY_END));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_HOME, KEY_HOME));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LEFT, KEY_LEFT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_UP, KEY_UP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RIGHT, KEY_RIGHT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_DOWN, KEY_DOWN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SELECT, KEY_SELECT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_PRINTSCREEN, KEY_PRINT)); // KEY_SNAPSHOT?
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_EXECUTE, KEY_EXECUT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_INSERT, KEY_INSERT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_DELETE, KEY_DELETE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_HELP, KEY_HELP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_0, KEY_KEY_0));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_1, KEY_KEY_1));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_2, KEY_KEY_2));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_3, KEY_KEY_3));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_4, KEY_KEY_4));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_5, KEY_KEY_5));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_6, KEY_KEY_6));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_7, KEY_KEY_7));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_8, KEY_KEY_8));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_9, KEY_KEY_9));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_A, KEY_KEY_A));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_B, KEY_KEY_B));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_C, KEY_KEY_C));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_D, KEY_KEY_D));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_E, KEY_KEY_E));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F, KEY_KEY_F));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_G, KEY_KEY_G));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_H, KEY_KEY_H));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_I, KEY_KEY_I));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_J, KEY_KEY_J));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_K, KEY_KEY_K));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_L, KEY_KEY_L));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_M, KEY_KEY_M));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_N, KEY_KEY_N));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_O, KEY_KEY_O));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_P, KEY_KEY_P));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_Q, KEY_KEY_Q));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_R, KEY_KEY_R));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_S, KEY_KEY_S));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_T, KEY_KEY_T));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_U, KEY_KEY_U));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_V, KEY_KEY_V));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_W, KEY_KEY_W));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_X, KEY_KEY_X));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_Y, KEY_KEY_Y));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_Z, KEY_KEY_Z));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LGUI, KEY_LWIN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RGUI, KEY_RWIN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_APPLICATION, KEY_APPS));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_POWER, KEY_SLEEP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SLEEP, KEY_SLEEP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_0, KEY_NUMPAD0));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_1, KEY_NUMPAD1));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_2, KEY_NUMPAD2));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_3, KEY_NUMPAD3));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_4, KEY_NUMPAD4));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_5, KEY_NUMPAD5));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_6, KEY_NUMPAD6));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_7, KEY_NUMPAD7));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_8, KEY_NUMPAD8));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_9, KEY_NUMPAD9));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_MULTIPLY, KEY_MULTIPLY));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_PERIOD, KEY_PERIOD));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_DECIMAL, KEY_DECIMAL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_PLUS, KEY_ADD));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_MINUS, KEY_SUBTRACT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_DIVIDE, KEY_DIVIDE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_KP_ENTER, KEY_RETURN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SEPARATOR, KEY_SEPARATOR));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_PERIOD, KEY_PERIOD));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F1,  KEY_F1));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F2,  KEY_F2));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F3,  KEY_F3));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F4,  KEY_F4));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F5,  KEY_F5));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F6,  KEY_F6));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F7,  KEY_F7));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F8,  KEY_F8));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F9,  KEY_F9));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F10, KEY_F10));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F11, KEY_F11));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F12, KEY_F12));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F13, KEY_F13));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F14, KEY_F14));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F15, KEY_F15));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F16, KEY_F16));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F17, KEY_F17));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F18, KEY_F18));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F19, KEY_F19));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F20, KEY_F20));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F21, KEY_F21));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F22, KEY_F22));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F23, KEY_F23));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_F24, KEY_F24));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_NUMLOCKCLEAR, KEY_NUMLOCK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SCROLLLOCK, KEY_SCROLL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LSHIFT, KEY_LSHIFT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RSHIFT, KEY_RSHIFT));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LCTRL,  KEY_LCONTROL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RCTRL,  KEY_RCONTROL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LALT,  KEY_LMENU));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RALT,  KEY_RMENU));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MENU,  KEY_MENU));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_COMMA,  KEY_COMMA));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MINUS,  KEY_MINUS));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_AC_BACK, KEY_ESCAPE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_EQUALS, KEY_PLUS));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SEMICOLON, KEY_OEM_1));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_SLASH, KEY_OEM_2));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_GRAVE, KEY_OEM_3));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_LEFTBRACKET, KEY_OEM_4));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_BACKSLASH, KEY_OEM_5));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_RIGHTBRACKET, KEY_OEM_6));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_APOSTROPHE, KEY_OEM_7));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_CRSEL, KEY_CRSEL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_EXSEL, KEY_EXSEL));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_NEXT_TRACK, KEY_MEDIA_NEXT_TRACK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_PREVIOUS_TRACK, KEY_MEDIA_PREV_TRACK));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_STOP, KEY_MEDIA_STOP));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MEDIA_PLAY, KEY_MEDIA_PLAY_PAUSE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_MUTE, KEY_VOLUME_MUTE));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_VOLUMEDOWN, KEY_VOLUME_DOWN));
-	KeyMap.push_back(SKeyMap(SDL_SCANCODE_VOLUMEUP, KEY_VOLUME_UP));
-
-	KeyMap.sort();
-}
 
 #if 0
 bool CIrrDeviceSDL::activateAccelerometer(float updateInterval)
@@ -1712,28 +1506,27 @@ bool CIrrDeviceSDL::supportsRelativeMouse()
 
 void CIrrDeviceSDL::CCursorControl::initCursors()
 {
-	Cursors.reallocate(gui::ECI_COUNT);
-
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_DEFAULT));     // ECI_NORMAL
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR)); // ECI_CROSS
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_POINTER));      // ECI_HAND
-	Cursors.push_back(nullptr);                                             // ECI_HELP
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_TEXT));     // ECI_IBEAM
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NOT_ALLOWED));        // ECI_NO
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT));      // ECI_WAIT
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_MOVE));   // ECI_SIZEALL
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NESW_RESIZE));  // ECI_SIZENESW
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NWSE_RESIZE));  // ECI_SIZENWSE
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NS_RESIZE));    // ECI_SIZENS
-	Cursors.push_back(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_EW_RESIZE));    // ECI_SIZEWE
-	Cursors.push_back(nullptr);                                             // ECI_UP
+	Cursors = {
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_DEFAULT),     // ECI_NORMAL
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_CROSSHAIR), // ECI_CROSS
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_POINTER),      // ECI_HAND
+		nullptr,                                             // ECI_HELP
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_TEXT),     // ECI_IBEAM
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NOT_ALLOWED),        // ECI_NO
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT),      // ECI_WAIT
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_MOVE),   // ECI_SIZEALL
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NESW_RESIZE),  // ECI_SIZENESW
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NWSE_RESIZE),  // ECI_SIZENWSE
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_NS_RESIZE),    // ECI_SIZENS
+		SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_EW_RESIZE),    // ECI_SIZEWE
+		nullptr,                                             // ECI_UP
+	};
 }
 
 CIrrDeviceSDL::CCursorControl::~CCursorControl()
 {
-	const u32 count = Cursors.size();
-	for (u32 i = 0; i < count; i++)
-		SDL_DestroyCursor(Cursors[i]);
+	for (SDL_Cursor* cursor : Cursors)
+		SDL_DestroyCursor(cursor);
 }
 
 void CIrrDeviceSDL::CCursorControl::setActiveIcon(gui::ECURSOR_ICON iconId)
