@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,19 +33,16 @@
 		5E34CA4A1B7F6EBF00F212E8 /* CWriteFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */; };
 		5E34CA4C1B7F6EBF00F212E8 /* CXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */; };
 		5E34CA511B7F6EBF00F212E8 /* CZipReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8021B7F51D900F212E8 /* CZipReader.cpp */; };
-		5E34CA541B7F6EBF00F212E8 /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
 		5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
 		5E34CADD1B7F6EC100F212E8 /* Irrlicht.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89A1B7F652600F212E8 /* Irrlicht.cpp */; };
-		5E34CADE1B7F6EC100F212E8 /* leakHunter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89B1B7F652600F212E8 /* leakHunter.cpp */; };
 		5E34CADF1B7F6EC100F212E8 /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89C1B7F652600F212E8 /* os.cpp */; };
 		5E34CAE11B7F6EC100F212E8 /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89E1B7F652600F212E8 /* utf8.cpp */; };
 		5E34CAF41B7F6EC100F212E8 /* CMetaTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CC1B7F66E600F212E8 /* CMetaTriangleSelector.cpp */; };
 		5E34CAF61B7F6EC100F212E8 /* COctreeTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CE1B7F66E600F212E8 /* COctreeTriangleSelector.cpp */; };
 		5E34CAF81B7F6EC100F212E8 /* CSceneCollisionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */; };
-		5E34CAFA1B7F6EC100F212E8 /* CTerrainTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */; };
 		5E34CAFC1B7F6EC100F212E8 /* CTriangleBBSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */; };
 		5E34CAFE1B7F6EC100F212E8 /* CTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D61B7F66E600F212E8 /* CTriangleSelector.cpp */; };
 		5E34CB081B7F6EC200F212E8 /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
@@ -105,19 +102,16 @@
 		5E5732DB1C18E212003F664E /* CWriteFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FB1B7F51D900F212E8 /* CWriteFile.cpp */; };
 		5E5732DC1C18E212003F664E /* CXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7FD1B7F51D900F212E8 /* CXMLReader.cpp */; };
 		5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8021B7F51D900F212E8 /* CZipReader.cpp */; };
-		5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8051B7F51D900F212E8 /* irrXML.cpp */; };
 		5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */; };
 		5E57333B1C18E212003F664E /* CLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8921B7F652600F212E8 /* CLogger.cpp */; };
 		5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8941B7F652600F212E8 /* COSOperator.cpp */; };
 		5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8961B7F652600F212E8 /* CProfiler.cpp */; };
 		5E57333E1C18E212003F664E /* Irrlicht.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89A1B7F652600F212E8 /* Irrlicht.cpp */; };
-		5E57333F1C18E212003F664E /* leakHunter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89B1B7F652600F212E8 /* leakHunter.cpp */; };
 		5E5733401C18E212003F664E /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89C1B7F652600F212E8 /* os.cpp */; };
 		5E5733411C18E212003F664E /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C89E1B7F652600F212E8 /* utf8.cpp */; };
 		5E57334B1C18E212003F664E /* CMetaTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CC1B7F66E600F212E8 /* CMetaTriangleSelector.cpp */; };
 		5E57334C1C18E212003F664E /* COctreeTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8CE1B7F66E600F212E8 /* COctreeTriangleSelector.cpp */; };
 		5E57334D1C18E212003F664E /* CSceneCollisionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */; };
-		5E57334E1C18E212003F664E /* CTerrainTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */; };
 		5E57334F1C18E212003F664E /* CTriangleBBSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */; };
 		5E5733501C18E212003F664E /* CTriangleSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8D61B7F66E600F212E8 /* CTriangleSelector.cpp */; };
 		5E5733551C18E212003F664E /* CB3DMeshFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C8E01B7F680200F212E8 /* CB3DMeshFileLoader.cpp */; };
@@ -158,6 +152,13 @@
 		5E5734101C18E2E2003F664E /* COGLES2NormalMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734011C18E2E2003F664E /* COGLES2NormalMapRenderer.cpp */; };
 		5E5734121C18E2E2003F664E /* COGLES2ParallaxMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734031C18E2E2003F664E /* COGLES2ParallaxMapRenderer.cpp */; };
 		5E5734141C18E2E2003F664E /* COGLES2Renderer2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5734051C18E2E2003F664E /* COGLES2Renderer2D.cpp */; };
+		6A1BF596306ABFA500D17930 /* COpenGLCacheHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF595306ABFA500D17930 /* COpenGLCacheHandler.cpp */; };
+		6A1BF598306ABFA500D17930 /* COpenGLDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF597306ABFA500D17930 /* COpenGLDriver.cpp */; };
+		6A1BF59A306ABFA500D17930 /* COpenGLExtensionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF599306ABFA500D17930 /* COpenGLExtensionHandler.cpp */; };
+		6A1BF59C306ABFA500D17930 /* COpenGLNormalMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF59B306ABFA500D17930 /* COpenGLNormalMapRenderer.cpp */; };
+		6A1BF59E306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF59D306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp */; };
+		6A1BF5A0306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF59F306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp */; };
+		6A1BF5A2306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BF5A1306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp */; };
 		84295DEA2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
 		84295DEC2D69443D00B6C388 /* mz_crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DE82D69443D00B6C388 /* mz_crypt.c */; };
 		84295DEF2D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */; };
@@ -178,6 +179,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35AD967070B335FE29CCB2F6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		5E34C6E21B7F4AFB00F212E8 /* aabbox3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = aabbox3d.h; path = ../../include/aabbox3d.h; sourceTree = "<group>"; };
 		5E34C6E31B7F4AFB00F212E8 /* CDynamicMeshBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CDynamicMeshBuffer.h; path = ../../include/CDynamicMeshBuffer.h; sourceTree = "<group>"; };
 		5E34C6E41B7F4AFB00F212E8 /* CIndexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CIndexBuffer.h; path = ../../include/CIndexBuffer.h; sourceTree = "<group>"; };
@@ -422,7 +424,6 @@
 		5E34C8021B7F51D900F212E8 /* CZipReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CZipReader.cpp; sourceTree = "<group>"; };
 		5E34C8031B7F51D900F212E8 /* CZipReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZipReader.h; sourceTree = "<group>"; };
 		5E34C8041B7F51D900F212E8 /* IAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAttribute.h; sourceTree = "<group>"; };
-		5E34C8051B7F51D900F212E8 /* irrXML.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = irrXML.cpp; sourceTree = "<group>"; };
 		5E34C80D1B7F52AC00F212E8 /* CIrrDeviceStub.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CIrrDeviceStub.cpp; sourceTree = "<group>"; };
 		5E34C80E1B7F52AC00F212E8 /* CIrrDeviceStub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CIrrDeviceStub.h; sourceTree = "<group>"; };
 		5E34C8921B7F652600F212E8 /* CLogger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CLogger.cpp; sourceTree = "<group>"; };
@@ -434,7 +435,6 @@
 		5E34C8981B7F652600F212E8 /* CTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTimer.h; sourceTree = "<group>"; };
 		5E34C8991B7F652600F212E8 /* EProfileIDs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EProfileIDs.h; sourceTree = "<group>"; };
 		5E34C89A1B7F652600F212E8 /* Irrlicht.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = Irrlicht.cpp; sourceTree = "<group>"; };
-		5E34C89B1B7F652600F212E8 /* leakHunter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = leakHunter.cpp; sourceTree = "<group>"; };
 		5E34C89C1B7F652600F212E8 /* os.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = os.cpp; sourceTree = "<group>"; };
 		5E34C89D1B7F652600F212E8 /* os.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = os.h; sourceTree = "<group>"; };
 		5E34C89E1B7F652600F212E8 /* utf8.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utf8.cpp; sourceTree = "<group>"; };
@@ -455,7 +455,6 @@
 		5E34C8CF1B7F66E600F212E8 /* COctreeTriangleSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COctreeTriangleSelector.h; sourceTree = "<group>"; };
 		5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CSceneCollisionManager.cpp; sourceTree = "<group>"; };
 		5E34C8D11B7F66E600F212E8 /* CSceneCollisionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSceneCollisionManager.h; sourceTree = "<group>"; };
-		5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTerrainTriangleSelector.cpp; sourceTree = "<group>"; };
 		5E34C8D31B7F66E600F212E8 /* CTerrainTriangleSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTerrainTriangleSelector.h; sourceTree = "<group>"; };
 		5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTriangleBBSelector.cpp; sourceTree = "<group>"; };
 		5E34C8D51B7F66E600F212E8 /* CTriangleBBSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTriangleBBSelector.h; sourceTree = "<group>"; };
@@ -540,6 +539,13 @@
 		5E7908901C10EE6700DFE7FE /* COpenGLCoreTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COpenGLCoreTexture.h; sourceTree = "<group>"; };
 		5E9573D11C18E70000C27989 /* EVertexAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EVertexAttributes.h; path = ../../include/EVertexAttributes.h; sourceTree = "<group>"; };
 		5EC24F5E1B8B861200DCA615 /* exampleHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = exampleHelper.h; path = ../../include/exampleHelper.h; sourceTree = "<group>"; };
+		6A1BF595306ABFA500D17930 /* COpenGLCacheHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLCacheHandler.cpp; sourceTree = "<group>"; };
+		6A1BF597306ABFA500D17930 /* COpenGLDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLDriver.cpp; sourceTree = "<group>"; };
+		6A1BF599306ABFA500D17930 /* COpenGLExtensionHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLExtensionHandler.cpp; sourceTree = "<group>"; };
+		6A1BF59B306ABFA500D17930 /* COpenGLNormalMapRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLNormalMapRenderer.cpp; sourceTree = "<group>"; };
+		6A1BF59D306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLParallaxMapRenderer.cpp; sourceTree = "<group>"; };
+		6A1BF59F306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLSLMaterialRenderer.cpp; sourceTree = "<group>"; };
+		6A1BF5A1306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COpenGLShaderMaterialRenderer.cpp; sourceTree = "<group>"; };
 		84295DE82D69443D00B6C388 /* mz_crypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt.c; path = "minizip-ng/mz_crypt.c"; sourceTree = "<group>"; };
 		84295DEE2D6A7D6E00B6C388 /* mz_crypt_apple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mz_crypt_apple.c; path = "minizip-ng/mz_crypt_apple.c"; sourceTree = "<group>"; };
 		84662D06281F2A1700E342E7 /* EMeshBufferTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMeshBufferTypes.h; path = ../../include/EMeshBufferTypes.h; sourceTree = "<group>"; };
@@ -549,7 +555,6 @@
 		8495BD2C28C0E591009FCF4D /* CIrrDeviceSDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CIrrDeviceSDL.cpp; sourceTree = "<group>"; };
 		84A219A4249F823800E189FC /* SOverrideMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOverrideMaterial.h; path = ../../include/SOverrideMaterial.h; sourceTree = "<group>"; };
 		AF0E61000000000000000001 /* CEGLManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGLManager.cpp; sourceTree = "<group>"; };
-		35AD967070B335FE29CCB2F6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -572,6 +577,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		399994861B53BD614D1BD90D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				35AD967070B335FE29CCB2F6 /* ImageIO.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5E34C6D81B7F4A0C00F212E8 = {
 			isa = PBXGroup;
 			children = (
@@ -904,7 +917,6 @@
 				5E34C8021B7F51D900F212E8 /* CZipReader.cpp */,
 				5E34C8031B7F51D900F212E8 /* CZipReader.h */,
 				5E34C8041B7F51D900F212E8 /* IAttribute.h */,
-				5E34C8051B7F51D900F212E8 /* irrXML.cpp */,
 			);
 			name = io;
 			sourceTree = "<group>";
@@ -957,7 +969,6 @@
 				5E34C8981B7F652600F212E8 /* CTimer.h */,
 				5E34C8991B7F652600F212E8 /* EProfileIDs.h */,
 				5E34C89A1B7F652600F212E8 /* Irrlicht.cpp */,
-				5E34C89B1B7F652600F212E8 /* leakHunter.cpp */,
 				5E34C89C1B7F652600F212E8 /* os.cpp */,
 				5E34C89D1B7F652600F212E8 /* os.h */,
 				5E34C89E1B7F652600F212E8 /* utf8.cpp */,
@@ -992,7 +1003,6 @@
 				5E34C8CF1B7F66E600F212E8 /* COctreeTriangleSelector.h */,
 				5E34C8D01B7F66E600F212E8 /* CSceneCollisionManager.cpp */,
 				5E34C8D11B7F66E600F212E8 /* CSceneCollisionManager.h */,
-				5E34C8D21B7F66E600F212E8 /* CTerrainTriangleSelector.cpp */,
 				5E34C8D31B7F66E600F212E8 /* CTerrainTriangleSelector.h */,
 				5E34C8D41B7F66E600F212E8 /* CTriangleBBSelector.cpp */,
 				5E34C8D51B7F66E600F212E8 /* CTriangleBBSelector.h */,
@@ -1141,10 +1151,17 @@
 		5E79088B1C10ED5000DFE7FE /* OpenGL Core */ = {
 			isa = PBXGroup;
 			children = (
+				6A1BF595306ABFA500D17930 /* COpenGLCacheHandler.cpp */,
 				5E79088D1C10EE6700DFE7FE /* COpenGLCoreCacheHandler.h */,
 				5E79088E1C10EE6700DFE7FE /* COpenGLCoreFeature.h */,
 				5E79088F1C10EE6700DFE7FE /* COpenGLCoreRenderTarget.h */,
 				5E7908901C10EE6700DFE7FE /* COpenGLCoreTexture.h */,
+				6A1BF597306ABFA500D17930 /* COpenGLDriver.cpp */,
+				6A1BF599306ABFA500D17930 /* COpenGLExtensionHandler.cpp */,
+				6A1BF59B306ABFA500D17930 /* COpenGLNormalMapRenderer.cpp */,
+				6A1BF59D306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp */,
+				6A1BF5A1306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp */,
+				6A1BF59F306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp */,
 			);
 			name = "OpenGL Core";
 			sourceTree = "<group>";
@@ -1156,14 +1173,6 @@
 				84295DE82D69443D00B6C388 /* mz_crypt.c */,
 			);
 			name = "minizip-ng";
-			sourceTree = "<group>";
-		};
-		399994861B53BD614D1BD90D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				35AD967070B335FE29CCB2F6 /* ImageIO.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1216,13 +1225,13 @@
 				};
 			};
 			buildConfigurationList = 5E34C6DC1B7F4A0C00F212E8 /* Build configuration list for PBXProject "Irrlicht" */;
-			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
 			mainGroup = 5E34C6D81B7F4A0C00F212E8;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 5E34C9F41B7F6E3400F212E8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1240,6 +1249,13 @@
 			files = (
 				AF0E61000000000000000100 /* CEGLManager.cpp in Sources */,
 				AA000C0FFEE0000000000000 /* COGLES2Driver.cpp in Sources */,
+				6A1BF596306ABFA500D17930 /* COpenGLCacheHandler.cpp in Sources */,
+				6A1BF598306ABFA500D17930 /* COpenGLDriver.cpp in Sources */,
+				6A1BF59A306ABFA500D17930 /* COpenGLExtensionHandler.cpp in Sources */,
+				6A1BF59C306ABFA500D17930 /* COpenGLNormalMapRenderer.cpp in Sources */,
+				6A1BF59E306ABFA500D17930 /* COpenGLParallaxMapRenderer.cpp in Sources */,
+				6A1BF5A0306ABFA500D17930 /* COpenGLSLMaterialRenderer.cpp in Sources */,
+				6A1BF5A2306ABFA500D17930 /* COpenGLShaderMaterialRenderer.cpp in Sources */,
 				AA000C0FFEE0000000000001 /* COGLES2ExtensionHandler.cpp in Sources */,
 				AA000C0FFEE0000000000002 /* COGLES2FixedPipelineRenderer.cpp in Sources */,
 				AA000C0FFEE0000000000003 /* COGLES2MaterialRenderer.cpp in Sources */,
@@ -1273,19 +1289,16 @@
 				5E34CA4A1B7F6EBF00F212E8 /* CWriteFile.cpp in Sources */,
 				5E34CA4C1B7F6EBF00F212E8 /* CXMLReader.cpp in Sources */,
 				5E34CA511B7F6EBF00F212E8 /* CZipReader.cpp in Sources */,
-				5E34CA541B7F6EBF00F212E8 /* irrXML.cpp in Sources */,
 				5E34CA591B7F6EBF00F212E8 /* CIrrDeviceStub.cpp in Sources */,
 				5E34CAD51B7F6EC100F212E8 /* CLogger.cpp in Sources */,
 				5E34CAD71B7F6EC100F212E8 /* COSOperator.cpp in Sources */,
 				5E34CAD91B7F6EC100F212E8 /* CProfiler.cpp in Sources */,
 				5E34CADD1B7F6EC100F212E8 /* Irrlicht.cpp in Sources */,
-				5E34CADE1B7F6EC100F212E8 /* leakHunter.cpp in Sources */,
 				5E34CADF1B7F6EC100F212E8 /* os.cpp in Sources */,
 				5E34CAE11B7F6EC100F212E8 /* utf8.cpp in Sources */,
 				5E34CAF41B7F6EC100F212E8 /* CMetaTriangleSelector.cpp in Sources */,
 				5E34CAF61B7F6EC100F212E8 /* COctreeTriangleSelector.cpp in Sources */,
 				5E34CAF81B7F6EC100F212E8 /* CSceneCollisionManager.cpp in Sources */,
-				5E34CAFA1B7F6EC100F212E8 /* CTerrainTriangleSelector.cpp in Sources */,
 				5E34CAFC1B7F6EC100F212E8 /* CTriangleBBSelector.cpp in Sources */,
 				5E34CAFE1B7F6EC100F212E8 /* CTriangleSelector.cpp in Sources */,
 				5E34CB081B7F6EC200F212E8 /* CB3DMeshFileLoader.cpp in Sources */,
@@ -1357,7 +1370,6 @@
 				5E5732DB1C18E212003F664E /* CWriteFile.cpp in Sources */,
 				5E5732DC1C18E212003F664E /* CXMLReader.cpp in Sources */,
 				5E5732DE1C18E212003F664E /* CZipReader.cpp in Sources */,
-				5E5732DF1C18E212003F664E /* irrXML.cpp in Sources */,
 				5E5732E11C18E212003F664E /* CIrrDeviceStub.cpp in Sources */,
 				5E5734081C18E2E2003F664E /* COGLES2Driver.cpp in Sources */,
 				5E57340C1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp in Sources */,
@@ -1365,13 +1377,11 @@
 				5E57333C1C18E212003F664E /* COSOperator.cpp in Sources */,
 				5E57333D1C18E212003F664E /* CProfiler.cpp in Sources */,
 				5E57333E1C18E212003F664E /* Irrlicht.cpp in Sources */,
-				5E57333F1C18E212003F664E /* leakHunter.cpp in Sources */,
 				5E5733401C18E212003F664E /* os.cpp in Sources */,
 				5E5733411C18E212003F664E /* utf8.cpp in Sources */,
 				5E57334B1C18E212003F664E /* CMetaTriangleSelector.cpp in Sources */,
 				5E57334C1C18E212003F664E /* COctreeTriangleSelector.cpp in Sources */,
 				5E57334D1C18E212003F664E /* CSceneCollisionManager.cpp in Sources */,
-				5E57334E1C18E212003F664E /* CTerrainTriangleSelector.cpp in Sources */,
 				5E57334F1C18E212003F664E /* CTriangleBBSelector.cpp in Sources */,
 				5E5733501C18E212003F664E /* CTriangleSelector.cpp in Sources */,
 				5E5733551C18E212003F664E /* CB3DMeshFileLoader.cpp in Sources */,
@@ -1450,6 +1460,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"GLES_SILENCE_DEPRECATION=1",
+					"GL_SILENCE_DEPRECATION=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -1503,6 +1514,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"GLES_SILENCE_DEPRECATION=1",
+					"GL_SILENCE_DEPRECATION=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_UNROLL_LOOPS = YES;
