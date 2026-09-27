@@ -178,6 +178,10 @@ namespace irr
 		//! Resize the render window.
 		virtual void setWindowSize(const irr::core::dimension2d<u32>& size) IRR_OVERRIDE {}
 
+		//! No frame pacing and no frame rate for the display, unless the device has them
+		bool paceFrames(f32) IRR_OVERRIDE { return false; }
+		void setFrameRate(f32) IRR_OVERRIDE {}
+
 	protected:
 
 		void createGUIAndScene();

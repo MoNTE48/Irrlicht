@@ -49,6 +49,14 @@ namespace irr
 		//! pause execution for a specified time
 		virtual void sleep(u32 timeMs, bool pauseTimer) IRR_OVERRIDE;
 
+#if defined(_IRR_OSX_PLATFORM_)
+		bool paceFrames(f32 fps) IRR_OVERRIDE;
+#endif
+
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+		void setFrameRate(f32 fps) IRR_OVERRIDE;
+#endif
+
 		//! sets the caption of the window
 		virtual void setWindowCaption(const wchar_t* text) IRR_OVERRIDE;
 
@@ -271,16 +279,53 @@ namespace irr
 #ifdef IRR_SDL_METAL_VIEW
 		SDL_MetalView MetalView = 0;
 #endif
+
+	public:
+		//! What a driver that talks to the platform directly has to draw into: the layer
+		//! this device made on Apple, and the window the system owns everywhere else
+		void* getDrawTarget() const
+		{
+#if defined(IRR_SDL_METAL_VIEW)
+			return MetalView ? SDL_Metal_GetLayer(MetalView) : 0;
+#elif defined(_IRR_ANDROID_PLATFORM_)
+			return Window ? SDL_GetPointerProperty(SDL_GetWindowProperties(Window),
+					SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER, 0) : 0;
+#else
+			return 0;
+#endif
+		}
+
+		//! Takes in what the system sent and waits while the app is in the background;
+		//! true once it is back, with a current GL context if the device made one.
+		//! Only the wait polls: a poll finding events keeps the next run() from pumping
+		bool waitForForeground()
+		{
+			SDL_PumpEvents();
+			if (Background)
+				SDL_PollEvent(0);
+			return !Background && (!Context || SDL_GL_GetCurrentContext() != 0);
+		}
+
+	private:
 		core::array<SDL_JoystickID> Joysticks;
 
 		mutable core::stringc ClipboardText;
 		s32 MouseX = 0, MouseY = 0;
 		u32 MouseButtonStates = 0;
 		bool IgnoreWarpMouseEvent = false;
+		//! From SDL's word that the app goes to the background until the word it is back
+		bool Background = false;
+
+		static bool SDLCALL onAppEvent(void* user, SDL_Event* event);
 
 		u32 Width, Height;
 
 		bool Resizable;
+
+#if defined(_IRR_OSX_PLATFORM_)
+		//! When the frame the device sleeps for ends, in microseconds
+		u64 FrameTarget = 0;
+#endif
 
 #if 0
 		SDL_SensorID AccelerometerIndex;

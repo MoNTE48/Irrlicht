@@ -91,6 +91,16 @@ namespace irr
 		*/
 		virtual void sleep(u32 timeMs, bool pauseTimer=false) = 0;
 
+		//! Paces the next frame at fps frames a second, where the device can.
+		/** Call it at the end of every frame: a frame without the call ends the pacing.
+		\return True if the device paces the frames, false if the caller has to limit
+		them. */
+		virtual bool paceFrames(f32 fps) =0;
+
+		//! Tells the display the frame rate the app aims at, where the system takes it;
+		//! it does not pace the frames.
+		virtual void setFrameRate(f32 fps) =0;
+
 		//! Provides access to the video driver for drawing 3d and 2d geometry.
 		/** \return Pointer the video driver. */
 		virtual video::IVideoDriver* getVideoDriver() = 0;

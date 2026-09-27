@@ -25,6 +25,8 @@
 #endif
 
 #if defined(_IRR_ANDROID_PLATFORM_)
+#include <android/native_window.h>
+#include <dlfcn.h>
 #include <jni.h>
 #endif
 
@@ -262,6 +264,22 @@ static bool createsOwnMetalView(video::E_DRIVER_TYPE driverType)
 #endif
 }
 
+//! SDL calls this on the thread that pumps the system events, the game's: within run(),
+//! a driver's beginScene or the making of the window
+bool SDLCALL CIrrDeviceSDL::onAppEvent(void* user, SDL_Event* event)
+{
+	CIrrDeviceSDL* device = static_cast<CIrrDeviceSDL*>(user);
+	if (event->type == SDL_EVENT_WILL_ENTER_BACKGROUND)
+	{
+		device->Background = true;
+		if (device->VideoDriver)
+			device->VideoDriver->OnBackground();
+	}
+	else if (event->type == SDL_EVENT_DID_ENTER_FOREGROUND)
+		device->Background = false;
+	return true;
+}
+
 //! constructor
 CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 	: CIrrDeviceStub(param),
@@ -294,6 +312,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
 		{
 			os::Printer::log("SDL initialized", ELL_INFORMATION);
+			SDL_AddEventWatch(onAppEvent, this);
 		}
 		else
 		{
@@ -403,6 +422,7 @@ CIrrDeviceSDL::CIrrDeviceSDL(const SIrrlichtCreationParameters& param)
 //! destructor
 CIrrDeviceSDL::~CIrrDeviceSDL()
 {
+	SDL_RemoveEventWatch(onAppEvent, this);
 	if (VideoDriver)
 		VideoDriver->resetExposedData();
 
@@ -1234,6 +1254,49 @@ void CIrrDeviceSDL::sleep(u32 timeMs, bool pauseTimer)
 	if (pauseTimer && !wasStopped)
 		Timer->start();
 }
+
+
+#if defined(_IRR_OSX_PLATFORM_)
+//! The device sleeps to a target counted from the last one
+bool CIrrDeviceSDL::paceFrames(f32 fps)
+{
+	const u64 frame = (u64)(1000000 / fps);
+	const u64 target = FrameTarget + frame;
+	u64 now = SDL_NS_TO_US(SDL_GetTicksNS());
+	if (now + 1000 < target)
+		SDL_DelayNS(SDL_US_TO_NS(target - now - 1000));
+	now = SDL_NS_TO_US(SDL_GetTicksNS());
+	if (now < target)
+		SDL_DelayPrecise(SDL_US_TO_NS(target - now));
+	now = SDL_NS_TO_US(SDL_GetTicksNS());
+	//! A frame late by over half its time starts the count again
+	FrameTarget = now < target + frame / 2 ? target : now;
+	return true;
+}
+#endif
+
+
+#if defined(_IRR_ANDROID_PLATFORM_)
+void CIrrDeviceSDL::setFrameRate(f32 fps)
+{
+	// ANativeWindow_setFrameRate is Android 11 API
+	static const auto set = (int (*)(ANativeWindow *, float, int8_t))
+			dlsym(dlopen("libnativewindow.so", RTLD_NOW), "ANativeWindow_setFrameRate");
+	ANativeWindow *window = (ANativeWindow *)getDrawTarget();
+	if (set && window)
+		set(window, fps, ANATIVEWINDOW_FRAME_RATE_COMPATIBILITY_DEFAULT);
+}
+#elif defined(_IRR_IOS_PLATFORM_)
+// The hint of the SDL fork; an SDL without it takes the value and ignores it
+#ifndef SDL_HINT_IOS_FRAME_RATE
+#define SDL_HINT_IOS_FRAME_RATE "SDL_IOS_FRAME_RATE"
+#endif
+
+void CIrrDeviceSDL::setFrameRate(f32 fps)
+{
+	SDL_SetHint(SDL_HINT_IOS_FRAME_RATE, std::to_string((int)fps).c_str());
+}
+#endif
 
 
 //! sets the caption of the window
