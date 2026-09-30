@@ -1904,7 +1904,11 @@ COGLES2Driver::~COGLES2Driver()
 
 		// Blend Equation
 		if (material.BlendOperation == EBO_NONE)
+		{
 			CacheHandler->setBlend(false);
+			// Types that switch blending on themselves use this equation
+			CacheHandler->setBlendEquation(GL_FUNC_ADD);
+		}
 		else
 		{
 			CacheHandler->setBlend(true);
