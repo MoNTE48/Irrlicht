@@ -502,6 +502,12 @@ COGLES2Driver::~COGLES2Driver()
 
 		CNullDriver::beginScene(clearFlag, clearColor, clearDepth, clearStencil, videoData, sourceRect);
 
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
+		//! A pause the system sent meanwhile takes the context away; the frame waits for the app to come back
+		if (DeviceType == EIDT_SDL && !SDLDevice->waitForForeground())
+			return false;
+#endif
+
 		if (ContextManager)
 			ContextManager->activateContext(videoData, true);
 
