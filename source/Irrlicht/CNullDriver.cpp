@@ -1738,13 +1738,19 @@ CNullDriver::SHWBufferLink *CNullDriver::getBufferLink(const scene::IMeshBuffer*
 //! Update all hardware buffers, remove unused ones
 void CNullDriver::updateAllHardwareBuffers()
 {
-	std::list<SHWBufferLink*>::iterator Iterator = HWBufferList.begin();
-
-	while (Iterator != HWBufferList.end())
+	//! Walking every link misses the cache per buffer, so a frame ages a 16th of them,
+	//! going on from where the last one stopped
+	++HWBufferFrame;
+	size_t left = (HWBufferList.size() + 15) / 16;
+	while (left-- && !HWBufferList.empty())
 	{
-		SHWBufferLink *Link = *Iterator++;
+		if (HWBufferNext == HWBufferList.end())
+			HWBufferNext = HWBufferList.begin();
+		SHWBufferLink *Link = *HWBufferNext++;
 
-		Link->LastUsed++;
+		if (Link->AgedAt)
+			Link->LastUsed += HWBufferFrame - Link->AgedAt;
+		Link->AgedAt = HWBufferFrame;
 		if (Link->LastUsed>1000 || Link->MeshBuffer->getReferenceCount() == 1)
 		{
 			deleteHardwareBuffer(Link);
@@ -1757,6 +1763,8 @@ void CNullDriver::deleteHardwareBuffer(SHWBufferLink *HWBuffer)
 {
 	if (!HWBuffer)
 		return;
+	if (HWBufferNext == HWBuffer->listPosition)
+		++HWBufferNext;
 	HWBufferList.erase(HWBuffer->listPosition);
 	delete HWBuffer;
 }

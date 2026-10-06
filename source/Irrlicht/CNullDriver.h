@@ -416,6 +416,8 @@ namespace video
 			u32 ChangedID_Vertex;
 			u32 ChangedID_Index;
 			u32 LastUsed;
+			//! The frame the link last aged in, 0 before its first
+			u32 AgedAt = 0;
 			scene::E_HARDWARE_MAPPING Mapped_Vertex;
 			scene::E_HARDWARE_MAPPING Mapped_Index;
 			std::list<SHWBufferLink*>::iterator listPosition;
@@ -893,6 +895,9 @@ namespace video
 		u32 PrimitivesDrawn;
 		u32 MinVertexCountForVBO;
 
+		//! Frames the hardware buffers aged in, and the link the next frame starts from
+		u32 HWBufferFrame = 0;
+		std::list<SHWBufferLink*>::iterator HWBufferNext = HWBufferList.end();
 		u32 TextureCreationFlags;
 
 		f32 FogStart;
