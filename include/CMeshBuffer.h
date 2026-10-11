@@ -66,6 +66,8 @@ namespace scene
 		/** \return Number of vertices. */
 		virtual u32 getVertexCount() const IRR_OVERRIDE
 		{
+			if (Released)
+				return ReleasedVertices;
 			return Vertices.size();
 		}
 
@@ -96,6 +98,8 @@ namespace scene
 		/** \return Number of indices. */
 		virtual u32 getIndexCount() const IRR_OVERRIDE
 		{
+			if (Released)
+				return ReleasedIndices;
 			return Indices.size();
 		}
 
@@ -121,6 +125,8 @@ namespace scene
 		/** should be called if the mesh changed. */
 		virtual void recalculateBoundingBox() IRR_OVERRIDE
 		{
+			if (Released)
+				return;
 			if (!Vertices.empty())
 			{
 				BoundingBox.reset(Vertices[0].Pos);
@@ -269,6 +275,23 @@ namespace scene
 			return PrimitiveType;
 		}
 
+		virtual void setReleasable(bool releasable) IRR_OVERRIDE
+		{
+			Releasable = releasable;
+		}
+
+		virtual bool releaseData() IRR_OVERRIDE
+		{
+			if (!Releasable || Released)
+				return Released;
+			ReleasedVertices = Vertices.size();
+			ReleasedIndices = Indices.size();
+			Vertices.clear();
+			Indices.clear();
+			Released = true;
+			return true;
+		}
+
 		//! flags the mesh as changed, reloads hardware buffers
 		virtual void setDirty(E_BUFFER_TYPE Buffer=EBT_VERTEX_AND_INDEX) IRR_OVERRIDE
 		{
@@ -334,6 +357,11 @@ namespace scene
 		core::array<T> Vertices;
 		//! Indices into the vertices of this buffer.
 		core::array<u16> Indices;
+		//! The counts of the vertices and indices a driver took
+		u32 ReleasedVertices = 0;
+		u32 ReleasedIndices = 0;
+		bool Releasable = false;
+		bool Released = false;
 		//! Bounding box of this meshbuffer.
 		core::aabbox3d<f32> BoundingBox;
 		//! Primitive type used for rendering (triangles, lines, ...)

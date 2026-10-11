@@ -946,7 +946,7 @@ CMetalDriver::~CMetalDriver()
 	}
 
 	//! Freed before Impl, which mesh buffers refer to
-	removeAllHardwareBuffers();
+	removeEveryHardwareBuffer();
 	deleteMaterialRenders();
 	deleteAllTextures();
 

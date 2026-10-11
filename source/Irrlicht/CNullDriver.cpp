@@ -159,7 +159,7 @@ CNullDriver::~CNullDriver()
 	deleteMaterialRenders();
 
 	// delete hardware mesh buffers
-	removeAllHardwareBuffers();
+	removeEveryHardwareBuffer();
 }
 
 
@@ -1751,7 +1751,7 @@ void CNullDriver::updateAllHardwareBuffers()
 		if (Link->AgedAt)
 			Link->LastUsed += HWBufferFrame - Link->AgedAt;
 		Link->AgedAt = HWBufferFrame;
-		if (Link->LastUsed>HWBufferIdleFrames || Link->MeshBuffer->getReferenceCount() == 1)
+		if ((Link->LastUsed>HWBufferIdleFrames && !Link->Pinned) || Link->MeshBuffer->getReferenceCount() == 1)
 		{
 			deleteHardwareBuffer(Link);
 		}
@@ -1779,8 +1779,20 @@ void CNullDriver::removeHardwareBuffer(const scene::IMeshBuffer* mb)
 }
 
 
-//! Remove all hardware buffers
+//! Remove all hardware buffers but those that gave their data up, which nothing could fill again
 void CNullDriver::removeAllHardwareBuffers()
+{
+	for (auto it = HWBufferList.begin(); it != HWBufferList.end();)
+	{
+		SHWBufferLink* link = *it++;
+		if (!link->Pinned)
+			deleteHardwareBuffer(link);
+	}
+}
+
+
+//! Remove every hardware buffer, as the driver goes
+void CNullDriver::removeEveryHardwareBuffer()
 {
 	while (!HWBufferList.empty())
 		deleteHardwareBuffer(HWBufferList.front());

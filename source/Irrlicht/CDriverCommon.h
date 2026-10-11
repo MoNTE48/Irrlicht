@@ -227,14 +227,15 @@ public:
 		const scene::IMeshBuffer* mb = link->MeshBuffer;
 		if (!mb)
 			return false;
-		//! Up to date while the change counters match
-		if (link->Vertices && link->ChangedID_Vertex == mb->getChangedID_Vertex() &&
-				link->ChangedID_Index == mb->getChangedID_Index())
+		//! Up to date while the change counters match; a buffer without its data keeps what the GPU has
+		if (link->Vertices && (link->Pinned || (link->ChangedID_Vertex == mb->getChangedID_Vertex() &&
+				link->ChangedID_Index == mb->getChangedID_Index())))
 			return true;
 
 		const u32 vertexCount = mb->getVertexCount();
 		const u32 indexCount = mb->getIndexCount();
-		if (!vertexCount || !indexCount)
+		//! A buffer that gave its data up has nothing to copy again
+		if (!vertexCount || !indexCount || !mb->getVertices() || !mb->getIndices())
 			return false;
 
 		const u32 stride = getVertexPitchFromType(mb->getVertexType());
@@ -265,6 +266,9 @@ public:
 		link->IndexType = mb->getIndexType();
 		link->ChangedID_Vertex = mb->getChangedID_Vertex();
 		link->ChangedID_Index = mb->getChangedID_Index();
+		//! The pools now hold a releasable buffer's only copy
+		if (link->Shared)
+			link->Pinned = const_cast<scene::IMeshBuffer*>(mb)->releaseData();
 		return true;
 	}
 

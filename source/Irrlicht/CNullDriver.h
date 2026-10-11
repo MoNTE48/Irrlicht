@@ -418,6 +418,8 @@ namespace video
 			u32 LastUsed;
 			//! The frame the link last aged in, 0 before its first
 			u32 AgedAt = 0;
+			//! The buffer gave its data up to the GPU: the link stays while the game keeps the buffer
+			bool Pinned = false;
 			scene::E_HARDWARE_MAPPING Mapped_Vertex;
 			scene::E_HARDWARE_MAPPING Mapped_Index;
 			std::list<SHWBufferLink*>::iterator listPosition;
@@ -445,6 +447,9 @@ namespace video
 
 		//! Remove all hardware buffers
 		virtual void removeAllHardwareBuffers() IRR_OVERRIDE;
+
+		//! Remove every hardware buffer, also those that gave their data up
+		void removeEveryHardwareBuffer();
 
 		//! Update all hardware buffers, remove unused ones
 		virtual void updateAllHardwareBuffers();

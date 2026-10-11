@@ -154,6 +154,13 @@ s		\param updateBoundingBox When true update boundingbox by the added vertices *
 		//! flags the meshbuffer as changed, reloads hardware buffers
 		virtual void setDirty(E_BUFFER_TYPE buffer=EBT_VERTEX_AND_INDEX) = 0;
 
+		//! Lets a driver that holds the buffer on the GPU drop the vertices and indices, keeping their counts
+		/** For buffers the game never reads or changes after it builds them. */
+		virtual void setReleasable(bool) {}
+
+		//! Drops the vertices and indices if the buffer is releasable; false if it keeps them
+		virtual bool releaseData() { return false; }
+
 		//! Get the currently used ID for identification of changes.
 		/** This shouldn't be used for anything outside the VideoDriver. */
 		virtual u32 getChangedID_Vertex() const = 0;
