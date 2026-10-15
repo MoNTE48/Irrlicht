@@ -1578,19 +1578,19 @@ private:
 		//! selectors
 		if (__builtin_available(macOS 13.0, iOS 16.0, *))
 		{
-			record(reflection->vertexBindings(), false, true);
-			record(reflection->fragmentBindings(), true, true);
+			record(reflection->vertexBindings(), false);
+			record(reflection->fragmentBindings(), true);
 		}
 		else
 		{
-			record(reflection->vertexArguments(), false, false);
-			record(reflection->fragmentArguments(), true, false);
+			record(reflection->vertexArguments(), false);
+			record(reflection->fragmentArguments(), true);
 		}
 		Program->Reflected = true;
 	}
 
-	//! Bindings tell whether the stage reads them by isUsed, arguments by isActive
-	void record(const NS::Array* bindings, bool fragment, bool isBinding)
+	//! Every constant a stage declares is sent: iOS 16.7 marks none of them as read
+	void record(const NS::Array* bindings, bool fragment)
 	{
 		if (!bindings)
 			return;
@@ -1603,10 +1603,6 @@ private:
 				continue;
 			//! Skips the driver's vertex buffer slot
 			if (buffer && !fragment && binding->index() == METAL_VERTEX_INDEX)
-				continue;
-			//! A constant the stage never reads is never sent
-			if (buffer && !(isBinding ? binding->isUsed() :
-					reinterpret_cast<const MTL::Argument*>(binding)->isActive()))
 				continue;
 
 			SMetalUniform u{ binding->name()->utf8String(), (u32)binding->index(),
