@@ -2628,7 +2628,7 @@ COGLES2Driver::~COGLES2Driver()
 	//! Returns the maximum amount of primitives
 	u32 COGLES2Driver::getMaximalPrimitiveCount() const
 	{
-		return 65535;
+		return 0x7fffffff;
 	}
 
 	bool COGLES2Driver::setRenderTargetEx(IRenderTarget* target, u16 clearFlag, SColor clearColor, f32 clearDepth, u8 clearStencil)
