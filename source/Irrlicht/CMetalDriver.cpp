@@ -1108,10 +1108,14 @@ bool CMetalDriver::genericDriverInit(const SIrrlichtCreationParameters& params,
 
 	const NS::SharedPtr<MTL::Function> depthVertex = stageFunction(Impl,
 			Impl->DriverStages[2].get(), nullptr, &error);
-	if (depthVertex)
+	//! HD 4000 on macOS 10.15 writes no depth for a pipeline without a fragment function
+	const NS::SharedPtr<MTL::Function> depthFragment = depthVertex ? stageFunction(Impl,
+			buildStage(Impl, "fragment void fs_depth_ndc() {}").get(), nullptr, &error) :
+			NS::SharedPtr<MTL::Function>();
+	if (depthFragment)
 	{
 		const NS::SharedPtr<MTL::RenderPipelineDescriptor> clearPass = describePipeline(
-				depthVertex.get(), nullptr, nullptr, 0, ECP_NONE);
+				depthVertex.get(), depthFragment.get(), nullptr, 0, ECP_NONE);
 		Impl->DepthQuad = newPipeline(Impl, clearPass.get(), &error);
 	}
 	if (!Impl->DepthQuad)
