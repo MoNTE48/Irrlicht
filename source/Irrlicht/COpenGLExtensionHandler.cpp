@@ -891,6 +891,9 @@ bool COpenGLExtensionHandler::queryFeature(E_VIDEO_DRIVER_FEATURE feature) const
 		return FeatureAvailable[IRR_ARB_seamless_cube_map];
 	case EVDF_DEPTH_CLAMP:
 		return FeatureAvailable[IRR_NV_depth_clamp] || FeatureAvailable[IRR_ARB_depth_clamp];
+	case EVDF_RENDER_TO_FLOAT_TEXTURE:
+		return Version >= 300 || (FeatureAvailable[IRR_ARB_texture_float] &&
+				FeatureAvailable[IRR_ARB_texture_rg] && queryFeature(EVDF_FRAMEBUFFER_OBJECT));
 
 	default:
 		return false;

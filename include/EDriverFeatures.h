@@ -145,6 +145,10 @@ namespace video
 		//! Support for clamping vertices beyond far-plane to depth instead of capping them.
 		EVDF_DEPTH_CLAMP,
 
+		//! Support for floating point color render targets: R16F, R32F, G16R16F, G32R32F,
+		//! A16B16G16R16F and A32B32G32R32F
+		EVDF_RENDER_TO_FLOAT_TEXTURE,
+
 		//! Only used for counting the elements of this enum
 		EVDF_COUNT
 	};
