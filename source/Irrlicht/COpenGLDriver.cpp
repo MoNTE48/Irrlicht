@@ -451,7 +451,15 @@ bool COpenGLDriver::updateVertexHardwareBuffer(SHWBufferLink_opengl *HWBuffer)
 			break;
 			default:
 			{
-				return false;
+				// The packed standard vertex, outside the enumeration
+				if (vType != EVT_STANDARD_PACKED)
+					return false;
+				S3DVertexPacked* pb = reinterpret_cast<S3DVertexPacked*>(buffer.pointer());
+				const S3DVertexPacked* po = static_cast<const S3DVertexPacked*>(vertices);
+				for (u32 i=0; i<vertexCount; i++)
+				{
+					po[i].Color.toOpenGLColor((u8*)&(pb[i].Color));
+				}
 			}
 		}
 	}
@@ -877,6 +885,11 @@ void COpenGLDriver::drawVertexPrimitiveList(const void* vertices, u32 vertexCoun
 				case EVT_TANGENTS:
 					glColorPointer(colorSize, GL_UNSIGNED_BYTE, sizeof(S3DVertexTangents), &(static_cast<const S3DVertexTangents*>(vertices))[0].Color);
 					break;
+				default:
+					if (vType == EVT_STANDARD_PACKED)
+						glColorPointer(colorSize, GL_UNSIGNED_BYTE, sizeof(S3DVertexPacked),
+								&static_cast<const S3DVertexPacked*>(vertices)->Color);
+					break;
 			}
 		}
 		else
@@ -972,6 +985,36 @@ void COpenGLDriver::drawVertexPrimitiveList(const void* vertices, u32 vertexCoun
 					glTexCoordPointer(3, GL_FLOAT, sizeof(S3DVertexTangents), buffer_offset(48));
 			}
 			break;
+		default:
+			// The packed standard vertex, outside the enumeration: the normal in signed bytes
+			if (vType != EVT_STANDARD_PACKED)
+				break;
+			if (vertices)
+			{
+				const S3DVertexPacked* v = static_cast<const S3DVertexPacked*>(vertices);
+				glNormalPointer(GL_BYTE, sizeof(S3DVertexPacked), v->Normal);
+				glTexCoordPointer(2, GL_FLOAT, sizeof(S3DVertexPacked), &v->TCoords);
+				glVertexPointer(3, GL_FLOAT, sizeof(S3DVertexPacked), &v->Pos);
+			}
+			else
+			{
+				glNormalPointer(GL_BYTE, sizeof(S3DVertexPacked), buffer_offset(12));
+				glColorPointer(colorSize, GL_UNSIGNED_BYTE, sizeof(S3DVertexPacked), buffer_offset(16));
+				glTexCoordPointer(2, GL_FLOAT, sizeof(S3DVertexPacked), buffer_offset(20));
+				glVertexPointer(3, GL_FLOAT, sizeof(S3DVertexPacked), 0);
+			}
+
+			if (Feature.MaxTextureUnits > 0 && CacheHandler->getTextureCache()[1])
+			{
+				CacheHandler->setClientActiveTexture(GL_TEXTURE0 + 1);
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				if (vertices)
+					glTexCoordPointer(2, GL_FLOAT, sizeof(S3DVertexPacked),
+							&static_cast<const S3DVertexPacked*>(vertices)->TCoords);
+				else
+					glTexCoordPointer(2, GL_FLOAT, sizeof(S3DVertexPacked), buffer_offset(20));
+			}
+			break;
 	}
 
 	renderArray(indexList, primitiveCount, pType, iType);
@@ -1025,6 +1068,19 @@ void COpenGLDriver::getColorBuffer(const void* vertices, u32 vertexCount, E_VERT
 		case EVT_TANGENTS:
 		{
 			const S3DVertexTangents* p = static_cast<const S3DVertexTangents*>(vertices);
+			for (i=0; i<vertexCount; i+=4)
+			{
+				p->Color.toOpenGLColor(&ColorBuffer[i]);
+				++p;
+			}
+		}
+		break;
+		default:
+		{
+			// The packed standard vertex, outside the enumeration
+			if (vType != EVT_STANDARD_PACKED)
+				break;
+			const S3DVertexPacked* p = static_cast<const S3DVertexPacked*>(vertices);
 			for (i=0; i<vertexCount; i+=4)
 			{
 				p->Color.toOpenGLColor(&ColorBuffer[i]);

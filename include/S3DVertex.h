@@ -31,6 +31,10 @@ enum E_VERTEX_TYPE
 	EVT_TANGENTS
 };
 
+//! Standard vertex in 28 bytes, video::S3DVertexPacked; outside the enumeration, as only the
+//! drivers with shaders draw it
+const E_VERTEX_TYPE EVT_STANDARD_PACKED = (E_VERTEX_TYPE)(EVT_TANGENTS + 1);
+
 //! Array holding the built in vertex type names
 const char* const sBuiltInVertexTypeNames[] =
 {
@@ -263,8 +267,38 @@ struct S3DVertexTangents : public S3DVertex
 
 
 
+//! Standard vertex in 28 bytes: the normal in 3 signed bytes and a pad
+struct S3DVertexPacked
+{
+	S3DVertexPacked() {}
+
+	//! A normal longer than 1 on an axis is scaled down to fit
+	S3DVertexPacked(const S3DVertex& v) : Pos(v.Pos), Color(v.Color), TCoords(v.TCoords)
+	{
+		const f32 scale = 127.f / core::max_(1.f,
+				core::max_(fabsf(v.Normal.X), fabsf(v.Normal.Y), fabsf(v.Normal.Z)));
+		Normal[0] = (s8)core::round32(v.Normal.X * scale);
+		Normal[1] = (s8)core::round32(v.Normal.Y * scale);
+		Normal[2] = (s8)core::round32(v.Normal.Z * scale);
+		Normal[3] = 0;
+	}
+
+	core::vector3df Pos;
+	s8 Normal[4];
+	SColor Color;
+	core::vector2d<f32> TCoords;
+
+	static E_VERTEX_TYPE getType()
+	{
+		return EVT_STANDARD_PACKED;
+	}
+};
+
+
 inline u32 getVertexPitchFromType(E_VERTEX_TYPE vertexType)
 {
+	if (vertexType == EVT_STANDARD_PACKED)
+		return sizeof(video::S3DVertexPacked);
 	switch (vertexType)
 	{
 	case video::EVT_2TCOORDS:

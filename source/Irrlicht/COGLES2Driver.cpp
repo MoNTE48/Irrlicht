@@ -921,6 +921,26 @@ COGLES2Driver::~COGLES2Driver()
 				(1u << EVA_TCOORD0) | (vType == EVT_2TCOORDS ? (1u << EVA_TCOORD1) :
 				vType == EVT_TANGENTS ? ((1u << EVA_TANGENT) | (1u << EVA_BINORMAL)) : 0u));
 
+		//! Outside the enumeration, so not a case of the switch
+		if (vType == EVT_STANDARD_PACKED)
+		{
+			const GLsizei stride = sizeof(S3DVertexPacked);
+			if (const S3DVertexPacked* v = static_cast<const S3DVertexPacked*>(vertices))
+			{
+				glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, stride, &v->Pos);
+				glVertexAttribPointer(EVA_NORMAL, 4, GL_BYTE, true, stride, v->Normal);
+				glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, stride, &v->Color);
+				glVertexAttribPointer(EVA_TCOORD0, 2, GL_FLOAT, false, stride, &v->TCoords);
+			}
+			else
+			{
+				glVertexAttribPointer(EVA_POSITION, 3, GL_FLOAT, false, stride, 0);
+				glVertexAttribPointer(EVA_NORMAL, 4, GL_BYTE, true, stride, buffer_offset(12));
+				glVertexAttribPointer(EVA_COLOR, 4, GL_UNSIGNED_BYTE, true, stride, buffer_offset(16));
+				glVertexAttribPointer(EVA_TCOORD0, 2, GL_FLOAT, false, stride, buffer_offset(20));
+			}
+		}
+
 		switch (vType)
 		{
 		case EVT_STANDARD:

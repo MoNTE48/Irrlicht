@@ -424,7 +424,7 @@ struct SMetalShaderProgram
 	//! Whether Uniforms were filled by reflection
 	bool Reflected = false;
 	//! By blend, vertex type and colour mask, shared by every material of the program
-	NS::SharedPtr<MTL::RenderPipelineState> Pipelines[2][EVT_TANGENTS + 1][ECP_ALL + 1];
+	NS::SharedPtr<MTL::RenderPipelineState> Pipelines[2][EVT_STANDARD_PACKED + 1][ECP_ALL + 1];
 };
 
 
@@ -438,7 +438,7 @@ struct CMetalDriver::SImpl
 	//! Stages by their source, each built once
 	std::unordered_map<std::string, std::shared_ptr<SMetalStage>> Stages;
 	//! Vertex layouts of the driver's and the game's programs
-	NS::SharedPtr<MTL::VertexDescriptor> Layouts[EVT_TANGENTS + 1];
+	NS::SharedPtr<MTL::VertexDescriptor> Layouts[EVT_STANDARD_PACKED + 1];
 
 	//! By colour mask, blend, vType, alphaSource, texture and alpha test
 	std::unordered_map<u32, NS::SharedPtr<MTL::RenderPipelineState>> Pipelines;
@@ -834,7 +834,7 @@ static std::shared_ptr<SMetalStage> openDriverStage(CMetalDriver::SImpl* impl, i
 static MTL::RenderPipelineState* pipelineFor(CMetalDriver::SImpl* impl, bool textured,
 		bool alphaTest, u32 blend, E_VERTEX_TYPE vType, u32 alphaSource = 0, u32 planes = ECP_ALL)
 {
-	if ((u32)vType > (u32)EVT_TANGENTS || blend >> 16 > (u32)EBO_MAX_ALPHA || alphaSource > 2)
+	if ((u32)vType > (u32)EVT_STANDARD_PACKED || blend >> 16 > (u32)EBO_MAX_ALPHA || alphaSource > 2)
 		return nullptr;
 
 	NS::SharedPtr<MTL::RenderPipelineState>& slot = impl->Pipelines
@@ -1026,6 +1026,27 @@ bool CMetalDriver::genericDriverInit(const SIrrlichtCreationParameters& params,
 		Impl->Layouts[i]->layouts()->object(METAL_VERTEX_INDEX)->setStride(
 				getVertexPitchFromType((E_VERTEX_TYPE)i));
 	}
+	//! The packed standard vertex; missing attributes alias as above
+	static const struct { MTL::VertexFormat Format; u32 Offset; } packed[EVA_COUNT] = {
+		{ MTL::VertexFormatFloat3, 0 },
+		{ MTL::VertexFormatChar3Normalized, 12 },
+		{ MTL::VertexFormatUChar4Normalized, 16 },
+		{ MTL::VertexFormatFloat2, 20 },
+		{ MTL::VertexFormatFloat2, 20 },
+		{ MTL::VertexFormatFloat3, 0 },
+		{ MTL::VertexFormatFloat3, 0 },
+	};
+	Impl->Layouts[EVT_STANDARD_PACKED] = NS::TransferPtr(MTL::VertexDescriptor::alloc()->init());
+	for (u32 a = 0; a < EVA_COUNT; ++a)
+	{
+		MTL::VertexAttributeDescriptor* attribute =
+				Impl->Layouts[EVT_STANDARD_PACKED]->attributes()->object(a);
+		attribute->setFormat(packed[a].Format);
+		attribute->setOffset(packed[a].Offset);
+		attribute->setBufferIndex(METAL_VERTEX_INDEX);
+	}
+	Impl->Layouts[EVT_STANDARD_PACKED]->layouts()->object(METAL_VERTEX_INDEX)->setStride(
+			sizeof(S3DVertexPacked));
 
 	MTL::TextureDescriptor* black = MTL::TextureDescriptor::texture2DDescriptor(
 			MTL::PixelFormatBGRA8Unorm, 1, 1, false);
@@ -1508,7 +1529,7 @@ public:
 	MTL::RenderPipelineState* pipelineFor(E_VERTEX_TYPE vType, u32 planes = ECP_ALL)
 	{
 		CMetalDriver::SImpl* impl = Driver->Impl;
-		if ((u32)vType > (u32)EVT_TANGENTS)
+		if ((u32)vType > (u32)EVT_STANDARD_PACKED)
 			return nullptr;
 		NS::SharedPtr<MTL::RenderPipelineState>& slot =
 				Program->Pipelines[Blend ? 1 : 0][vType][planes];
@@ -1939,8 +1960,9 @@ CMetalShaderRenderer* CMetalDriver::newShaderRenderer(u32 index,
 		IShaderConstantSetCallBack* callback, E_MATERIAL_TYPE base, s32 userData)
 {
 	auto* renderer = new CMetalShaderRenderer(this, Programs[index], callback, base, userData);
-	//! Builds its pipeline while the game loads
+	//! Builds its pipelines while the game loads, for the static meshes too
 	renderer->pipelineFor(EVT_STANDARD);
+	renderer->pipelineFor(EVT_STANDARD_PACKED);
 	return renderer;
 }
 
