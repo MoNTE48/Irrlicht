@@ -78,6 +78,9 @@ public:
 
 	bool addPrecompiledShader(const c8* name, const void* vertexProgram, u32 vertexSize,
 			const void* fragmentProgram, u32 fragmentSize) IRR_OVERRIDE;
+	void setPrecompiledConstant(u32 id, bool value) IRR_OVERRIDE;
+	void setPrecompiledConstant(u32 id, f32 value) IRR_OVERRIDE;
+	void setPrecompiledConstant(u32 id, s32 value) IRR_OVERRIDE;
 
 	//! The driver's Metal objects
 	struct SImpl;
@@ -91,6 +94,9 @@ protected:
 
 private:
 	bool genericDriverInit(const SIrrlichtCreationParameters& params, CIrrDeviceSDL* device);
+
+	//! Sets a constant of the precompiled programs by its 4 bytes and MTL::DataType
+	void setGameConstant(u32 id, u32 bits, u32 type);
 
 	//! Opens the command buffer and encoder, taking a drawable if needed; the pass starts with its
 	//! depth cleared

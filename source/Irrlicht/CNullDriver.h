@@ -510,6 +510,9 @@ namespace video
 		//! No precompiled programs, unless the driver has them
 		bool addPrecompiledShader(const c8*, const void*, u32, const void*, u32)
 				IRR_OVERRIDE { return false; }
+		void setPrecompiledConstant(u32, bool) IRR_OVERRIDE {}
+		void setPrecompiledConstant(u32, f32) IRR_OVERRIDE {}
+		void setPrecompiledConstant(u32, s32) IRR_OVERRIDE {}
 
 		//! Adds a new material renderer to the video device.
 		virtual s32 addMaterialRenderer(IMaterialRenderer* renderer,

@@ -1418,6 +1418,13 @@ namespace video
 		virtual bool addPrecompiledShader(const c8* name, const void* vertexProgram,
 				u32 vertexSize, const void* fragmentProgram, u32 fragmentSize) =0;
 
+		//! Sets the bool specialization constant id, 16 and up, of the precompiled programs; a
+		//! changed value holds from each program's next use, so set it outside a frame
+		virtual void setPrecompiledConstant(u32 id, bool value) =0;
+		//! The same for a float or an int specialization constant
+		virtual void setPrecompiledConstant(u32 id, f32 value) =0;
+		virtual void setPrecompiledConstant(u32 id, s32 value) =0;
+
 		//! Returns a pointer to the mesh manipulator.
 		virtual scene::IMeshManipulator* getMeshManipulator() =0;
 

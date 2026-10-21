@@ -442,6 +442,14 @@ struct CMetalDriver::SImpl
 
 	//! By colour mask, blend, vType, alphaSource, texture and alpha test
 	std::unordered_map<u32, NS::SharedPtr<MTL::RenderPipelineState>> Pipelines;
+	//! The game's function constants of the precompiled programs, from 16, and their values
+	struct SGameConstant
+	{
+		u32 Bits;
+		u32 Type;
+	};
+	core::array<SGameConstant> GameConstants;
+	NS::SharedPtr<MTL::FunctionConstantValues> GameConstantValues;
 
 	//! A sampler per set of layer settings in use
 	struct SSampler
@@ -1539,9 +1547,11 @@ public:
 		const NS::SharedPtr<NS::AutoreleasePool> pool = newAutoreleasePool();
 		NS::Error* error = nullptr;
 		if (!Program->Vertex)
-			Program->Vertex = stageFunction(impl, Program->VertexStage.get(), nullptr, &error);
+			Program->Vertex = stageFunction(impl, Program->VertexStage.get(),
+					impl->GameConstantValues.get(), &error);
 		if (Program->Vertex && !Program->Fragment)
-			Program->Fragment = stageFunction(impl, Program->FragmentStage.get(), nullptr, &error);
+			Program->Fragment = stageFunction(impl, Program->FragmentStage.get(),
+					impl->GameConstantValues.get(), &error);
 		if (!Program->Vertex || !Program->Fragment)
 		{
 			refuseSlot(impl, &slot, programName(), error);
@@ -1953,6 +1963,63 @@ bool CMetalDriver::addPrecompiledShader(const c8* name, const void* vertexProgra
 			std::string(fragment, strnlen(fragment, fragmentSize)));
 	Programs.push_back(program);
 	return true;
+}
+
+
+void CMetalDriver::setPrecompiledConstant(u32 id, bool value)
+{
+	setGameConstant(id, value ? 1 : 0, MTL::DataTypeBool);
+}
+
+
+void CMetalDriver::setPrecompiledConstant(u32 id, f32 value)
+{
+	u32 bits;
+	memcpy(&bits, &value, sizeof(bits));
+	setGameConstant(id, bits, MTL::DataTypeFloat);
+}
+
+
+void CMetalDriver::setPrecompiledConstant(u32 id, s32 value)
+{
+	setGameConstant(id, (u32)value, MTL::DataTypeInt);
+}
+
+
+//! The functions skip the constants they do not declare, so one set serves every program
+void CMetalDriver::setGameConstant(u32 id, u32 bits, u32 type)
+{
+	if (id < 16)
+		return;
+	core::array<SImpl::SGameConstant>& constants = Impl->GameConstants;
+	const u32 index = id - 16;
+	if (index < constants.size() && constants[index].Bits == bits &&
+			constants[index].Type == type)
+		return;
+	while (constants.size() <= index)
+		constants.push_back({ 0, MTL::DataTypeBool });
+	constants[index] = { bits, type };
+	Impl->GameConstantValues = NS::TransferPtr(MTL::FunctionConstantValues::alloc()->init());
+	for (u32 i = 0; i < constants.size(); ++i)
+	{
+		//! A bool takes 1 byte, a float or an int its 4
+		const bool set = constants[i].Bits != 0;
+		const MTL::DataType type = (MTL::DataType)constants[i].Type;
+		Impl->GameConstantValues->setConstantValue(type == MTL::DataTypeBool ?
+				(const void*)&set : &constants[i].Bits, type, (NS::UInteger)(16 + i));
+	}
+
+	//! The programs take their functions and pipelines anew at next use
+	for (u32 i = 0; i < Programs.size(); ++i)
+	{
+		Programs[i]->Vertex = NS::SharedPtr<MTL::Function>();
+		Programs[i]->Fragment = NS::SharedPtr<MTL::Function>();
+		for (auto& byBlend : Programs[i]->Pipelines)
+			for (auto& byType : byBlend)
+				for (auto& pipeline : byType)
+					pipeline = NS::SharedPtr<MTL::RenderPipelineState>();
+	}
+	Impl->forgetBindings();
 }
 
 
