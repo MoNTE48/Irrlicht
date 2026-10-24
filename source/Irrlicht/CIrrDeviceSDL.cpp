@@ -1050,16 +1050,18 @@ bool CIrrDeviceSDL::run()
 
 			if (SDL_GetWindowRelativeMouseMode(Window))
 			{
-				MouseX += (s32)roundf(widenSubpixelMove(
+				irrevent.MouseInput.XRel = (s32)roundf(widenSubpixelMove(
 					SDL_event.motion.xrel * NativeScaleX));
-				MouseY += (s32)roundf(widenSubpixelMove(
+				irrevent.MouseInput.YRel = (s32)roundf(widenSubpixelMove(
 					SDL_event.motion.yrel * NativeScaleY));
 			}
 			else
 			{
-				MouseX = (s32)roundf(SDL_event.motion.x * NativeScaleX);
-				MouseY = (s32)roundf(SDL_event.motion.y * NativeScaleY);
+				irrevent.MouseInput.XRel = (s32)roundf(SDL_event.motion.x * NativeScaleX) - MouseX;
+				irrevent.MouseInput.YRel = (s32)roundf(SDL_event.motion.y * NativeScaleY) - MouseY;
 			}
+			MouseX += irrevent.MouseInput.XRel;
+			MouseY += irrevent.MouseInput.YRel;
 
 			irrevent.MouseInput.X = MouseX;
 			irrevent.MouseInput.Y = MouseY;

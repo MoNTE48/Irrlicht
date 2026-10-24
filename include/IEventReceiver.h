@@ -9,6 +9,9 @@
 #include "Keycodes.h"
 #include "irrString.h"
 
+#include <cstring>
+#include <type_traits>
+
 namespace irr
 {
 	//! Enumeration for all event types there are.
@@ -384,6 +387,14 @@ struct SEvent
 		//! Y position of mouse cursor
 		s32 Y;
 
+		//! X movement of the mouse since the previous event.
+		/** Only valid for EMIE_MOUSE_MOVED. */
+		s32 XRel;
+
+		//! Y movement of the mouse since the previous event.
+		/** Only valid for EMIE_MOUSE_MOVED. */
+		s32 YRel;
+
 		//! mouse wheel delta, often 1.0 or -1.0, but can have other values < 0.f or > 0.f;
 		/** Only valid if event was EMIE_MOUSE_WHEEL */
 		f32 Wheel;
@@ -648,7 +659,14 @@ struct SEvent
 		struct SSDLControllerAxisEvent SDLControllerAxisEvent;
 	};
 
+	//! Zeroes the whole structure, including the union and any padding.
+	SEvent() {
+		// Safe because of the static_assert below.
+		memset(static_cast<void*>(this), 0, sizeof(*this));
+	}
 };
+
+static_assert(std::is_trivially_copyable_v<SEvent>, "SEvent is not safe to memset()");
 
 //! Interface of an object which can receive events.
 /** Many of the engine's classes inherit IEventReceiver so they are able to
