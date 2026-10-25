@@ -1697,6 +1697,14 @@ void CNullDriver::drawMeshBuffer(const scene::IMeshBuffer* mb)
 }
 
 
+//! Draws mesh buffers with the current material and transforms, one by one
+void CNullDriver::drawMeshBuffers(const scene::IMeshBuffer* const* buffers, u32 count)
+{
+	for (u32 i = 0; i < count; ++i)
+		drawMeshBuffer(buffers[i]);
+}
+
+
 //! Draws the normals of a mesh buffer
 void CNullDriver::drawMeshBufferNormals(const scene::IMeshBuffer* mb, f32 length, SColor color)
 {

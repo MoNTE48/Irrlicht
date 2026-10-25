@@ -1013,6 +1013,12 @@ namespace video
 		/** \param mb Buffer to draw */
 		virtual void drawMeshBuffer(const scene::IMeshBuffer* mb) =0;
 
+		//! Draws mesh buffers with the current material and transforms
+		/** The driver may bind the material and set its shader constants once for all of them.
+		\param buffers Buffers to draw
+		\param count Their number */
+		virtual void drawMeshBuffers(const scene::IMeshBuffer* const* buffers, u32 count) =0;
+
 		//! Draws normals of a mesh buffer
 		/** \param mb Buffer to draw the normals of
 		\param length length scale factor of the normals

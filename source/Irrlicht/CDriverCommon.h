@@ -934,7 +934,48 @@ public:
 		return CNullDriver::isHardwareBufferRecommend(mb);
 	}
 
+	//! Binds the state only when the vertex layout changes; prefetches buffers 4 ahead and their
+	//! links 2 ahead
+	void drawMeshBuffers(const scene::IMeshBuffer* const* buffers, u32 count) IRR_OVERRIDE
+	{
+		u32 bound = ~0u;
+		for (u32 i = 0; i < count; ++i)
+		{
+			//! A draw reads into a buffer's second line and up to 3 lines of its link
+			if (i + 4 < count)
+			{
+				__builtin_prefetch(buffers[i + 4]);
+				__builtin_prefetch((const u8*)buffers[i + 4] + 32);
+			}
+			if (i + 2 < count && buffers[i + 2])
+				if (const u8* next = static_cast<const u8*>(buffers[i + 2]->getHWBuffer()))
+					for (u32 line = 0; line < 3 * 64; line += 64)
+						__builtin_prefetch(next + line);
+
+			if (SHWBufferLink* link = getBufferLink(buffers[i]))
+				drawLink(link, bound);
+			else
+			{
+				CNullDriver::drawMeshBuffer(buffers[i]);
+				bound = ~0u;
+			}
+		}
+	}
+
 protected:
+	//! Draws a link, binding the state first unless bound is its vertex layout; bound is the
+	//! layout bound last, ~0u for none. By default each draw binds on its own
+	virtual void drawLink(SHWBufferLink* link, u32& bound)
+	{
+		drawHardwareBuffer(link);
+	}
+
+	void drawHardwareBuffer(SHWBufferLink* link) IRR_OVERRIDE
+	{
+		u32 bound = ~0u;
+		drawLink(link, bound);
+	}
+
 	//! A renderer for the program at index
 	virtual TRenderer* newShaderRenderer(u32 index, IShaderConstantSetCallBack* callback,
 			E_MATERIAL_TYPE base, s32 userData) = 0;

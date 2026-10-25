@@ -382,6 +382,10 @@ namespace video
 		//! Draws a mesh buffer
 		virtual void drawMeshBuffer(const scene::IMeshBuffer* mb) IRR_OVERRIDE;
 
+		//! Draws mesh buffers with the current material and transforms, one by one
+		virtual void drawMeshBuffers(const scene::IMeshBuffer* const* buffers,
+			u32 count) IRR_OVERRIDE;
+
 		//! Draws the normals of a mesh buffer
 		virtual void drawMeshBufferNormals(const scene::IMeshBuffer* mb, f32 length=10.f,
 			SColor color=0xffffffff) IRR_OVERRIDE;

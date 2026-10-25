@@ -1732,7 +1732,7 @@ void CMetalDriver::bindDrawState()
 	const SDriverFog fog = fixedFog(ShaderRenderer ?
 			ShaderRenderer->baseMaterial() : Material.MaterialType);
 
-	//! Matrices go every draw, the fog only when it changes
+	//! Matrices go with each bind, the fog only when it changes
 	Impl->TwoDStanding = false;
 	Impl->Encoder->setVertexBytes(&uniforms, sizeof(uniforms), METAL_UNIFORM_INDEX);
 
@@ -1754,13 +1754,19 @@ CNullDriver::SHWBufferLink* CMetalDriver::createHardwareBuffer(const scene::IMes
 }
 
 
-void CMetalDriver::drawHardwareBuffer(CNullDriver::SHWBufferLink* each)
+void CMetalDriver::drawLink(CNullDriver::SHWBufferLink* each, u32& bound)
 {
 	SImpl::SMeshes::SLink* link = static_cast<SImpl::SMeshes::SLink*>(each);
-	if (!link || !meshToDraw(Impl->Meshes, link, Impl->Encoder.get()) ||
-			!bindMaterialPipeline(link->VertexType))
+	if (!link || !meshToDraw(Impl->Meshes, link, Impl->Encoder.get()))
 		return;
-	bindDrawState();
+	const u32 layout = (u32)link->VertexType;
+	if (layout != bound)
+	{
+		bound = bindMaterialPipeline(link->VertexType) ? layout : ~0u;
+		if (bound != layout)
+			return;
+		bindDrawState();
+	}
 	link->DrawnAt = Impl->FrameCounter;
 	bindVertices(Impl, link->Vertices.get(), link->VertexOffset);
 

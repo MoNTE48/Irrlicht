@@ -89,7 +89,7 @@ protected:
 	ITexture* createDeviceDependentTexture(const io::path& name, IImage* image) IRR_OVERRIDE;
 
 	SHWBufferLink* createHardwareBuffer(const scene::IMeshBuffer* mb) IRR_OVERRIDE;
-	void drawHardwareBuffer(SHWBufferLink* buffer) IRR_OVERRIDE;
+	void drawLink(SHWBufferLink* link, u32& bound) IRR_OVERRIDE;
 	void deleteHardwareBuffer(SHWBufferLink* buffer) IRR_OVERRIDE;
 
 private:
