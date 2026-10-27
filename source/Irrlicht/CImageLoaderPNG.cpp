@@ -142,6 +142,10 @@ IImage* CImageLoaderPng::loadImage(io::IReadFile* file) const
 
 	png_set_sig_bytes(png_ptr, 8); // Tell png that we read the signature
 
+	// Colour profiles and text are not used, so libpng neither unpacks nor checks them
+	static const png_byte skippedChunks[] = "iCCP\0tEXt\0zTXt\0iTXt";
+	png_set_keep_unknown_chunks(png_ptr, PNG_HANDLE_CHUNK_NEVER, skippedChunks, 4);
+
 	png_read_info(png_ptr, info_ptr); // Read the info section of the png file
 
 	u32 Width=0;
