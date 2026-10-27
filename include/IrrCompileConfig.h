@@ -810,6 +810,11 @@ B3D, MS3D or X meshes */
 #ifdef NO_IRR_COMPILE_WITH_PNG_WRITER_
 #undef _IRR_COMPILE_WITH_PNG_WRITER_
 #endif
+//! Android and iOS take no screenshots, the only images the game writes
+#if defined(_IRR_ANDROID_PLATFORM_) || defined(_IRR_IOS_PLATFORM_)
+#undef _IRR_COMPILE_WITH_JPG_WRITER_
+#undef _IRR_COMPILE_WITH_PNG_WRITER_
+#endif
 //! Define _IRR_COMPILE_WITH_PPM_WRITER_ if you want to write .ppm files
 //#define _IRR_COMPILE_WITH_PPM_WRITER_
 #ifdef NO_IRR_COMPILE_WITH_PPM_WRITER_
