@@ -1725,13 +1725,16 @@ void CNullDriver::drawMeshBufferNormals(const scene::IMeshBuffer* mb, f32 length
 
 CNullDriver::SHWBufferLink *CNullDriver::getBufferLink(const scene::IMeshBuffer* mb)
 {
-	if (!mb || !isHardwareBufferRecommend(mb))
+	if (!mb)
 		return 0;
 
 	//search for hardware links
 	SHWBufferLink *Link = static_cast<SHWBufferLink*>(mb->getHWBuffer());
 	if (Link)
 		return Link->Owner == this ? Link : 0;
+
+	if (!isHardwareBufferRecommend(mb))
+		return 0;
 
 	Link = createHardwareBuffer(mb);
 	if (Link)

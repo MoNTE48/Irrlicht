@@ -952,7 +952,12 @@ public:
 					for (u32 line = 0; line < 3 * 64; line += 64)
 						__builtin_prefetch(next + line);
 
-			if (SHWBufferLink* link = getBufferLink(buffers[i]))
+			//! A buffer linked here already skips the checks of getBufferLink
+			SHWBufferLink* link = buffers[i] ?
+					static_cast<SHWBufferLink*>(buffers[i]->getHWBuffer()) : 0;
+			if (!link || link->Owner != this)
+				link = getBufferLink(buffers[i]);
+			if (link)
 				drawLink(link, bound);
 			else
 			{
