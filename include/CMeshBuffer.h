@@ -7,6 +7,8 @@
 
 #include "irrArray.h"
 #include "IMeshBuffer.h"
+#include <cstring>
+#include <type_traits>
 
 namespace irr
 {
@@ -208,9 +210,15 @@ namespace scene
 			u32 i;
 
 			Vertices.reallocate(vertexCount+numVertices, false);
-			for (i=0; i<numVertices; ++i)
+			if constexpr (std::is_trivially_copyable_v<T>)
 			{
-				Vertices.push_back(static_cast<const T*>(vertices)[i]);
+				Vertices.set_used(vertexCount+numVertices);
+				memcpy(Vertices.pointer()+vertexCount, vertices, numVertices*sizeof(T));
+			}
+			else
+			{
+				for (i=0; i<numVertices; ++i)
+					Vertices.push_back(static_cast<const T*>(vertices)[i]);
 			}
 
 			if ( updateBoundingBox && numVertices > 0)
@@ -222,11 +230,12 @@ namespace scene
 					BoundingBox.addInternalPoint(static_cast<const T*>(vertices)[i].Pos);
 			}
 
-			Indices.reallocate(getIndexCount()+numIndices, false);
+			const u32 indexCount = getIndexCount();
+			Indices.reallocate(indexCount+numIndices, false);
+			Indices.set_used(indexCount+numIndices);
+			u16* const added = Indices.pointer()+indexCount;
 			for (i=0; i<numIndices; ++i)
-			{
-				Indices.push_back(indices[i]+vertexCount);
-			}
+				added[i] = indices[i]+vertexCount;
 
 			setDirty();
 		}
