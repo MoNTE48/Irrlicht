@@ -2059,6 +2059,14 @@ static bool isGE8300OrGE8322(const CVulkanDriver::SImpl* impl)
 }
 
 
+//! Adreno 7xx, by its name as "Adreno (TM) 730"
+static bool isAdreno7xx(const CVulkanDriver::SImpl* impl)
+{
+	u32 model = 0;
+	return sscanf(impl->Properties.deviceName, "Adreno (TM) %u", &model) == 1 && model / 100 == 7;
+}
+
+
 static VkRenderPass createPass(CVulkanDriver::SImpl* impl, bool clearColor)
 {
 	const VkAttachmentDescription attachments[2] = {
@@ -2666,8 +2674,8 @@ bool CVulkanDriver::genericDriverInit()
 		return false;
 	impl->Clear.Name = "the depth clear";
 	//! vkCmdClearAttachments races with draws on Qualcomm before 512.762.12, as ANGLE notes, and
-	//! faults on GE8300 and GE8322
-	if (qualcommBefore(impl, 762, 12) || isGE8300OrGE8322(impl))
+	//! faults on GE8300 and GE8322; Adreno 7xx on such drivers draws right without the triangle
+	if ((qualcommBefore(impl, 762, 12) && !isAdreno7xx(impl)) || isGE8300OrGE8322(impl))
 		for (u32 s = 0; s < 2; ++s)
 			impl->Clear.Modules[s] = openDriverStage(impl, FileSystem, Params.OGLES2ShaderPath,
 					VULKAN_DEPTH_CLEAR[s]);
