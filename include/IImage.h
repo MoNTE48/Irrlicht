@@ -495,10 +495,7 @@ public:
 	\return true when dataSize is small enough that it should be fine. */
 	static bool checkDataSizeLimit(size_t dataSize)
 	{
-		// 2gb for now. Could be we could do more on some platforms, but we still will run into
-		// problems right now then for example in then color converter (which currently still uses
-		// s32 for sizes).
-		return (size_t)(s32)(dataSize) == dataSize;
+		return dataSize <= 4096 * 4096 * 4;
 	}
 
 	//! calculate image data size in bytes for selected format, width and height.

@@ -307,9 +307,6 @@ IImage* CImageLoaderJPG::loadImage(io::IReadFile* file) const
 	if (!checkImageDimensions(cinfo.image_width, cinfo.image_height))
 		longjmp(jerr.setjmp_buffer, 1);
 
-	// Start decompressor
-	jpeg_start_decompress(&cinfo);
-
 	// Get image data
 	u32 rowspan = cinfo.image_width * cinfo.out_color_components;
 	u32 width = cinfo.image_width;
@@ -322,6 +319,9 @@ IImage* CImageLoaderJPG::loadImage(io::IReadFile* file) const
 		os::Printer::log("Image dimensions too large in file", filename, ELL_ERROR);
 		longjmp(jerr.setjmp_buffer, 1);
 	}
+
+	// Start decompressor
+	jpeg_start_decompress(&cinfo);
 
 
 	// Allocate memory for buffer
