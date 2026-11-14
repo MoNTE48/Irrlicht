@@ -548,7 +548,8 @@ COGLES2Driver::~COGLES2Driver()
 
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
 		//! A pause the system sent meanwhile takes the context away; the frame waits for the app to come back
-		if (DeviceType == EIDT_SDL && !SDLDevice->waitForForeground())
+		FrameDeclined = DeviceType == EIDT_SDL && !SDLDevice->waitForForeground();
+		if (FrameDeclined)
 			return false;
 #endif
 
@@ -571,6 +572,12 @@ COGLES2Driver::~COGLES2Driver()
 		IRR_PROFILE(CProfileScope p1(EPID_ES2_END_SCENE);)
 
 		CNullDriver::endScene();
+
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
+		//! The game draws a declined frame all the same, with no context to show it in
+		if (FrameDeclined)
+			return false;
+#endif
 
 #if !defined(_IRR_COMPILE_WITH_ANGLE_)
 		// The swap below flushes implicitly, but keep this on native drivers.

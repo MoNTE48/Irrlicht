@@ -463,6 +463,10 @@ private:
 #ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
 		CIrrDeviceSDL *SDLDevice;
 #endif
+#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_) && defined(_IRR_ANDROID_PLATFORM_)
+		//! beginScene declined the frame in the background; its endScene shows nothing
+		bool FrameDeclined = false;
+#endif
 
 		IContextManager* ContextManager;
 
