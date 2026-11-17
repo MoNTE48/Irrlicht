@@ -75,7 +75,6 @@
 		5E34CBD71B7F6EC700F212E8 /* CFPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AA1B7F6B6800F212E8 /* CFPSCounter.cpp */; };
 		5E34CBD91B7F6EC700F212E8 /* CImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AC1B7F6B6800F212E8 /* CImage.cpp */; };
 		5E34CBDB1B7F6EC700F212E8 /* CNullDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AE1B7F6B6800F212E8 /* CNullDriver.cpp */; };
-		5E34CC1A1B7F6EC900F212E8 /* CVideoModeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */; };
 		5E5732B31C18E212003F664E /* CDefaultGUIElementFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7E21B7F50DE00F212E8 /* CDefaultGUIElementFactory.cpp */; };
 		5E5732B41C18E212003F664E /* CGUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7A91B7F50A900F212E8 /* CGUIButton.cpp */; };
 		5E5732B51C18E212003F664E /* CGUICheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C7AB1B7F50A900F212E8 /* CGUICheckBox.cpp */; };
@@ -144,7 +143,6 @@
 		5E5733C41C18E212003F664E /* CFPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AA1B7F6B6800F212E8 /* CFPSCounter.cpp */; };
 		5E5733C51C18E212003F664E /* CImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AC1B7F6B6800F212E8 /* CImage.cpp */; };
 		5E5733C61C18E212003F664E /* CNullDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9AE1B7F6B6800F212E8 /* CNullDriver.cpp */; };
-		5E5733DC1C18E212003F664E /* CVideoModeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */; };
 		5E5734081C18E2E2003F664E /* COGLES2Driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5733F91C18E2E2003F664E /* COGLES2Driver.cpp */; };
 		5E57340A1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5733FB1C18E2E2003F664E /* COGLES2ExtensionHandler.cpp */; };
 		5E57340C1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E5733FD1C18E2E2003F664E /* COGLES2FixedPipelineRenderer.cpp */; };
@@ -331,7 +329,6 @@
 		5E34C7761B7F4AFC00F212E8 /* ITriangleSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ITriangleSelector.h; path = ../../include/ITriangleSelector.h; sourceTree = "<group>"; };
 		5E34C7771B7F4AFC00F212E8 /* IVertexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IVertexBuffer.h; path = ../../include/IVertexBuffer.h; sourceTree = "<group>"; };
 		5E34C7781B7F4AFC00F212E8 /* IVideoDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IVideoDriver.h; path = ../../include/IVideoDriver.h; sourceTree = "<group>"; };
-		5E34C7791B7F4AFC00F212E8 /* IVideoModeList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IVideoModeList.h; path = ../../include/IVideoModeList.h; sourceTree = "<group>"; };
 		5E34C77A1B7F4AFC00F212E8 /* IVolumeLightSceneNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IVolumeLightSceneNode.h; path = ../../include/IVolumeLightSceneNode.h; sourceTree = "<group>"; };
 		5E34C77B1B7F4AFC00F212E8 /* IWriteFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IWriteFile.h; path = ../../include/IWriteFile.h; sourceTree = "<group>"; };
 		5E34C77C1B7F4AFC00F212E8 /* IXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IXMLReader.h; path = ../../include/IXMLReader.h; sourceTree = "<group>"; };
@@ -514,8 +511,6 @@
 		5E34C9AE1B7F6B6800F212E8 /* CNullDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CNullDriver.cpp; sourceTree = "<group>"; };
 		5E34C9AF1B7F6B6800F212E8 /* CNullDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CNullDriver.h; sourceTree = "<group>"; };
 		5E34C9B01B7F6B6800F212E8 /* IImagePresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IImagePresenter.h; sourceTree = "<group>"; };
-		5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CVideoModeList.cpp; sourceTree = "<group>"; };
-		5E34C9EC1B7F6C8200F212E8 /* CVideoModeList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVideoModeList.h; sourceTree = "<group>"; };
 		5E34C9F31B7F6E3400F212E8 /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5733E51C18E212003F664E /* libIrrlicht.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIrrlicht.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E5733F81C18E2E2003F664E /* COGLES2Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COGLES2Common.h; sourceTree = "<group>"; };
@@ -636,8 +631,6 @@
 				5E34C7A81B7F506D00F212E8 /* irr */,
 				5E34C7A61B7F505A00F212E8 /* scene */,
 				5E34C7A71B7F506300F212E8 /* video */,
-				5E34C9EB1B7F6C8200F212E8 /* CVideoModeList.cpp */,
-				5E34C9EC1B7F6C8200F212E8 /* CVideoModeList.h */,
 			);
 			name = Irrlicht;
 			sourceTree = "<group>";
@@ -800,7 +793,6 @@
 				5E34C76F1B7F4AFC00F212E8 /* IShaderConstantSetCallBack.h */,
 				5E34C7741B7F4AFC00F212E8 /* ITexture.h */,
 				5E34C7781B7F4AFC00F212E8 /* IVideoDriver.h */,
-				5E34C7791B7F4AFC00F212E8 /* IVideoModeList.h */,
 				5E34C7881B7F4AFC00F212E8 /* S3DVertex.h */,
 				5E34C78B1B7F4AFC00F212E8 /* SColor.h */,
 				5E34C78C1B7F4AFC00F212E8 /* SExposedVideoData.h */,
@@ -1336,7 +1328,6 @@
 				5E34CBD91B7F6EC700F212E8 /* CImage.cpp in Sources */,
 				84295DF02D6A7D6E00B6C388 /* mz_crypt_apple.c in Sources */,
 				5E34CBDB1B7F6EC700F212E8 /* CNullDriver.cpp in Sources */,
-				5E34CC1A1B7F6EC900F212E8 /* CVideoModeList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1424,7 +1415,6 @@
 				5E5733C41C18E212003F664E /* CFPSCounter.cpp in Sources */,
 				5E5733C51C18E212003F664E /* CImage.cpp in Sources */,
 				5E5733C61C18E212003F664E /* CNullDriver.cpp in Sources */,
-				5E5733DC1C18E212003F664E /* CVideoModeList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

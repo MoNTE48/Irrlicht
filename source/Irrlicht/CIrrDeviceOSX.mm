@@ -604,8 +604,6 @@ CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 
 	initKeycodes();
 
-	VideoModeList->setDesktop(CreationParams.Bits, core::dimension2d<u32>((u32) [[NSScreen mainScreen] frame].size.width, (u32) [[NSScreen mainScreen] frame].size.height));
-
 	bool success = true;
 
 	if (CreationParams.DriverType != video::EDT_NULL)
@@ -1915,44 +1913,6 @@ void CIrrDeviceMacOSX::pollJoysticks()
 			postEventFromUser(ActiveJoysticks[joystick].persistentData);
 	}
 #endif // _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
-}
-
-video::IVideoModeList* CIrrDeviceMacOSX::getVideoModeList()
-{
-	if (!VideoModeList->getVideoModeCount())
-	{
-		CGDirectDisplayID display;
-		display = CGMainDisplayID();
-
-		CFArrayRef Modes = CGDisplayCopyAllDisplayModes(display, NULL);
-
-		for(int i = 0; i < CFArrayGetCount(Modes); ++i)
-		{
-			CGDisplayModeRef CurrentMode = (CGDisplayModeRef)CFArrayGetValueAtIndex(Modes, i);
-
-			u8 Depth = 0;
-
-			CFStringRef pixEnc = CGDisplayModeCopyPixelEncoding(CurrentMode);
-
-			if(CFStringCompare(pixEnc, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
-				Depth = 32;
-			else
-			if(CFStringCompare(pixEnc, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
-				Depth = 16;
-			else
-			if(CFStringCompare(pixEnc, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
-				Depth = 8;
-
-			if(Depth)
-			{
-				u32 Width = (u32) CGDisplayModeGetWidth(CurrentMode);
-				u32 Height = (u32) CGDisplayModeGetHeight(CurrentMode);
-
-				VideoModeList->addMode(core::dimension2d<u32>(Width, Height), Depth);
-			}
-		}
-	}
-	return VideoModeList;
 }
 
 } // end namespace

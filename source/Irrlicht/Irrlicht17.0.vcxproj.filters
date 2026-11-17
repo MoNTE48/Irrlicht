@@ -183,9 +183,6 @@
     <ClInclude Include="..\..\include\IVideoDriver.h">
       <Filter>include\video</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IVideoModeList.h">
-      <Filter>include\video</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\S3DVertex.h">
       <Filter>include\video</Filter>
     </ClInclude>
@@ -771,9 +768,6 @@
     <ClInclude Include="CSceneNodeAnimatorTexture.h">
       <Filter>Irrlicht\scene\animators</Filter>
     </ClInclude>
-    <ClInclude Include="CVideoModeList.h">
-      <Filter>Irrlicht\video</Filter>
-    </ClInclude>
     <ClInclude Include="IZBuffer.h">
       <Filter>Irrlicht\video\Software</Filter>
     </ClInclude>
@@ -1342,9 +1336,6 @@
     </ClCompile>
     <ClCompile Include="CSceneNodeAnimatorTexture.cpp">
       <Filter>Irrlicht\scene\animators</Filter>
-    </ClCompile>
-    <ClCompile Include="CVideoModeList.cpp">
-      <Filter>Irrlicht\video</Filter>
     </ClCompile>
     <ClCompile Include="CColorConverter.cpp">
       <Filter>Irrlicht\video\Null</Filter>

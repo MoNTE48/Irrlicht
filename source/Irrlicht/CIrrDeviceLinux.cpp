@@ -272,7 +272,6 @@ bool CIrrDeviceLinux::switchToFullscreen(bool reset)
 		return true;
 	}
 
-	getVideoModeList();
 	#if defined(_IRR_LINUX_X11_VIDMODE_) || defined(_IRR_LINUX_X11_RANDR_)
 	s32 eventbase, errorbase;
 	s32 bestMode = -1;
@@ -1294,84 +1293,6 @@ void CIrrDeviceLinux::setWindowSize(const irr::core::dimension2d<u32>& size)
 	XConfigureWindow(XDisplay, XWindow, CWWidth | CWHeight, &values);
 	XFlush(XDisplay);
 #endif // #ifdef _IRR_COMPILE_WITH_X11_
-}
-
-//! Return pointer to a list with all video modes supported by the gfx adapter.
-video::IVideoModeList* CIrrDeviceLinux::getVideoModeList()
-{
-#ifdef _IRR_COMPILE_WITH_X11_
-	if (!VideoModeList->getVideoModeCount())
-	{
-		bool temporaryDisplay = false;
-
-		if (!XDisplay)
-		{
-			XDisplay = XOpenDisplay(0);
-			temporaryDisplay=true;
-		}
-		if (XDisplay)
-		{
-			#if defined(_IRR_LINUX_X11_VIDMODE_) || defined(_IRR_LINUX_X11_RANDR_)
-			s32 eventbase, errorbase;
-			s32 defaultDepth=DefaultDepth(XDisplay,Screennr);
-			#endif
-
-			#ifdef _IRR_LINUX_X11_VIDMODE_
-			if (XF86VidModeQueryExtension(XDisplay, &eventbase, &errorbase))
-			{
-				// enumerate video modes
-				int modeCount;
-				XF86VidModeModeInfo** modes;
-
-				XF86VidModeGetAllModeLines(XDisplay, Screennr, &modeCount, &modes);
-
-				// save current video mode
-				OldVideoMode = *modes[0];
-
-				// find fitting mode
-
-				VideoModeList->setDesktop(defaultDepth, core::dimension2d<u32>(
-					modes[0]->hdisplay, modes[0]->vdisplay));
-				for (int i = 0; i<modeCount; ++i)
-				{
-					VideoModeList->addMode(core::dimension2d<u32>(
-						modes[i]->hdisplay, modes[i]->vdisplay), defaultDepth);
-				}
-				XFree(modes);
-			}
-			else
-			#endif
-			#ifdef _IRR_LINUX_X11_RANDR_
-			if (XRRQueryExtension(XDisplay, &eventbase, &errorbase))
-			{
-				int modeCount;
-				XRRScreenConfiguration *config=XRRGetScreenInfo(XDisplay,DefaultRootWindow(XDisplay));
-				OldRandrMode=XRRConfigCurrentConfiguration(config,&OldRandrRotation);
-				XRRScreenSize *modes=XRRConfigSizes(config,&modeCount);
-				VideoModeList->setDesktop(defaultDepth, core::dimension2d<u32>(
-					modes[OldRandrMode].width, modes[OldRandrMode].height));
-				for (int i = 0; i<modeCount; ++i)
-				{
-					VideoModeList->addMode(core::dimension2d<u32>(
-						modes[i].width, modes[i].height), defaultDepth);
-				}
-				XRRFreeScreenConfigInfo(config);
-			}
-			else
-			#endif
-			{
-				os::Printer::log("VidMode or RandR X11 extension required for VideoModeList." , ELL_WARNING);
-			}
-		}
-		if (XDisplay && temporaryDisplay)
-		{
-			XCloseDisplay(XDisplay);
-			XDisplay=0;
-		}
-	}
-#endif
-
-	return VideoModeList;
 }
 
 

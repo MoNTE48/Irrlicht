@@ -95,10 +95,6 @@ namespace irr
 		//! Activate any joysticks, and generate events for them.
 		virtual bool activateJoysticks(core::array<SJoystickInfo> & joystickInfo) IRR_OVERRIDE;
 
-		//! \return Returns a pointer to a list with all video modes
-		//! supported by the gfx adapter.
-		virtual video::IVideoModeList* getVideoModeList() IRR_OVERRIDE;
-
 		//! Get the device type
 		virtual E_DEVICE_TYPE getType() const IRR_OVERRIDE
 		{

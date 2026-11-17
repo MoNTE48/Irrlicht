@@ -110,7 +110,6 @@ set(IRRLICHT_SOURCES
 	source/Irrlicht/CTextSceneNode.cpp
 	source/Irrlicht/CTriangleBBSelector.cpp
 	source/Irrlicht/CTriangleSelector.cpp
-	source/Irrlicht/CVideoModeList.cpp
 	source/Irrlicht/CVolumeLightSceneNode.cpp
 	source/Irrlicht/CWebGL1Driver.cpp
 	source/Irrlicht/CWGLManager.cpp

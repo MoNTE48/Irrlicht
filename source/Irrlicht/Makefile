@@ -44,7 +44,7 @@ IRRDRVROBJ = CNullDriver.o COpenGLCacheHandler.o COpenGLDriver.o COpenGLNormalMa
 	COGLESDriver.o COGLESExtensionHandler.o COGLES2Driver.o COGLES2ExtensionHandler.o COGLES2FixedPipelineRenderer.o COGLES2MaterialRenderer.o COGLES2NormalMapRenderer.o COGLES2ParallaxMapRenderer.o COGLES2Renderer2D.o
 IRRIMAGEOBJ = CColorConverter.o CImage.o CImageLoaderJPG.o CImageLoaderPNG.o CImageLoaderTGA.o \
 	CImageWriterJPG.o CImageWriterPNG.o
-IRRVIDEOOBJ = CVideoModeList.o CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
+IRRVIDEOOBJ = CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
 IRRIOOBJ = CFileList.o CFileSystem.o CLimitReadFile.o CMemoryFile.o CReadFile.o CWriteFile.o CXMLReader.o CZipReader.o irrXML.o CAttributes.o
 IRROTHEROBJ = CIrrDeviceSDL.o CIrrDeviceStub.o CLogger.o COSOperator.o Irrlicht.o os.o leakHunter.o CProfiler.o utf8.o
 IRRGUIOBJ = CGUIButton.o CGUICheckBox.o CGUIComboBox.o CGUIEditBox.o CGUIEnvironment.o CGUIFileOpenDialog.o CGUIFont.o CGUIImage.o CGUIListBox.o CGUIModalScreen.o CGUIScrollBar.o CGUISkin.o CGUIStaticText.o CGUITabControl.o CDefaultGUIElementFactory.o CGUISpriteBank.o CGUIImageList.o

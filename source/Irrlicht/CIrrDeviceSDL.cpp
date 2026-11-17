@@ -1328,48 +1328,6 @@ void CIrrDeviceSDL::closeDevice()
 }
 
 
-//! \return Pointer to a list with all video modes supported
-video::IVideoModeList* CIrrDeviceSDL::getVideoModeList()
-{
-	if (!VideoModeList->getVideoModeCount())
-	{
-		// enumerate video modes.
-		int display_count = 0;
-		SDL_DisplayID* displays = SDL_GetDisplays(&display_count);
-		int mode_count = 0;
-		SDL_DisplayMode** modes = display_count > 0 ?
-			SDL_GetFullscreenDisplayModes(displays[0], &mode_count) : 0;
-
-		if (display_count < 1)
-			os::Printer::log("No display created: ", SDL_GetError(), ELL_ERROR);
-		else if (mode_count < 1)
-			os::Printer::log("No display modes available: ", SDL_GetError(), ELL_ERROR);
-		else
-		{
-			if (const SDL_DisplayMode* mode = SDL_GetDesktopDisplayMode(displays[0]))
-			{
-				VideoModeList->setDesktop(SDL_BITSPERPIXEL(mode->format),
-					core::dimension2d<u32>((u32)mode->w, (u32)mode->h));
-			}
-
-			for (int i = 0; i < mode_count; i++)
-			{
-				if (const SDL_DisplayMode* mode = modes[i])
-				{
-					VideoModeList->addMode(
-						core::dimension2d<u32>((u32)mode->w, (u32)mode->h),
-						SDL_BITSPERPIXEL(mode->format));
-				}
-			}
-		}
-
-		SDL_free(modes);
-		SDL_free(displays);
-	}
-
-	return VideoModeList;
-}
-
 //! Sets if the window should be resizable in windowed mode.
 void CIrrDeviceSDL::setResizable(bool resize)
 {

@@ -12,7 +12,6 @@
 #include "EDeviceTypes.h"
 #include "IEventReceiver.h"
 #include "ICursorControl.h"
-#include "IVideoModeList.h"
 #include "ITimer.h"
 #include "IOSOperator.h"
 
@@ -124,14 +123,6 @@ namespace irr
 		//! Provides access to the message logger.
 		/** \return Pointer to the logger. */
 		virtual ILogger* getLogger() = 0;
-
-		//! Gets a list with all video modes available.
-		/** You only need a null driver (ED_NULL) to access
-		those video modes. So you can get the available modes
-		before starting any other video driver.
-		\return Pointer to a list with all video modes supported
-		by the gfx adapter. */
-		virtual video::IVideoModeList* getVideoModeList() = 0;
 
 		//! Get context manager
 		virtual video::IContextManager* getContextManager() = 0;

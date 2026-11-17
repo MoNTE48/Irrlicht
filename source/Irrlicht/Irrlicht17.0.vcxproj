@@ -652,7 +652,6 @@
     <ClInclude Include="..\..\include\IShaderConstantSetCallBack.h" />
     <ClInclude Include="..\..\include\ITexture.h" />
     <ClInclude Include="..\..\include\IVideoDriver.h" />
-    <ClInclude Include="..\..\include\IVideoModeList.h" />
     <ClInclude Include="..\..\include\S3DVertex.h" />
     <ClInclude Include="..\..\include\SColor.h" />
     <ClInclude Include="..\..\include\SExposedVideoData.h" />
@@ -838,7 +837,6 @@
     <ClInclude Include="CTerrainTriangleSelector.h" />
     <ClInclude Include="CTriangleBBSelector.h" />
     <ClInclude Include="CTriangleSelector.h" />
-    <ClInclude Include="CVideoModeList.h" />
     <ClInclude Include="IZBuffer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SB3DStructs.h" />
@@ -939,7 +937,6 @@
     <ClCompile Include="CTerrainTriangleSelector.cpp" />
     <ClCompile Include="CTriangleBBSelector.cpp" />
     <ClCompile Include="CTriangleSelector.cpp" />
-    <ClCompile Include="CVideoModeList.cpp" />
     <ClCompile Include="CColorConverter.cpp" />
     <ClCompile Include="CFPSCounter.cpp" />
     <ClCompile Include="CImage.cpp" />

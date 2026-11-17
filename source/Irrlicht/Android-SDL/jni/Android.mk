@@ -103,7 +103,6 @@ LOCAL_SRC_FILES := \
 					CTextSceneNode.cpp \
 					CTriangleBBSelector.cpp \
 					CTriangleSelector.cpp \
-					CVideoModeList.cpp \
 					CVolumeLightSceneNode.cpp \
 					CVulkanDriver.cpp \
 					CWriteFile.cpp \

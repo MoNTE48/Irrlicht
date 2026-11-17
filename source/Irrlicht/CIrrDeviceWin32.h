@@ -64,10 +64,6 @@ namespace irr
 		//! notifies the device that it should close itself
 		virtual void closeDevice() IRR_OVERRIDE;
 
-		//! \return Returns a pointer to a list with all video modes
-		//! supported by the gfx adapter.
-		virtual video::IVideoModeList* getVideoModeList() IRR_OVERRIDE;
-
 		//! Notifies the device, that it has been resized
 		/** Must be public as it is called from free function (event handler) */
 		void OnResized();
