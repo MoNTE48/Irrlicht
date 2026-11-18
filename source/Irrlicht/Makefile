@@ -41,7 +41,7 @@ IRRMESHOBJ = $(IRRMESHLOADER) \
 	CAnimatedMeshSceneNode.o
 IRROBJ = CBillboardSceneNode.o CCameraSceneNode.o CDummyTransformationSceneNode.o CEmptySceneNode.o CGeometryCreator.o CLightSceneNode.o CMeshManipulator.o CMetaTriangleSelector.o COctreeTriangleSelector.o CSceneCollisionManager.o CSceneManager.o CSkyBoxSceneNode.o CTerrainTriangleSelector.o CVolumeLightSceneNode.o CTextSceneNode.o CTriangleBBSelector.o CTriangleSelector.o CMeshCache.o CDefaultSceneNodeFactory.o
 IRRDRVROBJ = CNullDriver.o COpenGLCacheHandler.o COpenGLDriver.o COpenGLNormalMapRenderer.o COpenGLParallaxMapRenderer.o COpenGLShaderMaterialRenderer.o COpenGLSLMaterialRenderer.o COpenGLExtensionHandler.o \
-	COGLESDriver.o COGLESExtensionHandler.o COGLES2Driver.o COGLES2ExtensionHandler.o COGLES2FixedPipelineRenderer.o COGLES2MaterialRenderer.o COGLES2NormalMapRenderer.o COGLES2ParallaxMapRenderer.o COGLES2Renderer2D.o
+	COGLES2Driver.o COGLES2ExtensionHandler.o COGLES2FixedPipelineRenderer.o COGLES2MaterialRenderer.o COGLES2NormalMapRenderer.o COGLES2ParallaxMapRenderer.o COGLES2Renderer2D.o
 IRRIMAGEOBJ = CColorConverter.o CImage.o CImageLoaderJPG.o CImageLoaderPNG.o CImageLoaderTGA.o \
 	CImageWriterJPG.o CImageWriterPNG.o
 IRRVIDEOOBJ = CFPSCounter.o $(IRRDRVROBJ) $(IRRIMAGEOBJ)
