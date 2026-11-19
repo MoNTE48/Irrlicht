@@ -34,7 +34,8 @@ u8 *CImageLoaderTGA::loadCompressedImage(io::IReadFile *file, const STGAHeader& 
 
 	const u32 bytesPerPixel = header.PixelDepth/8;
 	const u32 imageSize =  header.ImageHeight * header.ImageWidth * bytesPerPixel;
-	u8* data = new u8[imageSize];
+	// Zeroed: a file that ends early leaves the rest black, not what the heap held
+	u8* data = new u8[imageSize]();
 	u32 currentByte = 0;
 
 	while(currentByte < imageSize)
@@ -66,7 +67,7 @@ u8 *CImageLoaderTGA::loadCompressedImage(io::IReadFile *file, const STGAHeader& 
 			chunkheader -= 127; // Subtract 127 To Get Rid Of The ID Bit
 
 			u32 dataOffset = currentByte;
-			if ( dataOffset+bytesPerPixel < imageSize )
+			if ( dataOffset+bytesPerPixel <= imageSize )
 			{
 				file->read(&data[dataOffset], bytesPerPixel);
 				currentByte += bytesPerPixel;
